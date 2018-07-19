@@ -1,5 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
     "/js/app-landing.js": "/js/app-landing.js",
     "/css/all.css": "/css/all.css",
     "/css/all-landing.css": "/css/all-landing.css",
@@ -55,5 +56,6 @@
     "/css/skins/skin-yellow.css": "/css/skins/skin-yellow.css",
     "/css/skins/skin-yellow.min.css": "/css/skins/skin-yellow.min.css",
     "/css/blue.png": "/css/blue.png",
-    "/css/blue@2x.png": "/css/blue@2x.png"
+    "/css/blue@2x.png": "/css/blue@2x.png",
+    "/css/bootstrap.min.css": "/css/bootstrap.min.css"
 }
