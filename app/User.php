@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 /**
  * App\User
@@ -47,6 +48,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+    use EntrustUserTrait;
 
     protected $fillable = [
         'ext_user_id', 'type_registration_id', 'first_name', 'second_name',
