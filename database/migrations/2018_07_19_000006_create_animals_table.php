@@ -17,7 +17,7 @@ class CreateAnimalsTable extends Migration
             $table->increments('id');
             $table->unsignedSmallInteger('species_id');
             $table->unsignedInteger('breed_id');
-            $table->timestamp('date_of_birth')->nullable();
+            $table->timestamp('birthday')->nullable();
             $table->unsignedTinyInteger('gender');
             $table->unsignedInteger('color_id');
             $table->boolean('sterilized')->default(false);

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $species_id
  * @property int $breed_id
- * @property string|null $date_of_birth
+ * @property \Carbon\Carbon|null $birthday
  * @property int $gender
  * @property int $color_id
  * @property bool $sterilized
@@ -28,12 +28,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Species $species
  * @property-read \App\User $user
  * @property-read \App\User|null $userThatConfirmed
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBreedId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereColorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereConfirmUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereData($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereDateOfBirth($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNickname($value)
@@ -50,6 +50,10 @@ class Animal extends Model
     protected $fillable = [
         'date_of_birth', 'gender', 'sterilized', 'nickname',
         'status', 'data', 'number'
+    ];
+
+    protected $dates = [
+        'birthday', 'created_at', 'updated_at'
     ];
 
     protected $casts = [

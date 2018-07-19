@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $ext_user_id
  * @property int $type_registration_id
  * @property string $first_name
- * @property string $second_name
+ * @property string $last_name
  * @property string|null $middle_name
  * @property string|null $email
  * @property string|null $phone
@@ -34,12 +34,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereMiddleName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassport($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereResidenceAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereSecondName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTypeRegistrationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
