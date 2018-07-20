@@ -1,0 +1,142 @@
+footer {
+  background-color: #014479;
+  color: #fff;
+  .footer-demo {
+    background-color: #0081ff;
+    border-bottom: 1px solid #0066c8;
+    padding: 10px 4rem;
+    color: #0a264a;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 0;
+    a {
+      color: #fff;
+    }
+  }
+  > div {
+    margin: 0 30px;
+  }
+  .gov-sites {
+    border-bottom: 1px solid #5d83a7;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    .header {
+      display: flex;
+      .label {
+        width: 11px;
+        display: flex;
+        flex-flow: column;
+        margin-right: 10px;
+        .blue {
+          background-color: #006ae8;
+          height: 50%;
+        }
+        .yellow {
+          background-color: #ffe349;
+          height: 50%;
+        }
+      }
+      .title {
+        display: flex;
+        flex-flow: column;
+        font-weight: bold;
+        font-size: 1.3rem;
+        line-height: 1.7rem;
+        .sub-title {
+          font-weight: 400;
+          font-size: 0.9rem;
+          line-height: 1.4rem;
+          color: #7599b6;
+        }
+      }
+    }
+    .collapse-btn {
+      border: 2px solid #185084;
+      border-radius: 30px;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      color: #95adc5;
+      cursor: pointer;
+    }
+  }
+  .footer-kiev-portal {
+    border-top: 1px solid #3d6a96;
+    padding: 50px 0 30px;
+    display: flex;
+    justify-content: space-between;
+    .col-about-header {
+      display: flex;
+      margin-bottom: 2rem;
+      .about-header-content {
+        display: flex;
+        flex-flow: column;
+        padding: 0 18px;
+        .title {
+          font-size: 1.3rem;
+          line-height: 1.3rem;
+          font-weight: 600;
+          margin-bottom: 0.7rem;
+        }
+        .demo-label {
+          background-color: #0069ec;
+          width: fit-content;
+          font-size: 1.2rem;
+          font-weight: bold;
+          padding: 0 20px 0 8px;
+          margin-bottom: 0.7rem;
+        }
+        .sub-text {
+          font-weight: 400;
+          font-size: 0.9rem;
+          line-height: 1.4rem;
+          color: #7599b6;
+        }
+      }
+    }
+    .col-about-addr {
+      font-size: 1.3rem;
+    }
+    .contacts-item {
+      display: flex;
+      flex-flow: column;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      line-height: 1rem;
+      .under-text {
+        font-weight: 400;
+        font-size: 0.9rem;
+        line-height: 1.4rem;
+        color: #7599b6;
+      }
+    }
+    .col-links {
+      display: flex;
+      flex-flow: column;
+      .col-links-item {
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.2rem;
+        margin-bottom: 0.7rem;
+      }
+    }
+  }
+  .work-time {
+    color: #7599b6;
+    margin-bottom: 5rem;
+  }
+  .copyright {
+    color: #7599b6;
+    padding-bottom: 4rem;
+    a {
+      color: #fff;
+      padding-right: 10px;
+    }
+  }
+}

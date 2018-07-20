@@ -6,9 +6,56 @@
 @import "variables";
 
 // Bootstrap
-//@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/bootstrap';
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// Font awesome
+@import "~font-awesome/scss/font-awesome.scss";
+
+
+@import "header";
+@import "footer";
+
+
+html {
+  font-size: 14px;
 }
+body {
+  background-color: #effafd;
+  & > .container {
+    background-color: #fff;
+    padding: 0;
+  }
+}
+img.logo {
+  width:  64px;
+  height: 88px;
+}
+.content {
+  padding: 80px 30px 40px;
+}
+.cols-block {
+  display: flex;
+  .cols-block-header {
+    flex-shrink: 0;
+    padding-right: 3rem;
+    width: 21rem;
+    .block-title {
+      font-size: 1.5rem;
+    }
+    .block-sub-title {
+      color: #999;
+    }
+  }
+  .cols-block-content {
+    width: 100%;
+    padding-top: 3rem;
+    font-size: 1.2rem;
+    p {
+      padding: 1.2rem 0;
+    }
+  }
+}
+
+
+
+
