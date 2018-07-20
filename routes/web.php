@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('about');
-});
+Route::view('/', 'about')->name('about');
+Route::view('/faq', 'faq')->name('faq');
 
 
 // Authentication Routes...

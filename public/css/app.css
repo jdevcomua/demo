@@ -13941,3 +13941,55 @@ img.logo {
   padding: 1.2rem 0;
 }
 
+.faq .card {
+  margin-bottom: 1.5rem;
+  border: 1px solid #eee;
+  border-radius: 1.4rem;
+}
+
+.faq .card .card-header {
+  padding: 0;
+  background-color: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: none;
+}
+
+.faq .card .card-header button {
+  width: 100%;
+  white-space: normal;
+  text-align: left;
+  padding: 1rem 2rem;
+  color: #000;
+  font-size: 1.4rem;
+  border-radius: 1.4rem;
+  text-decoration: none;
+  background-color: #fff;
+}
+
+.faq .card .card-header button > i.fa.fa-angle-down {
+  position: absolute;
+  right: 1.3rem;
+  top: 0.9rem;
+  font-size: 2.5rem;
+  color: #555;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+  -webkit-transition: ease 0.3s;
+  transition: ease 0.3s;
+}
+
+.faq .card .card-header button.collapsed {
+  background-color: #eee;
+}
+
+.faq .card .card-header button.collapsed > i.fa.fa-angle-down {
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+
+.faq .card .card-body {
+  padding: 0 2rem 1rem;
+  color: #7d7d7d;
+}
+

@@ -1,3 +1,7 @@
+@php
+    $curRoute = \Route::current()->getName();
+@endphp
+
 <header>
     <div class="name">
         <img src="{{ asset('img/icon/gerb.png') }}" alt="Герб" class="logo">
@@ -16,8 +20,8 @@
     </div>
     <div class="nav">
         <nav>
-            <a href="#" class="nav-item active">Про проект</a>
-            <a href="#" class="nav-item">Часті запитання</a>
+            <a href="{{ route('about') }}" class="nav-item @if($curRoute == 'about') active @endif">Про проект</a>
+            <a href="{{ route('faq') }}" class="nav-item @if($curRoute == 'faq') active @endif">Часті запитання</a>
         </nav>
         <div class="socials">
             <a href="#" class="socials-item socials-item-facebook"></a>

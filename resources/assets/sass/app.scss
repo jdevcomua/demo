@@ -56,6 +56,46 @@ img.logo {
   }
 }
 
-
-
-
+.faq {
+  .card {
+    margin-bottom: 1.5rem;
+    border: 1px solid #eee;
+    border-radius: 1.4rem;
+    .card-header {
+      padding: 0;
+      background-color: transparent;
+      box-shadow: none;
+      border: none;
+      button {
+        width: 100%;
+        white-space: normal;
+        text-align: left;
+        padding: 1rem 2rem;
+        color: #000;
+        font-size: 1.4rem;
+        border-radius: 1.4rem;
+        text-decoration: none;
+        background-color: #fff;
+        > i.fa.fa-angle-down {
+          position: absolute;
+          right: 1.3rem;
+          top: 0.9rem;
+          font-size: 2.5rem;
+          color: #555;
+          transform: rotate(180deg);
+          transition: ease 0.3s;
+        }
+        &.collapsed {
+          background-color: #eee;
+          > i.fa.fa-angle-down {
+            transform: rotate(0deg);
+          }
+        }
+      }
+    }
+    .card-body {
+      padding: 0 2rem 1rem;
+      color: #7d7d7d;
+    }
+  }
+}
