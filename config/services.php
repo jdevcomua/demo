@@ -35,4 +35,11 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+
+    'kyivID' => [
+        'client_id' => env('KYIVID_KEY'),
+        'client_secret' => env('KYIVID_SECRET'),
+        'redirect' => env('KYIVID_REDIRECT_URI')
+    ],
+
 ];
