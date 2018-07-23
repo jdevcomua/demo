@@ -14,6 +14,8 @@
 Route::view('/', 'about')->name('about');
 Route::view('/faq', 'faq')->name('faq');
 
+Route::view('/profile', 'profile')->name('profile');
+
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');

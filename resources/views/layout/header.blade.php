@@ -12,7 +12,7 @@
     </div>
     <div class="auth">
         {{--@auth--}}
-            <a href="#" class="auth-item profile">Веніамін Матусєвіч</a>
+            <a href="{{ route('profile') }}" class="auth-item profile">Веніамін Матусєвіч</a>
             <a href="#" class="auth-item logout">ВИЙТИ</a>
         {{--@else--}}
             {{--<a href="#" class="auth-item profile">ВВІЙТИ</a>--}}
