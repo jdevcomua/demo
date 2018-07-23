@@ -124,7 +124,7 @@
             </div>
             <div class="cols-block-content form">
                 <div class="form-buttons">
-                    <input class="btn btn-submit" type="submit" value="Зберегти">
+                    <input class="btn btn-primary" type="submit" value="Зберегти">
                     <a class="btn btn-cancel" href="#">Скасувати</a>
                 </div>
             </div>

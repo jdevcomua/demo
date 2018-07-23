@@ -3,20 +3,25 @@
 @endphp
 
 <header>
-    <div class="name">
+    <a href="{{ route('index') }}" class="name">
         <img src="{{ asset('img/icon/gerb.png') }}" alt="Герб" class="logo">
         <div class="title">
             <span>Реєстр домашніх тварин</span>
             <span class="sub-title">Київська міська державна адміністрація</span>
         </div>
-    </div>
+    </a>
     <div class="auth">
-        {{--@auth--}}
+        @auth
             <a href="{{ route('profile') }}" class="auth-item profile">Веніамін Матусєвіч</a>
-            <a href="#" class="auth-item logout">ВИЙТИ</a>
-        {{--@else--}}
-            {{--<a href="#" class="auth-item profile">ВВІЙТИ</a>--}}
-        {{--@endauth--}}
+            <a href="#" class="auth-item logout" onclick="event.preventDefault();
+                           document.getElementById('logout-form').submit();">ВИЙТИ</a>
+            <form id="logout-form" action="{{ route('logout') }}"
+                  method="POST" style="display: none;">
+                @csrf
+            </form>
+        @else
+            <a href="{{ route('test-login') }}" class="auth-item profile">ВВІЙТИ</a>
+        @endauth
     </div>
     <div class="nav">
         <nav>
