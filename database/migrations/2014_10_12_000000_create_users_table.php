@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('first_name', 256);
             $table->string('last_name', 256);
             $table->string('middle_name', 256)->nullable();
-            $table->string('email', 256)->nullable();
+            $table->string('email', 256);
             $table->string('phone', 15)->nullable();
             $table->timestamp('birthday');
             $table->unsignedTinyInteger('gender');

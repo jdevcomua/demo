@@ -15,12 +15,12 @@ class AnimalSeeder extends Seeder
             [
                 'species_id' => 1, 'breed_id' => 8, 'gender' => 0,
                 'color_id' => 9, 'nickname' => 'Бобик', 'birthday' => \Carbon\Carbon::now()->subYears(3),
-                'user_id' => 2, 'verified' => 0, 'confirm_user_id' => null
+                'user_id' => 1, 'verified' => 0, 'confirm_user_id' => null
             ],
             [
                 'species_id' => 1, 'breed_id' => 8, 'gender' => 0,
-                'color_id' => 9, 'nickname' => 'Шарик', 'birthday' => \Carbon\Carbon::now()->subYears(3),
-                'user_id' => 2, 'verified' => 1, 'confirm_user_id' => 1
+                'color_id' => 8, 'nickname' => 'Шарик', 'birthday' => \Carbon\Carbon::now()->subYears(3),
+                'user_id' => 1, 'verified' => 1, 'confirm_user_id' => 1
             ],
         ]);
     }
