@@ -16,6 +16,7 @@ class CreateAnimalsFilesTable extends Migration
         Schema::create('animals_files', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('animal_id');
+            $table->unsignedTinyInteger('type');
             $table->string('path');
             $table->timestamps();
 

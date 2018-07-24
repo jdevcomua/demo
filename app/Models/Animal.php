@@ -16,7 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $sterilized
  * @property string $nickname
  * @property int $user_id
- * @property int $status
+ * @property int $verified
+ * @property string|null $comment
  * @property array $data
  * @property string|null $number
  * @property int|null $confirm_user_id
@@ -31,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBreedId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereColorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereConfirmUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereData($value)
@@ -39,17 +41,18 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNickname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereSpeciesId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereSterilized($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereVerified($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $images
  */
 class Animal extends Model
 {
     protected $fillable = [
         'date_of_birth', 'gender', 'sterilized', 'nickname',
-        'status', 'data', 'number'
+        'verified', 'data', 'number'
     ];
 
     protected $dates = [
@@ -89,8 +92,15 @@ class Animal extends Model
         return $this->belongsTo('App\Models\Color');
     }
 
+    public function images()
+    {
+        return $this->hasMany('App\Models\AnimalsFile')
+            ->where('type', '=', AnimalsFile::$FILE_TYPE_PHOTO);
+    }
+
     public function files()
     {
-        return $this->hasMany('App\Models\AnimalsFile');
+        return $this->hasMany('App\Models\AnimalsFile')
+            ->where('type', '=', AnimalsFile::$FILE_TYPE_DOCUMENT);
     }
 }

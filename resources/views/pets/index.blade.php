@@ -6,54 +6,38 @@
     @if(count($pets))
         <div class="pets-list-header">СПИСОК МОЇХ ТВАРИН</div>
         <div class="pets-list">
-            <div class="pets-list-item">
-                <div class="pet-photo">
-                    <img src="/img/pet1.jpg" alt="petName">
+            @foreach($pets as $pet)
+                <div class="pets-list-item">
+                    @if(count($pet->images))
+                        <div class="pet-photo" style="background-image: url('{{ $pet->images[0]->path }}')"></div>
+                    @else
+                        <div class="pet-photo" style="background-image: url('/img/no_photo.png')"></div>
+                    @endif
+                    <div class="pet-info">
+                        <div class="pet-info-block">
+                            <span class="title">{{ $pet->species->name }}</span>
+                            <span class="content">{{ $pet->nickname }}</span>
+                        </div>
+                        <div class="pet-info-block">
+                            <span class="title">Масть</span>
+                            <span class="content">{{ $pet->color->name }}</span>
+                        </div>
+                        <div class="pet-info-block">
+                            <span class="title">Дата народження</span>
+                            <span class="content">{{ \App\Helpers\Date::getlocalizedDate($pet->birthday) }}</span>
+                        </div>
+                        <div class="pet-info-block">
+                            <span class="title">Статус</span>
+                            @if($pet->verified)
+                                <span class="content green">Верифіковано</span>
+                            @else
+                                <span class="content red">Не верифіковано</span>
+                            @endif
+                        </div>
+                    </div>
+                    <i class="fa fa-ellipsis-v more-button" aria-hidden="true"></i>
                 </div>
-                <div class="pet-info">
-                    <div class="pet-info-block">
-                        <span class="title">Собака</span>
-                        <span class="content">Шарік Матусєвіч</span>
-                    </div>
-                    <div class="pet-info-block">
-                        <span class="title">Масть</span>
-                        <span class="content">Чорний</span>
-                    </div>
-                    <div class="pet-info-block">
-                        <span class="title">Дата народження</span>
-                        <span class="content">26 квітня 2016</span>
-                    </div>
-                    <div class="pet-info-block">
-                        <span class="title">Статус</span>
-                        <span class="content red">Не верифіковано</span>
-                    </div>
-                </div>
-                <i class="fa fa-ellipsis-v more-button" aria-hidden="true"></i>
-            </div>
-            <div class="pets-list-item">
-                <div class="pet-photo">
-                    <img src="/img/pet2.jpg" alt="petName">
-                </div>
-                <div class="pet-info">
-                    <div class="pet-info-block">
-                        <span class="title">Кіт</span>
-                        <span class="content">Шарік Матусєвіч</span>
-                    </div>
-                    <div class="pet-info-block">
-                        <span class="title">Масть</span>
-                        <span class="content">Білий</span>
-                    </div>
-                    <div class="pet-info-block">
-                        <span class="title">Дата народження</span>
-                        <span class="content">26 квітня 2016</span>
-                    </div>
-                    <div class="pet-info-block">
-                        <span class="title">Статус</span>
-                        <span class="content green">Верифіковано</span>
-                    </div>
-                </div>
-                <i class="fa fa-ellipsis-v more-button" aria-hidden="true"></i>
-            </div>
+            @endforeach
         </div>
     @else
         @include('pets._no_pets')

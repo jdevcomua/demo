@@ -14,7 +14,7 @@ class PetsController extends Controller
     public function index()
     {
         $user = \Auth::user();
-        $pets = $user->animals()->get();
+        $pets = $user->animals()->with(['species', 'color', 'images'])->get();
 
         return view('pets.index', [
             'pets' => $pets

@@ -11,6 +11,7 @@
 // Font awesome
 @import "~font-awesome/scss/font-awesome.scss";
 
+@import "_fonts";
 
 @import "header";
 @import "footer";
@@ -22,6 +23,7 @@ html {
   font-size: 14px;
 }
 body {
+  font-family: "Montserrat", "Raleway", sans-serif;
   background-color: #effafd;
   & > .container-fluid {
     max-width:1170px;

@@ -23,7 +23,8 @@ class CreateAnimalsTable extends Migration
             $table->boolean('sterilized')->default(false);
             $table->string('nickname', 256);
             $table->unsignedInteger('user_id');
-            $table->unsignedTinyInteger('status');
+            $table->boolean('verified');
+            $table->text('comment')->nullable();
             $table->jsonb('data')->nullable();
             $table->string('number', 256)->nullable();
             $table->unsignedInteger('confirm_user_id')->nullable();

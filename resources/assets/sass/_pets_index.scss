@@ -16,9 +16,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    > img {
-      width: 100%;
-    }
+    background-position: center;
+    background-size: cover;
   }
   .pet-info {
     padding: 0 4rem;
