@@ -5,3 +5,5 @@ require('./bootstrap_noAdminLTE');
 require('./smoothscroll');
 
 require('bootstrap-datepicker');
+
+require('selectize');

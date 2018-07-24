@@ -23,6 +23,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
+Route::group([
+    'prefix' => '/ajax',
+    'as' => 'ajax.',
+    'middleware' => ['auth'],
+], function () {
+
+    Route::get('/species/{species}/breeds', 'AjaxController@getBreeds')->name('getBreeds');
+    Route::get('/species/{species}/colors', 'AjaxController@getColors')->name('getColors');
+
+});
+
+
 Route::get('test', function () {
     $user = \App\User::find(1);
     Auth::login($user);

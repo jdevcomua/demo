@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Species;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -26,6 +27,11 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        Route::bind('species', function ($value) {
+            return Species::where('id', $value)->first() ?? abort(404);
+        });
+
     }
 
     /**

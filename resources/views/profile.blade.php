@@ -29,13 +29,13 @@
                 <div class="form-group">
                     <label>Стать</label>
                     <div class="btn-group-toggle" data-toggle="buttons">
-                        <label class="btn radio-item gender-radio active">
-                            <span class="gender-label"><i class="fa fa-mars" aria-hidden="true"></i></span>
-                            <input type="radio" name="gender" id="option1" value="male" autocomplete="off" checked>Чоловік
+                        <label class="btn radio-item big-radio active">
+                            <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
+                            <input type="radio" name="gender" value="male" autocomplete="off" checked>Чоловік
                         </label>
-                        <label class="btn radio-item gender-radio">
-                            <span class="gender-label"><i class="fa fa-venus" aria-hidden="true"></i></span>
-                            <input type="radio" name="gender" id="option2" value="female" autocomplete="off">Жінка
+                        <label class="btn radio-item big-radio">
+                            <span class="label"><i class="fa fa-venus" aria-hidden="true"></i></span>
+                            <input type="radio" name="gender" value="female" autocomplete="off">Жінка
                         </label>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email">Пошта</label>
-                    <input type="text" class="form-control" id="email" placeholder="e-mail">
+                    <input type="email" class="form-control" id="email" placeholder="e-mail">
                 </div>
             </div>
         </div>

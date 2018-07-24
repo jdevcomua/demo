@@ -42,6 +42,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .copy('node_modules/icheck/skins/square/blue@2x.png','public/css')
    .copy('resources/assets/css/bootstrap.min.css', 'public/css')
    .combine([
+       'node_modules/selectize/dist/css/selectize.css',
        'public/css/datepicker.css',
        'public/css/app.css'
    ], 'public/css/app.css');

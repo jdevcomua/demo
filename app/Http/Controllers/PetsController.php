@@ -28,7 +28,7 @@ class PetsController extends Controller
      */
     public function create()
     {
-        //
+        return view('pets.create');
     }
 
     /**
@@ -39,7 +39,7 @@ class PetsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all(), $request->files);
     }
 
     /**

@@ -37,6 +37,7 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
-        "bootstrap-datepicker": "^1.8.0"
+        "bootstrap-datepicker": "^1.8.0",
+        "selectize": "^0.12.6"
     }
 }

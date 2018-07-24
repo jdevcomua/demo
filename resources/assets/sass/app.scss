@@ -17,6 +17,7 @@
 @import "footer";
 
 @import "pets_index";
+@import "pets_create";
 
 
 html {
@@ -25,6 +26,7 @@ html {
 body {
   font-family: "Montserrat", "Raleway", sans-serif;
   background-color: #effafd;
+  color: #333;
   & > .container-fluid {
     max-width:1170px;
     background-color: #fff;
@@ -41,16 +43,22 @@ img.logo {
 }
 .cols-block {
   display: flex;
+  padding-bottom: 3.5rem;
   .cols-block-header {
     flex-shrink: 0;
     padding-right: 3rem;
     width: 22rem;
     overflow: hidden;
+    position: relative;
     .block-title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
     }
     .block-sub-title {
       color: #999;
+      font-size: 1rem;
     }
   }
   .cols-block-content {
@@ -81,10 +89,16 @@ img.logo {
 
 .btn {
   font-weight: bold;
-  font-size: 1.3rem;
-  padding: 0.7rem 5rem;
+  font-size: 1.4rem;
+  padding: 1.3rem 5.1rem;
   color: #999;
-  border-radius: 0.7rem;
+  letter-spacing: 0.7px;
+  border-radius: 0.9rem;
+  &.btn-big {
+    font-size: 1.7rem;
+    padding: 1.3rem 6rem;
+    letter-spacing: 0.8px;
+  }
   &.btn-primary {
     background-color: #014479;
     border-color: #014479;
@@ -102,7 +116,7 @@ img.logo {
   .card {
     margin-bottom: 1.5rem;
     border: 1px solid #eee;
-    border-radius: 1.4rem;
+    border-radius: 0.8rem;
     .card-header {
       padding: 0;
       background-color: transparent;
@@ -114,10 +128,11 @@ img.logo {
         text-align: left;
         padding: 1rem 2rem;
         color: #000;
-        font-size: 1.4rem;
-        border-radius: 1.4rem;
+        font-size: 1.3rem;
+        border-radius: 0.7rem;
         text-decoration: none;
         background-color: #fff;
+        font-weight: 500;
         > i.fa.fa-angle-down {
           position: absolute;
           right: 1.3rem;
@@ -137,7 +152,8 @@ img.logo {
     }
     .card-body {
       padding: 0 2rem 1rem;
-      color: #7d7d7d;
+      color: #999;
+      font-weight: 500;
     }
   }
 }
@@ -157,7 +173,8 @@ img.logo {
   label {
     font-weight: bold;
     color: #999;
-    margin-bottom: 0.2rem;
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
   }
   input {
     border: none;
@@ -174,15 +191,14 @@ img.logo {
 
 .btn-group-toggle {
   display: flex;
-  justify-content: space-between;
-  .gender-radio {
+  .big-radio {
     display: flex;
     align-items: center;
     font-size: 1.4rem;
     color: #333;
     font-weight: bold;
     padding: 1rem 0 0;
-    .gender-label {
+    .label {
       font-size: 3.5rem;
       color: #333;
       background-color: #f1f1f1;
@@ -194,17 +210,31 @@ img.logo {
       justify-content: center;
       align-items: center;
       margin-right: 2rem;
+      background-position: center;
+      background-repeat: no-repeat;
       transition: ease 0.2s;
       .fa-venus:before {
         position: relative;
         left: 1px;
       }
+      &.label-dog { background-image: url('/img/icon/dog_species.png'); }
+      &.label-cat { background-image: url('/img/icon/cat_species.png'); }
     }
     &.focus {
       box-shadow: none;
     }
-    &.active span.gender-label {
+    &.active span.label {
       border: 3px solid #014479;
     }
   }
+  & > label:first-child {
+    margin-right: 5.7rem;
+  }
+}
+.selectize-input.items {
+  border: none;
+  box-shadow: none;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.4rem;
+  font-weight: 500;
 }
