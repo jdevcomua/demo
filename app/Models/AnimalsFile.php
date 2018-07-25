@@ -36,4 +36,12 @@ class AnimalsFile extends Model
     {
         return $this->belongsTo('App\Models\Animal');
     }
+
+    public function getFileNameAttribute()
+    {
+        $temp = explode('/', $this->path);
+        $count = count($temp);
+        $filename = $temp[$count -1];
+        return $filename;
+    }
 }

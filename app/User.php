@@ -17,6 +17,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property string|null $middle_name
  * @property string|null $email
  * @property string|null $phone
+ * @property string $full_name
  * @property \Carbon\Carbon $birthday
  * @property int $gender
  * @property array $data
@@ -71,5 +72,10 @@ class User extends Authenticatable
     public function animals()
     {
         return $this->hasMany('App\Models\Animal');
+    }
+
+    public function getFullNameAttribute ()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 }

@@ -15,8 +15,10 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .js('resources/assets/js/main.js', 'public/js')
    .js('resources/assets/js/app-landing.js', 'public/js/app-landing.js')
    .sass('resources/assets/sass/app.scss', 'public/css/app.css')
+   .sass('resources/assets/sass/admin.scss', 'public/css/admin.css')
    .less('node_modules/bootstrap-datepicker/build/build_standalone.less', 'public/css/datepicker.css')
    .sourceMaps()
+    .version()
    .combine([
        'resources/assets/css/bootstrap.min.css',
        'resources/assets/css/font-awesome.min.css',

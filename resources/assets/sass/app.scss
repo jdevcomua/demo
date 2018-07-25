@@ -238,3 +238,12 @@ img.logo {
   font-size: 1.4rem;
   font-weight: 500;
 }
+
+table.dataTable {
+  tfoot {
+    input {
+      max-width: 10vw;
+      border-radius: 5px;
+    }
+  }
+}
