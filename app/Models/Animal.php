@@ -25,7 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Models\Breed $breed
  * @property-read \App\Models\Color $color
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $documents
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $files
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $images
  * @property-read \App\Models\Species $species
  * @property-read \App\User $user
  * @property-read \App\User|null $userThatConfirmed
@@ -46,13 +48,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereVerified($value)
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $images
  */
 class Animal extends Model
 {
     protected $fillable = [
-        'date_of_birth', 'gender', 'sterilized', 'nickname',
-        'verified', 'data', 'number'
+        'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'birthday',
+        'sterilized', 'comment', 'verified', 'data', 'number',
     ];
 
     protected $dates = [
@@ -92,15 +93,20 @@ class Animal extends Model
         return $this->belongsTo('App\Models\Color');
     }
 
+    public function files()
+    {
+        return $this->hasMany('App\Models\AnimalsFile');
+    }
+
     public function images()
     {
         return $this->hasMany('App\Models\AnimalsFile')
-            ->where('type', '=', AnimalsFile::$FILE_TYPE_PHOTO);
+            ->where('type', '=', AnimalsFile::FILE_TYPE_PHOTO);
     }
 
-    public function files()
+    public function documents()
     {
         return $this->hasMany('App\Models\AnimalsFile')
-            ->where('type', '=', AnimalsFile::$FILE_TYPE_DOCUMENT);
+            ->where('type', '=', AnimalsFile::FILE_TYPE_DOCUMENT);
     }
 }

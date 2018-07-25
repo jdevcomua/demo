@@ -17151,6 +17151,261 @@ footer .copyright a {
   }
 }
 
+.form-group {
+  margin-bottom: 2rem;
+}
+
+.form-group.datepicker {
+  padding: 0;
+}
+
+.form-group.datepicker input {
+  background-image: url("/img/icon/calendar.png");
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #999;
+  font-size: 1.3rem;
+  margin-bottom: 0.7rem;
+}
+
+.form-group input,
+.form-group textarea {
+  border: none;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0;
+  padding: 0 0 0.5rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.form-group textarea {
+  resize: none;
+  width: 100%;
+}
+
+.btn {
+  font-weight: bold;
+  font-size: 1.4rem;
+  padding: 1.3rem 5.1rem;
+  color: #999;
+  letter-spacing: 0.7px;
+  border-radius: 0.9rem;
+}
+
+.btn.btn-big {
+  font-size: 1.7rem;
+  padding: 1.3rem 6rem;
+  letter-spacing: 0.8px;
+}
+
+.btn.btn-primary {
+  background-color: #014479;
+  border-color: #014479;
+  color: #fff;
+}
+
+.btn.btn-primary:hover {
+  background-color: #0966af;
+}
+
+.btn.btn-cancel:hover {
+  color: #000;
+}
+
+.btn.focus,
+.btn:focus,
+textarea:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+}
+
+.btn-group-toggle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.btn-group-toggle .big-radio {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 1.4rem;
+  color: #333;
+  font-weight: bold;
+  padding: 1rem 0 0;
+}
+
+.btn-group-toggle .big-radio .label {
+  font-size: 3.5rem;
+  color: #333;
+  background-color: #f1f1f1;
+  border: 3px solid #f1f1f1;
+  border-radius: 3rem;
+  width: 74px;
+  height: 74px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-right: 2rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-transition: ease 0.2s;
+  transition: ease 0.2s;
+}
+
+.btn-group-toggle .big-radio .label .fa-venus:before {
+  position: relative;
+  left: 1px;
+}
+
+.btn-group-toggle .big-radio .label.label-dog {
+  background-image: url("/img/icon/dog_species.png");
+}
+
+.btn-group-toggle .big-radio .label.label-cat {
+  background-image: url("/img/icon/cat_species.png");
+}
+
+.btn-group-toggle .big-radio.focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.btn-group-toggle .big-radio.active span.label {
+  border: 3px solid #014479;
+}
+
+.btn-group-toggle > label:first-child {
+  margin-right: 5.7rem;
+}
+
+.btn-group-toggle.checkbox-group {
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+}
+
+.btn-group-toggle.checkbox-group .checkbox-item {
+  width: 15.7rem;
+  color: #333;
+  font-size: 1.3rem;
+  font-weight: 500;
+  padding: 1rem 1.4rem;
+  background-color: #f1f1f1;
+  border: 2px solid #f1f1f1;
+  -webkit-transition: ease 0.3s;
+  transition: ease 0.3s;
+  -webkit-transition-property: padding, border;
+  transition-property: padding, border;
+}
+
+.btn-group-toggle.checkbox-group .checkbox-item.active {
+  background-image: url("/img/icon/check.png");
+  background-position: 8% 50%;
+  background-repeat: no-repeat;
+  padding-left: 3.4rem;
+  border: 2px solid #014479;
+}
+
+.btn-group-toggle.checkbox-group > label:first-child {
+  margin-right: 0;
+}
+
+.selectize-input.items {
+  border: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.file-uploader .file-dropzone {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 2rem;
+  border: 2px dashed #999;
+  border-radius: 1rem;
+  color: #999;
+  font-size: 1.3rem;
+  margin-bottom: 1.4rem;
+  cursor: pointer;
+}
+
+.file-uploader .file-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.file-uploader .file-item:last-child {
+  border-bottom: none;
+}
+
+.file-uploader .file-item .file-ext {
+  color: #999;
+}
+
+.file-uploader .file-item .file-delete {
+  position: absolute;
+  top: 20%;
+  right: 0;
+  background-image: url("/img/icon/trash.png");
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+  width: 1.5rem;
+  height: 60%;
+  cursor: pointer;
+}
+
+.file-uploader input {
+  display: none;
+}
+
+.validation-error {
+  font-size: 1rem;
+}
+
+.validation-error.hidden {
+  display: none;
+}
+
 .pets-list-header {
   font-size: 1.4rem;
   font-weight: 600;
@@ -17195,7 +17450,7 @@ footer .copyright a {
   -webkit-box-direction: normal;
       -ms-flex-flow: row wrap;
           flex-flow: row wrap;
-  min-width: 64%;
+  width: 74%;
 }
 
 .pets-list-item .pet-info .pet-info-block {
@@ -17439,7 +17694,7 @@ img.logo {
 }
 
 .cols-block .cols-block-content.form {
-  width: 33rem;
+  width: 35rem;
 }
 
 .cols-block.footer .cols-block-content {
@@ -17465,35 +17720,6 @@ img.logo {
         -ms-flex-align: center;
             align-items: center;
   }
-}
-
-.btn {
-  font-weight: bold;
-  font-size: 1.4rem;
-  padding: 1.3rem 5.1rem;
-  color: #999;
-  letter-spacing: 0.7px;
-  border-radius: 0.9rem;
-}
-
-.btn.btn-big {
-  font-size: 1.7rem;
-  padding: 1.3rem 6rem;
-  letter-spacing: 0.8px;
-}
-
-.btn.btn-primary {
-  background-color: #014479;
-  border-color: #014479;
-  color: #fff;
-}
-
-.btn.btn-primary:hover {
-  background-color: #0966af;
-}
-
-.btn.btn-cancel:hover {
-  color: #000;
 }
 
 .faq .card {
@@ -17547,119 +17773,6 @@ img.logo {
 .faq .card .card-body {
   padding: 0 2rem 1rem;
   color: #999;
-  font-weight: 500;
-}
-
-.form-group {
-  margin-bottom: 2rem;
-}
-
-.form-group.datepicker {
-  padding: 0;
-}
-
-.form-group.datepicker input {
-  background-image: url("/img/icon/calendar.png");
-  background-position: 100% 0;
-  background-repeat: no-repeat;
-}
-
-.form-group label {
-  font-weight: bold;
-  color: #999;
-  font-size: 1.3rem;
-  margin-bottom: 0.7rem;
-}
-
-.form-group input {
-  border: none;
-  border-bottom: 1px solid #ddd;
-  border-radius: 0;
-  padding: 0 0 0.5rem;
-  font-weight: 600;
-  font-size: 1.2rem;
-}
-
-.form-group input:focus {
-  -webkit-box-shadow: none;
-          box-shadow: none;
-}
-
-.btn-group-toggle {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.btn-group-toggle .big-radio {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  font-size: 1.4rem;
-  color: #333;
-  font-weight: bold;
-  padding: 1rem 0 0;
-}
-
-.btn-group-toggle .big-radio .label {
-  font-size: 3.5rem;
-  color: #333;
-  background-color: #f1f1f1;
-  border: 3px solid #f1f1f1;
-  border-radius: 3rem;
-  width: 74px;
-  height: 74px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  margin-right: 2rem;
-  background-position: center;
-  background-repeat: no-repeat;
-  -webkit-transition: ease 0.2s;
-  transition: ease 0.2s;
-}
-
-.btn-group-toggle .big-radio .label .fa-venus:before {
-  position: relative;
-  left: 1px;
-}
-
-.btn-group-toggle .big-radio .label.label-dog {
-  background-image: url("/img/icon/dog_species.png");
-}
-
-.btn-group-toggle .big-radio .label.label-cat {
-  background-image: url("/img/icon/cat_species.png");
-}
-
-.btn-group-toggle .big-radio.focus {
-  -webkit-box-shadow: none;
-          box-shadow: none;
-}
-
-.btn-group-toggle .big-radio.active span.label {
-  border: 3px solid #014479;
-}
-
-.btn-group-toggle > label:first-child {
-  margin-right: 5.7rem;
-}
-
-.selectize-input.items {
-  border: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  border-bottom: 1px solid #ddd;
-  font-size: 1.4rem;
   font-weight: 500;
 }
 

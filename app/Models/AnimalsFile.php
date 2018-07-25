@@ -25,15 +25,20 @@ use Illuminate\Database\Eloquent\Model;
 class AnimalsFile extends Model
 {
     protected $fillable = [
-        'path'
+        'path', 'type'
     ];
 
-    public static $FILE_TYPE_PHOTO = 0;
-    public static $FILE_TYPE_DOCUMENT = 1;
+    const FILE_TYPE_PHOTO = 0;
+    const FILE_TYPE_DOCUMENT = 1;
 
 
     public function animal()
     {
         return $this->belongsTo('App\Models\Animal');
+    }
+
+    public function getPathAttribute()
+    {
+        return 'storage/' . $this->attributes['path'];
     }
 }
