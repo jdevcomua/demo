@@ -17,13 +17,14 @@ class CreateAnimalsTable extends Migration
             $table->increments('id');
             $table->unsignedSmallInteger('species_id');
             $table->unsignedInteger('breed_id');
-            $table->timestamp('birthday')->nullable();
+            $table->timestamp('birthday');
             $table->unsignedTinyInteger('gender');
             $table->unsignedInteger('color_id');
             $table->boolean('sterilized')->default(false);
             $table->string('nickname', 256);
             $table->unsignedInteger('user_id');
-            $table->unsignedTinyInteger('status');
+            $table->boolean('verified')->default(false);
+            $table->text('comment')->nullable();
             $table->jsonb('data')->nullable();
             $table->string('number', 256)->nullable();
             $table->unsignedInteger('confirm_user_id')->nullable();

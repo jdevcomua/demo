@@ -33,11 +33,11 @@
         </div>
         <div class="col-contacts">
             <div class="contacts-item">
-                <span class="under-text">зі стаціонарного та мобільного</span>
+                <span class="above-text">зі стаціонарного та мобільного</span>
                 <span>1551</span>
             </div>
             <div class="contacts-item">
-                <span class="under-text">електронною поштою</span>
+                <span class="above-text">електронною поштою</span>
                 <span>zvernen@kmda.gov.ua</span>
             </div>
         </div>

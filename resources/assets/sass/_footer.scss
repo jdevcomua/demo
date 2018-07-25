@@ -109,7 +109,7 @@ footer {
       font-size: 1.2rem;
       font-weight: bold;
       line-height: 1rem;
-      .under-text {
+      .above-text {
         font-weight: 400;
         font-size: 0.9rem;
         line-height: 1.4rem;
@@ -137,6 +137,23 @@ footer {
     a {
       color: #fff;
       padding-right: 10px;
+    }
+  }
+}
+@media (max-width: 760px) {
+  footer {
+    .footer-kiev-portal {
+      padding: 50px 0 0;
+      flex-flow: column;
+      > div {
+        margin-bottom: 1.5rem;
+      }
+      .contacts-item {
+        margin-bottom: 1rem;
+      }
+    }
+    .work-time {
+      margin-bottom: 2rem;
     }
   }
 }

@@ -1,0 +1,185 @@
+.form-group {
+  margin-bottom: 2rem;
+  &.datepicker {
+    padding: 0;
+    input {
+      background-image: url('/img/icon/calendar.png');
+      background-position: 100% 0;
+      background-repeat: no-repeat;
+    }
+  }
+  label {
+    font-weight: bold;
+    color: #999;
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+  }
+  input, textarea {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    padding: 0 0 0.5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  textarea {
+    resize: none;
+    width: 100%;
+  }
+}
+
+.btn {
+  font-weight: bold;
+  font-size: 1.4rem;
+  padding: 1.3rem 5.1rem;
+  color: #999;
+  letter-spacing: 0.7px;
+  border-radius: 0.9rem;
+  &.btn-big {
+    font-size: 1.7rem;
+    padding: 1.3rem 6rem;
+    letter-spacing: 0.8px;
+  }
+  &.btn-primary {
+    background-color: #014479;
+    border-color: #014479;
+    color: #fff;
+    &:hover {
+      background-color: #0966af;
+    }
+  }
+  &.btn-cancel:hover {
+    color: #000;
+  }
+}
+.btn.focus, .btn:focus, textarea:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-group-toggle {
+  display: flex;
+  .big-radio {
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: #333;
+    font-weight: bold;
+    padding: 1rem 0 0;
+    .label {
+      font-size: 3.5rem;
+      color: #333;
+      background-color: #f1f1f1;
+      border: 3px solid #f1f1f1;
+      border-radius: 3rem;
+      width: 74px;
+      height: 74px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 2rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: ease 0.2s;
+      .fa-venus:before {
+        position: relative;
+        left: 1px;
+      }
+      &.label-dog { background-image: url('/img/icon/dog_species.png'); }
+      &.label-cat { background-image: url('/img/icon/cat_species.png'); }
+    }
+    &.focus {
+      box-shadow: none;
+    }
+    &.active span.label {
+      border: 3px solid #014479;
+    }
+  }
+  & > label:first-child {
+    margin-right: 5.7rem;
+  }
+  &.checkbox-group {
+    justify-content: space-between;
+    flex-flow: row wrap;
+    .checkbox-item {
+      width: 15.7rem;
+      color: #333;
+      font-size: 1.3rem;
+      font-weight: 500;
+      padding: 1rem 1.4rem;
+      background-color: #f1f1f1;
+      border: 2px solid #f1f1f1;
+      transition: ease 0.3s;
+      transition-property: padding, border;
+      &.active {
+        background-image: url('/img/icon/check.png');
+        background-position: 8% 50%;
+        background-repeat: no-repeat;
+        padding-left: 3.4rem;
+        border: 2px solid #014479;
+      }
+    }
+    > label:first-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.selectize-input.items {
+  border: none;
+  box-shadow: none;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.file-uploader {
+  .file-dropzone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    border: 2px dashed #999;
+    border-radius: 1rem;
+    color: #999;
+    font-size: 1.3rem;
+    margin-bottom: 1.4rem;
+    cursor: pointer;
+  }
+  .file-item {
+    display: flex;
+    position: relative;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.4rem;
+    font-weight: 500;
+    &:last-child {
+      border-bottom: none;
+    }
+    .file-ext {
+      color: #999;
+    }.file-delete {
+       position: absolute;
+       top: 20%;
+       right: 0;
+       background-image: url('/img/icon/trash.png');
+       background-repeat: no-repeat;
+       background-position: 100% 50%;
+       width: 1.5rem;
+       height: 60%;
+       cursor: pointer;
+     }
+  }
+  input {
+    display: none;
+  }
+}
+.validation-error {
+  font-size: 1rem;
+  &.hidden {
+    display: none;
+  }
+}

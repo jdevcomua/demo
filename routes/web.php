@@ -1,19 +1,11 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::get('/', 'SiteController')->name('index');
 
-Route::get('/', function () {
-    return view('about');
-});
+Route::view('/about', 'about')->name('about');
+Route::view('/faq', 'faq')->name('faq');
+
+Route::view('/profile', 'profile')->name('profile');
 
 
 // Authentication Routes...
@@ -21,29 +13,30 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-// Registration Routes...
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('register', 'Auth\RegisterController@register');
-
-// Password Reset Routes...
-Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset');
-
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::resource('pets', 'PetsController')
+        ->only(['index', 'create', 'store', 'show', 'update']);
 
+    Route::match(['get', 'post'], '/profile', 'ProfileController')->name('profile');
 
 });
 
 Route::group([
-    'prefix' => '/admin',
-    'as' => 'admin.',
+    'prefix' => '/ajax',
+    'as' => 'ajax.',
     'middleware' => ['auth'],
 ], function () {
 
-    Route::get('/home', 'HomeController@index');
+    Route::get('/species/{species}/breeds', 'AjaxController@getBreeds')->name('getBreeds');
+    Route::get('/species/{species}/colors', 'AjaxController@getColors')->name('getColors');
 
 });
+
+
+Route::get('test', function () {
+    $user = \App\User::find(1);
+    Auth::login($user);
+    return redirect('/', 302);
+})->name('test-login');

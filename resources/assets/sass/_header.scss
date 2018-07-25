@@ -4,9 +4,9 @@ header {
   display: flex;
   justify-content: space-between;
   flex-flow: row wrap;
+  align-items: start;
   .name {
     display: flex;
-    height: 140px;
     .title {
       display: flex;
       flex-flow: column;
@@ -23,12 +23,16 @@ header {
         font-weight: 400;
       }
     }
+    &:hover {
+      text-decoration: none;
+    }
   }
   .auth {
     display: flex;
     flex-flow: column;
     justify-content: space-between;
     padding-bottom: 50px;
+    height: 140px;
     .auth-item {
       display: flex;
       align-items: center;

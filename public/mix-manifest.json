@@ -1,6 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
+    "/css/datepicker.css": "/css/datepicker.css",
     "/css/app.css": "/css/app.css",
+    "/js/main.js": "/js/main.js",
     "/js/app-landing.js": "/js/app-landing.js",
     "/css/all.css": "/css/all.css",
     "/css/all-landing.css": "/css/all-landing.css",
