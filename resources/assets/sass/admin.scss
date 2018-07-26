@@ -1,7 +1,7 @@
 table.dataTable {
   tfoot {
     input {
-      max-width: 6vw;
+      max-width: 4vw;
       border-radius: 5px;
       border: 1px solid darkgrey;
     }
@@ -30,4 +30,7 @@ textarea {
    left: 0;
    bottom: 0;
  }
+}
+img {
+  max-width: 100% !important;
 }

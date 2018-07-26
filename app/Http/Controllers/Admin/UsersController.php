@@ -112,7 +112,7 @@ class UsersController extends Controller
             ->addColumn('action', function ($user) {
                 return '<a href="#" data-id="' . $user->id. '" data-name="' .( $user->first_name . ' ' .$user->last_name )
                 .'" data-role="' . ($user->roles()->count() ? $user->roles[0]->id : 0) .
-                    '" class="btn accept btn-xs btn-primary" data-toggle="modal" data-target="#modal"><i class="glyphicon glyphicon-user"></i> Редагувати Роль</a>';
+                    '" class="btn accept btn-xs btn-primary change-role" data-toggle="modal" data-target="#modal"><i class="glyphicon glyphicon-user"></i> Редагувати Роль</a>';
             })
             ->make(true);
     }

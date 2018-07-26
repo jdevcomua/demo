@@ -179,13 +179,17 @@
                         <h3 class="box-title">Файли тварини</h3>
                     </div>
                     <div class="box-body">
-                        @foreach($animal->files as $file)
-                            @if($file->type === \App\Models\AnimalsFile::$FILE_TYPE_PHOTO)
-                                <img src="{{$file->path}}" alt="">
-                            @else
-                                <a href="{{$file->path}}">{{$file->fileName}}</a>
-                            @endif
-                        @endforeach
+                        <div class="row">
+                            @foreach($animal->files as $file)
+                                <div class="col-sm-4">
+                                @if($file->type === \App\Models\AnimalsFile::FILE_TYPE_PHOTO)
+                                    <img src="/{{$file->path}}" alt="">
+                                @else
+                                    <a href="/{{$file->path}}">{{$file->fileName}}</a>
+                                @endif
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
