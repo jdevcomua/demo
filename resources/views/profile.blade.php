@@ -131,16 +131,3 @@
         </div>
     </form>
 @endsection
-
-@section('scripts-end')
-    <script type="text/javascript">
-        $(function () {
-            $('.datepicker input').datepicker({
-                format: "dd MM yyyy",
-                language: "uk",
-                locale: "uk",
-                autoclose: true
-            });
-        });
-    </script>
-@endsection

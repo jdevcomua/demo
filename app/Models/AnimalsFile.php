@@ -25,11 +25,11 @@ use Illuminate\Database\Eloquent\Model;
 class AnimalsFile extends Model
 {
     protected $fillable = [
-        'path'
+        'path', 'type'
     ];
 
-    public static $FILE_TYPE_PHOTO = 0;
-    public static $FILE_TYPE_DOCUMENT = 1;
+    const FILE_TYPE_PHOTO = 0;
+    const FILE_TYPE_DOCUMENT = 1;
 
 
     public function animal()
@@ -41,7 +41,11 @@ class AnimalsFile extends Model
     {
         $temp = explode('/', $this->path);
         $count = count($temp);
-        $filename = $temp[$count -1];
+        $filename = $temp[$count - 1];
         return $filename;
+    }
+    public function getPathAttribute()
+    {
+        return 'storage/' . $this->attributes['path'];
     }
 }

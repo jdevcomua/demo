@@ -16,6 +16,8 @@
 @import "header";
 @import "footer";
 
+@import "forms";
+
 @import "pets_index";
 @import "pets_create";
 
@@ -69,7 +71,7 @@ img.logo {
       padding: 1.2rem 0;
     }
     &.form {
-      width: 33rem;
+      width: 35rem;
     }
   }
   &.footer .cols-block-content {
@@ -87,30 +89,6 @@ img.logo {
   }
 }
 
-.btn {
-  font-weight: bold;
-  font-size: 1.4rem;
-  padding: 1.3rem 5.1rem;
-  color: #999;
-  letter-spacing: 0.7px;
-  border-radius: 0.9rem;
-  &.btn-big {
-    font-size: 1.7rem;
-    padding: 1.3rem 6rem;
-    letter-spacing: 0.8px;
-  }
-  &.btn-primary {
-    background-color: #014479;
-    border-color: #014479;
-    color: #fff;
-    &:hover {
-      background-color: #0966af;
-    }
-  }
-  &.btn-cancel:hover {
-    color: #000;
-  }
-}
 
 .faq {
   .card {
@@ -157,8 +135,6 @@ img.logo {
     }
   }
 }
-
-
 
 .form-group {
   margin-bottom: 2rem;
