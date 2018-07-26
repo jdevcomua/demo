@@ -112,7 +112,7 @@ class UsersController extends Controller
             ->addColumn('action', function ($user) {
                 return '<a href="#" data-id="' . $user->id. '" data-name="' .( $user->first_name . ' ' .$user->last_name )
                 .'" data-role="' . ($user->roles()->count() ? $user->roles[0]->id : 0) .
-                    '" class="btn accept btn-xs btn-primary change-role" data-toggle="modal" data-target="#modal"><i class="glyphicon glyphicon-user"></i> Редагувати Роль</a>';
+                    '" class="btn accept btn-xs btn-primary" data-toggle="modal" data-target="#modal"><i class="glyphicon glyphicon-user"></i> Редагувати Роль</a>';
             })
             ->make(true);
     }
@@ -128,7 +128,7 @@ class UsersController extends Controller
 
     public function bans()
     {
-        return view('admin.users.index');
+        return view('admin.users.bans');
     }
 
     public function getUsersBansData()
@@ -143,9 +143,14 @@ class UsersController extends Controller
         return \DataTables::of($userData)
             ->addColumn('action', function ($user) {
                 return '<a href="#" data-id="' . $user->id. '" data-name="' .( $user->first_name . ' ' .$user->last_name )
-                    .'" class="btn accept btn-xs btn-primary change-role" data-toggle="modal" data-target="#modal"><i class="glyphicon glyphicon-ban-circle"></i> Забанити</a>';
+                    .'" class="btn accept btn-xs btn-primary ban" data-toggle="modal" data-target="#modal"><i class="glyphicon glyphicon-ban-circle"></i> Забанити</a>';
             })
             ->make(true);
+    }
+
+    public function banUser($id)
+    {
+        dd('Метод отсутствует');
     }
 
 }

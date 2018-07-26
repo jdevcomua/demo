@@ -6,11 +6,11 @@
 @endsection
 
 @section('htmlheader_title')
-    Користувачі
+    Блокування
 @endsection
 
 @section('contentheader_title')
-    Користувачі
+    Блокування
 @endsection
 
 @section('main-content')
@@ -32,12 +32,10 @@
                                 <th>Стать</th>
                                 <th>Паспорт</th>
                                 <th>Адресса</th>
-                                <td>Роль</td>
                                 <td></td>
                             </tr>
                             </thead>
                             <tfoot>
-                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -61,28 +59,23 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Змінити роль</h4>
+                    <h4 class="modal-title">Забанити користувача?</h4>
                 </div>
-                <form action="#" class="form-horizontal" id="change-role" method="post">
+                <form action="#" class="form-horizontal" id="ban-user" method="post">
 
                     <div class="modal-body">
                         @csrf
-                        <input type="hidden" value="">
-                        <div class="form-group">
-                            <label id="user-name" class="col-sm-4 control-label"> </label>
-
-                            <div class="col-sm-8">
-                                <select name="role" id="role" class="form-control">
-                                    @foreach($roles as $role)
-                                        <option value="{{$role->id}}">{{$role->display_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
+                        <p> Ви впевені що хочете забанити <span id="name"></span>?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-warning pull-right">Змінити роль</button>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <button type="reset" data-dismiss="modal" class="btn btn-block btn-default">Ні</button>
+                            </div>
+                            <div class="col-sm-4 col-sm-offset-4">
+                                <button type="submit" class="btn btn-block btn-danger pull-right">Так</button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -100,7 +93,7 @@
             processing: true,
             serverSide: true,
             responsive: true,
-            ajax: '{{route('admin.users.administrate.data')}}',
+            ajax: '{{route('admin.users.bans.data')}}',
             language: {
                 "lengthMenu": "Показано _MENU_ записів на сторінці",
                 "zeroRecords": "Нічого не знайшлося - вибачте",
@@ -135,7 +128,6 @@
                     }},
                 {data: 'passport', name: 'passport'},
                 {data: 'residence_address', name: 'residence_address'},
-                {data: 'roles', name: 'roles.display_name'},
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             initComplete: function () {
@@ -152,15 +144,13 @@
     </script>
     <script defer>
         $( document ).ready(function() {
-            console.log( "ready!" );
-            $('.change-role').on('click', function() {
+            $('.ban').on('click', function(e) {
+                e.preventDefault();
                 var id = $(this).attr('data-id');
                 var name = $(this).attr('data-name');
-                var role = $(this).attr('data-role');
-                console.log('open');
-                $('#change-role').attr('action', '/admin/users/administrate/' + id + '/role');
-                $('#user-name').text(name);
-                $('#role').val(role)
+                $('#ban-user').attr('action', '/admin/users/bans/' + id + '/ban');
+                console.log($('#ban-user').attr('action'));
+                $('#name').text(name);
             })
         });
     </script>
