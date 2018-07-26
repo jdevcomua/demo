@@ -117,7 +117,16 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
                 'Authorization' => 'Bearer  ' . $token,
             ],
             'body' => '{ 
-                    "query":"{profile(id: '.$id.') {id name {lastName firstName middleName shortName verified} gender {gender verified} passportInternal {type firstName middleName lastName series number birthday issueDate issuedBy issueId expiryDate verified} itin {itin verified} birthday {date verified} documents {type firstName middleName lastName series number birthday issueDate issuedBy issueId expiryDate verified} addresses {id type zipCode country area district settlementName street house frame flat verified} accounts {authProvider providerProfileId displayName imageUrl profileUrl verified} phones {phoneNumber confirmed type verified} emails {email confirmed type verified}}}"
+                    "query":"{ profile(id: ' . $id . ') { '.
+                            'id '.
+                            'name {lastName firstName middleName shortName} '.
+                            'gender {gender} '.
+                            'passportInternal {type firstName middleName lastName series number birthday issueDate issuedBy issueId expiryDate} '.
+                            'itin {itin} '.
+                            'birthday {date} '.
+                            'addresses {id type zipCode country area district settlementName street house frame flat} ' .
+                            'phones {phoneNumber confirmed type } '.
+                            'emails {email confirmed type} } }"
                 }'
         ]);
 
@@ -135,16 +144,17 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 //            'callback' => $this->redirectUrl,
             'response_type' => 'code',
             'scope' => '' .
-                'openid+' .
-                'profile.documents+' .
-                'profile.auxiliary+' .
-                'profile.addresses+' .
-                'profile.basic+' .
-                'profile.accounts+' .
-                'profile.phones+' .
-                'profile.emails+' .
-                'profile.passport+' .
-                'profile.itin'
+                'address ' .
+                'phone ' .
+                'openid ' .
+                'profile ' .
+                'profile.addresses ' .
+                'profile.basic ' .
+                'profile.emails ' .
+                'profile.phones ' .
+                'profile.itin ' .
+                'profile.passport ' .
+                'email'
         ];
 
         if ($this->usesState()) {
