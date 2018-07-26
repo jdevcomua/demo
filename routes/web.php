@@ -5,12 +5,10 @@ Route::get('/', 'SiteController')->name('index');
 Route::view('/about', 'about')->name('about');
 Route::view('/faq', 'faq')->name('faq');
 
-Route::view('/profile', 'profile')->name('profile');
-
 
 // Authentication Routes...
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
+Route::get('login', 'SiteController@login')->name('login');
+Route::get('auth/callback', 'SiteController@loginCallback');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 
@@ -33,10 +31,3 @@ Route::group([
     Route::get('/species/{species}/colors', 'AjaxController@getColors')->name('getColors');
 
 });
-
-
-Route::get('test', function () {
-    $user = \App\User::find(1);
-    Auth::login($user);
-    return redirect('/', 302);
-})->name('test-login');

@@ -2,21 +2,28 @@
 
 namespace App\Auth;
 
+//use App\Auth\Contracts\HashInn;
 //use App\Auth\Contracts\HasInn;
 //use App\Conventions\UserProvidersConvention;
 use App\Services\Geocoding\Address;
-//use App\Utils\FlowLogger;
+use App\User;
 use Carbon\Carbon;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\ProviderInterface;
-use Laravel\Socialite\Two\User;
 
-class KyivIdProvider extends BankIdProvider implements ProviderInterface
+class KyivIdProvider extends AbstractProvider implements ProviderInterface//, HasInn
 {
+//    use HashInn;
+
+//    protected $stateless = true;
+
     const IDENTIFIER = 'KYIV_ID';
 
+    const ADDRESS_TYPE_BIRTH = 'birth';
     const ADDRESS_TYPE_LIVING = 'FACTUAL';
     const ADDRESS_TYPE_REGISTRATION = 'REGISTRATION';
 
@@ -42,6 +49,28 @@ class KyivIdProvider extends BankIdProvider implements ProviderInterface
         $this->hostApi = env('KYIV_ID_HOST_API');
     }
 
+
+    public function redirect()
+    {
+        $state = null;
+
+        if ($this->usesState()) {
+            $this->request->session()->put('state', $state = $this->getState());
+        }
+
+        return new RedirectResponse($this->getAuthUrl($state));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getAuthUrl($state)
+    {
+        return $this->buildAuthUrlFromBase(
+            $this->host . $this->authUrl, $state
+        );
+    }
+
     public static function getLoginUrl()
     {
         return env('KYIV_ID_HOST') .
@@ -62,22 +91,40 @@ class KyivIdProvider extends BankIdProvider implements ProviderInterface
             url('/');
     }
 
-    public function redirect()
+    /**
+     * Get the token URL for the provider.
+     *
+     * @return string
+     */
+    protected function getTokenUrl()
     {
-        $state = null;
-
-        if ($this->usesState()) {
-            $this->request->session()->put('state', $state = $this->getState());
-        }
-
-        return new RedirectResponse($this->getAuthUrl($state));
+        return $this->host . $this->tokenUrl;
     }
 
-    protected function getAuthUrl($state)
+    /**
+     * Get the raw user for the given access token.
+     *
+     * @param  string $token
+     * @return array
+     */
+    protected function getUserByToken($token)
     {
-        return $this->buildAuthUrlFromBase(
-            $this->host . $this->authUrl, $state
-        );
+        list($header, $payload, $signature) = explode (".", $token);
+        $id = json_decode(base64_decode($payload), true)['sub'];
+        $response = $this->getHttpClient()->post($this->hostApi . $this->dataUrl,[
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer  ' . $token,
+            ],
+            'body' => '{ 
+                    "query":"{profile(id: '.$id.') {id name {lastName firstName middleName shortName verified} gender {gender verified} passportInternal {type firstName middleName lastName series number birthday issueDate issuedBy issueId expiryDate verified} itin {itin verified} birthday {date verified} documents {type firstName middleName lastName series number birthday issueDate issuedBy issueId expiryDate verified} addresses {id type zipCode country area district settlementName street house frame flat verified} accounts {authProvider providerProfileId displayName imageUrl profileUrl verified} phones {phoneNumber confirmed type verified} emails {email confirmed type verified}}}"
+                }'
+        ]);
+
+        $responseBody = $response->getBody()->getContents();
+        $response = json_decode($responseBody, true);
+
+        return $response;
     }
 
     protected function getCodeFields($state = null)
@@ -107,29 +154,98 @@ class KyivIdProvider extends BankIdProvider implements ProviderInterface
         return array_merge($fields, $this->parameters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTokenFields($code)
-    {
-        return [
-            'grant_type' => 'authorization_code',
-            'client_id' => $this->clientId,
-            'client_secret' => $this->clientSecret,
-            'code' => $code,
-            'redirect_uri' => strpos($this->redirectUrl, 'http') === 0 ? $this->redirectUrl : route($this->redirectUrl)
-        ];
+    protected function convertAddress(array $addr = null) :? Address {
+        if (!$addr) return null;
+
+        $sourceKeys = ['flat', 'street', 'house', 'area', 'settlementName', 'district', 'country'];
+        $sourceData = array_fill_keys($sourceKeys, null);
+        $sourceData = array_merge($sourceData, array_only($addr, $sourceKeys));
+        $sourceData['country'] = $sourceData['country'] ? mb_convert_case($sourceData['country'], MB_CASE_LOWER) : null;
+
+        $sourceData['settlementName'] = preg_replace(['/^[^a-zA-Zа-яА-ЯіїєІЇЄ0-9]+/u', '/[^a-zA-Zа-яА-ЯіїєІЇЄ0-9]+$/u'], ['', ''], $sourceData['settlementName']);
+
+        return new Address(array_combine(
+            ['apartment', 'street', 'building', 'district', 'city', 'state', 'country_code'],
+            $sourceData
+        ));
     }
 
+    protected function decryptResponse($data) {
+        $rsa_enc = file_get_contents(resource_path('keys/rsa_key.pem.encrypted'));
+        $encrypter = new Encrypter(env('RSA_DECRYPT_KEY'), 'AES-256-CBC');
+        $rsa = $encrypter->decrypt($rsa_enc);
+        array_walk_recursive($data, function (&$entry, $key) use ($rsa) {
+            if (is_string($entry)) {
+                $decrypted = '';
+                $try = openssl_private_decrypt(base64_decode($entry), $decrypted, $rsa);
+                if ($try) {
+                    $entry = $decrypted;
+                }
+            }
+        });
+        return $data;
+    }
 
     /**
-     * Get the token URL for the provider.
+     * Map the raw user array to a Socialite User instance.
      *
-     * @return string
+     * @param  array $user
+     * @return \App\User
      */
-    protected function getTokenUrl()
+    public function mapUserToObject(array $user)
     {
-        return $this->host . $this->tokenUrl;
+
+        $data = [
+            'ext_id' => array_get($user, 'data.profile.id'),
+            'first_name' => array_get($user, 'data.profile.name.firstName'),
+            'last_name' => array_get($user, 'data.profile.name.lastName'),
+            'middle_name' => array_get($user, 'data.profile.name.middleName'),
+            'email' => trim(strtolower(array_get($user, 'data.profile.emails.0.email'))) ?: null,
+            'phone' => array_get($user, 'data.profile.phones.0.phoneNumber') ,
+            'birthday' => array_get($user, 'data.profile.birthday.date') ? Carbon::createFromFormat('Y-m-d', array_get($user, 'data.profile.birthday.date')) : null,
+            'inn' => array_get($user, 'data.profile.itin.itin'),
+            'passport' => trim(strtoupper(array_get($user, 'data.profile.passportInternal.series').
+                array_get($user, 'data.profile.passportInternal.number'))) ?: null,
+            'cities' => [],
+            'city' => null,
+            'address_living' => null,
+            'address_registration' => null,
+            'gender' => null,
+        ];
+
+        if (array_get($user, 'data.profile.gender.gender')) {
+            switch (array_get($user, 'data.profile.gender.gender')) {
+                case 'MALE':
+                    $data['gender'] = \App\User::GENDER_MALE;
+                    break;
+                case 'FEMALE':
+                    $data['gender'] = \App\User::GENDER_MALE;
+                    break;
+                default:
+                    //TODO log this, something bad happened
+            }
+        }
+
+        $addresses = array_get($user, 'data.profile.addresses', []);
+        if ($addresses) {
+            $addressLiving = $this->getByType($addresses, self::ADDRESS_TYPE_LIVING);
+            $addressRegistration = $this->getByType($addresses, self::ADDRESS_TYPE_REGISTRATION);
+
+            $data['address_living'] = $this->convertAddress($addressLiving);
+            $data['address_registration'] = $this->convertAddress($addressRegistration);
+            if ($data['address_living'] && !$data['address_registration']) {
+                $data['address_registration'] = $data['address_living'];
+            }
+        }
+
+        return (new User())->fill($data);
+    }
+
+    function getByType(array $data, string $type)
+    {
+        return collect($data)->first(function($item) use ($type) {
+            return $item['type'] === $type;
+        });
     }
 
     public function getAccessTokenResponse($code)
@@ -148,106 +264,17 @@ class KyivIdProvider extends BankIdProvider implements ProviderInterface
     }
 
     /**
-     * Get the raw user for the given access token.
-     *
-     * @param  string $token
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getUserByToken($token)
+    protected function getTokenFields($code)
     {
-        list($header, $payload, $signature) = explode (".", $token);
-        $id = json_decode(base64_decode($payload), true)['sub'];
-        $response = $this->getHttpClient()->post($this->hostApi . $this->dataUrl,[
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer  ' . $token,
-            ],
-            'body' => '{ 
-                    "query":"{profile(id: '.$id.') {id name {lastName firstName middleName shortName verified} gender {gender verified} passportInternal {type firstName middleName lastName series number birthday issueDate issuedBy issueId expiryDate verified} itin {itin verified} birthday {date verified} documents {type firstName middleName lastName series number birthday issueDate issuedBy issueId expiryDate verified} addresses {id type zipCode country area district settlementName street house frame flat verified} accounts {authProvider providerProfileId displayName imageUrl profileUrl verified} phones {phoneNumber confirmed type verified} emails {email confirmed type verified}}}"
-                }'
-        ]);
-
-        $responseBody = $response->getBody()->getContents();
-        $response = json_decode($responseBody, true);
-
-//        FlowLogger::put(UserProvidersConvention::AUTH_KYIV_ID,[FlowLogger::KEY_KYIV_ID_RESPONSE => $response]);
-
-        return $response;
-    }
-
-    protected function convertAddress(array $addr = null) :? Address {
-        if (!$addr) return null;
-
-        $sourceKeys = ['flat', 'street', 'house', 'area', 'settlementName', 'district', 'country'];
-        $sourceData = array_fill_keys($sourceKeys, null);
-        $sourceData = array_merge($sourceData, array_only($addr, $sourceKeys));
-        $sourceData['country'] = $sourceData['country'] ? mb_convert_case($sourceData['country'], MB_CASE_LOWER) : null;
-
-        $sourceData['settlementName'] = preg_replace(['/^[^a-zA-Zа-яА-ЯіїєІЇЄ0-9]+/u', '/[^a-zA-Zа-яА-ЯіїєІЇЄ0-9]+$/u'], ['', ''], $sourceData['settlementName']);
-
-        return new Address(array_combine(
-            ['apartment', 'street', 'building', 'district', 'city', 'state', 'country_code'],
-            $sourceData
-        ));
-    }
-
-    /**
-     * Map the raw user array to a Socialite User instance.
-     *
-     * @param  array $user
-     * @return \Laravel\Socialite\Two\User
-     */
-    public function mapUserToObject(array $user)
-    {
-        $debugInfo = $user;
-        $debugInfo['data']['profile']['passportInternal']['series'] = strlen(array_get($debugInfo, 'data.profile.passportInternal.series'));
-        $debugInfo['data']['profile']['passportInternal']['number'] = strlen(array_get($debugInfo, 'data.profile.passportInternal.number'));
-        \debugbar()->addMessage($debugInfo, 'kyivId response');
-
-        $data = [
-            'id' => array_get($user, 'data.profile.id'),
-            'inn' => array_get($user, 'data.profile.itin.itin'),
-            'first_name' => array_get($user, 'data.profile.name.firstName'),
-            'surname' => array_get($user, 'data.profile.name.lastName'),
-            'patronymic' => array_get($user, 'data.profile.name.middleName'),
-            'phone' => array_get($user, 'data.profile.phones.0.phoneNumber') ,
-            'birth' => array_get($user, 'data.profile.birthday.date') ? Carbon::createFromFormat('Y-m-d', array_get($user, 'data.profile.birthday.date')) : null,
-            'email' => trim(strtolower(array_get($user, 'data.profile.emails.0.email'))) ?: null,
-            'passport' => trim(strtoupper(array_get($user, 'data.profile.passportInternal.series').
-                array_get($user, 'data.profile.passportInternal.number'))) ?: null,
-            'cities' => [],
-            'city' => null,
-            'address_living' => null,
-            'address_registration' => null,
-            'gender' => array_get($user, 'data.profile.gender.gender') ? array_get($user, 'data.profile.gender.gender') === 'MALE' ? 1 : 0 : null,
+        return [
+            'grant_type' => 'authorization_code',
+            'client_id' => $this->clientId,
+            'client_secret' => $this->clientSecret,
+            'code' => $code,
+            'redirect_uri' => strpos($this->redirectUrl, 'http') === 0 ? $this->redirectUrl : route($this->redirectUrl)
         ];
-
-        $addresses = array_get($user, 'data.profile.addresses', []);
-        if ($addresses) {
-            $addressLiving = $this->getByType($addresses, self::ADDRESS_TYPE_LIVING);
-            $addressRegistration = $this->getByType($addresses, self::ADDRESS_TYPE_REGISTRATION);
-
-            $data['address_living'] = $this->convertAddress($addressLiving);
-            $data['address_registration'] = $this->convertAddress($addressRegistration);
-            if ($data['address_living'] && !$data['address_registration']) {
-                $data['address_registration'] = $data['address_living'];
-            }
-        }
-
-//        FlowLogger::put(UserProvidersConvention::AUTH_KYIV_ID, [FlowLogger::KEY_MAP_USER_TO_OBJECT => $data]);
-        return (new User())->map($data);
-    }
-
-    function getByType(array $data, string $type)
-    {
-        return collect($data)->first(function($item) use ($type) {
-            return $item['type'] === $type;
-        });
-    }
-
-    function getId()
-    {
-        return md5($this->user()->id);
     }
 
     /**
@@ -260,11 +287,58 @@ class KyivIdProvider extends BankIdProvider implements ProviderInterface
                 throw new InvalidStateException();
             }
             $token = $this->getAccessTokenResponse($this->getCode());
-            $user = $this->mapUserToObject($this->getUserByToken(array_get($token, 'access_token')));
-            $this->user = $user->setToken(array_get($token, 'access_token'));
+            $this->user = $this->mapUserToObject($this->getUserByToken(array_get($token, 'access_token')));
+//            $this->user = $user->setToken(array_get($token, 'access_token'));
         }
 
         return $this->user;
+    }
+
+    /**
+     * Set user from external source. Used for user provider api auth protocol
+     *
+     * @param User $user
+     * @return $this
+     */
+    public function setUser(User $user) {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Set user from external source with raw data. Used for user provider api auth protocol
+     *
+     * @param array $userData
+     * @return $this
+     */
+    public function setUserData(array $userData) {
+        $this->user = $this->mapUserToObject($userData);
+        return $this;
+    }
+
+    function getId()
+    {
+        return md5($this->user()->id);
+    }
+
+    public function basicValidation() {
+        $data = (array) $this->user();
+        $rules = [
+            'inn' => ['inn'],
+            'passport' => ['passport'],
+        ];
+        $messages = [
+            'inn.required' => trans('auth.external_user_no_inn'),
+            'inn.inn' => trans('auth.external_user_invalid_inn'),
+            'passport.required' => trans('auth.external_user_cant_no_passport'),
+            'passport.passport' => trans('auth.external_user_invalid_passport'),
+        ];
+
+        $validator = \Validator::make($data, $rules, $messages);
+
+        if ($validator->fails()) {
+            throw new \UnexpectedValueException( implode('; ', $validator->errors()->all()));
+        }
     }
 
     public function getUserAttributes()
@@ -319,4 +393,11 @@ class KyivIdProvider extends BankIdProvider implements ProviderInterface
             "address_registration_apartment"
         ];
     }
+
+    public function __toString()
+    {
+        return strtolower(static::IDENTIFIER);
+    }
+
+
 }

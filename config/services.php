@@ -37,9 +37,9 @@ return [
 
 
     'kyivID' => [
-        'client_id' => env('KYIVID_KEY'),
-        'client_secret' => env('KYIVID_SECRET'),
-        'redirect' => env('KYIVID_REDIRECT_URI')
+        'client_id' => env('KYIV_ID_CLIENT'),
+        'client_secret' => env('KYIV_ID_SECRET'),
+        'redirect' => env('KYIV_ID_REDIRECT_URI')
     ],
 
 ];

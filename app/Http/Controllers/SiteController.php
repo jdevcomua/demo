@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Auth\KyivIdUserResolver;
+use Auth;
+use Socialite;
 
 class SiteController extends Controller
 {
@@ -14,6 +16,22 @@ class SiteController extends Controller
         } else {
             return redirect('/about');
         }
+    }
+
+    public function login()
+    {
+        return Socialite::driver('kyivID')->redirect();
+    }
+
+    public function loginCallback()
+    {
+        $user = KyivIdUserResolver::resolve(
+            Socialite::driver('kyivID')->user()
+        );
+
+        Auth::login($user);
+
+        return redirect('/', 302);
     }
 
 }

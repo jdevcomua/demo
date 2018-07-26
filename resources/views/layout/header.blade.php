@@ -12,7 +12,7 @@
     </a>
     <div class="auth">
         @auth
-            <a href="{{ route('profile') }}" class="auth-item profile">Веніамін Матусєвіч</a>
+            <a href="{{ route('profile') }}" class="auth-item profile">{{ $auth->name }}</a>
             <a href="#" class="auth-item logout" onclick="event.preventDefault();
                            document.getElementById('logout-form').submit();">ВИЙТИ</a>
             <form id="logout-form" action="{{ route('logout') }}"
@@ -20,7 +20,7 @@
                 @csrf
             </form>
         @else
-            <a href="{{ route('test-login') }}" class="auth-item profile">ВВІЙТИ</a>
+            <a href="{{ route('login') }}" class="auth-item profile">ВВІЙТИ</a>
         @endauth
     </div>
     <div class="nav">
