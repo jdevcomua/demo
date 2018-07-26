@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Role;
 use App\Rules\BirthdayRule;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Yajra\DataTables\DataTables;
 
 class UsersController extends Controller
 {
@@ -25,9 +25,9 @@ class UsersController extends Controller
             ])
             ->groupBy('users.id');
 
-        return Datatables::of($userData)
-            ->addColumn('action', function ($animal) {
-                return '<a href="' . route('admin.animals.show', $animal->id) . '" class="btn accept btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open"></i> Редагувати</a>';
+        return \DataTables::of($userData)
+            ->addColumn('action', function ($user) {
+                return '<a href="' . route('admin.users.show', $user->id) . '" class="btn accept btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open"></i> Редагувати</a>';
             })
             ->make(true);
     }
@@ -89,4 +89,63 @@ class UsersController extends Controller
         $user->save();
         return redirect()->back();
     }
+
+    public function administrate()
+    {
+        $roles = Role::all();
+        return view('admin.users.administrate', [
+            'roles' => $roles
+        ]);
+    }
+
+    public function getUsersAdministrativeData()
+    {
+
+        $query = User::with('roles')->select('users.*');
+
+        return \DataTables::eloquent($query)
+            ->addColumn('roles', function (User $user) {
+                return $user->roles->count() ? $user->roles->map(function($role) {
+                    return $role->display_name;
+                })->implode(', ') : 'Користувач';
+            })
+            ->addColumn('action', function ($user) {
+                return '<a href="#" data-id="' . $user->id. '" data-name="' .( $user->first_name . ' ' .$user->last_name )
+                .'" data-role="' . ($user->roles()->count() ? $user->roles[0]->id : 0) .
+                    '" class="btn accept btn-xs btn-primary change-role" data-toggle="modal" data-target="#modal"><i class="glyphicon glyphicon-user"></i> Редагувати Роль</a>';
+            })
+            ->make(true);
+    }
+
+    public function changeRole(Request $request, $id)
+    {
+        $user = User::find($id);
+        $role = +($request->get('role'));
+        $user->roles()->sync([]);
+        $user->roles()->attach($role);
+        return redirect()->back();
+    }
+
+    public function bans()
+    {
+        return view('admin.users.index');
+    }
+
+    public function getUsersBansData()
+    {
+        $userData = User::leftJoin('animals', 'animals.user_id', '=', 'users.id')
+            ->select([
+                'users.*',
+                \DB::raw('COALESCE(count(animals.id),0) as animals_count')
+            ])
+            ->groupBy('users.id');
+
+        return \DataTables::of($userData)
+            ->addColumn('action', function ($user) {
+                return '<a href="#" data-id="' . $user->id. '" data-name="' .( $user->first_name . ' ' .$user->last_name )
+                    .'" class="btn accept btn-xs btn-primary change-role" data-toggle="modal" data-target="#modal"><i class="glyphicon glyphicon-ban-circle"></i> Забанити</a>';
+            })
+            ->make(true);
+    }
+
 }

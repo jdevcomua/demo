@@ -43,9 +43,9 @@
             <li class="treeview">
                 <a href="#"><i class='fa fa-cogs'></i> <span>Адміністрування</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#"> <i class='fa fa-users'></i>Користувачі</a></li>
+                    <li><a href="{{route('admin.users.administrate')}}"> <i class='fa fa-users'></i>Користувачі</a></li>
                     <li><a href="#"> <i class='fa fa-book'></i>Журнал дій</a></li>
-                    <li><a href="#"> <i class='fa fa-ban'></i>Блокування</a></li>
+                    <li><a href="{{route('admin.users.bans')}}"> <i class='fa fa-ban'></i>Блокування</a></li>
                 </ul>
             </li>
         </ul><!-- /.sidebar-menu -->

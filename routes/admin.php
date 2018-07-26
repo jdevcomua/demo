@@ -30,6 +30,36 @@ Route::group([
         'uses' => 'Admin\UsersController@update',
         'as' => 'update'
     ]);
+
+    Route::get('administrate', [
+        'uses' => 'Admin\UsersController@administrate',
+        'as' => 'administrate'
+    ]);
+
+    Route::get('administrate/data', [
+        'uses' => 'Admin\UsersController@getUsersAdministrativeData',
+        'as' => 'administrate.data'
+    ]);
+
+    Route::post('administrate/{id}/role', [
+        'uses' => 'Admin\UsersController@changeRole',
+        'as' => 'administrate.role'
+    ]);
+
+    Route::get('bans', [
+        'uses' => 'Admin\UsersController@bans',
+        'as' => 'bans'
+    ]);
+
+    Route::get('bans/data', [
+        'uses' => 'Admin\UsersController@getUsersBansData',
+        'as' => 'bans.data'
+    ]);
+
+    Route::post('bans/{id}/ban', [
+        'uses' => 'Admin\UsersController@banUser',
+        'as' => 'bans.ban'
+    ]);
 });
 
 Route::group([
@@ -47,9 +77,14 @@ Route::group([
         'as' => 'show'
     ]);
 
-    Route::get('{id}/update', [
+    Route::put('{id}/update', [
         'uses' => 'Admin\AnimalsController@update',
         'as' => 'update'
+    ]);
+
+    Route::post('{id}/confirm', [
+        'uses' => 'Admin\AnimalsController@confirm',
+        'as' => 'confirm'
     ]);
 
     Route::get('/archive', [

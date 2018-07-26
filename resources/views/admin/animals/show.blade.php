@@ -7,6 +7,9 @@
     Тварина {{ $animal->nickname }}
 @endsection
 
+@section('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+@endsection
 
 @section('main-content')
     <div class="container-fluid spark-screen">
@@ -17,14 +20,14 @@
                         <h3 class="box-title">Тварина</h3>
                     </div>
                     <div class="box-body">
-                        <form action="{{route('admin.animals.update', $animal->id)}}" class="form-horizontal" method="post">
+                        <form action="{{route('admin.animals.update', $animal->id)}}" class="" method="post">
                             @csrf
                             <input type="hidden" name="_method" value="PUT">
 
                             <div class="form-group {{$errors->has('nickname') ? ' has-error' : '' }}">
-                                <label for="nickname" class="col-sm-2 control-label">Прізвище</label>
+                                <label for="nickname" class="col-sm-4 control-label">Прізвище</label>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                     <input type="text" class="form-control" name="nickname" id="nickname" placeholder="Прізвище" value="{{$animal->nickname}}">
                                     @if ($errors->has('nickname'))
                                         <span class="invalid-feedback">
@@ -37,12 +40,13 @@
 
 
                             <div class="form-group {{$errors->has('species_id') ? ' has-error' : '' }}">
-                                <label for="birthday" class="col-sm-2 control-label">Стать</label>
+                                <label for="species_id" class="col-sm-4 control-label">Вид</label>
 
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                     <select name="species_id" id="" class="form-control">
-                                        <option value="0" @if($animal->species_id === 0) selected @endif>Жіноча</option>
-                                        <option value="1" @if($animal->species_id === 1) selected @endif>Чоловіча</option>
+                                        @foreach($species as $type)
+                                        <option value="{{$type->id}}" @if($animal->species_id === $type->id) selected @endif>{{$type->name}}</option>
+                                        @endforeach
                                     </select>
                                     @if ($errors->has('species_id'))
                                         <span class="invalid-feedback">
@@ -52,89 +56,121 @@
                                 </div>
                             </div>
 
-                            <div class="form-group {{$errors->has('passport') ? ' has-error' : '' }}">
-                                <label for="passport" class="col-sm-2 control-label">Паспорт</label>
+                            <div class="form-group {{$errors->has('breed_id') ? ' has-error' : '' }}">
+                                <label for="breed_id" class="col-sm-4 control-label">Порода</label>
 
-                                <div class="col-sm-10">
-                                    <input type="text" name="passport" class="form-control"  id="passport" value="{{$animal->passport}}">
-                                    @if ($errors->has('passport'))
+                                <div class="col-sm-8">
+                                    <select name="breed_id" id="breed"></select>
+                                    @if ($errors->has('breed_id'))
                                         <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('passport') }}</strong>
+                                        <strong>{{ $errors->first('breed_id') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group {{$errors->has('residence_address') ? ' has-error' : '' }}">
-                                <label for="residence_address" class="col-sm-2 control-label">Адреса</label>
+                            <div class="form-group {{$errors->has('color_id') ? ' has-error' : '' }}">
+                                <label for="color_id" class="col-sm-4 control-label">Колір</label>
 
-                                <div class="col-sm-10">
-                                    <input type="text" name="residence_address" class="form-control" id="residence_address" value="{{$animal->residence_address}}">
-                                    @if ($errors->has('residence_address'))
+                                <div class="col-sm-8">
+                                    <select name="color_id" id="color"></select>
+                                    @if ($errors->has('color_id'))
                                         <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('residence_address') }}</strong>
+                                        <strong>{{ $errors->first('color_id') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group {{$errors->has('gender') ? ' has-error' : '' }}">
+                                <label for="gender" class="col-sm-4 control-label">Стать</label>
+
+                                <div class="col-sm-8">
+                                    <select name="gender" id="" class="form-control">
+                                        <option value="0" @if($animal->gender === 0) selected @endif>Жіноча</option>
+                                        <option value="1" @if($animal->gender === 1) selected @endif>Чоловіча</option>
+                                    </select>
+                                    @if ($errors->has('gender'))
+                                        <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('gender') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group {{$errors->has('birthday') ? ' has-error' : '' }}">
+                                <label for="birthday" class="col-sm-4 control-label">День Народження</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" name="birthday" class="form-control datepicker"  id="birthday" value="{{$animal->birthday->format('d-m-Y')}}">
+                                    @if ($errors->has('birthday'))
+                                        <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('birthday') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group {{$errors->has('sterilized') ? ' has-error' : '' }}">
+                                <label for="sterilized" class="col-sm-4 control-label">Стерилізований</label>
+
+                                <div class="col-sm-8">
+                                    <select name="sterilized" id="" class="form-control">
+                                        <option value="0" @if($animal->sterilized === 0) selected @endif>Ні</option>
+                                        <option value="1" @if($animal->sterilized === 1) selected @endif>Так</option>
+                                    </select>
+                                    @if ($errors->has('sterilized'))
+                                        <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('sterilized') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group {{$errors->has('user_id') ? ' has-error' : '' }}">
+                                <label for="user_id" class="col-sm-4 control-label">Хазяїн</label>
+
+                                <div class="col-sm-8">
+                                    <select name="user_id" id="" class="form-control">
+                                        @foreach($users as $user)
+                                            <option value="{{$user->id}}" @if($animal->user_id === $user->id) selected @endif>{{$user->full_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @if ($errors->has('user_id'))
+                                        <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('user_id') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group {{$errors->has('comment') ? ' has-error' : '' }}">
+                                <label for="comment" class="col-sm-4 control-label">Комментар</label>
+
+                                <div class="col-sm-8">
+                                    <textarea name="comment" class="form-control" id="" cols="30" rows="10">{{ $animal->comment ? $animal->comment : old('comment') }}</textarea>
+                                    {{--<input type="text" name="comment" class="form-control" id="comment" value="{{$animal->comment}}">--}}
+                                    @if ($errors->has('comment'))
+                                        <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('comment') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
 
 
-                            <div class="form-group select">
-                                <label for="breed">Порода</label>
-                                <select name="breed" id="breed"></select>
-                            </div>
-                            <div class="form-group select">
-                                <label for="color">Масть</label>
-                                <select name="color" id="color"></select>
-                            </div>
-
-                            <div class="col-md-3 pull-right">
+                            <div class="col-md-3 pull-left">
                                 <button type="submit" class="btn btn-block btn-info">Змінити</button>
                             </div>
+                            <div class="col-md-4 pull-right">
+                                <a class="btn btn-block btn-success confirm">Підтвердити</a>
+                            </div>
                         </form>
-                        <table class="table table-striped">
-                            <tr>
-                                <td>Вид</td>
-                                <td>{{$animal->species->name}}</td>
-                            </tr>
-                            <tr>
-                                <td>Порода</td>
-                                <td>{{$animal->breed->name}}</td>
-                            </tr>
-                            <tr>
-                                <td>Колір</td>
-                                <td>{{$animal->color->name}}</td>
-                            </tr>
-                            <tr>
-                                <td>Прізвище</td>
-                                <td>{{$animal->nickname}}</td>
-                            </tr>
-                            <tr>
-                                <td>Стать</td>
-                                <td>{{$animal->gender ? 'Ч' : 'Ж'}}</td>
-                            </tr>
-                            <tr>
-                                <td>День Народження</td>
-                                <td>{{$animal->birthday->format('d-m-Y')}}</td>
-                            </tr>
-                            <tr>
-                                <td>Стерилізований</td>
-                                <td>{{$animal->sterilized ? 'Так' : 'Ні'}}</td>
-                            </tr>
-                            <tr>
-                                <td>Хазяїн</td>
-                                <td>
-                                    <a href="{{route('admin.users.show', $animal->user->id)}}">{{$animal->user->full_name}}</a></td>
-                            </tr>
-                            @if($animal->userThatConfirmed)
-                            <tr>
-                                <td>Модератор</td>
-                                <td>{{$animal->userThatConfirmed->full_name}}</td>
-                            </tr>
-                            @endif
-                        </table>
                     </div>
                 </div>
+                <form action="{{route('admin.animals.confirm', $animal->id)}}" method="post" class="hidden" id="confirm">
+                    @csrf
+                </form>
             </div>
 
             <div class="col-md-8 ">
@@ -159,17 +195,24 @@
 
 @section('scripts')
     @parent
-    <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.ru.min.js"></script>    <script>
+        $('.datepicker').datepicker({
+            format: 'dd-mm-yyyy',
+            language: 'ru',
+            startView: 3
+        });
+
         // Selectize
 
         var options = {
             valueField: 'value',
             labelField: 'name',
         };
-        var breeds = $('.form-group.select select#breed').selectize(options);
-        var colors = $('.form-group.select select#color').selectize(options);
-        console.log(breeds, colors);
-        $('input[name="species"]').change(function(event) {
+        var breeds = $('#breed').selectize(options);
+        var colors = $('#color').selectize(options);
+
+        $('select[name="species_id"]').change(function(event) {
             breeds[0].selectize.clear();
             breeds[0].selectize.clearOptions();
             colors[0].selectize.clear();
@@ -179,7 +222,7 @@
 
         var xhrBreeds;
         var xhrColors;
-        function updateSelects(species) {
+        function updateSelects(species, set = false) {
             breeds[0].selectize.load(function (callback) {
                 xhrBreeds && xhrBreeds.abort();
                 xhrBreeds = $.ajax({
@@ -204,9 +247,21 @@
                     }
                 })
             });
+            if (set) {
+
+            }
         }
 
-        updateSelects($('input[name="species"]')[0].value);
+        updateSelects($('select[name="species_id"]')[0].value, true);
+
         /////////////////////////////////////////
+        setTimeout(function () {
+            breeds[0].selectize.addItem({{$animal->breed_id}});
+            colors[0].selectize.addItem({{$animal->color_id}});
+        }, 1000)
+
+        $('.confirm').on('click', function() {
+            $('#confirm').submit();
+        })
     </script>
 @endsection

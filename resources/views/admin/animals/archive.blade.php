@@ -33,9 +33,11 @@
                                 <th>Стерилізований</th>
                                 <th>Хазяїн</th>
                                 <th>Модератор</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tfoot>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -117,6 +119,7 @@
                             return 'null'
                         }
                     }},
+                { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
             initComplete: function () {
                 this.api().columns().every(function () {

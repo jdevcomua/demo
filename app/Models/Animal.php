@@ -52,7 +52,8 @@ class Animal extends Model
 {
     protected $fillable = [
         'date_of_birth', 'gender', 'sterilized', 'nickname',
-        'verified', 'data', 'number'
+        'verified', 'data', 'number', 'comment',
+         'species_id', 'breed_id', 'color_id'
     ];
 
     protected $dates = [

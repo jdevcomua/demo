@@ -32,6 +32,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
        'resources/assets/css/pratt_landing.min.css'
    ], 'public/css/all-landing.css')
    // PACKAGE (ADMINLTE-LARAVEL) RESOURCES
+   .copy('node_modules/selectize/dist/css/selectize.css','public/css')
    .copy('resources/assets/img/*.*','public/img/')
    //VENDOR RESOURCES
    .copy('node_modules/font-awesome/fonts/*.*','public/fonts/')
@@ -47,7 +48,11 @@ mix.js('resources/assets/js/app.js', 'public/js')
        'node_modules/selectize/dist/css/selectize.css',
        'public/css/datepicker.css',
        'public/css/app.css'
-   ], 'public/css/app.css');
+   ], 'public/css/app.css')
+    .combine([
+        'node_modules/selectize/dist/css/selectize.css',
+        'public/css/all.css'
+    ], 'public/css/all.css');
 
 if (mix.config.inProduction) {
   mix.version();

@@ -7,3 +7,27 @@ table.dataTable {
     }
   }
 }
+
+.form-group {
+  min-height: 25px;
+  input {
+    text-indent: 5px;
+  }
+  label {
+    margin: 8px 0;
+  }
+}
+textarea {
+  resize: none;
+  margin-bottom: 5px;
+}
+.modal.show {
+  opacity: 1;
+ .modal-dialog.modal-dialog-centered {
+   position: absolute;
+   top: 40%;
+   right: 0;
+   left: 0;
+   bottom: 0;
+ }
+}
