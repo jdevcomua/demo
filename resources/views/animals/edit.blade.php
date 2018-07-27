@@ -1,14 +1,17 @@
 @extends('layout.app')
 
-@section('title', 'Додати нову тварину')
+@section('title', 'Редагування інформації тварини')
 
 @section('content')
+    {{--TODO styles--}}
     <div class="page-title">
         <a href="{{ route('index') }}" class="page-back-link"></a>
-        <span>Додати домашню тварину</span>
+        <span>Редагування інформації тварини</span>
     </div>
-    <form action="{{ route('pets.store') }}" enctype='multipart/form-data' method="POST" id="form">
+    <form action="{{ route('animals.update', $pet->id) }}" enctype='multipart/form-data' method="POST" id="form">
+        @method('PUT')
         @csrf
+
         <div class="cols-block">
             <div class="cols-block-header">
                 <div class="block-title">ЗОБРАЖЕННЯ</div>
@@ -19,43 +22,19 @@
             <div class="cols-block-content">
                 <div class="validation-error alert alert-danger hidden"></div>
                 <div class="new-pet-photos">
-                    <label class="photo-item photo-item-main" for="image1">
-                        <input type='file' name="images[]" id="image1" class="imageInput" />
+                    <label class="photo-item photo-item-main @if(array_key_exists(1, $pet->images)) filled @endif " for="image1"
+                           @if(array_key_exists(1, $pet->images)) style="background-image: url('/{{ $pet->images[1] }}')" @endif>
+                        <input type='file' name="images[1]" id="image1" class="imageInput" />
                         <span class="add-btn">+</span>
                     </label>
                     <div class="small-photos">
-                        <label class="photo-item" for="image2">
-                            <input type='file' name="images[]" id="image2" class="imageInput" />
-                            <span class="add-btn">+</span>
-                        </label>
-                        <label class="photo-item" for="image3">
-                            <input type='file' name="images[]" id="image3" class="imageInput" />
-                            <span class="add-btn">+</span>
-                        </label>
-                        <label class="photo-item" for="image4">
-                            <input type='file' name="images[]" id="image4" class="imageInput" />
-                            <span class="add-btn">+</span>
-                        </label>
-                        <label class="photo-item" for="image5">
-                            <input type='file' name="images[]" id="image5" class="imageInput" />
-                            <span class="add-btn">+</span>
-                        </label>
-                        <label class="photo-item" for="image6">
-                            <input type='file' name="images[]" id="image6" class="imageInput" />
-                            <span class="add-btn">+</span>
-                        </label>
-                        <label class="photo-item" for="image7">
-                            <input type='file' name="images[]" id="image7" class="imageInput" />
-                            <span class="add-btn">+</span>
-                        </label>
-                        <label class="photo-item" for="image8">
-                            <input type='file' name="images[]" id="image8" class="imageInput" />
-                            <span class="add-btn">+</span>
-                        </label>
-                        <label class="photo-item" for="image9">
-                            <input type='file' name="images[]" id="image9" class="imageInput" />
-                            <span class="add-btn">+</span>
-                        </label>
+                        @for($i = 2; $i < 10; $i++)
+                            <label class="photo-item @if(array_key_exists($i, $pet->images)) filled @endif " for="image{{ $i }}"
+                                   @if(array_key_exists($i, $pet->images)) style="background-image: url('/{{ $pet->images[$i] }}')" @endif >
+                                <input type='file' name="images[{{ $i }}]" id="image{{ $i }}" class="imageInput" />
+                                <span class="add-btn">+</span>
+                            </label>
+                        @endfor
                     </div>
                 </div>
             </div>
@@ -69,19 +48,22 @@
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="nickname">Кличка</label>
-                    <input type="text" class="form-control" id="nickname" name="nickname" required>
+                    <input type="text" class="form-control" id="nickname" name="nickname" required
+                        value="{{ $pet->nickname }}">
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label>Вид</label>
                     <div class="btn-group-toggle" data-toggle="buttons">
-                        <label class="btn radio-item big-radio active">
+                        <label class="btn radio-item big-radio @if($pet->species_id === 1) active @endif">
                             <span class="label label-dog"></span>
-                            <input type="radio" name="species" value="1" autocomplete="off" checked>Собака
+                            <input type="radio" name="species" value="1" autocomplete="off"
+                                   @if($pet->species_id === 1) checked @endif >Собака
                         </label>
-                        <label class="btn radio-item big-radio">
+                        <label class="btn radio-item big-radio @if($pet->species_id === 2) active @endif">
                             <span class="label label-cat"></span>
-                            <input type="radio" name="species" value="2" autocomplete="off">Кіт
+                            <input type="radio" name="species" value="2" autocomplete="off"
+                                   @if($pet->species_id === 2) checked @endif >Кіт
                         </label>
                     </div>
                 </div>
@@ -89,34 +71,38 @@
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label>Стать</label>
                     <div class="btn-group-toggle" data-toggle="buttons">
-                        <label class="btn radio-item big-radio active">
+                        <label class="btn radio-item big-radio @if($pet->gender === \App\Models\Animal::GENDER_MALE) active @endif">
                             <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
-                            <input type="radio" name="gender" value="0" autocomplete="off" checked>Самець
+                            <input type="radio" name="gender" value="0" autocomplete="off"
+                                   @if($pet->gender === \App\Models\Animal::GENDER_MALE) checked @endif >Самець
                         </label>
-                        <label class="btn radio-item big-radio">
+                        <label class="btn radio-item big-radio @if($pet->gender === \App\Models\Animal::GENDER_FEMALE) active @endif">
                             <span class="label"><i class="fa fa-venus" aria-hidden="true"></i></span>
-                            <input type="radio" name="gender" value="1" autocomplete="off">Самка
+                            <input type="radio" name="gender" value="1" autocomplete="off"
+                                   @if($pet->gender === \App\Models\Animal::GENDER_FEMALE) checked @endif >Самка
                         </label>
                     </div>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="breed">Порода</label>
-                    <select name="breed" id="breed" required></select>
+                    <select name="breed" id="breed" required data-value="{{ $pet->breed_id }}"></select>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="color">Масть</label>
-                    <select name="color" id="color" required></select>
+                    <select name="color" id="color" required data-value="{{ $pet->color_id }}"></select>
                 </div>
                 <div class="form-group datepicker">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="birthday">Дата народження</label>
-                    <input type="text" class="form-control" id="birthday" name="birthday" required />
+                    <input type="text" class="form-control" id="birthday" name="birthday" required
+                           value="{{ $pet->birthday->format('d/m/Y') }}"/>
                 </div>
                 <div class="form-group btn-group-toggle checkbox-group" data-toggle="buttons">
-                    <label class="btn checkbox-item">
-                        <input type="checkbox" name="sterilized" autocomplete="off" value="1"> Стерилізовано
+                    <label class="btn checkbox-item @if($pet->sterilized) active @endif">
+                        <input type="checkbox" name="sterilized" autocomplete="off" value="1"
+                               @if($pet->sterilized) checked @endif> Стерилізовано
                     </label>
                     @if(false)
                         <label class="btn checkbox-item">
@@ -127,7 +113,7 @@
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="comment">Коментарі (Особливі прикмети)</label>
-                    <textarea name="comment" id="comment" rows="5"></textarea>
+                    <textarea name="comment" id="comment" rows="5">{{ $pet->comment }}</textarea>
                 </div>
             </div>
         </div>
@@ -153,7 +139,7 @@
             <div class="cols-block-content form">
                 <div class="form-buttons">
                     <input class="btn btn-primary" type="submit" value="Зберегти">
-                    <a class="btn btn-cancel" href="#">Скасувати</a>
+                    <a class="btn btn-cancel" href="{{ route('animals.index') }}">Скасувати</a>
                 </div>
             </div>
         </div>

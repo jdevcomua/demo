@@ -15,8 +15,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::resource('pets', 'PetsController')
-        ->only(['index', 'create', 'store', 'show', 'update']);
+    Route::resource('animals', 'AnimalsController');
 
     Route::get('/profile', 'ProfileController@show')->name('profile');
     Route::post('/profile', 'ProfileController@update')->name('profile.update');

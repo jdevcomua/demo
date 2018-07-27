@@ -26,7 +26,7 @@
     <div class="nav">
         <nav>
             @auth
-                <a href="{{ route('pets.index') }}" class="nav-item @if($curRoute == 'pets.index') active @endif">Мої тварини</a>
+                <a href="{{ route('animals.index') }}" class="nav-item @if($curRoute == 'animals.index') active @endif">Мої тварини</a>
                 <a href="{{ route('profile') }}" class="nav-item @if($curRoute == 'profile') active @endif">Мій профіль</a>
                 <div class="nav-divider"></div>
             @endauth

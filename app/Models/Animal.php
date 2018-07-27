@@ -51,6 +51,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Animal extends Model
 {
+
+    const GENDER_MALE = 0;
+    const GENDER_FEMALE = 1;
+
     protected $fillable = [
         'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'birthday',
         'sterilized', 'comment', 'verified', 'data', 'number',
@@ -66,6 +70,16 @@ class Animal extends Model
         'status' => 'integer',
         'data' => 'array',
     ];
+
+
+    public function delete()
+    {
+        $files = $this->files;
+        if ($files) {
+            foreach ($files as $file) \Storage::delete($file->attributes['path']);
+        }
+        return parent::delete();
+    }
 
 
     public function user()

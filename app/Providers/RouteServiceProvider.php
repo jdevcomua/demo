@@ -32,6 +32,10 @@ class RouteServiceProvider extends ServiceProvider
             return Species::where('id', $value)->first() ?? abort(404);
         });
 
+        Route::bind('animal', function ($value, $route) {
+            return \Auth::user()->animals()->where('id', $value)->firstOrFail();
+        });
+
     }
 
     /**

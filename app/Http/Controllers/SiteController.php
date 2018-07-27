@@ -12,9 +12,9 @@ class SiteController extends Controller
     public function __invoke()
     {
         if (\Auth::user() !== null) {
-            return redirect('/pets');
+            return redirect()->route('animals.index');
         } else {
-            return redirect('/about');
+            return redirect()->route('about');
         }
     }
 

@@ -38,8 +38,18 @@
                     <div class="dropdown more-button dropleft">
                         <i class="fa fa-ellipsis-v " data-toggle="dropdown" aria-hidden="true" aria-expanded="false"></i>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Переглянути картку</a>
-                            <a class="dropdown-item" href="#">Редагувати інформацію</a>
+                            <a class="dropdown-item"
+                               href="{{ route('animals.show', ['id' => $pet->id]) }}">Переглянути картку</a>
+                            <a class="dropdown-item"
+                               href="{{ route('animals.edit', ['id' => $pet->id]) }}">Редагувати інформацію</a>
+                            <a class="dropdown-item"
+                               href="{{ route('animals.destroy', ['id' => $pet->id]) }}" onclick="event.preventDefault();
+                               document.getElementById('delete-form-{{ $pet->id }}').submit();">Видалити</a>
+                            <form id="delete-form-{{ $pet->id }}" action="{{ route('animals.destroy', ['id' => $pet->id]) }}"
+                                  method="POST" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </div>
                     </div>
 
@@ -47,12 +57,12 @@
             @endforeach
         </div>
     @else
-        @include('pets._no_pets')
+        @include('animals._no_animals')
     @endif
     <div class="add-new-pet-wrap">
         @if(count($pets))
             <div class="above-text">Маєш ще тваринку? Додавай!</div>
         @endif
-        <a href="{{ route('pets.create') }}" class="add-new-pet btn btn-big btn-primary">+ Додати</a>
+        <a href="{{ route('animals.create') }}" class="add-new-pet btn btn-big btn-primary">+ Додати</a>
     </div>
 @endsection
