@@ -32,6 +32,10 @@ class RouteServiceProvider extends ServiceProvider
             return Species::where('id', $value)->first() ?? abort(404);
         });
 
+        Route::bind('animal', function ($value, $route) {
+            return \Auth::user()->animals()->where('id', $value)->firstOrFail();
+        });
+
     }
 
     /**
@@ -59,7 +63,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware('web')
+        Route::middleware(['web', 'auth.share'])
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
     }

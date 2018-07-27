@@ -9,6 +9,13 @@ require('bootstrap-datepicker');
 require('selectize');
 
 
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+
 /////////////////////////////////////////
 // Date picker init
 
@@ -67,6 +74,7 @@ function updateSelects(species) {
             url: '/ajax/species/'+species+'/breeds',
             success: function (results) {
                 callback(JSON.parse(results));
+                checkDefaultValues();
             },
             error: function () {
                 callback();
@@ -79,6 +87,7 @@ function updateSelects(species) {
             url: '/ajax/species/'+species+'/colors',
             success: function (results) {
                 callback(JSON.parse(results));
+                checkDefaultValues();
             },
             error: function () {
                 callback();
@@ -87,8 +96,13 @@ function updateSelects(species) {
     });
 }
 
+function checkDefaultValues() {
+    breeds[0].selectize.setValue($('.form-group.select select#breed').data('value'));
+    colors[0].selectize.setValue($('.form-group.select select#color').data('value'));
+}
+
 if ($('input[name="species"]').length) {
-    updateSelects($('input[name="species"]')[0].value);
+    updateSelects($("input:radio[name ='species']:checked,input:radio[name ='species'].checked").val());
 }
 /////////////////////////////////////////
 

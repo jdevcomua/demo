@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Animal;
 use App\Services\FilesService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
 
-class PetsController extends Controller
+class AnimalsController extends Controller
 {
 
     private $filesService;
@@ -27,7 +28,7 @@ class PetsController extends Controller
         $user = \Auth::user();
         $pets = $user->animals()->with(['species', 'color', 'images'])->get();
 
-        return view('pets.index', [
+        return view('animals.index', [
             'pets' => $pets
         ]);
     }
@@ -39,7 +40,7 @@ class PetsController extends Controller
      */
     public function create()
     {
-        return view('pets.create');
+        return view('animals.create');
     }
 
     /**
@@ -76,7 +77,7 @@ class PetsController extends Controller
             'nickname.max' => 'Кличка має бути менше :max символів',
             'birthday.required' => 'Дата народження є обов\'язковим полем',
             'comment.max' => 'Коментарій має бути менше :max символів',
-            'images.required' => 'Додайте щонайменше 1 фото вашої тваринки'
+            'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
         ]);
 
         if ($validator->fails()) {
@@ -99,42 +100,98 @@ class PetsController extends Controller
         //TODO redirect to verify your animal note page
         return response()->json([
             'status' => 'ok',
-            'url' => route('pets.index')
+            'url' => route('animals.index')
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Animal $animal
+     * @return void
      */
-    public function show($id)
+    public function show(Animal $animal)
     {
-        //
+        dd($animal);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param Animal $animal
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Animal $animal)
     {
-        //
+        $animal->load(['species', 'color', 'images']);
+        $animal->images = $animal->images->pluck('path', 'num')->toArray();
+
+        return view('animals.edit', [
+            'pet' => $animal
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param Animal $animal
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Animal $animal)
     {
-        //
+        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'birthday',
+            'sterilized', 'comment', 'images', 'documents']);
+
+        if (array_key_exists('birthday', $data)) {
+            $data['birthday'] = str_replace('/', '-', $data['birthday']);
+            $data['birthday'] = Carbon::createFromTimestamp(strtotime($data['birthday']));
+        }
+//        dd($request, $data, $animal);
+
+        $validator = Validator::make($data, [
+            'nickname' => 'required|string|max:256',
+            'species' => 'required|integer|exists:species,id',
+            'gender' => 'required|integer|in:0,1',
+            'breed' => 'required|integer|exists:breeds,id',
+            'color' => 'required|integer|exists:colors,id',
+            'birthday' => 'required|date',
+            'sterilized' => 'nullable|in:1',
+            'comment' => 'nullable|string|max:2000',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|file',
+            'documents' => 'nullable|array',
+            'documents.*' => 'nullable|file',
+        ], [
+            'nickname.required' => 'Кличка є обов\'язковим полем',
+            'nickname.max' => 'Кличка має бути менше :max символів',
+            'birthday.required' => 'Дата народження є обов\'язковим полем',
+            'comment.max' => 'Коментарій має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $data['species_id'] = $data['species'];
+        $data['breed_id'] = $data['breed'];
+        $data['color_id'] = $data['color'];
+        unset($data['species']);
+        unset($data['breed']);
+        unset($data['color']);
+
+        $animal->fill($data);
+        $animal->save();
+
+        $this->filesService->handleAnimalFilesUpload($animal, $data);
+
+        //TODO redirect to verify your animal note page
+        return response()->json([
+            'status' => 'ok',
+            'url' => route('animals.index')
+        ]);
     }
 
     /**
@@ -143,8 +200,11 @@ class PetsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Animal $animal)
     {
-        //
+        if (!$animal->verified) {
+            $animal->delete();
+        }
+        return redirect()->route('animals.index');
     }
 }

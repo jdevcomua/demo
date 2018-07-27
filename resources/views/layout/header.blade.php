@@ -3,16 +3,16 @@
 @endphp
 
 <header>
-    <a href="{{ route('index') }}" class="name">
+    <div class="name">
         <img src="{{ asset('img/icon/gerb.png') }}" alt="Герб" class="logo">
         <div class="title">
             <span>Реєстр домашніх тварин</span>
             <span class="sub-title">Київська міська державна адміністрація</span>
         </div>
-    </a>
+    </div>
     <div class="auth">
         @auth
-            <a href="{{ route('profile') }}" class="auth-item profile">Веніамін Матусєвіч</a>
+            <span class="auth-item profile">{{ $auth->name }}</span>
             <a href="#" class="auth-item logout" onclick="event.preventDefault();
                            document.getElementById('logout-form').submit();">ВИЙТИ</a>
             <form id="logout-form" action="{{ route('logout') }}"
@@ -20,11 +20,16 @@
                 @csrf
             </form>
         @else
-            <a href="{{ route('test-login') }}" class="auth-item profile">ВВІЙТИ</a>
+            <a href="{{ route('login') }}" class="auth-item profile">ВВІЙТИ</a>
         @endauth
     </div>
     <div class="nav">
         <nav>
+            @auth
+                <a href="{{ route('animals.index') }}" class="nav-item @if($curRoute == 'animals.index') active @endif">Мої тварини</a>
+                <a href="{{ route('profile') }}" class="nav-item @if($curRoute == 'profile') active @endif">Мій профіль</a>
+                <div class="nav-divider"></div>
+            @endauth
             <a href="{{ route('about') }}" class="nav-item @if($curRoute == 'about') active @endif">Про проект</a>
             <a href="{{ route('faq') }}" class="nav-item @if($curRoute == 'faq') active @endif">Часті запитання</a>
         </nav>

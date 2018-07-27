@@ -16836,11 +16836,11 @@ header .auth .auth-item {
   background-position: 0 50%;
   padding: 0 10px 0 40px;
   width: 150px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1.1rem;
-  line-height: 1.3rem;
+  color: #fff;
+  font-size: 1rem;
+  letter-spacing: 0.2px;
+  line-height: 1.4rem;
   min-height: 32px;
-  cursor: pointer;
 }
 
 header .auth .auth-item.profile {
@@ -16862,13 +16862,30 @@ header .nav {
   border-top: 1px solid #4d7ca1;
 }
 
+header .nav nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+header .nav nav .nav-divider {
+  width: 1px;
+  height: 2.1rem;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0 1.4rem;
+}
+
 header .nav a.nav-item {
   display: inline-block;
-  padding: 18px;
+  padding: 1.4rem;
   cursor: pointer;
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 header .nav a.nav-item.active {
@@ -16925,6 +16942,7 @@ footer .footer-demo {
   padding: 10px 4rem;
   color: #0a264a;
   font-size: 1.2rem;
+  font-weight: 500;
   text-align: center;
   margin: 0;
 }
@@ -17406,6 +17424,11 @@ textarea:focus {
   display: none;
 }
 
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: unset;
+}
+
 .pets-list-header {
   font-size: 1.4rem;
   font-weight: 600;
@@ -17468,14 +17491,15 @@ textarea:focus {
 }
 
 .pets-list-item .pet-info .pet-info-block .title {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
   color: #999;
 }
 
 .pets-list-item .pet-info .pet-info-block .content {
   padding: 0;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
 .pets-list-item .pet-info .pet-info-block .content.green {
@@ -17486,14 +17510,31 @@ textarea:focus {
   color: #d0021b;
 }
 
-.pets-list-item i.fa.fa-ellipsis-v.more-button {
+.pets-list-item .more-button {
   position: absolute;
-  top: 2rem;
-  right: 2rem;
+  right: 2.8rem;
   font-size: 2rem;
+  line-height: 2.8rem;
+  text-align: center;
   color: #888;
   cursor: pointer;
-  padding: 0 0.5rem;
+}
+
+.pets-list-item .more-button .fa-ellipsis-v {
+  width: 1.3rem;
+  height: 2.6rem;
+}
+
+.pets-list-item .more-button .dropdown-item {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.pets-list-item .more-button .dropdown-item.active,
+.pets-list-item .more-button .dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #0b4478;
 }
 
 .add-new-pet-wrap {
@@ -17569,12 +17610,11 @@ textarea:focus {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin: 0.5rem 0;
+  margin: 0 0 1rem 1.5rem;
   width: 7.5rem;
   height: 7.5rem;
   border: 2px dashed #999;
   border-radius: 1rem;
-  margin-left: 1.5rem;
   background-position: center;
   background-size: cover;
   cursor: pointer;
@@ -17594,7 +17634,7 @@ textarea:focus {
   background-color: #ecf5f6;
   -ms-flex-negative: 0;
       flex-shrink: 0;
-  margin-right: 2rem;
+  margin: 0 1rem 0 0;
 }
 
 .new-pet-photos label.photo-item.photo-item-main .add-btn {
@@ -17652,7 +17692,7 @@ img.logo {
 }
 
 .content {
-  padding: 80px 30px 40px;
+  padding: 80px 50px 40px;
 }
 
 .cols-block {

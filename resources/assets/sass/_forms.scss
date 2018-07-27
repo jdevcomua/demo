@@ -183,3 +183,7 @@
     display: none;
   }
 }
+.form-control:disabled, .form-control[readonly] {
+  background-color: unset;
+}
+
