@@ -69,7 +69,7 @@
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="nickname">Кличка</label>
-                    <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Кличка" required>
+                    <input type="text" class="form-control" id="nickname" name="nickname" required>
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>

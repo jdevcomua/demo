@@ -35,7 +35,14 @@
                             @endif
                         </div>
                     </div>
-                    <i class="fa fa-ellipsis-v more-button" aria-hidden="true"></i>
+                    <div class="dropdown more-button dropleft">
+                        <i class="fa fa-ellipsis-v " data-toggle="dropdown" aria-hidden="true" aria-expanded="false"></i>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Переглянути картку</a>
+                            <a class="dropdown-item" href="#">Редагувати інформацію</a>
+                        </div>
+                    </div>
+
                 </div>
             @endforeach
         </div>

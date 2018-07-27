@@ -17,7 +17,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('pets', 'PetsController')
         ->only(['index', 'create', 'store', 'show', 'update']);
 
-    Route::match(['get', 'post'], '/profile', 'ProfileController')->name('profile');
+    Route::get('/profile', 'ProfileController@show')->name('profile');
+    Route::post('/profile', 'ProfileController@update')->name('profile.update');
 
 });
 

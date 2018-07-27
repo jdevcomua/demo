@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller
 {
 
-    public function __invoke()
+    public function show()
     {
-        $user = \Auth::user();
+        return view('profile');
+    }
 
-        return view('profile', [
-            'user' => $user
-        ]);
+    public function update(Request $request)
+    {
+        dd($request);
     }
 
 }

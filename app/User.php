@@ -82,4 +82,14 @@ class User extends Authenticatable
         return (($this->last_name) ? $this->last_name : '') . ' '
             . (($this->first_name) ? $this->first_name : '');
     }
+
+    public function getAddressLivingAttribute()
+    {
+        return (object) json_decode($this->attributes['address_living']);
+    }
+
+    public function getAddressRegistrationAttribute()
+    {
+        return (object) json_decode($this->attributes['address_registration']);
+    }
 }
