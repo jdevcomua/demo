@@ -8,6 +8,7 @@ Route::view('/faq', 'faq')->name('faq');
 
 // Authentication Routes...
 Route::get('login', 'SiteController@login')->name('login');
+Route::get('auth/attempt', 'SiteController@loginAttempt');
 Route::get('auth/callback', 'SiteController@loginCallback');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 

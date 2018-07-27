@@ -29,6 +29,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 
     protected $user;
 
+    protected $attemptUrl;
+
     protected $authUrl = '/authorize';
 
     protected $tokenUrl = '/token';
@@ -47,6 +49,7 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 
         $this->host = env('KYIV_ID_HOST');
         $this->hostApi = env('KYIV_ID_HOST_API');
+        $this->attemptUrl = env('KYIV_ID_ATTEMPT_URI');
     }
 
 
@@ -61,26 +64,40 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
         return new RedirectResponse($this->getAuthUrl($state));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getAuthUrl($state)
+    {
+        return $this->buildAuthUrlFromBase(
+            $this->getLoginUrl(), $state
+        );
+    }
+
+    public function attempt()
+    {
+        $state = null;
+
+        if ($this->usesState()) {
+            $this->request->session()->put('state', $state = $this->getState());
+        }
+
+        return new RedirectResponse($this->getAttemptUrl($state));
+    }
+
+    public function getAttemptUrl($state)
     {
         return $this->buildAuthUrlFromBase(
             $this->host . $this->authUrl, $state
         );
     }
 
-    public static function getLoginUrl()
+    private function getLoginUrl()
     {
         return env('KYIV_ID_HOST') .
             env('KYIV_ID_FORCE_LOGIN_URI') .
             '?callback=' .
-            url('/') .
-            '/auth/kyiv_id/attempt' .
+            url('/') . $this->attemptUrl  .
             '&provider=nbubankid' .
             '&provider=eds' .
-            '&provider=pbbankid';
+            '&provider=pbbankid&';
     }
 
     public static function getLogoutUrl()

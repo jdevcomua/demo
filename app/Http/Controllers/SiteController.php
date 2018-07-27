@@ -23,6 +23,11 @@ class SiteController extends Controller
         return Socialite::driver('kyivID')->redirect();
     }
 
+    public function loginAttempt()
+    {
+        return Socialite::driver('kyivID')->attempt();
+    }
+
     public function loginCallback()
     {
         $user = KyivIdUserResolver::resolve(
