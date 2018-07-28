@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Species;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -27,15 +26,6 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
-
-        Route::bind('species', function ($value) {
-            return Species::where('id', $value)->first() ?? abort(404);
-        });
-
-        Route::bind('animal', function ($value, $route) {
-            return \Auth::user()->animals()->where('id', $value)->firstOrFail();
-        });
-
     }
 
     /**
@@ -49,8 +39,6 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        $this->mapAdminRoutes();
-
         //
     }
 
@@ -63,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::middleware(['web', 'auth.share'])
+        Route::middleware('web')
              ->namespace($this->namespace)
              ->group(base_path('routes/web.php'));
     }
@@ -81,14 +69,5 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
-    }
-
-    protected function mapAdminRoutes()
-    {
-        Route::prefix('admin')
-            ->as('admin.')
-            ->middleware(['web', 'auth'])
-            ->namespace($this->namespace)
-            ->group(base_path('routes/admin.php'));
     }
 }
