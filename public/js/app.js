@@ -41796,6 +41796,13 @@ jQuery(function ($) {
 
 /***/ }),
 
+/***/ "./resources/assets/sass/admin/admin.scss":
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./resources/assets/sass/app.scss":
 /***/ (function(module, exports) {
 
@@ -41808,7 +41815,8 @@ jQuery(function ($) {
 
 __webpack_require__("./resources/assets/js/app.js");
 __webpack_require__("./node_modules/bootstrap-datepicker/build/build_standalone.less");
-module.exports = __webpack_require__("./resources/assets/sass/app.scss");
+__webpack_require__("./resources/assets/sass/app.scss");
+module.exports = __webpack_require__("./resources/assets/sass/admin/admin.scss");
 
 
 /***/ })
