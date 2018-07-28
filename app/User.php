@@ -72,6 +72,9 @@ class User extends Authenticatable
         'address_registration' => 'array',
     ];
 
+    protected $hidden = [
+        'remember_token', 'address_living', 'address_registration'
+    ];
 
     public function animals()
     {

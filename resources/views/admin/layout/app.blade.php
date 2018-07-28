@@ -27,7 +27,12 @@
     <script src="/js/admin/jquery-ui.min.js"></script>
     <script src="/js/admin/utility.js"></script>
     <script src="/js/admin/main.js"></script>
-
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            "use strict";
+            Core.init();
+        });
+    </script>
     @yield('scripts-end')
 </body>
 </html>

@@ -31456,25 +31456,6 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-//
-// try {
-//     require('admin/jquery-ui.min.js');
-// } catch (e) { console.error(e) }
-
-// try {
-//     require('./admin/jquery.dataTables.js');
-//     require('./admin/dataTables.tableTools.min.js');
-//     require('./admin/dataTables.colReorder.min.js');
-//     require('./admin/dataTables.bootstrap.js');
-// } catch (e) { console.error(e) }
-//
-// try {
-//     require('./admin/utility.js');
-// } catch (e) { console.error(e) }
-//
-// try {
-//     require('./admin/main.js');
-// } catch (e) { console.error(e) }
 
 /***/ }),
 

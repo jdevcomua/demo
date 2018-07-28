@@ -1,3 +1,14 @@
 .navbar .nav > li > a {
   line-height: 29px;
 }
+table.datatable {
+  thead th {
+    padding-right: 18px;
+  }
+  tfoot.search {
+    display: table-header-group;
+  }
+}
+.datatable_wrapper {
+  overflow: hidden;
+}

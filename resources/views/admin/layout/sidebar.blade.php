@@ -1,3 +1,8 @@
+@php
+    $curRoute = \Route::current()->getName();
+@endphp
+
+
 <aside id="sidebar_left" class="nano nano-primary affix">
     <div class="sidebar-left-content nano-content">
         <ul class="nav sidebar-menu">
@@ -8,7 +13,7 @@
                     <span class="sidebar-title">Тварини</span>
                 </a>
             </li>
-            <li>
+            <li @if($curRoute == 'admin.db.users') class="active" @endif>
                 <a href="#">
                     <span class="fa fa-users"></span>
                     <span class="sidebar-title">Користувачі</span>
