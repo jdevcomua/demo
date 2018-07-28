@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Auth\KyivIdProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->bootKievIDSocialite();
     }
 
     /**
@@ -24,5 +25,17 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+    }
+
+    private function bootKievIDSocialite()
+    {
+        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
+        $socialite->extend(
+            'kyivID',
+            function ($app) use ($socialite) {
+                $config = $app['config']['services.kyivID'];
+                return $socialite->buildProvider(KyivIdProvider::class, $config);
+            }
+        );
     }
 }

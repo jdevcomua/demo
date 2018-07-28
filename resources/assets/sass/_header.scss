@@ -1,0 +1,98 @@
+header {
+  background-color: #014479;
+  padding: 26px 30px 0;
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  align-items: start;
+  .name {
+    display: flex;
+    .title {
+      display: flex;
+      flex-flow: column;
+      padding: 16px 30px;
+      color: #fff;
+      & > span {
+        font-size: 2rem;
+        line-height: 2rem;
+        font-weight: bold;
+      }
+      .sub-title {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 400;
+      }
+    }
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  .auth {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    padding-bottom: 50px;
+    height: 140px;
+    .auth-item {
+      display: flex;
+      align-items: center;
+      background-repeat: no-repeat;
+      background-position: 0 50%;
+      padding: 0 10px 0 40px;
+      width: 150px;
+      color: #fff;
+      font-size: 1rem;
+      letter-spacing: 0.2px;
+      line-height: 1.4rem;
+      min-height: 32px;
+      &.profile { background-image: url('/img/icon/user.png'); }
+      &.logout { background-image: url('/img/icon/logout.png'); }
+    }
+  }
+  .nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #4d7ca1;
+    nav {
+      display: flex;
+      align-items: center;
+      .nav-divider {
+        width: 1px;
+        height: 2.1rem;
+        background-color: rgba(255, 255, 255, 0.3);
+        margin: 0 1.4rem;
+      }
+    }
+    a.nav-item {
+      display: inline-block;
+      padding: 1.4rem;
+      cursor: pointer;
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      &.active {
+        text-decoration: underline;
+      }
+    }
+    .socials {
+      display: flex;
+      align-items: center;
+      .socials-item {
+        display: block;
+        background-repeat: no-repeat;
+        background-position: 50%;
+        cursor: pointer;
+        width: 28px;
+        height: 28px;
+        margin-right: 18px;
+        &.socials-item-facebook { background-image: url('/img/icon/fb.png'); }
+        &.socials-item-youtube { background-image: url('/img/icon/youtube.png'); }
+        &.socials-item-twitter { background-image: url('/img/icon/twitter.png'); }
+      }
+    }
+    &:after { content: none; }
+    &:before { content: none; }
+  }
+}
