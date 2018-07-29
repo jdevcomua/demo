@@ -14,7 +14,7 @@ class InfoController extends Controller
     private $breedModel;
     private $colorModel;
 
-    public function __construct(Breed $breedModel, Color $colorModel, Species $speciesModel)
+    public function __construct(Breed $breedModel, Color $colorModel)
     {
         $this->breedModel = $breedModel;
         $this->colorModel = $colorModel;

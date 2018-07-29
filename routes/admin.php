@@ -37,3 +37,16 @@ Route::get('directories/remove/color', 'Admin\InfoController@directoryRemoveColo
     ->name('info.directories.remove.color');
 
 
+
+Route::get('roles', 'Admin\AdminRolesController@index')
+    ->name('roles.index');
+Route::post('roles', 'Admin\AdminRolesController@store')
+    ->name('roles.store');
+Route::get('roles/edit/{id?}', 'Admin\AdminRolesController@edit')
+    ->name('roles.edit');
+Route::post('roles/update/{id}', 'Admin\AdminRolesController@update')
+    ->name('roles.update');
+Route::get('roles/remove/{id?}', 'Admin\AdminRolesController@remove')
+    ->name('roles.remove');
+Route::get('roles/data', 'Admin\AdminRolesController@rolesData')
+    ->name('roles.data');

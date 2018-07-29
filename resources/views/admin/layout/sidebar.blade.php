@@ -63,14 +63,20 @@
             </li>
             <li>
                 <a href="#">
-                    <span class="fa fa-history"></span>
-                    <span class="sidebar-title">Журнал дій</span>
+                    <span class="fa fa-ban"></span>
+                    <span class="sidebar-title">Блокування</span>
+                </a>
+            </li>
+            <li{!! (strpos($curRoute, 'admin.roles') !== false) ? ' class="active" ' : '' !!}>
+                <a href="{{ route('admin.roles.index') }}">
+                    <span class="fa fa-lock"></span>
+                    <span class="sidebar-title">Ролі</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <span class="fa fa-ban"></span>
-                    <span class="sidebar-title">Блокування</span>
+                    <span class="fa fa-history"></span>
+                    <span class="sidebar-title">Журнал дій</span>
                 </a>
             </li>
         </ul>
