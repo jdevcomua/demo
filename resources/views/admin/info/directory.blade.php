@@ -17,7 +17,7 @@
 
         <div class="tray tray-center">
 
-            <div class="row">
+            <div class="row flex-grid">
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
@@ -25,11 +25,29 @@
                                 <span class="glyphicon glyphicon-tasks"></span>Список всіх порід</div>
                         </div>
                         <div class="panel-body pn">
+                            @if($errors->breed_rem)
+                                @foreach($errors->breed_rem->all() as $error)
+                                    <div class="alert alert-danger alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-remove pr10"></i>
+                                        {{ $error }}
+                                    </div>
+                                @endforeach
+                            @endif
+
+                            @if (\Session::has('success_breed_rem'))
+                                <div class="alert alert-success alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-check pr10"></i>
+                                    {{ \Session::get('success_breed_rem') }}
+                                </div>
+                            @endif
                             <table class="table table-striped table-hover display datatable responsive nowrap"
                                    id="datatable-breed" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Дії</th>
                                     <th>Вид тварини</th>
                                     <th>Назва</th>
                                     <th>FCI</th>
@@ -38,6 +56,7 @@
                                 <tfoot class="search">
                                 <tr>
                                     <th></th>
+                                    <th class="no-search"></th>
                                     <th>
                                         <select>
                                             <option selected value>---</option>
@@ -63,11 +82,29 @@
                                 <span class="glyphicon glyphicon-tasks"></span>Список усіх мастей</div>
                         </div>
                         <div class="panel-body pn">
+                            @if($errors->color_rem)
+                                @foreach($errors->color_rem->all() as $error)
+                                    <div class="alert alert-danger alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-remove pr10"></i>
+                                        {{ $error }}
+                                    </div>
+                                @endforeach
+                            @endif
+
+                            @if (\Session::has('success_color_rem'))
+                                <div class="alert alert-success alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-check pr10"></i>
+                                    {{ \Session::get('success_color_rem') }}
+                                </div>
+                            @endif
                             <table class="table table-striped table-hover display datatable responsive nowrap"
                                    id="datatable-color" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Дії</th>
                                     <th>Вид тварини</th>
                                     <th>Назва</th>
                                 </tr>
@@ -75,6 +112,7 @@
                                 <tfoot class="search">
                                 <tr>
                                     <th></th>
+                                    <th class="no-search"></th>
                                     <th>
                                         <select>
                                             <option selected value>---</option>
@@ -112,11 +150,11 @@
                                     @endforeach
                                 @endif
 
-                                @if (\Session::has('success-breed'))
+                                @if (\Session::has('success_breed'))
                                     <div class="alert alert-success alert-dismissable">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                         <i class="fa fa-check pr10"></i>
-                                        {{ \Session::get('success-breed') }}
+                                        {{ \Session::get('success_breed') }}
                                     </div>
                                 @endif
 
@@ -179,11 +217,11 @@
                                     @endforeach
                                 @endif
 
-                                @if (\Session::has('success-color'))
+                                @if (\Session::has('success_color'))
                                     <div class="alert alert-success alert-dismissable">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                         <i class="fa fa-check pr10"></i>
-                                        {{ \Session::get('success-color') }}
+                                        {{ \Session::get('success_color') }}
                                     </div>
                                 @endif
                                 <div class="form-group">
@@ -234,12 +272,12 @@
         jQuery(document).ready(function() {
 
             $('#datatable-breed tfoot th').each(function() {
-                if ($(this).find('select').length !== 0) return;
+                if ($(this).find('select').length !== 0 || $(this).hasClass('no-search')) return;
                 var title = $('#datatable-breed thead th').eq($(this).index()).text();
                 $(this).html('<input type="text" class="form-control" />');
             });
             $('#datatable-color tfoot th').each(function() {
-                if ($(this).find('select').length !== 0) return;
+                if ($(this).find('select').length !== 0 || $(this).hasClass('no-search')) return;
                 var title = $('#datatable-color thead th').eq($(this).index()).text();
                 $(this).html('<input type="text" class="form-control" />');
             });
@@ -254,6 +292,18 @@
                 responsive: true,
                 columns: [
                     { "data": "id" },
+                    {
+                        "data": "id",
+                        defaultContent: '',
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                return "<a href=\"{{ route('admin.info.directories.remove.breed') }}?id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
+                                    "</a>";
+                            }
+                        }
+                    },
                     { "data": "species_name" },
                     { "data": "name" },
                     { "data": "fci" },
@@ -270,6 +320,18 @@
                 responsive: true,
                 columns: [
                     { "data": "id" },
+                    {
+                        "data": "id",
+                        defaultContent: '',
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                return "<a href=\"{{ route('admin.info.directories.remove.color') }}?id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
+                                    "</a>";
+                            }
+                        }
+                    },
                     { "data": "species_name" },
                     { "data": "name" },
                 ],

@@ -125,7 +125,31 @@ class InfoController extends Controller
 
             return redirect()
                 ->back()
-                ->with('success-breed', 'Порода додана успішно !');
+                ->with('success_breed', 'Порода додана успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryRemoveBreed(Request $request)
+    {
+        if ($request->has('id')) {
+            $breed = $this->breedModel
+                ->where('id', '=', $request->get('id'))
+                ->firstOrFail();
+            $count = $breed->animals()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити породу. Кількість тварин що її мають: ' . $count,
+                    ], 'breed_rem');
+            }
+
+            $breed->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_breed_rem', 'Порода видалена успішно !');
         }
         return response('', 400);
     }
@@ -225,7 +249,31 @@ class InfoController extends Controller
 
             return redirect()
                 ->back()
-                ->with('success-color', 'Масть додана успішно !');
+                ->with('success_color', 'Масть додана успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryRemoveColor(Request $request)
+    {
+        if ($request->has('id')) {
+            $color = $this->colorModel
+                ->where('id', '=', $request->get('id'))
+                ->firstOrFail();
+            $count = $color->animals()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити масть. Кількість тварин що її мають: ' . $count,
+                    ], 'color_rem');
+            }
+
+            $color->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_color_rem', 'Масть видалена успішно !');
         }
         return response('', 400);
     }

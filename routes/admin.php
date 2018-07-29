@@ -3,7 +3,9 @@
 Route::redirect('/', '/admin/animals/index', 302)
     ->name('index');
 
-
+//  TODO move data routes to another route grope and make it secure
+// since Entrust checking permissions every request
+// -> more DB requests -> slower app -> less req/sec
 
 Route::get('users/index', 'Admin\DataBasesController@userIndex')
     ->name('db.users');
@@ -24,10 +26,14 @@ Route::get('directories/data/breed', 'Admin\InfoController@directoryDataBreed')
     ->name('info.directories.data.breed');
 Route::post('directories/store/breed', 'Admin\InfoController@directoryStoreBreed')
     ->name('info.directories.store.breed');
+Route::get('directories/remove/breed', 'Admin\InfoController@directoryRemoveBreed')
+    ->name('info.directories.remove.breed');
 
 Route::get('directories/data/color', 'Admin\InfoController@directoryDataColor')
     ->name('info.directories.data.color');
 Route::post('directories/store/color', 'Admin\InfoController@directoryStoreColor')
     ->name('info.directories.store.color');
+Route::get('directories/remove/color', 'Admin\InfoController@directoryRemoveColor')
+    ->name('info.directories.remove.color');
 
 
