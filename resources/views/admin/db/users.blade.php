@@ -163,7 +163,7 @@
 
             my_table.columns().eq(0).each(function(colIdx) {
                 var $input = $('input', my_table.column(colIdx).footer());
-                
+
                 $input.on('keyup', function(e) {
                     if(e.keyCode === 13) searchInTable(my_table, colIdx, this.value);
                 });

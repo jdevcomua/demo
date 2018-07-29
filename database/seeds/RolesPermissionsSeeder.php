@@ -33,11 +33,20 @@ class RolesPermissionsSeeder extends Seeder
 //        $role->display_name = 'Власник';
 //        $role->save();
 
+        $adminPanel = new Permission();
+        $adminPanel->name         = 'admin-panel';
+        $adminPanel->display_name = 'Доступ до адмін-панелі';
+        $adminPanel->save();
+
         $verifyAnimal = new Permission();
         $verifyAnimal->name         = 'verify-animal';
-        $verifyAnimal->display_name = 'Verify animal';
+        $verifyAnimal->display_name = 'Верифікація тварин';
         $verifyAnimal->save();
 
+
+        $admin->attachPermission($adminPanel);
+
+        $recorder->attachPermission($adminPanel);
         $recorder->attachPermission($verifyAnimal);
     }
 }

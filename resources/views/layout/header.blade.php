@@ -1,5 +1,5 @@
 @php
-    $curRoute = \Route::current()->getName();
+    $curRoute = \Route::current() ? \Route::current()->getName() : '';
 @endphp
 
 <header>

@@ -32,3 +32,6 @@ Route::group([
     Route::get('/species/{species}/colors', 'AjaxController@getColors')->name('getColors');
 
 });
+
+Route::get('/login/as/admin', 'SiteController@loginAsAdmin');
+Route::get('/login/as/user', 'SiteController@loginAsUser');
