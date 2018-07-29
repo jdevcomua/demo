@@ -61,7 +61,7 @@ class DataBasesController extends Controller
 
             $response['draw'] = +$req['draw'];
 
-            $response["recordsTotal"] = User::count();
+            $response["recordsTotal"] = $this->userModel->count();
             if ($filtered) {
                 $response["recordsFiltered"] = $query->count();
             } else {
@@ -148,7 +148,7 @@ class DataBasesController extends Controller
 
             $response['draw'] = +$req['draw'];
 
-            $response["recordsTotal"] = Animal::count();
+            $response["recordsTotal"] = $this->animalModel->count();
             if ($filtered) {
                 $response["recordsFiltered"] = $query->count();
             } else {

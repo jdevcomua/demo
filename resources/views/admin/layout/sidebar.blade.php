@@ -28,8 +28,8 @@
 
 
             <li class="sidebar-label pt20">Інформація</li>
-            <li>
-                <a href="#">
+            <li @if($curRoute == 'admin.info.directories') class="active" @endif>
+                <a href="{{ route('admin.info.directories') }}">
                     <span class="fa fa-book"></span>
                     <span class="sidebar-title">Довідники</span>
                 </a>

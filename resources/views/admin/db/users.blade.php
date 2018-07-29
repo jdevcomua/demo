@@ -107,13 +107,13 @@
                 serverSide: true,
                 responsive: true,
                 columns: [
-                    { "data": "id", "responsivePriority": 1 },
-                    { "data": "ext_id", "responsivePriority": 11 },
-                    { "data": "first_name", "responsivePriority": 2 },
-                    { "data": "last_name", "responsivePriority": 3 },
-                    { "data": "middle_name", "responsivePriority": 6 },
-                    { "data": "email", "responsivePriority": 5 },
-                    { "data": "phone", "responsivePriority": 7 },
+                    { "data": "id" },
+                    { "data": "ext_id" },
+                    { "data": "first_name" },
+                    { "data": "last_name" },
+                    { "data": "middle_name" },
+                    { "data": "email" },
+                    { "data": "phone" },
                     {
                         data: 'birthday',
                         responsivePriority: 10,
@@ -122,8 +122,8 @@
                             return d.toLocaleDateString('uk')
                         }
                     },
-                    { "data": "inn", "responsivePriority": 9 },
-                    { "data": "passport", "responsivePriority": 8 },
+                    { "data": "inn" },
+                    { "data": "passport" },
                     {
                         data: 'gender',
                         responsivePriority: 4,
@@ -135,30 +135,10 @@
                             }
                         }
                     },
-                    { "data": "created_at", "responsivePriority": 12 },
-                    { "data": "updated_at", "responsivePriority": 13 },
+                    { "data": "created_at" },
+                    { "data": "updated_at" },
                 ],
-                language: {
-                    "sProcessing":   "Зачекайте...",
-                    "sLengthMenu":   "Показати _MENU_ записів",
-                    "sZeroRecords":  "Записи відсутні.",
-                    "sInfo":         "Записи з _START_ по _END_ із _TOTAL_ записів",
-                    "sInfoEmpty":    "Записи з 0 по 0 із 0 записів",
-                    "sInfoFiltered": "(відфільтровано з _MAX_ записів)",
-                    "sInfoPostFix":  "",
-                    "sSearch":       "Пошук:",
-                    "sUrl":          "",
-                    "oPaginate": {
-                        "sFirst": "Перша",
-                        "sPrevious": "Попередня",
-                        "sNext": "Наступна",
-                        "sLast": "Остання"
-                    },
-                    "oAria": {
-                        "sSortAscending":  ": активувати для сортування стовпців за зростанням",
-                        "sSortDescending": ": активувати для сортування стовпців за спаданням"
-                    }
-                }
+                language: dataTableLang
             });
 
             my_table.columns().eq(0).each(function(colIdx) {
