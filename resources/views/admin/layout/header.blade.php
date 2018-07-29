@@ -16,8 +16,9 @@
                     <a href="{{ route('profile') }}"><span class="fa fa-user"></span>Профіль</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="#"><span class="fa fa-power-off" onclick="event.preventDefault();
-                           document.getElementById('logout-form').submit();"></span>Вийти</a>
+                    <a href="#" onclick="event.preventDefault();
+                           document.getElementById('logout-form').submit();">
+                        <span class="fa fa-power-off"></span>Вийти</a>
                     <form id="logout-form" action="{{ route('logout') }}"
                           method="POST" style="display: none;">
                         @csrf

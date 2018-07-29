@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
                 'gender' => \App\User::GENDER_MALE,
             ]]);
         DB::transaction(function () {
-            for ($i = 1; $i < 10000; $i++)
+            for ($i = 1; $i < 5000; $i++)
                 DB::table('users')->insert([[
                     'ext_id' => 123 + $i,
                     'first_name' => str_random(7),

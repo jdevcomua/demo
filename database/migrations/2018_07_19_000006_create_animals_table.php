@@ -15,17 +15,16 @@ class CreateAnimalsTable extends Migration
     {
         Schema::create('animals', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nickname', 256);
             $table->unsignedSmallInteger('species_id');
             $table->unsignedInteger('breed_id');
-            $table->timestamp('birthday');
-            $table->unsignedTinyInteger('gender');
             $table->unsignedInteger('color_id');
+            $table->unsignedTinyInteger('gender');
+            $table->timestamp('birthday');
             $table->boolean('sterilized')->default(false);
-            $table->string('nickname', 256);
             $table->unsignedInteger('user_id');
             $table->boolean('verified')->default(false);
             $table->text('comment')->nullable();
-            $table->jsonb('data')->nullable();
             $table->string('number', 256)->nullable();
             $table->unsignedInteger('confirm_user_id')->nullable();
             $table->timestamps();

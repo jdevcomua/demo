@@ -6,7 +6,7 @@
         <div class="topbar-left">
             <ol class="breadcrumb">
                 <li class="crumb-active">
-                    <a href="#">База користувачів</a>
+                    <a href="#">База тварин</a>
                 </li>
             </ol>
         </div>
@@ -23,7 +23,7 @@
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
                             <div class="panel-title hidden-xs">
-                                <span class="glyphicon glyphicon-tasks"></span>Список всіх користувачів</div>
+                                <span class="glyphicon glyphicon-tasks"></span>Список всіх тварин</div>
                         </div>
                         <div class="panel-body pn">
                             <table class="table table-striped table-hover display datatable responsive nowrap"
@@ -31,16 +31,16 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>#K</th>
-                                    <th>Ім'я</th>
-                                    <th>Прізвище</th>
-                                    <th>По батькові</th>
-                                    <th>e-mail</th>
-                                    <th>Телефон</th>
-                                    <th>Дата народження</th>
-                                    <th>ІПН</th>
-                                    <th>Паспорт</th>
+                                    <th>Кличка</th>
+                                    <th>Вид</th>
+                                    <th>Порода</th>
+                                    <th>Масть</th>
                                     <th>Стать</th>
+                                    <th>Дата народження</th>
+                                    <th>Стерилізовано</th>
+                                    <th>Власник</th>
+                                    <th>Верифіковано</th>
+                                    <th>Ким верифіковано</th>
                                     <th>Зареєстровано</th>
                                     <th>Оновлено</th>
                                 </tr>
@@ -49,12 +49,14 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>
+                                        <select>
+                                            <option selected value>---</option>
+                                            @foreach($species as $s)
+                                                <option value="{{$s->name}}">{{$s->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </th>
                                     <th></th>
                                     <th></th>
                                     <th>
@@ -64,6 +66,23 @@
                                             <option value="1">Чол.</option>
                                         </select>
                                     </th>
+                                    <th></th>
+                                    <th>
+                                        <select>
+                                            <option selected value>---</option>
+                                            <option value="0">Ні</option>
+                                            <option value="1">Так</option>
+                                        </select>
+                                    </th>
+                                    <th></th>
+                                    <th>
+                                        <select>
+                                            <option selected value>---</option>
+                                            <option value="0">Ні</option>
+                                            <option value="1">Так</option>
+                                        </select>
+                                    </th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -102,31 +121,18 @@
             var my_table = $('#datatable').DataTable({
                 sDom: 't<"dt-panelfooter clearfix"ip>',
                 ajax: {
-                    url: '{{ route('admin.db.users.data', null, false) }}'
+                    url: '{{ route('admin.db.animals.data', null, false) }}'
                 },
                 serverSide: true,
                 responsive: true,
                 columns: [
-                    { "data": "id", "responsivePriority": 1 },
-                    { "data": "ext_id", "responsivePriority": 11 },
-                    { "data": "first_name", "responsivePriority": 2 },
-                    { "data": "last_name", "responsivePriority": 3 },
-                    { "data": "middle_name", "responsivePriority": 6 },
-                    { "data": "email", "responsivePriority": 5 },
-                    { "data": "phone", "responsivePriority": 7 },
-                    {
-                        data: 'birthday',
-                        responsivePriority: 10,
-                        render: function ( data, type, row ) {
-                            var d = new Date(data);
-                            return d.toLocaleDateString('uk')
-                        }
-                    },
-                    { "data": "inn", "responsivePriority": 9 },
-                    { "data": "passport", "responsivePriority": 8 },
+                    { "data": "id"},
+                    { "data": "nickname" },
+                    { "data": "species_name"},
+                    { "data": "breeds_name" },
+                    { "data": "colors_name" },
                     {
                         data: 'gender',
-                        responsivePriority: 4,
                         render: function ( data, type, row ) {
                             switch (data) {
                                 case 0: return 'Жін.';
@@ -135,8 +141,57 @@
                             }
                         }
                     },
-                    { "data": "created_at", "responsivePriority": 12 },
-                    { "data": "updated_at", "responsivePriority": 13 },
+                    {
+                        data: 'birthday',
+                        render: function ( data, type, row ) {
+                            var d = new Date(data);
+                            return d.toLocaleDateString('uk')
+                        }
+                    },
+                    {
+                        data: 'sterilized',
+                        render: function ( data, type, row ) {
+                            switch (data) {
+                                case 0: return 'Ні';
+                                case 1: return 'Так';
+                                default: return '?';
+                            }
+                        }
+                    },
+                    {
+                        data: 'owner_name',
+                        defaultContent: '',
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                var arr = data.split('||');
+                                //TODO link to user detail view
+                                return '<a href="' + arr[1] + '">' + arr[0] + '</a>';
+                            }
+                        }
+                    },
+                    {
+                        data: 'verified',
+                        render: function ( data, type, row ) {
+                            switch (data) {
+                                case 0: return 'Ні';
+                                case 1: return 'Так';
+                                default: return '?';
+                            }
+                        }
+                    },
+                    {
+                        data: 'verified_name',
+                        defaultContent: '',
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                var arr = data.split('||');
+                                //TODO link to user detail view
+                                return '<a href="' + arr[1] + '">' + arr[0] + '</a>';
+                            }
+                        }
+                    },
+                    { "data": "created_at" },
+                    { "data": "updated_at" },
                 ],
                 language: {
                     "sProcessing":   "Зачекайте...",
@@ -163,7 +218,7 @@
 
             my_table.columns().eq(0).each(function(colIdx) {
                 var $input = $('input', my_table.column(colIdx).footer());
-                
+
                 $input.on('keyup', function(e) {
                     if(e.keyCode === 13) searchInTable(my_table, colIdx, this.value);
                 });

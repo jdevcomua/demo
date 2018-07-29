@@ -52,8 +52,8 @@ use Illuminate\Database\Eloquent\Model;
 class Animal extends Model
 {
 
-    const GENDER_MALE = 0;
-    const GENDER_FEMALE = 1;
+    const GENDER_FEMALE = 0;
+    const GENDER_MALE = 1;
 
     protected $fillable = [
         'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'birthday',
@@ -62,13 +62,6 @@ class Animal extends Model
 
     protected $dates = [
         'birthday', 'created_at', 'updated_at'
-    ];
-
-    protected $casts = [
-        'gender' => 'integer',
-        'sterilized' => 'boolean',
-        'status' => 'integer',
-        'data' => 'array',
     ];
 
 

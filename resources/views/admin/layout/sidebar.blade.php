@@ -7,14 +7,14 @@
     <div class="sidebar-left-content nano-content">
         <ul class="nav sidebar-menu">
             <li class="sidebar-label pt20">Бази</li>
-            <li>
-                <a href="#">
+            <li @if($curRoute == 'admin.db.animals') class="active" @endif>
+                <a href="{{ route('admin.db.animals') }}">
                     <span class="fa fa-paw"></span>
                     <span class="sidebar-title">Тварини</span>
                 </a>
             </li>
             <li @if($curRoute == 'admin.db.users') class="active" @endif>
-                <a href="#">
+                <a href="{{ route('admin.db.users') }}">
                     <span class="fa fa-users"></span>
                     <span class="sidebar-title">Користувачі</span>
                 </a>

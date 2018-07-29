@@ -9,6 +9,9 @@ table.datatable {
     display: table-header-group;
   }
 }
-.datatable_wrapper {
+.datatable_wrapper, .panel-body {
   overflow: hidden;
+}
+body.tray-rescale .tray-center {
+  padding-right: 0 !important;
 }

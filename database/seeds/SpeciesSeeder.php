@@ -12,7 +12,7 @@ class SpeciesSeeder extends Seeder
     public function run()
     {
         DB::table('species')->insert([
-            ['name' => 'Cобака'],
+            ['name' => 'Собака'],
             ['name' => 'Кiт']
         ]);
     }
