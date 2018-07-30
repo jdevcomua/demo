@@ -63,8 +63,8 @@ class DataTables
                                 $req['order'][0]['dir']
                             );
                         } else {
-                            $query->orderBy(
-                                $columns[$req['order'][0]['column']]['data'],
+                            $query->orderByRaw(
+                                $aliases[$columns[$req['order'][0]['column']]['data']] . ' ' .
                                 $req['order'][0]['dir']
                             );
                         }
