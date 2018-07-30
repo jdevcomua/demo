@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\DataTables;
 use App\Models\Permission;
 use App\Models\Role;
-use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -29,83 +29,24 @@ class AdminRolesController extends Controller
 
     public function rolesData(Request $request)
     {
-        $filtered = false;
+        $model = new Role();
+
+        $query = $model->newQuery()
+            ->leftJoin('permission_role', 'roles.id', '=', 'permission_role.role_id')
+            ->leftJoin('permissions', 'permission_role.permission_id', '=', 'permissions.id')
+            ->leftJoin('role_user', 'roles.id', '=', 'role_user.role_id')
+            ->leftJoin('users', 'role_user.user_id', '=', 'users.id')
+            ->groupBy('roles.id');
 
         $aliases = [
             'permissions_count' => 'COUNT(`permissions`.`id`)',
             'users_count' => 'COUNT(`users`.`id`)',
         ];
-        $table = 'roles';
 
-        if ($request->has(['draw', 'start', 'length'])) {
-            $req = $request->all();
+        $response = DataTables::provide($request, $model, $query, $aliases);
 
-            $query = $this->rolesModel
-                ->newQuery()
-                ->select([
-                    'roles.*',
-                    DB::raw('COUNT(`permissions`.`id`) AS permissions_count'),
-                    DB::raw('COUNT(`users`.`id`) AS users_count'),
-                ])
-                ->leftJoin('permission_role', 'roles.id', '=', 'permission_role.role_id')
-                ->leftJoin('permissions', 'permission_role.permission_id', '=', 'permissions.id')
-                ->leftJoin('role_user', 'roles.id', '=', 'role_user.role_id')
-                ->leftJoin('users', 'role_user.user_id', '=', 'users.id')
-                ->groupBy('roles.id');
+        if ($response) return response()->json($response);
 
-
-            if ($request->has('columns')) {
-                $columns = $req['columns'];
-                if (is_array($columns)) {
-                    foreach ($columns as $column) {
-                        try {
-                            if ($column['search']['value'] !== null) {
-                                if (!array_key_exists($column['data'], $aliases)) {
-                                    $query->where($table. '.' .$column['data'], 'like',
-                                        '%' . $column['search']['value'] . '%');
-                                } else {
-                                    $query->whereRaw($aliases[$column['data']] . ' like '
-                                        . '\'%' . $column['search']['value'] . '%\''
-                                    );
-                                }
-                                $filtered = true;
-                            }
-                        } catch (\Exception $exception) {}
-                    }
-                }
-                if ($request->has('order')) {
-                    try {
-                        if (!array_key_exists($columns[$req['order'][0]['column']]['data'], $aliases)) {
-                            $query->orderBy(
-                                $table. '.' .$columns[$req['order'][0]['column']]['data'],
-                                $req['order'][0]['dir']
-                            );
-                        } else {
-                            $query->orderBy(
-                                $columns[$req['order'][0]['column']]['data'],
-                                $req['order'][0]['dir']
-                            );
-                        }
-                    } catch (\Exception $exception) {}
-                }
-            }
-
-            $response['draw'] = +$req['draw'];
-
-            $response["recordsTotal"] = $this->rolesModel->count();
-            if ($filtered) {
-                $response["recordsFiltered"] = $query->count();
-            } else {
-                $response["recordsFiltered"] = $response["recordsTotal"];
-            }
-
-            $response['data'] = $query->offset($req['start'])
-                ->limit($req['length'])
-                ->get()
-                ->toArray();
-
-            return response()->json($response);
-        }
         return response('', 400);
     }
 

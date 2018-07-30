@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\DataTables;
 use App\Models\Breed;
 use App\Models\Color;
 use App\Models\Species;
@@ -29,69 +30,19 @@ class InfoController extends Controller
 
     public function directoryDataBreed(Request $request)
     {
-        $filtered = false;
+        $model = new Breed();
+
+        $query = $model->newQuery()
+            ->join('species', 'species.id', '=', 'breeds.species_id');
 
         $aliases = [
             'species_name' => 'species.name',
         ];
-        $table = 'breeds';
 
-        if ($request->has(['draw', 'start', 'length'])) {
-            $req = $request->all();
+        $response = DataTables::provide($request, $model, $query, $aliases);
 
-            $query = $this->breedModel
-                ->newQuery()
-                ->select([
-                    'breeds.*',
-                    'species.name as species_name',
-                ])
-                ->join('species', 'species.id', '=', 'breeds.species_id');
+        if ($response) return response()->json($response);
 
-            if ($request->has('columns')) {
-                $columns = $req['columns'];
-                if (is_array($columns)) {
-                    foreach ($columns as $column) {
-                        try {
-                            if ($column['search']['value'] !== null) {
-                                if (!array_key_exists($column['data'], $aliases)) {
-                                    $query->where($table. '.' .$column['data'], 'like',
-                                        '%' . $column['search']['value'] . '%');
-                                } else {
-                                    $query->whereRaw($aliases[$column['data']] . ' like '
-                                        . '\'%' . $column['search']['value'] . '%\''
-                                    );
-                                }
-                                $filtered = true;
-                            }
-                        } catch (\Exception $exception) {}
-                    }
-                }
-                if ($request->has('order')) {
-                    try {
-                        $query->orderBy(
-                            $columns[$req['order'][0]['column']]['data'],
-                            $req['order'][0]['dir']
-                        );
-                    } catch (\Exception $exception) {}
-                }
-            }
-
-            $response['draw'] = +$req['draw'];
-
-            $response["recordsTotal"] = $this->breedModel->count();
-            if ($filtered) {
-                $response["recordsFiltered"] = $query->count();
-            } else {
-                $response["recordsFiltered"] = $response["recordsTotal"];
-            }
-
-            $response['data'] = $query->offset($req['start'])
-                ->limit($req['length'])
-                ->get()
-                ->toArray();
-
-            return response()->json($response);
-        }
         return response('', 400);
     }
 
@@ -156,69 +107,19 @@ class InfoController extends Controller
 
     public function directoryDataColor(Request $request)
     {
-        $filtered = false;
+        $model = new Color();
+
+        $query = $model->newQuery()
+            ->join('species', 'species.id', '=', 'colors.species_id');
 
         $aliases = [
             'species_name' => 'species.name',
         ];
-        $table = 'colors';
 
-        if ($request->has(['draw', 'start', 'length'])) {
-            $req = $request->all();
+        $response = DataTables::provide($request, $model, $query, $aliases);
 
-            $query = $this->colorModel
-                ->newQuery()
-                ->select([
-                    'colors.*',
-                    'species.name as species_name',
-                ])
-                ->join('species', 'species.id', '=', 'colors.species_id');
+        if ($response) return response()->json($response);
 
-            if ($request->has('columns')) {
-                $columns = $req['columns'];
-                if (is_array($columns)) {
-                    foreach ($columns as $column) {
-                        try {
-                            if ($column['search']['value'] !== null) {
-                                if (!array_key_exists($column['data'], $aliases)) {
-                                    $query->where($table. '.' .$column['data'], 'like',
-                                        '%' . $column['search']['value'] . '%');
-                                } else {
-                                    $query->whereRaw($aliases[$column['data']] . ' like '
-                                        . '\'%' . $column['search']['value'] . '%\''
-                                    );
-                                }
-                                $filtered = true;
-                            }
-                        } catch (\Exception $exception) {}
-                    }
-                }
-                if ($request->has('order')) {
-                    try {
-                        $query->orderBy(
-                            $columns[$req['order'][0]['column']]['data'],
-                            $req['order'][0]['dir']
-                        );
-                    } catch (\Exception $exception) {}
-                }
-            }
-
-            $response['draw'] = +$req['draw'];
-
-            $response["recordsTotal"] = $this->colorModel->count();
-            if ($filtered) {
-                $response["recordsFiltered"] = $query->count();
-            } else {
-                $response["recordsFiltered"] = $response["recordsTotal"];
-            }
-
-            $response['data'] = $query->offset($req['start'])
-                ->limit($req['length'])
-                ->get()
-                ->toArray();
-
-            return response()->json($response);
-        }
         return response('', 400);
     }
 
