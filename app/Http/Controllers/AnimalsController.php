@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Animal;
+use App\Models\AnimalsFile;
 use App\Services\FilesService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -123,7 +124,7 @@ class AnimalsController extends Controller
      */
     public function edit(Animal $animal)
     {
-        $animal->load(['species', 'color', 'images']);
+        $animal->load(['species', 'color', 'images', 'documents']);
         $animal->images = $animal->images->pluck('path', 'num')->toArray();
 
         return view('animals.edit', [
@@ -206,5 +207,13 @@ class AnimalsController extends Controller
             $animal->delete();
         }
         return redirect()->route('animals.index');
+    }
+
+    public function removeFile(AnimalsFile $file)
+    {
+        $file->delete();
+        return response()->json([
+            'status' => 'ok'
+        ]);
     }
 }

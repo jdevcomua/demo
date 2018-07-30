@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\AnimalsFile;
 use App\Models\Species;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -34,6 +35,15 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('animal', function ($value, $route) {
             return \Auth::user()->animals()->where('id', $value)->firstOrFail();
+        });
+
+        Route::bind('animalFile', function ($value, $route) {
+            $file = AnimalsFile::where('id', '=', $value)->firstOrFail();
+            $user = \Auth::user();
+            if ($user) {
+                if ($file->animal->user->id === $user->id) return $file;
+            }
+            return abort(404);
         });
 
     }

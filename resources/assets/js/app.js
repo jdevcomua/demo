@@ -26,6 +26,8 @@ $(function () {
         locale: "uk",
         autoclose: true
     });
+
+    updateFileDeletes();
 });
 /////////////////////////////////////////
 
@@ -149,7 +151,7 @@ function toArray(fileList) {
 }
 
 function showFiles(files) {
-    $fileList.html('');
+    $fileList.find('.file-item:not(.exists)').remove();
     for (var i = 0; i < files.length; i++) {
         var arr = files[i].name.split('.');
         var name = '';
@@ -180,8 +182,19 @@ function updateFileDeletes() {
     var $files = $('.file-delete');
     $files.off();
     $files.on('click', function () {
-        droppedFiles.splice($(this).data('id'), 1);
-        showFiles(droppedFiles);
+        if ($(this).hasClass('exists')) {
+            $(this).parent('.file-item').remove();
+            $.ajax({
+                url: $(this).data('rem'),
+                type: 'post',
+                error: function(data) {
+                    console.error(data);
+                }
+            });
+        } else {
+            droppedFiles.splice($(this).data('id'), 1);
+            showFiles(droppedFiles);
+        }
     })
 }
 

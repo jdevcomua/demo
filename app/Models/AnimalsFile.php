@@ -56,4 +56,22 @@ class AnimalsFile extends Model
     {
         return self::STORAGE_PREFIX . $this->attributes['path'];
     }
+
+    public function getNameAttribute()
+    {
+        $arr = explode('/', $this->attributes['path']);
+        $fname = $arr[count($arr) - 1];
+        $arr = explode('.', $fname);
+        array_pop($arr);
+        return implode('.', $arr);
+    }
+
+    public function getExtensionAttribute()
+    {
+        $arr = explode('/', $this->attributes['path']);
+        $fname = $arr[count($arr) - 1];
+        $arr = explode('.', $fname);
+        if (count($arr) === 1) return '';
+        return array_pop($arr);
+    }
 }
