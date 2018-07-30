@@ -165,4 +165,33 @@ class DataBasesController extends Controller
         return response('', 400);
     }
 
+    public function animalEdit($id)
+    {
+        $animal = $this->animalModel
+            ->where('id', '=', $id)
+            ->firstOrFail();
+
+        $animal->load('images', 'documents');
+
+        return view('admin.db.animals_edit', [
+            'animal' => $animal
+        ]);
+    }
+
+    public function animalUpdate($id)
+    {
+        dd(0);
+        $animal = $this->animalModel
+            ->where('id', '=', $id)
+            ->firstOrFail();
+
+        return view('admin.db.animals_edit', [
+            'animal' => $animal
+        ]);
+    }
+
+    public function animalRemove($id) {
+        dd(0);
+    }
+
 }

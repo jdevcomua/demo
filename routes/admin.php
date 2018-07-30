@@ -16,6 +16,12 @@ Route::get('animals/index', 'Admin\DataBasesController@animalIndex')
     ->name('db.animals');
 Route::get('animals/data', 'Admin\DataBasesController@animalData')
     ->name('db.animals.data');
+Route::get('animals/edit/{id?}', 'Admin\DataBasesController@animalEdit')
+    ->name('db.animals.edit');
+Route::post('animals/update/{id}', 'Admin\DataBasesController@animalUpdate')
+    ->name('db.animals.update');
+Route::get('animals/remove/{id?}', 'Admin\DataBasesController@animalRemove')
+    ->name('db.animals.remove');
 
 
 

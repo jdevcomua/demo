@@ -13,7 +13,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#nav-spy" data-offset="300">
+<body class="@yield('body-class')" data-spy="scroll" data-target="#nav-spy" data-offset="300">
 
     <div id="main">
         @include('admin.layout.header')

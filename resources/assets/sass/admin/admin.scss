@@ -19,3 +19,8 @@ body.tray-rescale .tray-center {
   display: flex;
   flex-flow: row wrap;
 }
+.mix-container .mix.label h6 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

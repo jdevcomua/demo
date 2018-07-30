@@ -21,6 +21,7 @@ mix.sass('resources/assets/sass/admin/admin.scss', 'public/css');
 mix.combine([
     'resources/assets/css/admin/jquery.dataTables.min.css',
     'resources/assets/css/admin/dataTables.plugins.css',
+    'resources/assets/css/admin/magnific-popup.css',
     'resources/assets/css/admin/theme.css',
     'public/css/admin.css'
 ], 'public/css/admin.css');

@@ -31,6 +31,7 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Дії</th>
                                     <th>Кличка</th>
                                     <th>Вид</th>
                                     <th>Порода</th>
@@ -48,6 +49,7 @@
                                 <tfoot class="search">
                                 <tr>
                                     <th></th>
+                                    <th class="no-search"></th>
                                     <th></th>
                                     <th>
                                         <select>
@@ -112,7 +114,7 @@
         jQuery(document).ready(function() {
 
             $('#datatable tfoot th').each(function() {
-                if ($(this).find('select').length !== 0) return;
+                if ($(this).find('select').length !== 0 || $(this).hasClass('no-search')) return;
                 var title = $('#datatable thead th').eq($(this).index()).text();
                 $(this).html('<input type="text" class="form-control" />');
             });
@@ -127,6 +129,22 @@
                 responsive: true,
                 columns: [
                     { "data": "id"},
+                    {
+                        "data": "id",
+                        defaultContent: '',
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                return "<a href=\"{{ route('admin.db.animals.edit') }}/"
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
+                                    "</a>" +
+                                    "<a href=\"{{ route('admin.db.animals.remove') }}/"
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
+                                    "</a>";
+                            }
+                        }
+                    },
                     { "data": "nickname" },
                     { "data": "species_name"},
                     { "data": "breeds_name" },
