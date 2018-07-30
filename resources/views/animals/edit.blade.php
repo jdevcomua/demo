@@ -73,12 +73,12 @@
                     <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn radio-item big-radio @if($pet->gender === \App\Models\Animal::GENDER_MALE) active @endif">
                             <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
-                            <input type="radio" name="gender" value="0" autocomplete="off"
+                            <input type="radio" name="gender" value="{{ \App\Models\Animal::GENDER_MALE }}" autocomplete="off"
                                    @if($pet->gender === \App\Models\Animal::GENDER_MALE) checked @endif >Самець
                         </label>
                         <label class="btn radio-item big-radio @if($pet->gender === \App\Models\Animal::GENDER_FEMALE) active @endif">
                             <span class="label"><i class="fa fa-venus" aria-hidden="true"></i></span>
-                            <input type="radio" name="gender" value="1" autocomplete="off"
+                            <input type="radio" name="gender" value="{{ \App\Models\Animal::GENDER_FEMALE }}" autocomplete="off"
                                    @if($pet->gender === \App\Models\Animal::GENDER_FEMALE) checked @endif >Самка
                         </label>
                     </div>

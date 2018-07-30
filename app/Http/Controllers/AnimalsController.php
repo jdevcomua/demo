@@ -183,6 +183,8 @@ class AnimalsController extends Controller
         unset($data['breed']);
         unset($data['color']);
 
+        $data['sterilized'] = array_key_exists('sterilized', $data);
+
         $animal->fill($data);
         $animal->save();
 

@@ -137,10 +137,6 @@
                                 return "<a href=\"{{ route('admin.db.animals.edit') }}/"
                                     + data + "\">" +
                                     "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
-                                    "</a>" +
-                                    "<a href=\"{{ route('admin.db.animals.remove') }}/"
-                                    + data + "\">" +
-                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
                                     "</a>";
                             }
                         }

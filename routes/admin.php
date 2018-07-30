@@ -20,8 +20,9 @@ Route::get('animals/edit/{id?}', 'Admin\DataBasesController@animalEdit')
     ->name('db.animals.edit');
 Route::post('animals/update/{id}', 'Admin\DataBasesController@animalUpdate')
     ->name('db.animals.update');
-Route::get('animals/remove/{id?}', 'Admin\DataBasesController@animalRemove')
-    ->name('db.animals.remove');
+Route::get('animals/verify/{id}', 'Admin\DataBasesController@animalVerify')
+    ->name('db.animals.verify')
+    ->middleware('permission:verify-animal');
 
 
 
