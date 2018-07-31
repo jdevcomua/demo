@@ -113,7 +113,12 @@ class AnimalsController extends Controller
      */
     public function show(Animal $animal)
     {
-        dd($animal);
+        $animal->load(['species', 'color', 'images', 'documents']);
+        $animal->images = $animal->images->pluck('path', 'num')->toArray();
+
+        return view('animals.show', [
+            'animal' => $animal
+        ]);
     }
 
     /**
