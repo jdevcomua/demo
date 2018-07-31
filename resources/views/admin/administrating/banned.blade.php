@@ -53,7 +53,7 @@
                                 <tfoot class="search">
                                 <tr>
                                     <th></th>
-                                    <th></th>
+                                    <th class="no-search"></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -111,7 +111,7 @@
                                     "<i class=\"fa fa-eye pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>" +
                                     "<a href='#' class='ban' data-id=" + data + ">" +
-                                    "<i class=\"fa fa-ban\" aria-hidden=\"true\"></i>" +
+                                    "<i class=\"fa fa-user-plus\" aria-hidden=\"true\"></i>" +
                                     "</a>";
                             }
                         }
@@ -141,7 +141,7 @@
             setTimeout(function () {
                 jQuery('.ban').on('click', function(e) {
                     e.preventDefault();
-                    if (confirm('Ви впевнені що хочете разбанити користувача?')) {
+                    if (confirm('Ви впевнені що хочете розблокувати користувача?')) {
                         var id = jQuery(this).attr('data-id');
                         var form = jQuery('#remove');
                         $(form).attr('action', "{{route('admin.administrating.users.unban')}}/"+id);

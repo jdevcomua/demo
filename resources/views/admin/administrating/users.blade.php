@@ -42,21 +42,23 @@
                                     <th>#K</th>
                                     <th>Ім'я</th>
                                     <th>Прізвище</th>
+
                                     <th>По батькові</th>
                                     <th>e-mail</th>
                                     <th>Телефон</th>
                                     <th>Стать</th>
-                                    <th>Зареєстровано</th>
                                     <th>Оновлено</th>
+                                    <th>Ролі</th>
                                 </tr>
                                 </thead>
                                 <tfoot class="search">
                                 <tr>
                                     <th></th>
+                                    <th class="no-search"></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
+
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -68,7 +70,7 @@
                                         </select>
                                     </th>
                                     <th></th>
-                                    <th></th>
+                                    <th class="no-search"></th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -133,15 +135,22 @@
                             }
                         }
                     },
-                    { "data": "created_at" },
                     { "data": "updated_at" },
+                    { data: "role_names",
+                        defaultContent: '',
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                return data
+                            }
+                        }
+                    },
                 ],
             });
 
             setTimeout(function () {
                 jQuery('.ban').on('click', function(e) {
                     e.preventDefault();
-                    if (confirm('Ви впевнені що хочете забанити користувача?')) {
+                    if (confirm('Ви впевнені що хочете заблокувати користувача?')) {
                         var id = jQuery(this).attr('data-id');
                         var form = jQuery('#remove');
                         $(form).attr('action', "{{route('admin.administrating.users.ban')}}/"+id);

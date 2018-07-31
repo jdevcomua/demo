@@ -56,7 +56,7 @@
                                 <tfoot class="search">
                                 <tr>
                                     <th></th>
-                                    <th></th>
+                                    <th class="no-search"></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -72,6 +72,7 @@
                                             <option value="1">Чол.</option>
                                         </select>
                                     </th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                 </tr>

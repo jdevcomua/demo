@@ -17,7 +17,17 @@ class AdministratingController extends Controller
 
     public function userData(Request $request)
     {
-        $response = DataTables::provide($request, new User());
+        $query = User::whereNull('banned_at')
+            ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
+            ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
+            ->groupBy('users.id')
+        ;
+
+        $aliases = [
+            'role_names' =>'COALESCE(GROUP_CONCAT(roles.display_name), "")'
+        ];
+
+        $response = DataTables::provide($request, new User(), $query, $aliases);
 
         if ($response) return response()->json($response);
 
