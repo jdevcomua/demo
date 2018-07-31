@@ -28,7 +28,7 @@
                         <form class="form-horizontal" role="form"
                               action="{{ route('admin.db.animals.update', $animal->id) }}" method="post">
                             @csrf
-                            <input type="hidden" name="_method" value="PUT">
+                            @method('PUT')
                             <div class="panel-body">
                                 @if($errors->user)
                                     @foreach($errors->animal->all() as $error)
@@ -74,7 +74,7 @@
                                             <option @if($animal->gender === \App\Models\Animal::GENDER_FEMALE) selected @endif
                                                     value="{{ \App\Models\Animal::GENDER_FEMALE }}">Самка</option>
                                             <option @if($animal->gender === \App\Models\Animal::GENDER_MALE) selected @endif
-                                                    value="{{ \App\Models\Animal::GENDER_FEMALE }}">Самець</option>
+                                                    value="{{ \App\Models\Animal::GENDER_MALE }}">Самець</option>
                                         </select>
                                     </div>
                                 </div>
@@ -130,8 +130,8 @@
                         </div>
                         <form class="form-horizontal">
                             <div class="panel-body">
-                                @if($errors->animal)
-                                    @foreach($errors->animal->all() as $error)
+                                @if($errors->animal_verify)
+                                    @foreach($errors->animal_verify->all() as $error)
                                         <div class="alert alert-danger alert-dismissable">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                             <i class="fa fa-remove pr10"></i>
@@ -140,11 +140,11 @@
                                     @endforeach
                                 @endif
 
-                                @if (\Session::has('success_animal'))
+                                @if (\Session::has('success_animal_verify'))
                                     <div class="alert alert-success alert-dismissable">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                         <i class="fa fa-check pr10"></i>
-                                        {{ \Session::get('success_animal') }}
+                                        {{ \Session::get('success_animal_verify') }}
                                     </div>
                                 @endif
 
