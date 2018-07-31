@@ -31,6 +31,7 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Дії</th>
                                     <th>#K</th>
                                     <th>Ім'я</th>
                                     <th>Прізвище</th>
@@ -78,7 +79,10 @@
             </div>
 
         </div>
-
+        <form action="#" method="post" class="hidden" id="remove">
+            @csrf
+            <input type="hidden" name="_method" value="delete">
+        </form>
     </section>
 @endsection
 
@@ -96,6 +100,21 @@
                 ajax: '{{ route('admin.db.users.data', null, false) }}',
                 columns: [
                     { "data": "id" },
+                    {
+                        "data": "id",
+                        defaultContent: '',
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                return "<a href=\"{{ route('admin.db.users.show') }}/"
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-eye pr10\" aria-hidden=\"true\"></i>" +
+                                    "</a>" +
+                                    "<a href='#' class='delete' data-id=" + data + ">" +
+                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
+                                    "</a>";
+                            }
+                        }
+                    },
                     { "data": "ext_id" },
                     { "data": "first_name" },
                     { "data": "last_name" },
@@ -127,6 +146,18 @@
                     { "data": "updated_at" },
                 ],
             });
+
+            setTimeout(function () {
+                jQuery('.delete').on('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('Ви впевнені що хочете видалити користувача?')) {
+                        var id = jQuery(this).attr('data-id');
+                        var form = jQuery('#remove');
+                        $(form).attr('action', "{{route('admin.db.users.remove')}}/"+id);
+                        $(form).submit();
+                    }
+                });
+            }, 2000);
 
         });
     </script>

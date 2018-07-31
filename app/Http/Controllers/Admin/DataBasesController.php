@@ -36,6 +36,28 @@ class DataBasesController extends Controller
         return response('', 400);
     }
 
+    public function userShow($id)
+    {
+        $user = User::findOrFail($id);
+        $user->load('animals');
+        return view('admin.db.users_show', compact('user'));
+    }
+
+    public function userUpdate(Request $request, $id)
+    {
+        return redirect()->back();
+    }
+
+    public function userDelete($id)
+    {
+        $user = User::findOrFail($id);
+        foreach ($user->animals as $animal) {
+            $animal->delete();
+        }
+        $user->delete();
+        return redirect()->back();
+    }
+
     public function animalIndex()
     {
         return view('admin.db.animals', [
@@ -72,8 +94,7 @@ class DataBasesController extends Controller
     public function animalEdit($id)
     {
         $animal = $this->animalModel
-            ->where('id', '=', $id)
-            ->firstOrFail();
+            ->findOrFail($id);
 
         $animal->load('files');
 
@@ -86,8 +107,7 @@ class DataBasesController extends Controller
     public function animalUpdate(Request $request, $id)
     {
         $animal = $this->animalModel
-            ->where('id', '=', $id)
-            ->firstOrFail();
+            ->findOrFail($id);
 
         $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'birthday',
             'sterilized', 'comment', 'images', 'documents']);

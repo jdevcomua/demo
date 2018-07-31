@@ -23,14 +23,15 @@
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <span class="glyphicon glyphicon-tasks"></span>Картка тварини</div>
+                                <span class="glyphicon glyphicon-tasks"></span>Картка користувача</div>
                         </div>
                         <form class="form-horizontal" role="form"
                               action="{{ route('admin.db.animals.update', $animal->id) }}" method="post">
                             @csrf
+                            <input type="hidden" name="_method" value="PUT">
                             <div class="panel-body">
-                                @if($errors->animal)
-                                    @foreach($errors->animal->all() as $error)
+                                @if($errors->user)
+                                    @foreach($errors->user->all() as $error)
                                         <div class="alert alert-danger alert-dismissable">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                             <i class="fa fa-remove pr10"></i>
@@ -39,11 +40,11 @@
                                     @endforeach
                                 @endif
 
-                                @if (\Session::has('success_animal'))
+                                @if (\Session::has('success_user'))
                                     <div class="alert alert-success alert-dismissable">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                         <i class="fa fa-check pr10"></i>
-                                        {{ \Session::get('success_animal') }}
+                                        {{ \Session::get('success_user') }}
                                     </div>
                                 @endif
 
