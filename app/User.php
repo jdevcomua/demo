@@ -59,11 +59,11 @@ class User extends Authenticatable
 
     protected $fillable = [
         'ext_id', 'first_name', 'last_name', 'middle_name', 'email', 'phone', 'birthday',
-        'inn', 'passport', 'address_living', 'address_registration', 'gender'
+        'inn', 'passport', 'address_living', 'address_registration', 'gender', 'banned_at', 'banned_by'
     ];
 
     protected $dates = [
-        'birthday', 'created_at', 'updated_at'
+        'birthday', 'created_at', 'updated_at', 'banned_at'
     ];
 
     protected $casts = [
