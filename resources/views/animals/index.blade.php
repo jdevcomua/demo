@@ -42,14 +42,16 @@
                                href="{{ route('animals.show', ['id' => $pet->id]) }}">Переглянути картку</a>
                             <a class="dropdown-item"
                                href="{{ route('animals.edit', ['id' => $pet->id]) }}">Редагувати інформацію</a>
-                            <a class="dropdown-item"
-                               href="{{ route('animals.destroy', ['id' => $pet->id]) }}" onclick="event.preventDefault();
-                               document.getElementById('delete-form-{{ $pet->id }}').submit();">Видалити</a>
-                            <form id="delete-form-{{ $pet->id }}" action="{{ route('animals.destroy', ['id' => $pet->id]) }}"
-                                  method="POST" style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
+                            @if(!$pet->verified)
+                                <a class="dropdown-item"
+                                   href="{{ route('animals.destroy', ['id' => $pet->id]) }}" onclick="event.preventDefault();
+                                   document.getElementById('delete-form-{{ $pet->id }}').submit();">Видалити</a>
+                                <form id="delete-form-{{ $pet->id }}" action="{{ route('animals.destroy', ['id' => $pet->id]) }}"
+                                      method="POST" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            @endif
                         </div>
                     </div>
 

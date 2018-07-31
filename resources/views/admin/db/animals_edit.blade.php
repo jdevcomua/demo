@@ -191,14 +191,14 @@
                                 @foreach($animal->images as $image)
                                     <a href="/{{ $image->path }}" class="file-item">
                                         <div class="file-preview" style="background-image: url('/{{ $image->path }}');"></div>
-                                        <div class="file-name">{{ $image->name }}.{{ $image->extension }}</div>
+                                        <div class="file-name">{{ $image->filename }}.{{ $image->fileextension }}</div>
                                     </a>
                                 @endforeach
 
                                 @foreach($animal->documents as $document)
                                     <a href="/{{ $document->path }}" class="file-item doc">
                                         <div class="file-preview" style="background-image: url('/img/file.png');"></div>
-                                        <div class="file-name">{{ $document->name }}.{{ $document->extension }}</div>
+                                        <div class="file-name">{{ $document->filename }}.{{ $document->fileextension }}</div>
                                     </a>
                                 @endforeach
 

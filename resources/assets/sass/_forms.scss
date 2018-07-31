@@ -159,8 +159,17 @@
     &:last-child {
       border-bottom: none;
     }
+    .file-name {
+      max-width: 77%;
+      overflow: hidden;
+      white-space: nowrap;
+    }
     .file-ext {
       color: #999;
+      max-width: 17%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }.file-delete {
        position: absolute;
        top: 20%;

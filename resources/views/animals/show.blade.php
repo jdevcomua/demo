@@ -76,8 +76,8 @@
             <div class="files-list">
                 @forelse($animal->documents as $doc)
                     <a href="/{{ $doc->path }}" class="file-item">
-                        <span class="file-name">{{ $doc->name }}</span>
-                        <span class="file-ext">.{{ $doc->extension }}</span>
+                        <span class="file-name">{{ $doc->filename }}</span>
+                        <span class="file-ext">.{{ $doc->fileextension }}</span>
                     </a>
                 @empty
                     <div class="no-files">Файли відсутні...</div>

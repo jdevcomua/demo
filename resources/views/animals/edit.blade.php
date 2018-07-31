@@ -129,8 +129,8 @@
                     <div class="files-list">
                         @foreach($pet->documents as $doc)
                             <div class="file-item exists">
-                                <span class="file-name">{{ $doc->name }}</span>
-                                <span class="file-ext">.{{ $doc->extension }}</span>
+                                <span class="file-name">{{ $doc->filename }}</span>
+                                <span class="file-ext">.{{ $doc->fileextension }}</span>
                                 <span class="file-delete exists" data-id="{{ $doc->id }}"
                                       data-rem="{{ route('animals.remove-file', $doc->id) }}"></span>
                             </div>
