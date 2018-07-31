@@ -23,6 +23,8 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property array $address_registration
  * @property int $gender
  * @property string|null $remember_token
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $bannedBy
+ * @property \Carbon\Carbon|null $banned_at
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Animal[] $animals
@@ -95,5 +97,10 @@ class User extends Authenticatable
     public function getAddressRegistrationAttribute()
     {
         return (object) json_decode($this->attributes['address_registration']);
+    }
+
+    public function bannedBy()
+    {
+        return $this->belongsTo(User::class, 'banned_by', 'id');
     }
 }

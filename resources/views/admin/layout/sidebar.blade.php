@@ -55,14 +55,14 @@
 
 
             <li class="sidebar-label pt20">Адміністрування</li>
-            <li>
-                <a href="#">
+            <li  @if($curRoute == 'admin.administrating.users.index') class="active" @endif>
+                <a href="{{route('admin.administrating.users.index')}}">
                     <span class="fa fa-users"></span>
                     <span class="sidebar-title">Користувачі</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li @if($curRoute == 'admin.administrating.banned') class="active" @endif>
+                <a href="{{route('admin.administrating.banned')}}">
                     <span class="fa fa-ban"></span>
                     <span class="sidebar-title">Блокування</span>
                 </a>

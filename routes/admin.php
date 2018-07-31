@@ -67,7 +67,6 @@ Route::group([
         ->name('remove.color');
 });
 
-
 Route::group([
     'prefix' => 'roles',
     'as' => 'roles.'
@@ -86,6 +85,31 @@ Route::group([
         ->name('data');
 });
 
+Route::group([
+    'prefix' => 'administrating',
+    'as' => 'administrating.'
+], function () {
+    Route::group([
+        'prefix' => 'users',
+        'as' => 'users.'
+    ], function () {
+        Route::get('/', 'Admin\AdministratingController@users')
+            ->name('index');
+        Route::get('data', 'Admin\AdministratingController@userData')
+            ->name('data');
+        Route::post('ban/{id?}', 'Admin\AdministratingController@banUser')
+            ->name('ban');
+        Route::post('unban/{id?}', 'Admin\AdministratingController@unbanUser')
+            ->name('unban');
+    });
+
+    Route::get('banned', 'Admin\AdministratingController@bannedUsers')
+        ->name('banned');
+    Route::get('banned/data', 'Admin\AdministratingController@bannedUsersData')
+        ->name('banned.data');
+
+
+});
 
 
 
