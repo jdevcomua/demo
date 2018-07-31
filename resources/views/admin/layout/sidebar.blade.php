@@ -7,14 +7,14 @@
     <div class="sidebar-left-content nano-content">
         <ul class="nav sidebar-menu">
             <li class="sidebar-label pt20">Бази</li>
-            <li @if($curRoute == 'admin.db.animals') class="active" @endif>
-                <a href="{{ route('admin.db.animals') }}">
+            <li @if($curRoute == 'admin.db.animals.index' || $curRoute == 'admin.db.animals.edit') class="active" @endif>
+                <a href="{{ route('admin.db.animals.index') }}">
                     <span class="fa fa-paw"></span>
                     <span class="sidebar-title">Тварини</span>
                 </a>
             </li>
-            <li @if($curRoute == 'admin.db.users') class="active" @endif>
-                <a href="{{ route('admin.db.users') }}">
+            <li @if($curRoute == 'admin.db.users.index' || $curRoute == 'admin.db.users.show') class="active" @endif>
+                <a href="{{ route('admin.db.users.index') }}">
                     <span class="fa fa-users"></span>
                     <span class="sidebar-title">Користувачі</span>
                 </a>
@@ -28,8 +28,8 @@
 
 
             <li class="sidebar-label pt20">Інформація</li>
-            <li @if($curRoute == 'admin.info.directories') class="active" @endif>
-                <a href="{{ route('admin.info.directories') }}">
+            <li @if($curRoute == 'admin.info.directories.index') class="active" @endif>
+                <a href="{{ route('admin.info.directories.index') }}">
                     <span class="fa fa-book"></span>
                     <span class="sidebar-title">Довідники</span>
                 </a>
@@ -55,14 +55,14 @@
 
 
             <li class="sidebar-label pt20">Адміністрування</li>
-            <li>
-                <a href="#">
+            <li  @if($curRoute == 'admin.administrating.users.index') class="active" @endif>
+                <a href="{{route('admin.administrating.users.index')}}">
                     <span class="fa fa-users"></span>
                     <span class="sidebar-title">Користувачі</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li @if($curRoute == 'admin.administrating.banned') class="active" @endif>
+                <a href="{{route('admin.administrating.banned')}}">
                     <span class="fa fa-ban"></span>
                     <span class="sidebar-title">Блокування</span>
                 </a>

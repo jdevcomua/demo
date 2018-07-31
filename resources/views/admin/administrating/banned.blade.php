@@ -45,20 +45,15 @@
                                     <th>По батькові</th>
                                     <th>e-mail</th>
                                     <th>Телефон</th>
-                                    <th>Дата народження</th>
-                                    <th>ІПН</th>
-                                    <th>Паспорт</th>
                                     <th>Стать</th>
                                     <th>Зареєстровано</th>
-                                    <th>Оновлено</th>
+                                    <th>Заблоковано</th>
                                 </tr>
                                 </thead>
                                 <tfoot class="search">
                                 <tr>
                                     <th></th>
                                     <th class="no-search"></th>
-                                    <th></th>
-                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -72,7 +67,6 @@
                                             <option value="1">Чол.</option>
                                         </select>
                                     </th>
-                                    <th></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -89,7 +83,6 @@
         </div>
         <form action="#" method="post" class="hidden" id="remove">
             @csrf
-            <input type="hidden" name="_method" value="delete">
         </form>
     </section>
 @endsection
@@ -105,7 +98,7 @@
         jQuery(document).ready(function() {
 
             dataTableInit($('#datatable'), {
-                ajax: '{{ route('admin.db.users.data', null, false) }}',
+                ajax: '{{ route('admin.administrating.banned.data', null, false) }}',
                 columns: [
                     { "data": "id" },
                     {
@@ -117,8 +110,8 @@
                                     + data + "\">" +
                                     "<i class=\"fa fa-eye pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>" +
-                                    "<a href='#' class='delete' data-id=" + data + ">" +
-                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
+                                    "<a href='#' class='ban' data-id=" + data + ">" +
+                                    "<i class=\"fa fa-user-plus\" aria-hidden=\"true\"></i>" +
                                     "</a>";
                             }
                         }
@@ -129,16 +122,6 @@
                     { "data": "middle_name" },
                     { "data": "email" },
                     { "data": "phone" },
-                    {
-                        data: 'birthday',
-                        responsivePriority: 10,
-                        render: function ( data, type, row ) {
-                            var d = new Date(data);
-                            return d.toLocaleDateString('uk')
-                        }
-                    },
-                    { "data": "inn" },
-                    { "data": "passport" },
                     {
                         data: 'gender',
                         responsivePriority: 4,
@@ -151,17 +134,17 @@
                         }
                     },
                     { "data": "created_at" },
-                    { "data": "updated_at" },
+                    { "data": "banned_at" },
                 ],
             });
 
             setTimeout(function () {
-                jQuery('.delete').on('click', function(e) {
+                jQuery('.ban').on('click', function(e) {
                     e.preventDefault();
-                    if (confirm('Ви впевнені що хочете видалити користувача?')) {
+                    if (confirm('Ви впевнені що хочете розблокувати користувача?')) {
                         var id = jQuery(this).attr('data-id');
                         var form = jQuery('#remove');
-                        $(form).attr('action', "{{route('admin.db.users.remove')}}/"+id);
+                        $(form).attr('action', "{{route('admin.administrating.users.unban')}}/"+id);
                         $(form).submit();
                     }
                 });

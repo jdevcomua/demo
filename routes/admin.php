@@ -7,53 +7,109 @@ Route::redirect('/', '/admin/animals/index', 302)
 // since Entrust checking permissions every request
 // -> more DB requests -> slower app -> less req/sec
 
-Route::get('users/index', 'Admin\DataBasesController@userIndex')
-    ->name('db.users');
-Route::get('users/data', 'Admin\DataBasesController@userData')
-    ->name('db.users.data');
 
-Route::get('animals/index', 'Admin\DataBasesController@animalIndex')
-    ->name('db.animals');
-Route::get('animals/data', 'Admin\DataBasesController@animalData')
-    ->name('db.animals.data');
-Route::get('animals/edit/{id?}', 'Admin\DataBasesController@animalEdit')
-    ->name('db.animals.edit');
-Route::post('animals/update/{id}', 'Admin\DataBasesController@animalUpdate')
-    ->name('db.animals.update');
-Route::get('animals/verify/{id}', 'Admin\DataBasesController@animalVerify')
-    ->name('db.animals.verify')
-    ->middleware('permission:verify-animal');
+Route::group([
+    'prefix' => 'users',
+    'as' => 'db.users.'
+], function () {
+    Route::get('index', 'Admin\DataBasesController@userIndex')
+        ->name('index');
+    Route::get('data', 'Admin\DataBasesController@userData')
+        ->name('data');
+    Route::get('show/{id?}', 'Admin\DataBasesController@userShow')
+        ->name('show');
+    Route::put('update/{id?}', 'Admin\DataBasesController@userUpdate')
+        ->name('update');
+    Route::delete('delete/{id?}', 'Admin\DataBasesController@userDelete')
+        ->name('remove');
+});
+
+Route::group([
+    'prefix' => 'animals',
+    'as' => 'db.animals.'
+], function () {
+    Route::get('index', 'Admin\DataBasesController@animalIndex')
+        ->name('index');
+    Route::get('data', 'Admin\DataBasesController@animalData')
+        ->name('data');
+    Route::get('edit/{id?}', 'Admin\DataBasesController@animalEdit')
+        ->name('edit');
+    Route::put('update/{id}', 'Admin\DataBasesController@animalUpdate')
+        ->name('update');
+    Route::get('remove/{id?}', 'Admin\DataBasesController@animalRemove')
+        ->name('remove');
+    Route::get('verify/{id}', 'Admin\DataBasesController@animalVerify')
+        ->name('verify')
+        ->middleware('permission:verify-animal');
+
+});
+
+
+Route::group([
+    'prefix' => 'directories',
+    'as' => 'info.directories.'
+], function () {
+    Route::get('index', 'Admin\InfoController@directoryIndex')
+        ->name('index');
+
+    Route::get('data/breed', 'Admin\InfoController@directoryDataBreed')
+        ->name('data.breed');
+    Route::post('store/breed', 'Admin\InfoController@directoryStoreBreed')
+        ->name('store.breed');
+    Route::get('remove/breed', 'Admin\InfoController@directoryRemoveBreed')
+        ->name('remove.breed');
+
+    Route::get('data/color', 'Admin\InfoController@directoryDataColor')
+        ->name('data.color');
+    Route::post('store/color', 'Admin\InfoController@directoryStoreColor')
+        ->name('store.color');
+    Route::get('remove/color', 'Admin\InfoController@directoryRemoveColor')
+        ->name('remove.color');
+});
+
+Route::group([
+    'prefix' => 'roles',
+    'as' => 'roles.'
+], function () {
+    Route::get('/', 'Admin\AdminRolesController@index')
+        ->name('index');
+    Route::post('/', 'Admin\AdminRolesController@store')
+        ->name('store');
+    Route::get('edit/{id?}', 'Admin\AdminRolesController@edit')
+        ->name('edit');
+    Route::post('update/{id}', 'Admin\AdminRolesController@update')
+        ->name('update');
+    Route::get('remove/{id?}', 'Admin\AdminRolesController@remove')
+        ->name('remove');
+    Route::get('data', 'Admin\AdminRolesController@rolesData')
+        ->name('data');
+});
+
+Route::group([
+    'prefix' => 'administrating',
+    'as' => 'administrating.'
+], function () {
+    Route::group([
+        'prefix' => 'users',
+        'as' => 'users.'
+    ], function () {
+        Route::get('/', 'Admin\AdministratingController@users')
+            ->name('index');
+        Route::get('data', 'Admin\AdministratingController@userData')
+            ->name('data');
+        Route::post('ban/{id?}', 'Admin\AdministratingController@banUser')
+            ->name('ban');
+        Route::post('unban/{id?}', 'Admin\AdministratingController@unbanUser')
+            ->name('unban');
+    });
+
+    Route::get('banned', 'Admin\AdministratingController@bannedUsers')
+        ->name('banned');
+    Route::get('banned/data', 'Admin\AdministratingController@bannedUsersData')
+        ->name('banned.data');
+
+
+});
 
 
 
-Route::get('directories/index', 'Admin\InfoController@directoryIndex')
-    ->name('info.directories');
-
-Route::get('directories/data/breed', 'Admin\InfoController@directoryDataBreed')
-    ->name('info.directories.data.breed');
-Route::post('directories/store/breed', 'Admin\InfoController@directoryStoreBreed')
-    ->name('info.directories.store.breed');
-Route::get('directories/remove/breed', 'Admin\InfoController@directoryRemoveBreed')
-    ->name('info.directories.remove.breed');
-
-Route::get('directories/data/color', 'Admin\InfoController@directoryDataColor')
-    ->name('info.directories.data.color');
-Route::post('directories/store/color', 'Admin\InfoController@directoryStoreColor')
-    ->name('info.directories.store.color');
-Route::get('directories/remove/color', 'Admin\InfoController@directoryRemoveColor')
-    ->name('info.directories.remove.color');
-
-
-
-Route::get('roles', 'Admin\AdminRolesController@index')
-    ->name('roles.index');
-Route::post('roles', 'Admin\AdminRolesController@store')
-    ->name('roles.store');
-Route::get('roles/edit/{id?}', 'Admin\AdminRolesController@edit')
-    ->name('roles.edit');
-Route::post('roles/update/{id}', 'Admin\AdminRolesController@update')
-    ->name('roles.update');
-Route::get('roles/remove/{id?}', 'Admin\AdminRolesController@remove')
-    ->name('roles.remove');
-Route::get('roles/data', 'Admin\AdminRolesController@rolesData')
-    ->name('roles.data');
