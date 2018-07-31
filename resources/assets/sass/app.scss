@@ -19,7 +19,7 @@
 @import "forms";
 
 @import "pets_index";
-@import "pets_create";
+@import "pets_create_edit";
 
 
 html {
@@ -42,6 +42,31 @@ img.logo {
 }
 .content {
   padding: 80px 50px 40px;
+}
+.page-title {
+  display: flex;
+  align-items: center;
+  margin-top: -3.2rem;
+  margin-bottom: 4rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  .page-back-link {
+    display: block;
+    height: 3rem;
+    width: 3rem;
+    background-image: url('/img/icon/back.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .title {
+    margin: 0 1.4rem;
+  }
+  .action-link {
+    color: #014479;
+    display: block;
+    margin-left: 4.6rem;
+  }
 }
 .cols-block {
   display: flex;

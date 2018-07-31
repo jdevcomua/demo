@@ -1,11 +1,32 @@
+@font-face {
+  font-family: 'Marker Felt';
+  src: url('/fonts/MarkerFelt-Wide.woff2') format('woff2'),
+  url('/fonts/MarkerFelt-Wide.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+
 .pet-photo-hint {
   position: absolute;
-  background-image: url('/img/pet_photo_hint.png');
+  background-image: url('/img/icon/arrow.svg');
   background-position: center;
+  background-position: 100% 0;
+  background-repeat: no-repeat;
   width: 192px;
   height: 88px;
   top: 12rem;
-  left: 7rem;
+  left: 6rem;
+  display: flex;
+  align-items: flex-end;
+  font-family: 'Marker Felt';
+  font-size: 1.3rem;
+  line-height: normal;
+  color: #b4d6db;
+  div {
+    text-align: center;
+    width: 79%;
+  }
 }
 
 .new-pet-photos {
@@ -38,9 +59,6 @@
       .add-btn {
         width: 4.2rem;
         height: 4.2rem;
-        line-height: 4rem;
-        font-size: 4rem;
-        border: 2px solid #4a83b7;
       }
     }
     .add-btn {
@@ -49,10 +67,8 @@
       font-weight: 100;
       width: 2.1rem;
       height: 2.1rem;
-      text-align: center;
-      border: 1px solid #4a83b7;
-      color: #4a83b7;
-      border-radius: 2rem;
+      background-image: url(/img/icon/add.svg);
+      background-size: 100%;
     }
   }
   .small-photos {

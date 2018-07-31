@@ -38,6 +38,7 @@ header {
       align-items: center;
       background-repeat: no-repeat;
       background-position: 0 50%;
+      background-size: 25px;
       padding: 0 10px 0 40px;
       width: 150px;
       color: #fff;
@@ -45,7 +46,7 @@ header {
       letter-spacing: 0.2px;
       line-height: 1.4rem;
       min-height: 32px;
-      &.profile { background-image: url('/img/icon/user.png'); }
+      &.profile { background-image: url('/img/icon/person.svg'); }
       &.logout { background-image: url('/img/icon/logout.png'); }
     }
   }
