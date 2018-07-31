@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="dropdown more-button dropleft">
-                        <i class="fa fa-ellipsis-v " data-toggle="dropdown" aria-hidden="true" aria-expanded="false"></i>
+                        <div class="more-icon" data-toggle="dropdown"></div>
                         <div class="dropdown-menu">
                             <a class="dropdown-item"
                                href="{{ route('animals.show', ['id' => $pet->id]) }}">Переглянути картку</a>

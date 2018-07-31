@@ -3,10 +3,9 @@
 @section('title', 'Редагування інформації тварини')
 
 @section('content')
-    {{--TODO styles--}}
     <div class="page-title">
         <a href="{{ route('index') }}" class="page-back-link"></a>
-        <span>Редагування інформації тварини</span>
+        <div class="title">Редагування інформації тварини</div>
     </div>
     <form action="{{ route('animals.update', $pet->id) }}" enctype='multipart/form-data' method="POST" id="form">
         @method('PUT')
@@ -17,7 +16,7 @@
                 <div class="block-title">ЗОБРАЖЕННЯ</div>
                 <div class="block-sub-title">Що більше фото тим простіше знайти тварину у випадку втрати.<br>
                     Фотографуйте тваринку з різних сторін.</div>
-                <div class="pet-photo-hint"></div>
+                <div class="pet-photo-hint">Це фото буде головним</div>
             </div>
             <div class="cols-block-content">
                 <div class="validation-error alert alert-danger hidden"></div>

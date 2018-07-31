@@ -3,6 +3,10 @@
 @section('title', 'Профіль')
 
 @section('content')
+    <div class="page-title">
+        <a href="{{ route('index') }}" class="page-back-link"></a>
+        <div class="title">Профіль</div>
+    </div>
     <form action="{{ route('profile.update') }}" method="POST">
         @csrf
         <div class="cols-block">

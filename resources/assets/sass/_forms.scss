@@ -3,7 +3,7 @@
   &.datepicker {
     padding: 0;
     input {
-      background-image: url('/img/icon/calendar.png');
+      background-image: url('/img/icon/calendar.svg');
       background-position: 100% 0;
       background-repeat: no-repeat;
     }
@@ -88,8 +88,8 @@
         position: relative;
         left: 1px;
       }
-      &.label-dog { background-image: url('/img/icon/dog_species.png'); }
-      &.label-cat { background-image: url('/img/icon/cat_species.png'); }
+      &.label-dog { background-image: url('/img/icon/dog.svg'); background-size: 50px; }
+      &.label-cat { background-image: url('/img/icon/cat.svg'); background-size: 40px; }
     }
     &.focus {
       box-shadow: none;
@@ -115,7 +115,7 @@
       transition: ease 0.3s;
       transition-property: padding, border;
       &.active {
-        background-image: url('/img/icon/check.png');
+        background-image: url('/img/icon/check.svg');
         background-position: 8% 50%;
         background-repeat: no-repeat;
         padding-left: 3.4rem;
@@ -165,7 +165,7 @@
        position: absolute;
        top: 20%;
        right: 0;
-       background-image: url('/img/icon/trash.png');
+       background-image: url('/img/icon/delete.svg');
        background-repeat: no-repeat;
        background-position: 100% 50%;
        width: 1.5rem;

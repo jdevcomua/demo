@@ -57,9 +57,12 @@
     text-align: center;
     color: #888;
     cursor: pointer;
-    .fa-ellipsis-v {
+    .more-icon {
       width: 1.3rem;
       height: 2.6rem;
+      background-image: url('/img/icon/more.svg');
+      background-repeat: no-repeat;
+      background-position: center;
     }
     .dropdown-item {
       font-size: 1rem;
