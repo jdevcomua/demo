@@ -32,7 +32,7 @@ class AdministratingController extends Controller
         $user->save();
         return redirect()
             ->back()
-            ->with('success_user', 'Користувач успішно забанен!');
+            ->with('success_user', 'Користувач успішно заблокований!');
     }
 
     public function bannedUsers()
@@ -58,6 +58,6 @@ class AdministratingController extends Controller
         $user->save();
         return redirect()
             ->back()
-            ->with('success_user', 'Користувач успішно разбанен!');
+            ->with('success_user', 'Користувач успішно розблокований!');
     }
 }

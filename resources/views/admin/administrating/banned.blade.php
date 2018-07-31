@@ -47,7 +47,7 @@
                                     <th>Телефон</th>
                                     <th>Стать</th>
                                     <th>Зареєстровано</th>
-                                    <th>Забанено</th>
+                                    <th>Заблоковано</th>
                                 </tr>
                                 </thead>
                                 <tfoot class="search">
