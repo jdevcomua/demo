@@ -17,11 +17,11 @@
 
         <div class="tray tray-center">
 
-            <div class="row flex-grid">
+            <div class="row">
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Список всіх порід</div>
                         </div>
                         <div class="panel-body pn">
@@ -78,7 +78,7 @@
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Список усіх мастей</div>
                         </div>
                         <div class="panel-body pn">
@@ -133,7 +133,7 @@
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Додавання нової породи</div>
                         </div>
                         <form class="form-horizontal" role="form"
@@ -200,7 +200,7 @@
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Додавання нової масті</div>
                         </div>
                         <form class="form-horizontal" role="form"
@@ -271,25 +271,9 @@
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
-            $('#datatable-breed tfoot th').each(function() {
-                if ($(this).find('select').length !== 0 || $(this).hasClass('no-search')) return;
-                var title = $('#datatable-breed thead th').eq($(this).index()).text();
-                $(this).html('<input type="text" class="form-control" />');
-            });
-            $('#datatable-color tfoot th').each(function() {
-                if ($(this).find('select').length !== 0 || $(this).hasClass('no-search')) return;
-                var title = $('#datatable-color thead th').eq($(this).index()).text();
-                $(this).html('<input type="text" class="form-control" />');
-            });
 
-
-            var breed_table = $('#datatable-breed').DataTable({
-                sDom: 't<"dt-panelfooter clearfix"ip>',
-                ajax: {
-                    url: '{{ route('admin.info.directories.data.breed', null, false) }}'
-                },
-                serverSide: true,
-                responsive: true,
+            dataTableInit($('#datatable-breed'), {
+                ajax: '{{ route('admin.info.directories.data.breed', null, false) }}',
                 columns: [
                     { "data": "id" },
                     {
@@ -308,16 +292,10 @@
                     { "data": "name" },
                     { "data": "fci" },
                 ],
-                language: dataTableLang
             });
 
-            var color_table = $('#datatable-color').DataTable({
-                sDom: 't<"dt-panelfooter clearfix"ip>',
-                ajax: {
-                    url: '{{ route('admin.info.directories.data.color', null, false) }}'
-                },
-                serverSide: true,
-                responsive: true,
+            dataTableInit($('#datatable-color'), {
+                ajax: '{{ route('admin.info.directories.data.color', null, false) }}',
                 columns: [
                     { "data": "id" },
                     {
@@ -335,39 +313,6 @@
                     { "data": "species_name" },
                     { "data": "name" },
                 ],
-                language: dataTableLang
-            });
-
-            applySearch(breed_table);
-            applySearch(color_table);
-
-            function applySearch(table) {
-                table.columns().eq(0).each(function (colIdx) {
-                    var $input = $('input', table.column(colIdx).footer());
-
-                    $input.on('keyup', function (e) {
-                        if (e.keyCode === 13) searchInTable(table, colIdx, this.value);
-                    });
-                    $input.on('blur', function (e) {
-                        searchInTable(table, colIdx, this.value);
-                    });
-
-                    $('select', table.column(colIdx).footer()).on('change', function (e) {
-                        searchInTable(table, colIdx, this.value);
-                    });
-                });
-                table.on('draw', function () {
-                    table.responsive.recalc();
-                });
-            }
-
-            function searchInTable(table, column, search) {
-                table.column(column).search(search).draw();
-            }
-
-            $(window).resize(function () {
-                breed_table.responsive.recalc()
-                color_table.responsive.recalc()
             });
 
         });

@@ -22,7 +22,7 @@
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Картка тварини</div>
                         </div>
                         <form class="form-horizontal" role="form"
@@ -124,7 +124,7 @@
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Верифікація</div>
                         </div>
                         <form class="form-horizontal">
@@ -183,7 +183,7 @@
                 <div class="col-md-12">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Файли тварини</div>
                         </div>
                         <div class="panel-body pn">

@@ -64,6 +64,25 @@ div#files-container {
     background-size: 55%;
   }
 }
+@media screen and (max-width: 1000px) {
+  div#files-container .file-item {
+    width: 32.2%;
+  }
+}
+@media screen and (max-width: 600px) {
+  div#files-container .file-item {
+    width: 49%;
+  }
+}
+@media screen and (max-width: 400px) {
+  div#files-container {
+    justify-content: center;
+    .file-item {
+      width: 90%;
+    }
+  }
+}
+
 
 .select-gen .selectize-input, .select .selectize-input {
   border: 1px solid #dddddd;

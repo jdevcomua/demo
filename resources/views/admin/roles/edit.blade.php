@@ -21,7 +21,7 @@
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Редагування ролі</div>
                         </div>
                         <form class="form-horizontal" role="form"

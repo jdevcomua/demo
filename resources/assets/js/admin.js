@@ -26,28 +26,6 @@ $.ajaxSetup({
     }
 });
 
-dataTableLang = {
-    "sProcessing":   "Зачекайте...",
-    "sLengthMenu":   "Показати _MENU_ записів",
-    "sZeroRecords":  "Записи відсутні.",
-    "sInfo":         "Записи з _START_ по _END_ із _TOTAL_ записів",
-    "sInfoEmpty":    "Записи з 0 по 0 із 0 записів",
-    "sInfoFiltered": "(відфільтровано з _MAX_ записів)",
-    "sInfoPostFix":  "",
-    "sSearch":       "Пошук:",
-    "sUrl":          "",
-    "oPaginate": {
-        "sFirst": "Перша",
-        "sPrevious": "Попередня",
-        "sNext": "Наступна",
-        "sLast": "Остання"
-    },
-    "oAria": {
-        "sSortAscending":  ": активувати для сортування стовпців за зростанням",
-        "sSortDescending": ": активувати для сортування стовпців за спаданням"
-    }
-};
-
 $(function () {
     $('.datepicker input').datepicker({
         changeMonth: true,
@@ -116,4 +94,74 @@ function checkDefaultValues() {
 if ($('select[name="species"]').length) {
     updateSelects($('select[name="species"]').val());
 }
+/////////////////////////////////////////
+
+/////////////////////////////////////////
+// DataTable
+
+dataTableLang = {
+    "sProcessing":   "Зачекайте...",
+    "sLengthMenu":   "Показати _MENU_ записів",
+    "sZeroRecords":  "Записи відсутні.",
+    "sInfo":         "Записи з _START_ по _END_ із _TOTAL_ записів",
+    "sInfoEmpty":    "Записи з 0 по 0 із 0 записів",
+    "sInfoFiltered": "(відфільтровано з _MAX_ записів)",
+    "sInfoPostFix":  "",
+    "sSearch":       "Пошук:",
+    "sUrl":          "",
+    "oPaginate": {
+        "sFirst": "Перша",
+        "sPrevious": "Попередня",
+        "sNext": "Наступна",
+        "sLast": "Остання"
+    },
+    "oAria": {
+        "sSortAscending":  ": активувати для сортування стовпців за зростанням",
+        "sSortDescending": ": активувати для сортування стовпців за спаданням"
+    }
+};
+
+var dataTablesDefs = {
+    sDom: 't<"dt-panelfooter clearfix"ip>',
+    serverSide: true,
+    responsive: true,
+    language: dataTableLang
+};
+
+dataTableInit = function (table, options) {
+    table.find('tfoot th').each(function() {
+        if ($(this).find('select').length !== 0 || $(this).hasClass('no-search')) return;
+
+        var title = table.find('thead th').eq($(this).index()).text();
+        $(this).html('<input type="text" class="form-control" />');
+    });
+
+    var dt = table.DataTable({...dataTablesDefs, ...options});
+
+    dt.columns().eq(0).each(function(colIdx) {
+        var $input = $('input', dt.column(colIdx).footer());
+
+        $input.on('keyup', function(e) {
+            if(e.keyCode === 13) searchInTable(dt, colIdx, this.value);
+        });
+        $input.on('blur', function(e) {
+            searchInTable(dt, colIdx, this.value);
+        });
+        $('select', dt.column(colIdx).footer()).on('change', function(e) {
+            searchInTable(dt, colIdx, this.value);
+        });
+    });
+
+    dt.on('draw', function () {
+        dt.responsive.recalc();
+    });
+    $(window).resize(function () {
+        dt.responsive.recalc()
+    });
+};
+
+function searchInTable(table, column, search) {
+    table.column(column).search(search).draw();
+}
+
 /////////////////////////////////////////

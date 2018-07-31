@@ -22,7 +22,7 @@
                 <div class="col-md-12">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Список всіх ролей</div>
                         </div>
                         <div class="panel-body pn">
@@ -75,7 +75,7 @@
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
-                            <div class="panel-title hidden-xs">
+                            <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Створити нову роль</div>
                         </div>
                         <form class="form-horizontal" role="form"
@@ -162,20 +162,8 @@
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
-            $('#datatable tfoot th').each(function() {
-                if ($(this).find('select').length !== 0 || $(this).hasClass('no-search')) return;
-                var title = $('#datatable thead th').eq($(this).index()).text();
-                $(this).html('<input type="text" class="form-control" />');
-            });
-
-            // DataTable
-            var my_table = $('#datatable').DataTable({
-                sDom: 't<"dt-panelfooter clearfix"ip>',
-                ajax: {
-                    url: '{{ route('admin.roles.data', null, false) }}'
-                },
-                serverSide: true,
-                responsive: true,
+            dataTableInit($('#datatable'), {
+                ajax: '{{ route('admin.roles.data', null, false) }}',
                 columns: [
                     { "data": "id"},
                     {
@@ -185,11 +173,11 @@
                             if (data) {
                                 return "<a href=\"{{ route('admin.roles.edit') }}/"
                                     + data + "\">" +
-                                        "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
+                                    "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>" +
                                     "<a href=\"{{ route('admin.roles.remove') }}/"
                                     + data + "\">" +
-                                        "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
+                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
                                     "</a>";
                             }
                         }
@@ -199,32 +187,6 @@
                     { "data": "permissions_count" },
                     { "data": "users_count"},
                 ],
-                language: dataTableLang
-            });
-
-            my_table.columns().eq(0).each(function(colIdx) {
-                var $input = $('input', my_table.column(colIdx).footer());
-
-                $input.on('keyup', function(e) {
-                    if(e.keyCode === 13) searchInTable(my_table, colIdx, this.value);
-                });
-                $input.on('blur', function(e) {
-                    searchInTable(my_table, colIdx, this.value);
-                });
-                $('select', my_table.column(colIdx).footer()).on('change', function(e) {
-                    searchInTable(my_table, colIdx, this.value);
-                });
-            });
-
-            function searchInTable(table, column, search) {
-                table.column(column).search(search).draw();
-            }
-
-            my_table.on('draw', function () {
-                my_table.responsive.recalc();
-            });
-            $(window).resize(function () {
-                my_table.responsive.recalc()
             });
 
         });
