@@ -31,7 +31,7 @@
                             <input type="hidden" name="_method" value="PUT">
                             <div class="panel-body">
                                 @if($errors->user)
-                                    @foreach($errors->user->all() as $error)
+                                    @foreach($errors->animal->all() as $error)
                                         <div class="alert alert-danger alert-dismissable">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                             <i class="fa fa-remove pr10"></i>
@@ -40,11 +40,11 @@
                                     @endforeach
                                 @endif
 
-                                @if (\Session::has('success_user'))
+                                @if (\Session::has('success_animal'))
                                     <div class="alert alert-success alert-dismissable">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                         <i class="fa fa-check pr10"></i>
-                                        {{ \Session::get('success_user') }}
+                                        {{ \Session::get('success_animal') }}
                                     </div>
                                 @endif
 

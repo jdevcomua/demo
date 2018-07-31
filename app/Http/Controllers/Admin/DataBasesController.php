@@ -55,7 +55,9 @@ class DataBasesController extends Controller
             $animal->delete();
         }
         $user->delete();
-        return redirect()->back();
+        return redirect()
+            ->back()
+            ->with('success_user', 'Користувач успішно видален!');
     }
 
     public function animalIndex()

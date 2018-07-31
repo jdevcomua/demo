@@ -26,6 +26,13 @@
                                 <span class="glyphicon glyphicon-tasks"></span>Список всіх користувачів</div>
                         </div>
                         <div class="panel-body pn">
+                            @if (\Session::has('success_user'))
+                                <div class="alert alert-success alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-check pr10"></i>
+                                    {{ \Session::get('success_user') }}
+                                </div>
+                            @endif
                             <table class="table table-striped table-hover display datatable responsive nowrap"
                                    id="datatable" cellspacing="0" width="100%">
                                 <thead>
