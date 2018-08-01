@@ -98,10 +98,9 @@ class AnimalsController extends Controller
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
-        //TODO redirect to verify your animal note page
         return response()->json([
             'status' => 'ok',
-            'url' => route('animals.index')
+            'url' => route('animals.add-success')
         ]);
     }
 

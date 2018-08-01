@@ -196,7 +196,6 @@
       display: flex;
       flex-flow: row wrap;
       justify-content: space-between;
-      align-items: center;
       width: 500px;
     }
     .animal-image {
@@ -224,6 +223,9 @@
     margin-top: 1.5rem;
     padding-right: 2rem;
     justify-content: flex-start;
+    .content {
+      white-space: normal;
+    }
     &.comment {
       width: 76%;
       .content {
@@ -287,6 +289,32 @@
     }
     .no-files {
       font-size: 1rem;
+    }
+  }
+}
+
+.success-page {
+  margin-top: -1.5rem;
+  padding: 0 11rem;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  .success-icon {
+    width: 16.3rem;
+    height: 16.3rem;
+    background-image: url('/img/icon/ok.svg');
+    background-size: contain;
+  }
+  .success-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    letter-spacing: 1.2px;
+    margin: 3rem 0 3rem;
+  }
+  .success-message {
+    font-size: 1.4rem;
+    p {
+      margin-bottom: 2rem;
     }
   }
 }
