@@ -21,7 +21,8 @@ Route::group([
     Route::put('update/{id?}', 'Admin\DataBasesController@userUpdate')
         ->name('update');
     Route::put('roles/update/{id?}', 'Admin\DataBasesController@userUpdateRoles')
-        ->name('update.roles');
+        ->name('update.roles')
+        ->middleware('permission:change-roles');
     Route::delete('delete/{id?}', 'Admin\DataBasesController@userDelete')
         ->name('remove');
 });

@@ -52,21 +52,27 @@ class DataBasesController extends Controller
 
     public function userUpdateRoles(Request $request, $id)
     {
-        $validator = \Validator::make($request->all(), [
-            'roles' => 'required|array',
+        $data = $request->only('roles');
+
+        $validator = \Validator::make($data, [
+            'roles' => 'nullable|array',
             'roles.*' => 'exists:users,id', // check each item in the array
         ]);
+
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator->errors());
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'user_roles');
         }
 
+        if (!array_key_exists('roles', $data)) $data['roles'] = array();
+
         $user = User::findOrFail($id);
-        $user->roles()->sync($request->get('roles'));
+        $user->roles()->sync($data['roles']);
 
         return redirect()
             ->back()
-            ->with('success_user', 'Ролі успішно змінені!');
+            ->with('success_user_roles', 'Ролі успішно змінені!');
     }
 
     public function userDelete($id)
@@ -78,7 +84,7 @@ class DataBasesController extends Controller
         $user->delete();
         return redirect()
             ->back()
-            ->with('success_user', 'Користувач успішно видален!');
+            ->with('success_user', 'Користувач успішно видалений!');
     }
 
     public function animalIndex()
