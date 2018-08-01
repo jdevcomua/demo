@@ -17,6 +17,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('animals', 'AnimalsController');
     Route::post('/animals/file/{animalFile}/remove', 'AnimalsController@removeFile')->name('animals.remove-file');
+    Route::view('/animals/add-success', 'animals.add-success')->name('animals.add-success');
 
     Route::get('/profile', 'ProfileController@show')->name('profile');
     Route::post('/profile', 'ProfileController@update')->name('profile.update');
