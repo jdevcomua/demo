@@ -43,8 +43,16 @@ class RolesPermissionsSeeder extends Seeder
         $verifyAnimal->display_name = 'Верифікація тварин';
         $verifyAnimal->save();
 
+        $changeRoles = new Permission();
+        $changeRoles->name          = 'change-roles';
+        $changeRoles->display_name  = 'Змінювати ролі користувачів';
+        $changeRoles->save();
 
-        $admin->attachPermission($adminPanel);
+
+        $admin->attachPermissions([
+            $adminPanel,
+            $changeRoles
+        ]);
 
         $recorder->attachPermission($adminPanel);
         $recorder->attachPermission($verifyAnimal);

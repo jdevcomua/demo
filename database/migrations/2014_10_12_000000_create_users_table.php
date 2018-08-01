@@ -21,12 +21,14 @@ class CreateUsersTable extends Migration
             $table->string('middle_name', 256)->nullable();
             $table->string('email', 256);
             $table->string('phone', 20)->nullable();
-            $table->timestamp('birthday');
+            $table->dateTime('birthday');
             $table->string('inn', 15);
             $table->string('passport', 15);
             $table->json('address_living')->nullable();
             $table->json('address_registration')->nullable();
             $table->unsignedTinyInteger('gender');
+            $table->dateTime('banned_at')->nullable();
+            $table->integer('banned_by')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

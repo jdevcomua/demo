@@ -18,7 +18,8 @@ class CreateAnimalsFilesTable extends Migration
             $table->unsignedInteger('animal_id');
             $table->unsignedTinyInteger('type');
             $table->unsignedTinyInteger('num')->nullable();
-            $table->string('path', 120);
+            $table->string('name', 120);
+            $table->string('path');
             $table->timestamps();
 
             $table->foreign('animal_id')
