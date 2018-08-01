@@ -17,7 +17,7 @@
 
         <div class="tray tray-center">
 
-            <div class="row">
+            <div class="row flex-grid">
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
