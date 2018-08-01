@@ -20,7 +20,6 @@ class DataTables
         \Illuminate\Database\Eloquent\Builder $query = null,
         array $aliases = null)
     {
-        $filtered = false;
         $table = $model->getTable();
 
         if ($request->has(['draw', 'start', 'length'])) {
@@ -50,7 +49,6 @@ class DataTables
                                         . '\'%' . $column['search']['value'] . '%\''
                                     );
                                 }
-                                $filtered = true;
                             }
                         } catch (\Exception $exception) {}
                     }
@@ -75,7 +73,7 @@ class DataTables
             $response['draw'] = +$req['draw'];
 
             $response["recordsTotal"] = $model->count();
-            if ($filtered) {
+            if (count($query->getQuery()->wheres)) {
                 $response["recordsFiltered"] = $query->count();
             } else {
                 $response["recordsFiltered"] = $response["recordsTotal"];
