@@ -64,8 +64,8 @@
                                     <th>
                                         <select>
                                             <option selected value>---</option>
-                                            <option value="0">Жін.</option>
-                                            <option value="1">Чол.</option>
+                                            <option value="0">Самка</option>
+                                            <option value="1">Самець</option>
                                         </select>
                                     </th>
                                     <th></th>
@@ -137,8 +137,8 @@
                         data: 'gender',
                         render: function ( data, type, row ) {
                             switch (data) {
-                                case 0: return 'Жін.';
-                                case 1: return 'Чол.';
+                                case 0: return 'Самка';
+                                case 1: return 'Самець';
                                 default: return '?';
                             }
                         }

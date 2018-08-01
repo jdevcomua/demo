@@ -239,7 +239,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="color-name" class="col-lg-3 control-label">Назва породи:</label>
+                                    <label for="color-name" class="col-lg-3 control-label">Назва масті:</label>
                                     <div class="col-lg-8">
                                         <div class="bs-component">
                                             <input type="text" id="color-name" name="c_name"

@@ -6,7 +6,7 @@
         <div class="topbar-left">
             <ol class="breadcrumb">
                 <li class="crumb-active">
-                    <a href="#">База користувачів</a>
+                    <a href="#">База заблокованих користувачів</a>
                 </li>
             </ol>
         </div>
@@ -23,7 +23,7 @@
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <span class="glyphicon glyphicon-tasks"></span>Список всіх користувачів</div>
+                                <span class="glyphicon glyphicon-tasks"></span>Список заблокованих користувачів</div>
                         </div>
                         <div class="panel-body pn">
                             @if (\Session::has('success_user'))

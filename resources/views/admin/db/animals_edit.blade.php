@@ -23,7 +23,7 @@
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <span class="glyphicon glyphicon-tasks"></span>Картка користувача</div>
+                                <span class="glyphicon glyphicon-tasks"></span>Картка тварини</div>
                         </div>
                         <form class="form-horizontal" role="form"
                               action="{{ route('admin.db.animals.update', $animal->id) }}" method="post">
