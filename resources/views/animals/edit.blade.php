@@ -16,7 +16,7 @@
                 <div class="block-title">ЗОБРАЖЕННЯ</div>
                 <div class="block-sub-title">Що більше фото тим простіше знайти тварину у випадку втрати.<br>
                     Фотографуйте тваринку з різних сторін.</div>
-                <div class="pet-photo-hint">Це фото буде головним</div>
+                <div class="pet-photo-hint"><div>Це фото буде головним</div></div>
             </div>
             <div class="cols-block-content">
                 <div class="validation-error alert alert-danger hidden"></div>
@@ -24,14 +24,14 @@
                     <label class="photo-item photo-item-main @if(array_key_exists(1, $pet->images)) filled @endif " for="image1"
                            @if(array_key_exists(1, $pet->images)) style="background-image: url('/{{ $pet->images[1] }}')" @endif>
                         <input type='file' name="images[1]" id="image1" class="imageInput" />
-                        <span class="add-btn">+</span>
+                        <span class="add-btn"></span>
                     </label>
                     <div class="small-photos">
                         @for($i = 2; $i < 10; $i++)
                             <label class="photo-item @if(array_key_exists($i, $pet->images)) filled @endif " for="image{{ $i }}"
                                    @if(array_key_exists($i, $pet->images)) style="background-image: url('/{{ $pet->images[$i] }}')" @endif >
                                 <input type='file' name="images[{{ $i }}]" id="image{{ $i }}" class="imageInput" />
-                                <span class="add-btn">+</span>
+                                <span class="add-btn"></span>
                             </label>
                         @endfor
                     </div>
@@ -129,8 +129,8 @@
                     <div class="files-list">
                         @foreach($pet->documents as $doc)
                             <div class="file-item exists">
-                                <span class="file-name">{{ $doc->name }}</span>
-                                <span class="file-ext">.{{ $doc->extension }}</span>
+                                <span class="file-name">{{ $doc->filename }}</span>
+                                <span class="file-ext">.{{ $doc->fileextension }}</span>
                                 <span class="file-delete exists" data-id="{{ $doc->id }}"
                                       data-rem="{{ route('animals.remove-file', $doc->id) }}"></span>
                             </div>

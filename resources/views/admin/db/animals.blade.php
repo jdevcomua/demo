@@ -166,8 +166,7 @@
                         render: function ( data, type, row ) {
                             if (data) {
                                 var arr = data.split('||');
-                                //TODO link to user detail view
-                                return '<a href="' + arr[1] + '">' + arr[0] + '</a>';
+                                return '<a href="{{ route('admin.db.users.show') }}/' + arr[1] + '">' + arr[0] + '</a>';
                             }
                         }
                     },
@@ -187,8 +186,7 @@
                         render: function ( data, type, row ) {
                             if (data) {
                                 var arr = data.split('||');
-                                //TODO link to user detail view
-                                return '<a href="' + arr[1] + '">' + arr[0] + '</a>';
+                                return '<a href="{{ route('admin.db.users.show') }}/' + arr[1] + '">' + arr[0] + '</a>';
                             }
                         }
                     },

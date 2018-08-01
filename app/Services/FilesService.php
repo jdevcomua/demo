@@ -27,21 +27,22 @@ class FilesService
 
     private function storeAnimalFile($animal, $file, $num, $type)
     {
-        $fileName = self::sanitaze_name(substr($file->getClientOriginalName(),0,100));
+        $fileName = self::sanitaze_name($file->getClientOriginalName());
 
         $data = [
             'animal_id' => $animal->id,
             'type' => $type,
+            'name' => $fileName
         ];
 
         if ($type === AnimalsFile::FILE_TYPE_PHOTO) {
-            $data['path'] = $file->storeAs('animals/' . $animal->id
-                . AnimalsFile::FILE_TYPE_PHOTO_FOLDER, $fileName);
+            $data['path'] = $file->store('animals/' . $animal->id
+                . AnimalsFile::FILE_TYPE_PHOTO_FOLDER);
             $data['num'] = $num;
 
             $file = AnimalsFile::where([
                 'animal_id' => $animal->id,
-                'num' => $num
+                'num' => $num,
             ])->first();
 
             if ($file) {
@@ -52,8 +53,8 @@ class FilesService
         }
 
         if ($type === AnimalsFile::FILE_TYPE_DOCUMENT) {
-            $data['path'] = $file->storeAs('animals/' . $animal->id
-                . AnimalsFile::FILE_TYPE_DOCUMENT_FOLDER, $fileName);
+            $data['path'] = $file->store('animals/' . $animal->id
+                . AnimalsFile::FILE_TYPE_DOCUMENT_FOLDER);
         }
 
         $animal->files()->create($data);
@@ -64,9 +65,9 @@ class FilesService
         $indexOff = strrpos($name, '.');
         $nameFile = substr($name,0, $indexOff);
         $extension = substr($name, $indexOff);
-        $clean = preg_replace("([^\w\s\d\-_~,;\[\]\(\)])", "", $nameFile);
-        $nameOut = str_replace(' ', '', $clean) . '_' . str_random(2) . $extension;
-        return $nameOut;
+        $clean = preg_replace("([^\w\d\-_\(\)])", "", $nameFile);
+        $clean = substr($clean, 0, 40);
+        return $clean . $extension;
     }
 
 }

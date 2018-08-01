@@ -18,8 +18,7 @@
 
 @import "forms";
 
-@import "pets_index";
-@import "pets_create_edit";
+@import "animals";
 
 
 html {
@@ -61,6 +60,10 @@ img.logo {
   }
   .title {
     margin: 0 1.4rem;
+    max-width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .action-link {
     color: #014479;
