@@ -49,6 +49,7 @@ class DataTables
                                         . '\'%' . $column['search']['value'] . '%\''
                                     );
                                 }
+                                $filtered = true;
                             }
                         } catch (\Exception $exception) {}
                     }
@@ -73,7 +74,7 @@ class DataTables
             $response['draw'] = +$req['draw'];
 
             $response["recordsTotal"] = $model->count();
-            if (count($query->getQuery()->wheres)) {
+            if ($filtered) {
                 $response["recordsFiltered"] = $query->count();
             } else {
                 $response["recordsFiltered"] = $response["recordsTotal"];
