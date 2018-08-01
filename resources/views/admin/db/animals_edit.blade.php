@@ -162,7 +162,13 @@
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label">Ким:</label>
                                         <div class="col-lg-8">
-                                            <a href="#"><label class="cursor control-label">{{ $animal->userThatConfirmed->name }}</label></a>
+                                            @if($animal->userThatConfirmed)
+                                                <a href="{{ route('admin.db.users.show', $animal->userThatConfirmed->id) }}">
+                                                    <label class="cursor control-label">{{ $animal->userThatConfirmed->name }}</label>
+                                                </a>
+                                            @else
+                                                Помилка - Користувач не вказаний
+                                            @endif
                                         </div>
                                     </div>
                                 @endif
