@@ -31,7 +31,6 @@ class DataTables
                     $selects[] = DB::raw($value . ' AS ' . $alias);
                 }
             }
-
             if(!$query) $query = $model->newQuery();
             $query->select($selects);
 
@@ -73,11 +72,16 @@ class DataTables
             $response['draw'] = +$req['draw'];
 
             $response["recordsTotal"] = $model->count();
-            if (count($query->getQuery()->wheres)) {
-                $q = clone $query;
-                $q = $q->getQuery();
-                $q->groups = null;
-                $response["recordsFiltered"] = $q->count();
+            if ($query->getQuery()->wheres) {
+                if ($query->getQuery()->groups) {
+                    $q = $model->newQuery();
+                    $response["recordsFiltered"] = $q
+                        ->selectRaw('count(*) as count')
+                        ->fromRaw('('.$query->toSql() . ') as a')
+                        ->first()->count;
+                } else {
+                    $response["recordsFiltered"] = $query->count();
+                }
             } else {
                 $response["recordsFiltered"] = $response["recordsTotal"];
             }
