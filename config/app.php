@@ -164,6 +164,8 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         Zizaco\Entrust\EntrustServiceProvider::class,
+        App\Providers\BlockServiceProvider::class,
+
 
     ],
 
@@ -215,6 +217,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Block' => App\Facades\BlockFacade::class,
 
     ],
 
