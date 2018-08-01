@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
 use App\Models\Animal;
+use App\Models\Role;
 use App\Models\Species;
 use App\User;
 use Illuminate\Http\Request;
@@ -39,13 +40,33 @@ class DataBasesController extends Controller
     public function userShow($id)
     {
         $user = User::findOrFail($id);
-        $user->load('animals');
-        return view('admin.db.users_show', compact('user'));
+        $roles = Role::all();
+        $user->load('animals', 'roles');
+        return view('admin.db.users_show', compact('user', 'roles'));
     }
 
     public function userUpdate(Request $request, $id)
     {
         return redirect()->back();
+    }
+
+    public function userUpdateRoles(Request $request, $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'roles' => 'required|array',
+            'roles.*' => 'exists:users,id', // check each item in the array
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator->errors());
+        }
+
+        $user = User::findOrFail($id);
+        $user->roles()->sync($request->get('roles'));
+
+        return redirect()
+            ->back()
+            ->with('success_user', 'Ролі успішно змінені!');
     }
 
     public function userDelete($id)

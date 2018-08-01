@@ -30,8 +30,8 @@
                             @csrf
                             <input type="hidden" name="_method" value="PUT">
                             <div class="panel-body">
-                                @if($errors->animal)
-                                    @foreach($errors->animal->all() as $error)
+                                @if($errors->user)
+                                    @foreach($errors->user->all() as $error)
                                         <div class="alert alert-danger alert-dismissable">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                             <i class="fa fa-remove pr10"></i>
@@ -40,11 +40,11 @@
                                     @endforeach
                                 @endif
 
-                                @if (\Session::has('success_animal'))
+                                @if (\Session::has('success_user'))
                                     <div class="alert alert-success alert-dismissable">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                         <i class="fa fa-check pr10"></i>
-                                        {{ \Session::get('success_animal') }}
+                                        {{ \Session::get('success_user') }}
                                     </div>
                                 @endif
 
@@ -149,6 +149,44 @@
                         </form>
                     </div>
                 </div>
+
+                @permission('change-roles')
+                <div class="col-md-6">
+                    <div class="panel panel-visible" id="spy5">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <span class="glyphicon glyphicon-tags"></span>Ролі користувача</div>
+                        </div>
+                        <form class="form-horizontal" role="form"
+                              action="{{ route('admin.db.users.update.roles', $user->id) }}" method="post">
+                            @csrf
+                            <input type="hidden" name="_method" value="PUT">
+                            <div class="panel-body">
+                                <div class="row">
+
+                                @foreach($roles as $role)
+                                    <div class="checkbox-custom mb5 col-md-6">
+                                        <input
+                                                type="checkbox"
+                                                name="roles[]"
+                                                value="{{$role->id}}"
+                                                id="roles-{{$role->id}}"
+                                                @if($user->hasRole($role->name))
+                                                    checked
+                                                @endif
+                                        >
+                                        <label for="roles-{{$role->id}}">{{$role->display_name}}</label>
+                                    </div>
+                                @endforeach
+                                </div>
+
+                            <div class="panel-footer text-right">
+                                <button type="submit" class="btn btn-default ph25">Зберегти</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                @endpermission
 
             </div>
 

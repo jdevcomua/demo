@@ -20,6 +20,8 @@ Route::group([
         ->name('show');
     Route::put('update/{id?}', 'Admin\DataBasesController@userUpdate')
         ->name('update');
+    Route::put('roles/update/{id?}', 'Admin\DataBasesController@userUpdateRoles')
+        ->name('update.roles');
     Route::delete('delete/{id?}', 'Admin\DataBasesController@userDelete')
         ->name('remove');
 });
