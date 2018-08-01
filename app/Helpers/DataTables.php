@@ -74,7 +74,10 @@ class DataTables
 
             $response["recordsTotal"] = $model->count();
             if (count($query->getQuery()->wheres)) {
-                $response["recordsFiltered"] = $query->count();
+                $q = clone $query;
+                $q = $q->getQuery();
+                $q->groups = null;
+                $response["recordsFiltered"] = $q->count();
             } else {
                 $response["recordsFiltered"] = $response["recordsTotal"];
             }
@@ -83,7 +86,6 @@ class DataTables
                 ->limit($req['length'])
                 ->get()
                 ->toArray();
-
             return $response;
         }
         return null;
