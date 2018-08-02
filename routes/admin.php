@@ -71,6 +71,18 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'content',
+    'as' => 'info.content.'
+], function () {
+    Route::get('index', 'Admin\InfoController@content')
+        ->name('index');
+    Route::get('faq/data', 'Admin\InfoController@faqData')
+        ->name('faq.data');
+    Route::post('faq', 'Admin\InfoController@storeFaq')
+        ->name('faq.store');
+});
+
+Route::group([
     'prefix' => 'roles',
     'as' => 'roles.'
 ], function () {

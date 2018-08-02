@@ -46,8 +46,8 @@
                     <span class="sidebar-title">Нотифікації</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li {!! (strpos($curRoute, '.content.') !== false) ? ' class="active" ' : '' !!}>
+                <a href="{{route('admin.info.content.index')}}">
                     <span class="fa fa-file-text"></span>
                     <span class="sidebar-title">Контент</span>
                 </a>
