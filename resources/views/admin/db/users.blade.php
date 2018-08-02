@@ -127,11 +127,20 @@
                     { "data": "first_name" },
                     { "data": "last_name" },
                     { "data": "middle_name" },
-                    { "data": "email" },
-                    { "data": "phone" },
+                    {
+                        data: 'emails',
+                        render: function ( data, type, row ) {
+                            return (data) ? data.split('|').join('<br>') : '';
+                        }
+                    },
+                    {
+                        data: 'phones',
+                        render: function ( data, type, row ) {
+                            return (data) ? data.split('|').join('<br>') : '';
+                        }
+                    },
                     {
                         data: 'birthday',
-                        responsivePriority: 10,
                         render: function ( data, type, row ) {
                             var d = new Date(data);
                             return d.toLocaleDateString('uk')
@@ -141,7 +150,6 @@
                     { "data": "passport" },
                     {
                         data: 'gender',
-                        responsivePriority: 4,
                         render: function ( data, type, row ) {
                             switch (data) {
                                 case 0: return 'Жін.';

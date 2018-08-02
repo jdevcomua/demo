@@ -44,7 +44,7 @@ class DataTables
                                     $query->where($table. '.' .$column['data'], 'like',
                                         '%' . $column['search']['value'] . '%');
                                 } else {
-                                    $query->whereRaw($aliases[$column['data']] . ' like '
+                                    $query->havingRaw($aliases[$column['data']] . ' like '
                                         . '\'%' . $column['search']['value'] . '%\''
                                     );
                                 }

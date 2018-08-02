@@ -30,7 +30,19 @@ class DataBasesController extends Controller
 
     public function userData(Request $request)
     {
-        $response = DataTables::provide($request, new User());
+        $model = new User();
+
+        $query = $model->newQuery()
+            ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
+            ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
+            ->groupBy('users.id');
+
+        $aliases = [
+            'emails' => 'GROUP_CONCAT(DISTINCT `user_emails`.email SEPARATOR \'|\')',
+            'phones' => 'GROUP_CONCAT(DISTINCT `user_phones`.phone SEPARATOR \'|\')',
+        ];
+
+        $response = DataTables::provide($request, $model, $query, $aliases);
 
         if ($response) return response()->json($response);
 

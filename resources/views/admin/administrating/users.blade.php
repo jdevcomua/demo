@@ -42,7 +42,6 @@
                                     <th>#K</th>
                                     <th>Ім'я</th>
                                     <th>Прізвище</th>
-
                                     <th>По батькові</th>
                                     <th>e-mail</th>
                                     <th>Телефон</th>
@@ -70,7 +69,7 @@
                                         </select>
                                     </th>
                                     <th></th>
-                                    <th class="no-search"></th>
+                                    <th></th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -122,8 +121,18 @@
                     { "data": "first_name" },
                     { "data": "last_name" },
                     { "data": "middle_name" },
-                    { "data": "email" },
-                    { "data": "phone" },
+                    {
+                        data: 'emails',
+                        render: function ( data, type, row ) {
+                            return (data) ? data.split('|').join('<br>') : '';
+                        }
+                    },
+                    {
+                        data: 'phones',
+                        render: function ( data, type, row ) {
+                            return (data) ? data.split('|').join('<br>') : '';
+                        }
+                    },
                     {
                         data: 'gender',
                         responsivePriority: 4,
@@ -136,12 +145,10 @@
                         }
                     },
                     { "data": "updated_at" },
-                    { data: "role_names",
-                        defaultContent: '',
+                    {
+                        data: 'role_names',
                         render: function ( data, type, row ) {
-                            if (data) {
-                                return data
-                            }
+                            return (data) ? data.split('|').join('<br>') : '';
                         }
                     },
                 ],

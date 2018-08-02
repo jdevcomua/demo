@@ -6,7 +6,6 @@ namespace App\Auth;
 //use App\Auth\Contracts\HasInn;
 //use App\Conventions\UserProvidersConvention;
 use App\Services\Geocoding\Address;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\RedirectResponse;
@@ -14,6 +13,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\ProviderInterface;
+use Laravel\Socialite\Two\User;
 
 class KyivIdProvider extends AbstractProvider implements ProviderInterface//, HasInn
 {
@@ -221,14 +221,13 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
      */
     public function mapUserToObject(array $user)
     {
-
         $data = [
             'ext_id' => array_get($user, 'data.profile.id'),
             'first_name' => array_get($user, 'data.profile.name.firstName'),
             'last_name' => array_get($user, 'data.profile.name.lastName'),
             'middle_name' => array_get($user, 'data.profile.name.middleName'),
-            'email' => trim(strtolower(array_get($user, 'data.profile.emails.0.email'))) ?: null,
-            'phone' => array_get($user, 'data.profile.phones.0.phoneNumber') ,
+            'emails' => array_get($user, 'data.profile.emails'),
+            'phones' => array_get($user, 'data.profile.phones') ,
             'birthday' => array_get($user, 'data.profile.birthday.date') ? Carbon::createFromFormat('Y-m-d', array_get($user, 'data.profile.birthday.date')) : null,
             'inn' => array_get($user, 'data.profile.itin.itin'),
             'passport' => trim(strtoupper(array_get($user, 'data.profile.passportInternal.series').
@@ -265,7 +264,7 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
             }
         }
 
-        return (new User())->fill($data);
+        return (new User())->map($data);
     }
 
     function getByType(array $data, string $type)

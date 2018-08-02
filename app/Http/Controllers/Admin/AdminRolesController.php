@@ -39,8 +39,8 @@ class AdminRolesController extends Controller
             ->groupBy('roles.id');
 
         $aliases = [
-            'permissions_count' => 'COUNT(`permissions`.`id`)',
-            'users_count' => 'COUNT(`users`.`id`)',
+            'permissions_count' => 'COUNT(DISTINCT `permissions`.`id`)',
+            'users_count' => 'COUNT(DISTINCT `users`.`id`)',
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);

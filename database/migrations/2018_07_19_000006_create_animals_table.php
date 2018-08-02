@@ -20,7 +20,7 @@ class CreateAnimalsTable extends Migration
             $table->unsignedInteger('breed_id');
             $table->unsignedInteger('color_id');
             $table->unsignedTinyInteger('gender');
-            $table->dateTime('birthday');
+            $table->date('birthday');
             $table->boolean('sterilized')->default(false);
             $table->unsignedInteger('user_id');
             $table->boolean('verified')->default(false);

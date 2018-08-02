@@ -34,6 +34,8 @@ class SiteController extends Controller
             Socialite::driver('kyivID')->user()
         );
 
+        if (!$user) return redirect()->route('bad-login');
+
         Auth::login($user);
 
         return redirect('/', 302);
