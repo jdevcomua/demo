@@ -77,7 +77,7 @@ class DataTables
                     $q = $model->newQuery();
                     $response["recordsFiltered"] = $q
                         ->selectRaw('count(*) as count')
-                        ->fromRaw('('.$query->toSql() . ') as a')
+                        ->fromRaw('('.$query->toSql() . ') as a', $query->getBindings())
                         ->first()->count;
                 } else {
                     $response["recordsFiltered"] = $query->count();
