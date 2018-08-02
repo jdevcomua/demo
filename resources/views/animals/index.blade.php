@@ -40,9 +40,9 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item"
                                href="{{ route('animals.show', ['id' => $pet->id]) }}">Переглянути картку</a>
-                            <a class="dropdown-item"
-                               href="{{ route('animals.edit', ['id' => $pet->id]) }}">Редагувати інформацію</a>
                             @if(!$pet->verified)
+                                <a class="dropdown-item"
+                                   href="{{ route('animals.edit', ['id' => $pet->id]) }}">Редагувати інформацію</a>
                                 <a class="dropdown-item"
                                    href="{{ route('animals.destroy', ['id' => $pet->id]) }}" onclick="event.preventDefault();
                                    document.getElementById('delete-form-{{ $pet->id }}').submit();">Видалити</a>
