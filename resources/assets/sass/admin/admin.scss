@@ -2,6 +2,11 @@
   line-height: 29px;
 }
 table.datatable {
+  tr td {
+    max-width:175px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   thead th {
     padding-right: 18px;
   }
