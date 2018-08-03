@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Auth\KyivIdUserResolver;
+use App\Models\Faq;
 use Auth;
 use Socialite;
 
@@ -52,6 +53,13 @@ class SiteController extends Controller
     {
         Auth::login(\App\User::find(2));
         return redirect('/', 302);
+    }
+
+    public function faq()
+    {
+        return view('faq', [
+            'questions' => Faq::all()
+        ]);
     }
 
 }
