@@ -16,7 +16,7 @@ class CreateBreedsTable extends Migration
         Schema::create('breeds', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 256);
-            $table->string('fci', 5)->nullable();
+            $table->unsignedSmallInteger('fci');
             $table->unsignedSmallInteger('species_id');
             $table->boolean('available')->default(true);
 //            $table->timestamps();
