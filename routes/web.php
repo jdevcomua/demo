@@ -9,10 +9,10 @@ Route::view('/bad-login', 'errors/bad-login')->name('bad-login');
 
 
 // Authentication Routes...
-Route::get('login', 'SiteController@login')->name('login');
-Route::get('auth/attempt', 'SiteController@loginAttempt');
-Route::get('auth/callback', 'SiteController@loginCallback');
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('login', 'AuthController@login')->name('login');
+Route::get('auth/attempt', 'AuthController@loginAttempt');
+Route::get('auth/callback', 'AuthController@loginCallback');
+Route::post('logout', 'AuthController@logout')->name('logout');
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -37,5 +37,5 @@ Route::group([
 
 });
 
-Route::get('/login/as/admin', 'SiteController@loginAsAdmin');
-Route::get('/login/as/user', 'SiteController@loginAsUser');
+Route::get('/login/as/admin', 'AuthController@loginAsAdmin');
+Route::get('/login/as/user', 'AuthController@loginAsUser');
