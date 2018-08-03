@@ -91,11 +91,13 @@
                     <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn radio-item big-radio active">
                             <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
-                            <input type="radio" name="gender" value="0" autocomplete="off" checked>Самець
+                            <input type="radio" name="gender"
+                                   value="{{ \App\Models\Animal::GENDER_MALE }}" autocomplete="off" checked>Самець
                         </label>
                         <label class="btn radio-item big-radio">
                             <span class="label"><i class="fa fa-venus" aria-hidden="true"></i></span>
-                            <input type="radio" name="gender" value="1" autocomplete="off">Самка
+                            <input type="radio" name="gender"
+                                   value="{{ \App\Models\Animal::GENDER_FEMALE }}" autocomplete="off">Самка
                         </label>
                     </div>
                 </div>

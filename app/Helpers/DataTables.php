@@ -44,9 +44,15 @@ class DataTables
                                     $query->where($table. '.' .$column['data'], 'like',
                                         '%' . $column['search']['value'] . '%');
                                 } else {
-                                    $query->whereRaw($aliases[$column['data']] . ' like '
-                                        . '\'%' . $column['search']['value'] . '%\''
-                                    );
+                                    if (!self::isHavingSearch($aliases[$column['data']])) {
+                                        $query->whereRaw($aliases[$column['data']] . ' like '
+                                            . '\'%' . $column['search']['value'] . '%\''
+                                        );
+                                    } else {
+                                        $query->havingRaw($aliases[$column['data']] . ' like '
+                                            . '\'%' . $column['search']['value'] . '%\''
+                                        );
+                                    }
                                 }
                             }
                         } catch (\Exception $exception) {}
@@ -73,7 +79,7 @@ class DataTables
 
             $response["recordsTotal"] = $model->count();
             if ($query->getQuery()->wheres) {
-                if ($query->getQuery()->groups) {
+                if ($query->getQuery()->groups || $query->getQuery()->havings) {
                     $q = $model->newQuery();
                     $response["recordsFiltered"] = $q
                         ->selectRaw('count(*) as count')
@@ -93,5 +99,14 @@ class DataTables
             return $response;
         }
         return null;
+    }
+
+    private static function isHavingSearch($alias)
+    {
+        $mustUseHaving = ['GROUP_CONCAT'];
+        foreach ($mustUseHaving as $m) {
+            if (strpos($alias, $m) !== false) return true;
+        }
+        return false;
     }
 }

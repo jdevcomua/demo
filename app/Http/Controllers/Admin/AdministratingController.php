@@ -17,16 +17,23 @@ class AdministratingController extends Controller
 
     public function userData(Request $request)
     {
-        $query = User::whereNull('banned_at')
+        $model = new User();
+
+        $query = $model->newQuery()
+            ->whereNull('banned_at')
+            ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
+            ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
             ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
             ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
             ->groupBy('users.id');
 
         $aliases = [
-            'role_names' =>'COALESCE(GROUP_CONCAT(roles.display_name), "")'
+            'emails' => 'GROUP_CONCAT(DISTINCT `user_emails`.email SEPARATOR \'|\')',
+            'phones' => 'GROUP_CONCAT(DISTINCT `user_phones`.phone SEPARATOR \'|\')',
+            'role_names' =>'GROUP_CONCAT(`roles`.display_name SEPARATOR \'|\')',
         ];
 
-        $response = DataTables::provide($request, new User(), $query, $aliases);
+        $response = DataTables::provide($request, $model, $query, $aliases);
 
         if ($response) return response()->json($response);
 
@@ -51,8 +58,20 @@ class AdministratingController extends Controller
 
     public function bannedUsersData(Request $request)
     {
-        $query = User::whereNotNull('banned_at');
-        $response = DataTables::provide($request, new User(), $query);
+        $model = new User();
+
+        $query = $model->newQuery()
+            ->whereNotNull('banned_at')
+            ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
+            ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
+            ->groupBy('users.id');
+
+        $aliases = [
+            'emails' => 'GROUP_CONCAT(DISTINCT `user_emails`.email SEPARATOR \'|\')',
+            'phones' => 'GROUP_CONCAT(DISTINCT `user_phones`.phone SEPARATOR \'|\')',
+        ];
+
+        $response = DataTables::provide($request, $model, $query, $aliases);
 
         if ($response) return response()->json($response);
 

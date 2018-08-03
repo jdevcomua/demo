@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\UserAddress;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
@@ -22,16 +23,23 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property array $address_living
  * @property array $address_registration
  * @property int $gender
- * @property string|null $remember_token
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $bannedBy
  * @property \Carbon\Carbon|null $banned_at
+ * @property int|null $banned_by
+ * @property string|null $remember_token
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $addresses
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Animal[] $animals
+ * @property-read \App\User|null $bannedBy
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserEmail[] $emails
+ * @property-read mixed $name
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPhone[] $phones
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAddressLiving($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAddressRegistration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBannedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBannedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
@@ -47,7 +55,6 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read mixed $name
  */
 class User extends Authenticatable
 {
@@ -89,18 +96,33 @@ class User extends Authenticatable
             . (($this->first_name) ? $this->first_name : '');
     }
 
-    public function getAddressLivingAttribute()
-    {
-        return (object) json_decode($this->attributes['address_living']);
-    }
-
-    public function getAddressRegistrationAttribute()
-    {
-        return (object) json_decode($this->attributes['address_registration']);
-    }
-
     public function bannedBy()
     {
         return $this->belongsTo(User::class, 'banned_by', 'id');
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany('App\Models\UserAddress');
+    }
+
+    public function getLivingAddressAttribute()
+    {
+        return $this->addresses->where('type', '=', UserAddress::ADDRESS_TYPE_LIVING)->first();
+    }
+
+    public function getRegistrationAddressAttribute()
+    {
+        return $this->addresses->where('type', '=', UserAddress::ADDRESS_TYPE_REGISTRATION)->first();
+    }
+
+    public function emails()
+    {
+        return $this->hasMany('App\Models\UserEmail');
+    }
+
+    public function phones()
+    {
+        return $this->hasMany('App\Models\UserPhone');
     }
 }

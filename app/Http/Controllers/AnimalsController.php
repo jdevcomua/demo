@@ -128,6 +128,8 @@ class AnimalsController extends Controller
      */
     public function edit(Animal $animal)
     {
+        if ($animal->verified) return redirect()->route('animals.show', $animal->id);
+
         $animal->load(['species', 'color', 'images', 'documents']);
         $animal->images = $animal->images->pluck('path', 'num')->toArray();
 

@@ -8,7 +8,7 @@
     <div class="page-title">
         <a href="{{ route('index') }}" class="page-back-link"></a>
         <div class="title">{{ $animal->nickname }}</div>
-        <a href="{{ route('animals.edit', $animal->id) }}" class="action-link">Редагувати</a>
+        @if(!$animal->verified) <a href="{{ route('animals.edit', $animal->id) }}" class="action-link">Редагувати</a> @endif
     </div>
     <div class="animal-show">
         <div class="animal-images">

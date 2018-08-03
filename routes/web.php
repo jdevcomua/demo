@@ -5,6 +5,8 @@ Route::get('/', 'SiteController')->name('index');
 Route::view('/about', 'about')->name('about');
 Route::view('/faq', 'faq')->name('faq');
 
+Route::view('/bad-login', 'errors/bad-login')->name('bad-login');
+
 
 // Authentication Routes...
 Route::get('login', 'SiteController@login')->name('login');
