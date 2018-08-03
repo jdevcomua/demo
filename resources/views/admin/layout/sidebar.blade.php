@@ -46,11 +46,24 @@
                     <span class="sidebar-title">Нотифікації</span>
                 </a>
             </li>
-            <li {!! (strpos($curRoute, '.content.') !== false) ? ' class="active" ' : '' !!}>
-                <a href="{{route('admin.info.content.index')}}">
+            <li{!! (strpos($curRoute, '.content.') !== false) ? ' class="active" ' : '' !!}>
+            <a class="accordion-toggle {!! (strpos($curRoute, '.content.') !== false)
+                        ? 'menu-open' : '' !!}" href="#">
                     <span class="fa fa-file-text"></span>
                     <span class="sidebar-title">Контент</span>
+                    <span class="caret"></span>
                 </a>
+                <ul class="nav sub-nav">
+                    <li{!! (strpos($curRoute, '.content.faq') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.info.content.faq.index')}}">
+                            <span class="fa fa-question-circle"></span>Часті питання</a>
+                    </li>
+                    <li{!! (strpos($curRoute, '.content.block') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.info.content.block.index')}}">
+                            <span class="fa fa-info-circle"></span>Про проект
+                        </a>
+                    </li>
+                </ul>
             </li>
 
 

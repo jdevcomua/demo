@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
-use App\Models\Block;
 use App\Models\Breed;
 use App\Models\Color;
-use App\Models\Faq;
 use App\Models\Species;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -179,82 +177,5 @@ class InfoController extends Controller
                 ->with('success_color_rem', 'Масть видалена успішно !');
         }
         return response('', 400);
-    }
-
-    public function content()
-    {
-        $blocks = Block::all();
-        return view('admin.info.content', compact('faqs', 'blocks'));
-    }
-
-    public function faqData(Request $request)
-    {
-        $model = new Faq();
-
-        $response = DataTables::provide($request, $model);
-
-        if ($response) return response()->json($response);
-
-        return response('', 400);
-    }
-
-    public function faqDelete($id)
-    {
-        $faq = Faq::find($id);
-        $faq->delete();
-        return redirect()
-            ->back()
-            ->with('success_faq', 'Питання було успішно видалено!');
-    }
-
-    public function storeFaq(Request $request)
-    {
-        $validator = \Validator::make($request->all(), [
-            'question' => 'string|required',
-            'answer' => 'string|required'
-        ], [
-            'question.required' => 'Поле запитання повинно буди заповненим!',
-            'answer.required' => 'Поле відповідь повинно буди заповненим!'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withErrors($validator->errors())
-                ->withInput();
-        }
-
-        $faq = new Faq();
-        $faq->question = $request->get('question');
-        $faq->answer = $request->get('answer');
-        $faq->save();
-
-        return redirect()
-            ->back()
-            ->with('success_faq', 'Питання було успішно добавлено!');
-    }
-
-    public function updateBlock(Request $request, $id)
-    {
-        $validator = \Validator::make($request->all(), [
-            'body' => 'string|required'
-        ], [
-            'body.required' => 'Поле "текст" повинно буди заповненим!'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withErrors($validator->errors())
-                ->withInput();
-        }
-
-        $block = Block::findOrFail($id);
-        $block->body = $request->get('body');
-        $block->save();
-
-        return redirect()
-            ->back()
-            ->with('success_faq', 'Блок було успішно змінен');
     }
 }

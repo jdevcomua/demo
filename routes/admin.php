@@ -74,15 +74,18 @@ Route::group([
     'prefix' => 'content',
     'as' => 'info.content.'
 ], function () {
-    Route::get('index', 'Admin\InfoController@content')
-        ->name('index');
-    Route::get('faq/data', 'Admin\InfoController@faqData')
+    Route::get('faq', 'Admin\ContentController@faqIndex')
+        ->name('faq.index');
+    Route::get('faq/data', 'Admin\ContentController@faqData')
         ->name('faq.data');
-    Route::delete('faq/delete/{id?}', 'Admin\InfoController@faqDelete')
-        ->name('faq.delete');
-    Route::post('faq', 'Admin\InfoController@storeFaq')
+    Route::post('faq', 'Admin\ContentController@faqStore')
         ->name('faq.store');
-    Route::put('block/{id}/update', 'Admin\InfoController@updateBlock')
+    Route::delete('faq/delete/{id?}', 'Admin\ContentController@faqDelete')
+        ->name('faq.delete');
+
+    Route::get('block', 'Admin\ContentController@blockIndex')
+        ->name('block.index');
+    Route::put('block/{id}/update', 'Admin\ContentController@blockUpdate')
         ->name('block.update');
 });
 
