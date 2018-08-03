@@ -1,5 +1,9 @@
 @extends('admin.layout.app')
 
+@section('styles')
+    <link rel="stylesheet" type="text/css" href="/plugins/summernote/summernote.css">
+@endsection
+
 @section('content')
     <!-- Start: Topbar -->
     <header id="topbar">
@@ -32,11 +36,19 @@
                     <div class="tab-content pn br-n">
                         <div id="faq" class="tab-pane active">
                             <div class="row">
+                                @if (\Session::has('success_faq'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_faq') }}
+                                    </div>
+                                @endif
                                 <table class="table table-striped table-hover display datatable responsive nowrap"
                                        id="datatable-faq" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Дії</th>
                                         <th>Питання</th>
                                         <th>Відповідь</th>
                                     </tr>
@@ -44,6 +56,7 @@
                                     <tfoot class="search">
                                     <tr>
                                         <th></th>
+                                        <th class="no-search"></th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -71,14 +84,6 @@
                                                             {{ $error }}
                                                         </div>
                                                     @endforeach
-                                                @endif
-
-                                                @if (\Session::has('success_faq'))
-                                                    <div class="alert alert-success alert-dismissable">
-                                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                        <i class="fa fa-check pr10"></i>
-                                                        {{ \Session::get('success_faq') }}
-                                                    </div>
                                                 @endif
 
                                                 <div class="form-group">
@@ -110,11 +115,28 @@
                         </div>
                         <div id="blocks" class="tab-pane">
                             <div class="row">
-                                <div class="col-md-8">
-                                    <p>
-                                        {!! \Block::get('this is test block') !!}
-                                    </p>
-                                </div>
+                                @foreach($blocks as $block)
+                                    <div class="col-md-6">
+                                        <form action="{{route('admin.info.content.block.update', $block->id)}}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="_method" value="put">
+                                            <div class="form-group">
+                                                <label for="nickname" class="control-label">Назва блоку</label>
+                                                <input type="text" id="nickname" name="nickname" class="form-control"
+                                                       value="{{ $block->title}}" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    Текст блоку
+                                                </label>
+                                                <textarea name="body" class="summernote">
+                                                    {!! $block->body !!}
+                                                </textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-success btn-block">Змінити</button>
+                                        </form>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -122,11 +144,16 @@
             </div>
 
         </div>
+        <form action="{{route('admin.info.content.faq.delete')}}" id="destroy" method="post" class="hidden">
+            @csrf
+            <input type="hidden" name="_method" value="delete">
+        </form>
 
     </section>
 @endsection
 
 @section('scripts-end')
+    <script src="/plugins/summernote/summernote.min.js"></script>
     <script src="/js/admin/jquery.dataTables.js"></script>
     <script src="/js/admin/dataTables.tableTools.min.js"></script>
     <script src="/js/admin/dataTables.colReorder.min.js"></script>
@@ -139,10 +166,34 @@
                 ajax: '{{ route('admin.info.content.faq.data', null, false) }}',
                 columns: [
                     { "data": "id" },
+                    {
+                        "data": "id",
+                        defaultContent: '',
+                        render: function (data, type, row) {
+                            if (data) {
+                                return "<a href='#' class='delete' " +
+                                    "data-id=" + data + ">" +
+                                    "<i class=\"fa fa-trash pr10\" aria-hidden=\"true\"></i>" +
+                                    "</a>";
+                            }
+                        }
+                    },
                     { "data": "question" },
                     { "data": "answer" },
                 ],
             });
+        });
+        jQuery(document).on('click','.delete', function() {
+            var form = jQuery('#destroy');
+            var id =  jQuery(this).attr('data-id');
+            jQuery(form).attr('action', '{{route('admin.info.content.faq.delete')}}/' +id);
+            jQuery(form).submit();
+        });
+        $('.summernote').summernote({
+            height: 255, //set editable area's height
+            focus: false, //set focus editable area after Initialize summernote
+            oninit: function() {},
+            onChange: function(contents, $editable) {},
         });
     </script>
 @endsection

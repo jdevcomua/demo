@@ -78,8 +78,12 @@ Route::group([
         ->name('index');
     Route::get('faq/data', 'Admin\InfoController@faqData')
         ->name('faq.data');
+    Route::delete('faq/delete/{id?}', 'Admin\InfoController@faqDelete')
+        ->name('faq.delete');
     Route::post('faq', 'Admin\InfoController@storeFaq')
         ->name('faq.store');
+    Route::put('block/{id}/update', 'Admin\InfoController@updateBlock')
+        ->name('block.update');
 });
 
 Route::group([
