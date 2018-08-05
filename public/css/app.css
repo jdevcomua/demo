@@ -14405,7 +14405,7 @@ header .name .title {
 header .name .title > span {
   font-size: 2rem;
   line-height: 2rem;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 header .name .title .sub-title {
@@ -14655,6 +14655,19 @@ footer .footer-kiev-portal {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+}
+
+footer .footer-kiev-portal > div {
+  margin-bottom: 1rem;
+  padding-right: 1rem;
+}
+
+footer .footer-kiev-portal > div:last-child {
+  padding-right: 0;
 }
 
 footer .footer-kiev-portal .col-about-header {
@@ -14752,30 +14765,53 @@ footer .copyright {
   padding-bottom: 4rem;
 }
 
+footer .copyright .text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+}
+
+footer .copyright .text span {
+  padding-right: 0.3rem;
+}
+
 footer .copyright a {
   color: #fff;
   padding-right: 10px;
 }
 
-@media (max-width: 760px) {
-  footer .footer-kiev-portal {
-    padding: 50px 0 0;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-flow: column;
-            flex-flow: column;
-  }
-
-  footer .footer-kiev-portal > div {
-    margin-bottom: 1.5rem;
-  }
-
-  footer .footer-kiev-portal .contacts-item {
-    margin-bottom: 1rem;
-  }
-
+@media (max-width: 840px) {
   footer .work-time {
-    margin-bottom: 2rem;
+    margin-top: -1rem;
+    margin-bottom: 3rem;
+  }
+
+  footer .copyright {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding-bottom: 2rem;
+  }
+
+  footer .copyright .text {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+
+  footer .copyright .links {
+    padding-bottom: 0.5rem;
   }
 }
 

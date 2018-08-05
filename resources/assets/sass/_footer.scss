@@ -71,6 +71,14 @@ footer {
     padding: 50px 0 30px;
     display: flex;
     justify-content: space-between;
+    flex-flow: row wrap;
+    & > div {
+      margin-bottom: 1rem;
+      padding-right: 1rem;
+    }
+    & > div:last-child {
+      padding-right: 0;
+    }
     .col-about-header {
       display: flex;
       margin-bottom: 2rem;
@@ -135,26 +143,36 @@ footer {
   .copyright {
     color: #7599b6;
     padding-bottom: 4rem;
+    .text {
+      display:  flex;
+      flex-flow:  row wrap;
+      span {
+        padding-right: 0.3rem;
+      }
+    }
     a {
       color: #fff;
       padding-right: 10px;
     }
   }
 }
-@media (max-width: 760px) {
+@media (max-width: 840px) {
   footer {
-    .footer-kiev-portal {
-      padding: 50px 0 0;
-      flex-flow: column;
-      > div {
-        margin-bottom: 1.5rem;
-      }
-      .contacts-item {
-        margin-bottom: 1rem;
-      }
-    }
     .work-time {
-      margin-bottom: 2rem;
+      margin-top: -1rem;
+      margin-bottom: 3rem;
+    }
+    .copyright {
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      padding-bottom: 2rem;
+      .text {
+        justify-content: center;
+      }
+      .links {
+        padding-bottom: 0.5rem;
+      }
     }
   }
 }

@@ -65,6 +65,7 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                     <th>
                                         <select>
                                             <option selected value>---</option>
@@ -72,7 +73,6 @@
                                             <option value="1">Чол.</option>
                                         </select>
                                     </th>
-                                    <th></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
