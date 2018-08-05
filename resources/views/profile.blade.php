@@ -37,7 +37,7 @@
                 </div>
                 <div class="form-group">
                     <label>Стать</label>
-                    <div class="btn-group-toggle">
+                    <div class="btn-group-toggle readonly">
                         <label class="btn radio-item big-radio
                                 @if($auth->gender === \App\User::GENDER_MALE) active @endif">
                             <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
@@ -80,31 +80,31 @@
                     <div class="form-group">
                         <label for="registration_district">Область</label>
                         <input type="text" class="form-control" id="registration_district"
-                               value="{{ $auth->registrationAddress->district }}">
+                               value="{{ $auth->registrationAddress->district }}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="registration_city">Населений пункт</label>
                         <input type="text" class="form-control" id="registration_city"
-                               value="{{ $auth->registrationAddress->city }}">
+                               value="{{ $auth->registrationAddress->city }}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="registration_street">Вулиця</label>
                         <input type="text" class="form-control" id="registration_street"
-                               value="{{ $auth->registrationAddress->street }}">
+                               value="{{ $auth->registrationAddress->street }}" readonly>
                     </div>
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="registration_building">Будинок</label>
                                 <input type="text" class="form-control" id="registration_building"
-                                       value="{{ $auth->registrationAddress->building }}">
+                                       value="{{ $auth->registrationAddress->building }}" readonly>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="registration_apartment9">Помешкання</label>
                                 <input type="text" class="form-control" id="registration_apartment"
-                                       value="{{ $auth->registrationAddress->apartment }}">
+                                       value="{{ $auth->registrationAddress->apartment }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -121,48 +121,50 @@
                     <div class="form-group">
                         <label for="living_district">Область</label>
                         <input type="text" class="form-control" id="living_district"
-                               value="{{ $auth->livingAddress->district }}">
+                               value="{{ $auth->livingAddress->district }}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="living_city">Населений пункт</label>
                         <input type="text" class="form-control" id="living_city"
-                               value="{{ $auth->livingAddress->city }}">
+                               value="{{ $auth->livingAddress->city }}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="living_street">Вулиця</label>
                         <input type="text" class="form-control" id="living_street"
-                               value="{{ $auth->livingAddress->street }}">
+                               value="{{ $auth->livingAddress->street }}" readonly>
                     </div>
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="living_building">Будинок</label>
                                 <input type="text" class="form-control" id="living_building"
-                                       value="{{ $auth->livingAddress->building }}">
+                                       value="{{ $auth->livingAddress->building }}" readonly>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="living_apartment">Помешкання</label>
                                 <input type="text" class="form-control" id="living_apartment"
-                                       value="{{ $auth->livingAddress->apartment }}">
+                                       value="{{ $auth->livingAddress->apartment }}" readonly>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         @endif
-        <div class="cols-block footer">
-            <div class="cols-block-header">
-                <div class="block-title"></div>
-                <div class="block-sub-title"></div>
-            </div>
-            <div class="cols-block-content form">
-                <div class="form-buttons">
-                    <input class="btn btn-primary" type="submit" value="Зберегти">
-                    <a class="btn btn-cancel" href="#">Скасувати</a>
+        @if(false)
+            <div class="cols-block footer">
+                <div class="cols-block-header">
+                    <div class="block-title"></div>
+                    <div class="block-sub-title"></div>
+                </div>
+                <div class="cols-block-content form">
+                    <div class="form-buttons">
+                        <input class="btn btn-primary" type="submit" value="Зберегти">
+                        <a class="btn btn-cancel" href="#">Скасувати</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </form>
 @endsection

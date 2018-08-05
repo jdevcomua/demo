@@ -126,6 +126,9 @@
       margin-right: 0;
     }
   }
+  &.readonly > label {
+    cursor: default !important;
+  }
 }
 
 .selectize-input.items {

@@ -15001,6 +15001,10 @@ textarea:focus {
   margin-right: 0;
 }
 
+.btn-group-toggle.readonly > label {
+  cursor: default !important;
+}
+
 .selectize-input.items {
   border: none;
   -webkit-box-shadow: none;
