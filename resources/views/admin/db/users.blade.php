@@ -163,17 +163,15 @@
                 ],
             });
 
-            setTimeout(function () {
-                jQuery('.delete').on('click', function(e) {
-                    e.preventDefault();
-                    if (confirm('Ви впевнені що хочете видалити користувача?')) {
-                        var id = jQuery(this).attr('data-id');
-                        var form = jQuery('#remove');
-                        $(form).attr('action', "{{route('admin.db.users.remove')}}/"+id);
-                        $(form).submit();
-                    }
-                });
-            }, 2000);
+            jQuery(document).on('click','.delete', function(e) {
+                e.preventDefault();
+                if (confirm('Ви впевнені що хочете видалити користувача?')) {
+                    var id = jQuery(this).attr('data-id');
+                    var form = jQuery('#remove');
+                    $(form).attr('action', "{{route('admin.db.users.remove')}}/"+id);
+                    $(form).submit();
+                }
+            });
 
         });
     </script>

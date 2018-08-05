@@ -154,17 +154,15 @@
                 ],
             });
 
-            setTimeout(function () {
-                jQuery('.ban').on('click', function(e) {
-                    e.preventDefault();
-                    if (confirm('Ви впевнені що хочете заблокувати користувача?')) {
-                        var id = jQuery(this).attr('data-id');
-                        var form = jQuery('#remove');
-                        $(form).attr('action', "{{route('admin.administrating.users.ban')}}/"+id);
-                        $(form).submit();
-                    }
-                });
-            }, 2000);
+            jQuery(document).on('click','.ban', function(e) {
+                e.preventDefault();
+                if (confirm('Ви впевнені що хочете заблокувати користувача?')) {
+                    var id = jQuery(this).attr('data-id');
+                    var form = jQuery('#remove');
+                    $(form).attr('action', "{{route('admin.administrating.users.ban')}}/"+id);
+                    $(form).submit();
+                }
+            });
 
         });
     </script>
