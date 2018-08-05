@@ -35,6 +35,10 @@ Route::group([
         ->name('index');
     Route::get('data', 'Admin\DataBasesController@animalData')
         ->name('data');
+    Route::get('create', 'Admin\DataBasesController@animalCreate')
+        ->name('create');
+    Route::post('store', 'Admin\DataBasesController@animalStore')
+        ->name('store');
     Route::get('edit/{id?}', 'Admin\DataBasesController@animalEdit')
         ->name('edit');
     Route::put('update/{id}', 'Admin\DataBasesController@animalUpdate')
