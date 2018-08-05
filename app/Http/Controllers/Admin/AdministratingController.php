@@ -20,7 +20,7 @@ class AdministratingController extends Controller
         $model = new User();
 
         $query = $model->newQuery()
-            ->whereNull('banned_at')
+            ->where('banned' , '=', false)
             ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
             ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
             ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
@@ -43,8 +43,7 @@ class AdministratingController extends Controller
     public function banUser($id)
     {
         $user = User::findOrFail($id);
-        $user->banned_at = Carbon::now();
-        $user->banned_by = \Auth::id();
+        $user->banned = true;
         $user->save();
         return redirect()
             ->back()
@@ -61,7 +60,7 @@ class AdministratingController extends Controller
         $model = new User();
 
         $query = $model->newQuery()
-            ->whereNotNull('banned_at')
+            ->where('banned' , '=', true)
             ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
             ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
             ->groupBy('users.id');
@@ -81,8 +80,7 @@ class AdministratingController extends Controller
     public function unbanUser($id)
     {
         $user = User::findOrFail($id);
-        $user->banned_at = null;
-        $user->banned_by = null;
+        $user->banned = false;
         $user->save();
         return redirect()
             ->back()

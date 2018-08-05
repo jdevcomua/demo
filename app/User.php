@@ -15,34 +15,27 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property string $first_name
  * @property string $last_name
  * @property string|null $middle_name
- * @property string $email
- * @property string|null $phone
  * @property \Carbon\Carbon $birthday
  * @property int $inn
  * @property string $passport
- * @property array $address_living
- * @property array $address_registration
  * @property int $gender
- * @property \Carbon\Carbon|null $banned_at
- * @property int|null $banned_by
+ * @property int $banned
  * @property string|null $remember_token
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $addresses
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Animal[] $animals
- * @property-read \App\User|null $bannedBy
+ * @property-read \App\User $bannedBy
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserEmail[] $emails
+ * @property-read mixed $living_address
  * @property-read mixed $name
+ * @property-read mixed $registration_address
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPhone[] $phones
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAddressLiving($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAddressRegistration($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBannedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBannedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBanned($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereExtId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereGender($value)
@@ -51,7 +44,6 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereMiddleName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassport($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
@@ -66,11 +58,11 @@ class User extends Authenticatable
 
     protected $fillable = [
         'ext_id', 'first_name', 'last_name', 'middle_name', 'email', 'phone', 'birthday',
-        'inn', 'passport', 'address_living', 'address_registration', 'gender', 'banned_at', 'banned_by'
+        'inn', 'passport', 'address_living', 'address_registration', 'gender', 'banned'
     ];
 
     protected $dates = [
-        'birthday', 'created_at', 'updated_at', 'banned_at'
+        'birthday', 'created_at', 'updated_at'
     ];
 
     protected $casts = [
@@ -79,6 +71,7 @@ class User extends Authenticatable
         'gender' => 'integer',
         'address_living' => 'array',
         'address_registration' => 'array',
+        'banned' => 'boolean',
     ];
 
     protected $hidden = [
@@ -94,11 +87,6 @@ class User extends Authenticatable
     {
         return (($this->last_name) ? $this->last_name : '') . ' '
             . (($this->first_name) ? $this->first_name : '');
-    }
-
-    public function bannedBy()
-    {
-        return $this->belongsTo(User::class, 'banned_by', 'id');
     }
 
     public function addresses()

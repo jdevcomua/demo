@@ -23,8 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('inn', 15);
             $table->string('passport', 15);
             $table->unsignedTinyInteger('gender');
-            $table->dateTime('banned_at')->nullable();
-            $table->integer('banned_by')->unsigned()->nullable();
+            $table->boolean('banned')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

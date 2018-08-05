@@ -47,7 +47,6 @@
                                     <th>Телефон</th>
                                     <th>Стать</th>
                                     <th>Зареєстровано</th>
-                                    <th>Заблоковано</th>
                                 </tr>
                                 </thead>
                                 <tfoot class="search">
@@ -67,7 +66,6 @@
                                             <option value="1">Чол.</option>
                                         </select>
                                     </th>
-                                    <th></th>
                                     <th></th>
                                 </tr>
                                 </tfoot>
@@ -143,7 +141,6 @@
                         }
                     },
                     { "data": "created_at" },
-                    { "data": "banned_at" },
                 ],
             });
 

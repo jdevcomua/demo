@@ -39,6 +39,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUserId($value)
  * @mixin \Eloquent
+ * @property string $type
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereType($value)
  */
 class UserAddress extends Model
 {
