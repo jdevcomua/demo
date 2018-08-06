@@ -40,7 +40,22 @@ class DataTables
                     foreach ($columns as $column) {
                         try {
                             if ($column['search']['value'] !== null) {
-                                if (!$aliases || !array_key_exists($column['data'], $aliases)) {
+                                if(array_search($column['data'], $model->getDates()) !== false) {
+                                    //reverting format
+                                    $searchValue = explode('.', $column['search']['value']);
+                                    $searchValue = array_reverse($searchValue);
+                                    if (count($searchValue) === 2) {
+                                        if (strlen($searchValue[0]) === 1 || strlen($searchValue[0]) === 3) {
+                                            $searchValue[0] .= '%';
+                                        }
+                                    } elseif (count($searchValue) === 3) {
+                                        $searchValue[0] .= '%';
+                                    }
+                                    $searchValue = implode('-', $searchValue);
+                                    $query->where($table. '.' .$column['data'], 'like',
+                                        '%' . $searchValue . '%');
+                                } else
+                                    if (!$aliases || !array_key_exists($column['data'], $aliases)) {
                                     $query->where($table. '.' .$column['data'], 'like',
                                         '%' . $column['search']['value'] . '%');
                                 } else {
