@@ -35,4 +35,18 @@ class AjaxController extends Controller
         return response(json_encode($colors));
     }
 
+    public function getFurs($species)
+    {
+        $furs = $species->furs->pluck('name', 'id')->toArray();
+
+        $furs = array_map(function ($value, $key) {
+            return [
+                'name' => $value,
+                'value' => $key
+            ];
+        }, $furs, array_keys($furs));
+
+        return response(json_encode($furs));
+    }
+
 }

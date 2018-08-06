@@ -91,6 +91,12 @@
                                         <select name="color" id="color" required data-value="{{ $animal->color_id }}"></select>
                                     </div>
                                 </div>
+                                <div class="form-group select">
+                                    <label for="fur" class="col-lg-3 control-label">Тип шерсті</label>
+                                    <div class="col-lg-8">
+                                        <select name="fur" id="fur" required data-value="{{ $animal->fur_id }}"></select>
+                                    </div>
+                                </div>
                                 <div class="form-group datepicker">
                                     <label for="birthday" class="col-lg-3 control-label">Дата народження</label>
                                     <div class="col-lg-8 ">

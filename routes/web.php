@@ -35,8 +35,12 @@ Route::group(['middleware' => 'not.banned'], function () {
         'middleware' => ['auth'],
     ], function () {
 
-        Route::get('/species/{species}/breeds', 'AjaxController@getBreeds')->name('getBreeds');
-        Route::get('/species/{species}/colors', 'AjaxController@getColors')->name('getColors');
+        Route::get('/species/{species}/breeds', 'AjaxController@getBreeds')
+            ->name('getBreeds');
+        Route::get('/species/{species}/colors', 'AjaxController@getColors')
+            ->name('getColors');
+        Route::get('/species/{species}/furs', 'AjaxController@getFurs')
+            ->name('getFurs');
 
     });
 

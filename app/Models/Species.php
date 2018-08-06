@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Animal[] $animals
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Breed[] $breeds
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Color[] $colors
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Fur[] $furs
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Species whereAvailable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Species whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Species whereName($value)
@@ -44,5 +45,10 @@ class Species extends Model
     public function colors()
     {
         return $this->hasMany('App\Models\Color');
+    }
+
+    public function furs()
+    {
+        return $this->hasMany('App\Models\Fur');
     }
 }
