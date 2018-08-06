@@ -75,16 +75,26 @@
                                 <div class="form-group">
                                     <label for="email" class="col-lg-3 control-label">email</label>
                                     <div class="col-lg-8">
-                                        <input type="text" id="email" name="email" class="form-control"
-                                               value="{{ old('email') ?? $user->email}}" disabled>
+                                        @forelse($user->emails as $email)
+                                            <input type="text" id="email" name="email" class="form-control"
+                                                   value="{{ $email->email }}" disabled>
+                                        @empty
+                                            <input type="text" id="email" name="email" class="form-control"
+                                                   disabled>
+                                        @endforelse
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="phone" class="col-lg-3 control-label">Телефон</label>
                                     <div class="col-lg-8">
-                                        <input type="text" id="phone" name="phone" class="form-control"
-                                               value="{{ old('phone') ?? $user->phone}}" disabled>
+                                        @forelse($user->phones as $phone)
+                                            <input type="text" id="phone" name="phone" class="form-control"
+                                                   value="{{ $phone->phone }}" disabled>
+                                        @empty
+                                            <input type="text" id="email" name="email" class="form-control"
+                                                   disabled>
+                                        @endforelse
                                     </div>
                                 </div>
 
@@ -92,17 +102,19 @@
                                     <label for="birthday" class="col-lg-3 control-label">Дата народження</label>
                                     <div class="col-lg-8 ">
                                         <input type="text" class="form-control" id="birthday" name="birthday"
-                                               value="{{ $user->birthday->format('d/m/Y') }}" required />
+                                               value="{{ $user->birthday->format('d/m/Y') }}" disabled />
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="inn" class="col-lg-3 control-label">ІПН</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" id="inn" name="inn" class="form-control"
-                                               value="{{ old('inn') ?? $user->inn}}" disabled>
+                                @if(false)
+                                    <div class="form-group">
+                                        <label for="inn" class="col-lg-3 control-label">ІПН</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="inn" name="inn" class="form-control"
+                                                   value="{{ old('inn') ?? $user->inn}}" disabled>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
 
                                 <div class="form-group">
                                     <label for="passport" class="col-lg-3 control-label">Паспорт</label>
@@ -123,21 +135,15 @@
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="residence_address" class="col-lg-3 control-label">Адресса</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" id="residence_address" name="residence_address" class="form-control"
-                                               value="{{ old('residence_address') ?? $user->residence_address}}" disabled>
-                                    </div>
-                                </div>
-
+                            </div>
+                            <div class="panel-body pb5 pt20">
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">Тварини</label>
                                     <div class="col-lg-8">
                                         <p class="form-control">
                                             @foreach($user->animals as $animal)
-                                                <a href="{{route('admin.db.animals.edit')}}/{{ $animal->id}}">{{$animal->nickname}}</a>,
+                                                <a href="{{route('admin.db.animals.edit')}}/{{ $animal->id}}">
+                                                    {{$animal->nickname}}</a>@if(!$loop->last),@endif
                                             @endforeach
                                         </p>
                                     </div>
@@ -149,8 +155,108 @@
                         </form>
                     </div>
                 </div>
-                @permission('change-roles')
                 <div class="col-md-6">
+                    <div class="panel panel-visible" id="spy5">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <span class="glyphicon glyphicon-tasks"></span>Адреси</div>
+                        </div>
+                        <form class="form-horizontal" role="form"
+                              action="{{ route('admin.db.users.update', $user->id) }}" method="post">
+                            @csrf
+                            @method('PUT')
+                            @if($user->registrationAddress)
+                                <div class="panel-body pb5 pt20">
+                                    <div class="form-group">
+                                        <label class="col-xs-12">Адреса реєстрації</label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="registration_district" class="col-lg-3 control-label">Область</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="registration_district" class="form-control"
+                                                   value="{{ $user->registrationAddress->district }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="registration_city" class="col-lg-3 control-label">Населений пункт</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="registration_city" class="form-control"
+                                                   value="{{ $user->registrationAddress->city }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="registration_street" class="col-lg-3 control-label">Вулиця</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="registration_street" class="form-control"
+                                                   value="{{ $user->registrationAddress->street }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="registration_building" class="col-lg-3 control-label">Будинок</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="registration_building" class="form-control"
+                                                   value="{{ $user->registrationAddress->building }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="registration_apartment" class="col-lg-3 control-label">Помешкання</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="registration_apartment" class="form-control"
+                                                   value="{{ $user->registrationAddress->apartment }}" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            @if($user->livingAddress)
+                                <div class="panel-body pb5 pt20">
+                                    <div class="form-group">
+                                        <label class="col-xs-12">Адреса проживання</label>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="living_district" class="col-lg-3 control-label">Область</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="living_district" class="form-control"
+                                                   value="{{ $user->livingAddress->district }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="living_city" class="col-lg-3 control-label">Населений пункт</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="living_city" class="form-control"
+                                                   value="{{ $user->livingAddress->city }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="living_street" class="col-lg-3 control-label">Вулиця</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="living_street" class="form-control"
+                                                   value="{{ $user->livingAddress->street }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="living_building" class="col-lg-3 control-label">Будинок</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="living_building" class="form-control"
+                                                   value="{{ $user->livingAddress->building }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="living_apartment" class="col-lg-3 control-label">Помешкання</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="living_apartment" class="form-control"
+                                                   value="{{ $user->livingAddress->apartment }}" disabled>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            @endif
+                        </form>
+                    </div>
+                </div>
+                @permission('change-roles')
+                <div class="col-md-12">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
                             <div class="panel-title">
@@ -179,7 +285,7 @@
                                     </div>
                                 @endif
                                 @foreach($roles as $role)
-                                    <div class="checkbox-custom col-md-4 mb10 mt10">
+                                    <div class="checkbox-custom col-md-3 mb10 mt10">
                                         <input type="checkbox" name="roles[]"
                                                value="{{$role->id}}" id="roles-{{$role->id}}"
                                                 @if($user->hasRole($role->name)) checked @endif >

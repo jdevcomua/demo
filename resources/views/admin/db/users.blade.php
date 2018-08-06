@@ -46,7 +46,6 @@
                                     <th>e-mail</th>
                                     <th>Телефон</th>
                                     <th>Дата народження</th>
-                                    <th>ІПН</th>
                                     <th>Паспорт</th>
                                     <th>Стать</th>
                                     <th>Зареєстровано</th>
@@ -57,7 +56,6 @@
                                 <tr>
                                     <th></th>
                                     <th class="no-search"></th>
-                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -146,7 +144,6 @@
                             return d.toLocaleDateString('uk')
                         }
                     },
-                    { "data": "inn" },
                     { "data": "passport" },
                     {
                         data: 'gender',

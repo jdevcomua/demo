@@ -75,7 +75,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'remember_token', 'address_living', 'address_registration'
+        'remember_token', 'address_living', 'address_registration', 'inn'
     ];
 
     public function animals()

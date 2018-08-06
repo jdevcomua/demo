@@ -56,7 +56,7 @@ class DataBasesController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
-        $user->load('animals', 'roles');
+        $user->load('animals', 'roles', 'emails', 'phones', 'addresses');
         return view('admin.db.users_show', compact('user', 'roles'));
     }
 
