@@ -55,6 +55,10 @@
                 <span class="content">{{ $animal->color->name }}</span>
             </div>
             <div class="pet-info-block">
+                <span class="title">Тип шерсті</span>
+                <span class="content">{{ $animal->fur->name }}</span>
+            </div>
+            <div class="pet-info-block">
                 <span class="title">Дата народження</span>
                 <span class="content">{{ \App\Helpers\Date::getlocalizedDate($animal->birthday) }}</span>
             </div>

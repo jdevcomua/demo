@@ -19,6 +19,7 @@ class CreateAnimalsTable extends Migration
             $table->unsignedSmallInteger('species_id');
             $table->unsignedInteger('breed_id');
             $table->unsignedInteger('color_id');
+            $table->unsignedInteger('fur_id');
             $table->unsignedTinyInteger('gender');
             $table->date('birthday');
             $table->boolean('sterilized')->default(false);
@@ -42,6 +43,11 @@ class CreateAnimalsTable extends Migration
             $table->foreign('color_id')
                 ->references('id')
                 ->on('colors')
+                ->onDelete('cascade');
+
+            $table->foreign('fur_id')
+                ->references('id')
+                ->on('furs')
                 ->onDelete('cascade');
 
             $table->foreign('user_id')

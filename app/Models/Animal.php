@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\Animal
  *
  * @property int $id
+ * @property string $nickname
  * @property int $species_id
  * @property int $breed_id
- * @property \Carbon\Carbon|null $birthday
- * @property int $gender
  * @property int $color_id
- * @property bool $sterilized
- * @property string $nickname
+ * @property int $fur_id
+ * @property int $gender
+ * @property \Carbon\Carbon $birthday
+ * @property int $sterilized
  * @property int $user_id
  * @property int $verified
  * @property string|null $comment
- * @property array $data
  * @property string|null $number
  * @property int|null $confirm_user_id
  * @property \Carbon\Carbon|null $created_at
@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Color $color
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $documents
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $files
+ * @property-read \App\Models\Fur $fur
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $images
  * @property-read \App\Models\Species $species
  * @property-read \App\User $user
@@ -37,7 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereComment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereConfirmUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereFurId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNickname($value)
@@ -56,8 +57,8 @@ class Animal extends Model
     const GENDER_MALE = 1;
 
     protected $fillable = [
-        'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'birthday',
-        'sterilized', 'comment', 'verified', 'data', 'number',
+        'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id',
+        'birthday', 'sterilized', 'comment', 'verified', 'data', 'number',
     ];
 
     protected $dates = [
@@ -98,6 +99,11 @@ class Animal extends Model
     public function color()
     {
         return $this->belongsTo('App\Models\Color');
+    }
+
+    public function fur()
+    {
+        return $this->belongsTo('App\Models\Fur');
     }
 
     public function files()

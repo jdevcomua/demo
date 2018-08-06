@@ -52,8 +52,8 @@ class AnimalsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'birthday',
-                                'sterilized', 'comment', 'images', 'documents']);
+        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
+                                'birthday', 'sterilized', 'comment', 'images', 'documents']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -66,6 +66,7 @@ class AnimalsController extends Controller
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
             'color' => 'required|integer|exists:colors,id',
+            'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date',
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
@@ -90,9 +91,11 @@ class AnimalsController extends Controller
         $data['species_id'] = $data['species'];
         $data['breed_id'] = $data['breed'];
         $data['color_id'] = $data['color'];
+        $data['fur_id'] = $data['fur'];
         unset($data['species']);
         unset($data['breed']);
         unset($data['color']);
+        unset($data['fur']);
 
         $animal = \Auth::user()->animals()->create($data);
 
@@ -147,8 +150,8 @@ class AnimalsController extends Controller
      */
     public function update(Request $request, Animal $animal)
     {
-        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'birthday',
-            'sterilized', 'comment', 'images', 'documents']);
+        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
+            'birthday', 'sterilized', 'comment', 'images', 'documents']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -162,6 +165,7 @@ class AnimalsController extends Controller
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
             'color' => 'required|integer|exists:colors,id',
+            'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date',
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
@@ -185,9 +189,11 @@ class AnimalsController extends Controller
         $data['species_id'] = $data['species'];
         $data['breed_id'] = $data['breed'];
         $data['color_id'] = $data['color'];
+        $data['fur_id'] = $data['fur'];
         unset($data['species']);
         unset($data['breed']);
         unset($data['color']);
+        unset($data['fur']);
 
         $data['sterilized'] = array_key_exists('sterilized', $data);
 
