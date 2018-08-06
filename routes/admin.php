@@ -48,6 +48,11 @@ Route::group([
     Route::get('verify/{id}', 'Admin\DataBasesController@animalVerify')
         ->name('verify')
         ->middleware('permission:verify-animal');
+    Route::post('{id}/upload-file', 'Admin\DataBasesController@animalUploadFile')
+        ->name('upload-file');
+    Route::post('/file/{id}/remove', 'Admin\DataBasesController@animalRemoveFile')
+        ->name('remove-file');
+
 
 });
 

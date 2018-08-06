@@ -194,26 +194,64 @@
                                 <span class="glyphicon glyphicon-tasks"></span>Файли тварини</div>
                         </div>
                         <div class="panel-body pn">
-                            <div id="files-container">
-                                @foreach($animal->images as $image)
-                                    <a href="/{{ $image->path }}" class="file-item">
-                                        <div class="file-preview" style="background-image: url('/{{ $image->path }}');"></div>
-                                        <div class="file-name">{{ $image->filename }}.{{ $image->fileextension }}</div>
-                                    </a>
-                                @endforeach
+                            <form role="form" enctype="multipart/form-data" id="upload-form"
+                                  action="{{ route('admin.db.animals.upload-file', $animal->id) }}" method="post">
+                                @csrf
+                                <div id="files-container">
+                                    @foreach($animal->images as $image)
+                                        <div class="file-item">
+                                            <a href="/{{ $image->path }}">
+                                                <div class="file-preview" style="background-image: url('/{{ $image->path }}');"></div>
+                                                <div class="file-name">{{ $image->filename }}.{{ $image->fileextension }}</div>
+                                            </a>
+                                            <div class="file-delete"
+                                                 data-rem="{{ route('admin.db.animals.remove-file', $image->id) }}">
+                                                <i class="fa fa-times" aria-hidden="true"></i></div>
+                                        </div>
+                                    @endforeach
 
-                                @foreach($animal->documents as $document)
-                                    <a href="/{{ $document->path }}" class="file-item doc">
-                                        <div class="file-preview" style="background-image: url('/img/file.png');"></div>
-                                        <div class="file-name">{{ $document->filename }}.{{ $document->fileextension }}</div>
-                                    </a>
-                                @endforeach
+                                    @foreach($animal->documents as $document)
+                                        <div class="file-item doc">
+                                            <a href="/{{ $document->path }}">
+                                                <div class="file-preview" style="background-image: url('/img/file.png');"></div>
+                                                <div class="file-name">{{ $document->filename }}.{{ $document->fileextension }}</div>
+                                            </a>
+                                            <div class="file-delete"
+                                                 data-rem="{{ route('admin.db.animals.remove-file', $document->id) }}">
+                                                <i class="fa fa-times" aria-hidden="true"></i></div>
+                                        </div>
+                                    @endforeach
 
-                                <div class="file-item gap"></div>
-                                <div class="file-item gap"></div>
-                                <div class="file-item gap"></div>
-                                <div class="file-item gap"></div>
-                            </div>
+                                    <label for="images" class="upload file-item">
+                                        <span class="icon">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                            <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                                        </span>
+                                        <span class="title">
+                                            Додати зображення<br>
+                                            Максимум - {{ \App\Models\AnimalsFile::MAX_PHOTO_COUNT }}
+                                        </span>
+                                        <input type="file" id="images" name="images[]" multiple
+                                               style="display: none;"/>
+                                    </label>
+                                    <label for="documents" class="upload file-item doc">
+                                        <span class="icon">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                            <i class="fa fa-file-text" aria-hidden="true"></i>
+                                        </span>
+                                        <span class="title">Додати документи</span>
+                                        <input type="file" id="documents" name="documents[]" multiple
+                                                style="display: none;"/>
+                                    </label>
+
+
+
+                                    <div class="file-item gap"></div>
+                                    <div class="file-item gap"></div>
+                                    <div class="file-item gap"></div>
+                                    <div class="file-item gap"></div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -232,6 +270,28 @@
 
             $('.form-group.select-gen select').selectize();
 
+            $('.file-delete').on('click', function (e) {
+                e.preventDefault();
+                var elem = $(this);
+                $.ajax({
+                    url: $(this).data('rem'),
+                    type: 'post',
+                    success: function(data) {
+                        elem.parent('.file-item').remove();
+                    },
+                    error: function(data) {
+                        console.error(data);
+                    }
+                });
+            })
+
         });
+
+        document.getElementById("images").onchange = function() {
+            document.getElementById("upload-form").submit();
+        };
+        document.getElementById("documents").onchange = function() {
+            document.getElementById("upload-form").submit();
+        };
     </script>
 @endsection

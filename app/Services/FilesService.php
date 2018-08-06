@@ -14,8 +14,20 @@ class FilesService
     public function handleAnimalFilesUpload($animal, $data)
     {
         if (array_key_exists('images', $data)) {
-            foreach ($data['images'] as $num => $image) {
-                $this->storeAnimalFile($animal, $image, $num, AnimalsFile::FILE_TYPE_PHOTO);
+            if (array_key_exists(0, $data['images'])) {
+                $imgCurr = 0;
+                $skip = $this->getUsedImagesNum($animal);
+                for ($i = 1; $i <= AnimalsFile::MAX_PHOTO_COUNT; $i++) {
+                    if (array_key_exists($i, $skip)) continue;
+                    $this->storeAnimalFile($animal, $data['images'][$imgCurr], $i, AnimalsFile::FILE_TYPE_PHOTO);
+                    $imgCurr++;
+                    if ($imgCurr >= count($data['images'])) return;
+                }
+
+            } else {
+                foreach ($data['images'] as $num => $image) {
+                    $this->storeAnimalFile($animal, $image, $num, AnimalsFile::FILE_TYPE_PHOTO);
+                }
             }
         }
         if (array_key_exists('documents', $data)) {
@@ -23,6 +35,14 @@ class FilesService
                 $this->storeAnimalFile($animal, $document, null, AnimalsFile::FILE_TYPE_DOCUMENT);
             }
         }
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Model|\App\Models\Animal $animal
+     */
+    private function getUsedImagesNum($animal)
+    {
+        return $animal->images()->pluck('id', 'num')->toArray();
     }
 
     private function storeAnimalFile($animal, $file, $num, $type)

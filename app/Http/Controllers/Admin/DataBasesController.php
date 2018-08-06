@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
 use App\Models\Animal;
+use App\Models\AnimalsFile;
 use App\Models\Role;
 use App\Models\Species;
 use App\Services\FilesService;
@@ -277,4 +278,40 @@ class DataBasesController extends Controller
         return response('', 400);
     }
 
+    public function animalUploadFile(Request $request, $id)
+    {
+        $data = $request->only(['images', 'documents']);
+
+        $validator = Validator::make($data, [
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|file',
+            'documents' => 'nullable|array',
+            'documents.*' => 'nullable|file',
+        ]);
+
+        if ($validator->fails()) {
+            dd($validator->errors());
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'animal')
+                ->withInput();
+        }
+
+        $animal = Animal::findOrFail($id);
+
+        $this->filesService->handleAnimalFilesUpload($animal, $data);
+
+        return redirect()
+            ->route('admin.db.animals.edit', $animal->id)
+            ->with('success_animal', 'Файли додано успішно !');
+    }
+
+    public function animalRemoveFile($id)
+    {
+        $file = AnimalsFile::findOrFail($id);
+        $file->delete();
+        return response()->json([
+            'status' => 'ok'
+        ]);
+    }
 }

@@ -44,11 +44,16 @@ div#files-container {
     border: 1px solid #ddd;
     padding: 0.5rem;
     margin-bottom: 1rem;
+    position:  relative;
     &.gap {
       border: none;
       padding: 0;
       height: 0;
       margin: 0;
+    }
+    > a {
+      display: block;
+      height: 100%;
     }
   }
   .file-name {
@@ -57,6 +62,7 @@ div#files-container {
     text-overflow: ellipsis;
     text-align: center;
     font-size: 1.5rem;
+    margin-top: 0.5rem;
   }
   .file-preview {
     width: 100%;
@@ -67,6 +73,41 @@ div#files-container {
   }
   .doc .file-preview {
     background-size: 55%;
+  }
+  .file-delete {
+    position:  absolute;
+    bottom: 0.3rem;
+    right: 0.3rem;
+    background:  #fff;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    color: red;
+  }
+  .upload {
+    cursor:  pointer;
+    transition: ease 0.3s;
+    &:hover {
+      background: #eee;
+    }
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 50%;
+      font-size: 8rem;
+      i.fa.fa-plus {
+        font-size: 6rem;
+        margin-right: 3rem;
+      }
+    }
+    .title {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 38%;
+      font-size: 2rem;
+      text-align: center;
+    }
   }
 }
 @media screen and (max-width: 1000px) {

@@ -37,6 +37,8 @@ class AnimalsFile extends Model
         'name', 'path', 'type', 'num'
     ];
 
+    const MAX_PHOTO_COUNT = 9;
+
     const FILE_TYPE_PHOTO = 0;
     const FILE_TYPE_DOCUMENT = 1;
 

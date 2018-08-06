@@ -114,7 +114,8 @@
                 <div class="form-group datepicker">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="birthday">Дата народження</label>
-                    <input type="text" class="form-control" id="birthday" name="birthday" required />
+                    <input type="text" class="form-control" id="birthday" name="birthday"
+                           required autocomplete="off" />
                 </div>
                 <div class="form-group btn-group-toggle checkbox-group" data-toggle="buttons">
                     <label class="btn checkbox-item">
