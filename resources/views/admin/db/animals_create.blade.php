@@ -89,13 +89,19 @@
                                 <div class="form-group select">
                                     <label for="breed" class="col-lg-3 control-label">Порода</label>
                                     <div class="col-lg-8">
-                                        <select name="breed" id="breed" required data-value="{{ old('breed_id') }}"></select>
+                                        <select name="breed" id="breed" required data-value="{{ old('breed') }}"></select>
                                     </div>
                                 </div>
                                 <div class="form-group select">
                                     <label for="color" class="col-lg-3 control-label">Масть</label>
                                     <div class="col-lg-8">
-                                        <select name="color" id="color" required data-value="{{ old('$animal->color_id') }}"></select>
+                                        <select name="color" id="color" required data-value="{{ old('color') }}"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group select">
+                                    <label for="fur" class="col-lg-3 control-label">Тип шерсті</label>
+                                    <div class="col-lg-8">
+                                        <select name="fur" id="fur" required data-value="{{ old('fur') }}"></select>
                                     </div>
                                 </div>
                                 <div class="form-group datepicker">

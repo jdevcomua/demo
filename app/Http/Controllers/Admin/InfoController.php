@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\DataTables;
 use App\Models\Breed;
 use App\Models\Color;
+use App\Models\Fur;
 use App\Models\Species;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,11 +15,13 @@ class InfoController extends Controller
 {
     private $breedModel;
     private $colorModel;
+    private $furModel;
 
-    public function __construct(Breed $breedModel, Color $colorModel)
+    public function __construct(Breed $breedModel, Color $colorModel, Fur $furModel)
     {
         $this->breedModel = $breedModel;
         $this->colorModel = $colorModel;
+        $this->furModel = $furModel;
     }
 
     public function directoryIndex()
@@ -175,6 +178,80 @@ class InfoController extends Controller
             return redirect()
                 ->back()
                 ->with('success_color_rem', 'Масть видалена успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryDataFur(Request $request)
+    {
+        $model = new Fur();
+
+        $query = $model->newQuery()
+            ->join('species', 'species.id', '=', 'furs.species_id');
+
+        $aliases = [
+            'species_name' => 'species.name',
+        ];
+
+        $response = DataTables::provide($request, $model, $query, $aliases);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryStoreFur(Request $request)
+    {
+        if($request->has(['f_species', 'f_name'])) {
+            $data = $request->only(['f_species', 'f_name']);
+
+            $validator = Validator::make($data, [
+                'f_species' => 'required|integer|exists:species,id',
+                'f_name' => 'required|string|max:256',
+            ], [
+                'f_name.required' => 'Назва є обов\'язковим полем',
+                'f_name.max' => 'Назва має бути менше :max символів',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator, 'fur')
+                    ->withInput();
+            }
+
+            $color = new Fur();
+            $color->species_id = $data['f_species'];
+            $color->name = $data['f_name'];
+            $color->save();
+
+            return redirect()
+                ->back()
+                ->with('success_fur', 'Тип шерсті додано успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryRemoveFur(Request $request)
+    {
+        if ($request->has('id')) {
+            $fur = $this->furModel
+                ->where('id', '=', $request->get('id'))
+                ->firstOrFail();
+            $count = $fur->animals()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити тип шерсті. Кількість тварин що її мають: ' . $count,
+                    ], 'fur_rem');
+            }
+
+            $fur->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_fur_rem', 'Тип шерсті видалено успішно !');
         }
         return response('', 400);
     }

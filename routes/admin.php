@@ -77,6 +77,13 @@ Route::group([
         ->name('store.color');
     Route::get('remove/color', 'Admin\InfoController@directoryRemoveColor')
         ->name('remove.color');
+
+    Route::get('data/fur', 'Admin\InfoController@directoryDataFur')
+        ->name('data.fur');
+    Route::post('store/fur', 'Admin\InfoController@directoryStoreFur')
+        ->name('store.fur');
+    Route::get('remove/fur', 'Admin\InfoController@directoryRemoveFur')
+        ->name('remove.fur');
 });
 
 Route::group([
