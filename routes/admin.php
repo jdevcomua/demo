@@ -35,7 +35,7 @@ Route::group([
         ->name('index');
     Route::get('data', 'Admin\DataBasesController@animalData')
         ->name('data');
-    Route::get('create', 'Admin\DataBasesController@animalCreate')
+    Route::get('create/{id?}', 'Admin\DataBasesController@animalCreate')
         ->name('create');
     Route::post('store', 'Admin\DataBasesController@animalStore')
         ->name('store');
@@ -43,7 +43,7 @@ Route::group([
         ->name('edit');
     Route::put('update/{id}', 'Admin\DataBasesController@animalUpdate')
         ->name('update');
-    Route::get('remove/{id?}', 'Admin\DataBasesController@animalRemove')
+    Route::delete('remove/{id?}', 'Admin\DataBasesController@animalRemove')
         ->name('remove');
     Route::get('verify/{id}', 'Admin\DataBasesController@animalVerify')
         ->name('verify')

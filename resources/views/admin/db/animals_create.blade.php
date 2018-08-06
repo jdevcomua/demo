@@ -28,6 +28,7 @@
                         <form class="form-horizontal" role="form" enctype="multipart/form-data"
                               action="{{ route('admin.db.animals.store') }}" method="post">
                             @csrf
+                            <input type="hidden" name="user_id" value="{{ ($user) ? $user->id : \Auth::id() }}">
                             <div class="panel-body">
                                 @if($errors->user)
                                     @foreach($errors->animal->all() as $error)

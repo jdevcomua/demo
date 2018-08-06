@@ -19,9 +19,11 @@
 
             <div class="row">
 
-                <div class="col-md-2 col-sm-3 col-xs-6 mb25">
-                    <a href="{{ route('admin.db.animals.create') }}" class="btn btn-success btn-block">Додати тварину</a>
-                </div>
+                @if(false)
+                    <div class="col-md-2 col-sm-3 col-xs-6 mb25">
+                        <a href="{{ route('admin.db.animals.create') }}" class="btn btn-success btn-block">Додати тварину</a>
+                    </div>
+                @endif
 
                 <div class="col-xs-12">
                     <div class="panel panel-visible" id="spy5">
@@ -30,6 +32,13 @@
                                 <span class="glyphicon glyphicon-tasks"></span>Список всіх тварин</div>
                         </div>
                         <div class="panel-body pn">
+                            @if (\Session::has('success_animal'))
+                                <div class="alert alert-success alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-check pr10"></i>
+                                    {{ \Session::get('success_animal') }}
+                                </div>
+                            @endif
                             <table class="table table-striped table-hover display datatable responsive nowrap"
                                    id="datatable" cellspacing="0" width="100%">
                                 <thead>
@@ -104,6 +113,11 @@
 
         </div>
 
+        <form action="#" id="destroy" method="post" class="hidden">
+            @csrf
+            @method('delete')
+        </form>
+
     </section>
 @endsection
 
@@ -129,6 +143,10 @@
                                 return "<a href=\"{{ route('admin.db.animals.edit') }}/"
                                     + data + "\">" +
                                     "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
+                                    "</a>" +
+                                    "<a href='#' class='delete' " +
+                                    "data-id=" + data + " >" +
+                                    "<i class=\"fa fa-trash pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>";
                             }
                         }
@@ -199,6 +217,15 @@
                 ],
             });
 
+            jQuery(document).on('click','.delete', function(e) {
+                e.preventDefault();
+                if (confirm('Ви впевнені що хочете видалити тварину?')) {
+                    var id = jQuery(this).attr('data-id');
+                    var form = jQuery('#destroy');
+                    $(form).attr('action', "{{route('admin.db.animals.remove')}}/"+id);
+                    $(form).submit();
+                }
+            });
         });
     </script>
 @endsection

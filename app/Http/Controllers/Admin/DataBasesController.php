@@ -135,16 +135,19 @@ class DataBasesController extends Controller
         return response('', 400);
     }
 
-    public function animalCreate()
+    public function animalCreate($id = null)
     {
+        $user = ($id) ? User::findOrFail($id) : null;
+
         return view('admin.db.animals_create', [
-            'species' => Species::get()
+            'species' => Species::get(),
+            'user' => $user
         ]);
     }
 
     public function animalStore(Request $request)
     {
-        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'birthday',
+        $data = $request->only(['user_id', 'nickname', 'species', 'gender', 'breed', 'color', 'birthday',
             'sterilized', 'comment', 'images', 'documents']);
 
         if (array_key_exists('birthday', $data)) {
@@ -153,6 +156,7 @@ class DataBasesController extends Controller
         }
 
         $validator = Validator::make($data, [
+            'user_id' => 'required|integer|exists:users,id',
             'nickname' => 'required|string|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
@@ -187,7 +191,9 @@ class DataBasesController extends Controller
         unset($data['breed']);
         unset($data['color']);
 
-        $animal = \Auth::user()->animals()->create($data);
+        $user = User::findOrFail($data['user_id']);
+
+        $animal = $user->animals()->create($data);
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
@@ -260,6 +266,15 @@ class DataBasesController extends Controller
         return redirect()
             ->back()
             ->with('success_animal', 'Данні оновлено успішно !');
+    }
+
+    public function animalRemove($id)
+    {
+        $animal = Animal::findOrFail($id);
+        $animal->delete();
+        return redirect()
+            ->back()
+            ->with('success_animal', 'Тварину було успішно видалено!');
     }
 
     public function animalVerify(Request $request, $id) {

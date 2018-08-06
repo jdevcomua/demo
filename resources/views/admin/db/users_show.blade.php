@@ -146,6 +146,10 @@
                                                     {{$animal->nickname}}</a>@if(!$loop->last),@endif
                                             @endforeach
                                         </p>
+                                        <div class="col-sm-12 pn mb25">
+                                            <a href="{{ route('admin.db.animals.create', $user->id) }}"
+                                               class="btn btn-success btn-block">Додати тварину</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
