@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Auth\KyivIdUserResolver;
+use App\Models\Log;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Socialite;
 
 class AuthController extends Controller
@@ -23,13 +25,31 @@ class AuthController extends Controller
         return Socialite::driver('kyivID')->attempt();
     }
 
-    public function loginCallback()
+    public function loginCallback(Request $request)
     {
-        $user = KyivIdUserResolver::resolve(
-            Socialite::driver('kyivID')->user()
-        );
+        \RhaLogger::start([
+            'code' => $request->get('code'),
+            'state' => $request->get('state')
+        ]);
+        \RhaLogger::update(['action' => Log::ACTION_REGISTER]);
 
-        if (!$user) return redirect()->route('bad-login');
+        try {
+            $user = KyivIdUserResolver::resolve(
+                Socialite::driver('kyivID')->user()
+            );
+        } catch (\Throwable $e) {
+            \RhaLogger::addError($e);
+            throw $e;
+        }
+
+        \RhaLogger::end();
+
+        if (!$user) {
+            \RhaLogger::addPayload(['error' => 'BAD LOGIN - missing passport and itin']);
+            return redirect()->route('bad-login');
+        }
+
+        \RhaLogger::update(['status' => Log::STATUS_OK]);
 
         Auth::login($user);
 

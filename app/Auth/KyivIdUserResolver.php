@@ -2,6 +2,7 @@
 
 namespace App\Auth;
 
+use App\Models\Log;
 use App\User;
 
 class KyivIdUserResolver
@@ -30,9 +31,24 @@ class KyivIdUserResolver
         }
 
         if ($existUser) {
+            \RhaLogger::update([
+                'action' => Log::ACTION_LOGIN,
+                'user_id' => $existUser->id,
+                'object' => 'Користувач|user|' . $existUser->id,
+            ]);
+
+            $oldUser = clone $existUser;
             $existUser = self::update($existUser, $user);
+
+            \RhaLogger::addChanges($existUser, $oldUser);
         } else {
             $existUser = self::register($user);
+
+            \RhaLogger::update([
+                'user_id' => $existUser->id,
+                'object' => 'Користувач|user|' . $existUser->id,
+            ]);
+            \RhaLogger::addChanges($existUser, new User());
         }
 
         return $existUser;

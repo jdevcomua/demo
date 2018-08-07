@@ -221,6 +221,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
      */
     public function mapUserToObject(array $user)
     {
+        \RhaLogger::addPayload(['KiyvID response' => $user]);
+
         $data = [
             'ext_id' => array_get($user, 'data.profile.id'),
             'first_name' => array_get($user, 'data.profile.name.firstName'),
@@ -228,7 +230,9 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
             'middle_name' => array_get($user, 'data.profile.name.middleName'),
             'emails' => array_get($user, 'data.profile.emails'),
             'phones' => array_get($user, 'data.profile.phones') ,
-            'birthday' => array_get($user, 'data.profile.birthday.date') ? Carbon::createFromFormat('Y-m-d', array_get($user, 'data.profile.birthday.date')) : null,
+            'birthday' => array_get($user, 'data.profile.birthday.date') ?
+                Carbon::createFromFormat('Y-m-d',
+                    array_get($user, 'data.profile.birthday.date'))->format('Y-m-d') : null,
             'inn' => array_get($user, 'data.profile.itin.itin'),
             'passport' => trim(strtoupper(array_get($user, 'data.profile.passportInternal.series').
                 array_get($user, 'data.profile.passportInternal.number'))) ?: null,

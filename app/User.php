@@ -89,6 +89,13 @@ class User extends Authenticatable
             . (($this->first_name) ? $this->first_name : '');
     }
 
+    public function getFullNameAttribute()
+    {
+        return (($this->last_name) ? $this->last_name : '') . ' '
+            . (($this->first_name) ? $this->first_name : '') . ' '
+            . (($this->middle_name) ? $this->middle_name : '');
+    }
+
     public function addresses()
     {
         return $this->hasMany('App\Models\UserAddress');

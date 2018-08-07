@@ -44,7 +44,8 @@ Route::group([
     Route::put('update/{id}', 'Admin\DataBasesController@animalUpdate')
         ->name('update');
     Route::delete('remove/{id?}', 'Admin\DataBasesController@animalRemove')
-        ->name('remove')->middleware('role:admin');
+        ->name('remove')
+        ->middleware('role:admin');
     Route::get('verify/{id}', 'Admin\DataBasesController@animalVerify')
         ->name('verify')
         ->middleware('permission:verify-animal');
@@ -120,23 +121,6 @@ Route::group([
         ->name('block.update');
 });
 
-Route::group([
-    'prefix' => 'roles',
-    'as' => 'roles.'
-], function () {
-    Route::get('/', 'Admin\AdminRolesController@index')
-        ->name('index');
-    Route::post('/', 'Admin\AdminRolesController@store')
-        ->name('store');
-    Route::get('edit/{id?}', 'Admin\AdminRolesController@edit')
-        ->name('edit');
-    Route::post('update/{id}', 'Admin\AdminRolesController@update')
-        ->name('update');
-    Route::get('remove/{id?}', 'Admin\AdminRolesController@remove')
-        ->name('remove');
-    Route::get('data', 'Admin\AdminRolesController@rolesData')
-        ->name('data');
-});
 
 Route::group([
     'prefix' => 'administrating',
@@ -165,5 +149,47 @@ Route::group([
 
 });
 
+Route::group([
+    'prefix' => 'roles',
+    'as' => 'roles.',
+    'middleware' => 'role:admin'
+], function () {
+    Route::get('/', 'Admin\AdminRolesController@index')
+        ->name('index');
+    Route::post('/', 'Admin\AdminRolesController@store')
+        ->name('store');
+    Route::get('edit/{id?}', 'Admin\AdminRolesController@edit')
+        ->name('edit');
+    Route::post('update/{id}', 'Admin\AdminRolesController@update')
+        ->name('update');
+    Route::get('remove/{id?}', 'Admin\AdminRolesController@remove')
+        ->name('remove');
+    Route::get('data', 'Admin\AdminRolesController@rolesData')
+        ->name('data');
+});
+
+Route::group([
+    'prefix' => 'logs',
+    'as' => 'logs.',
+    'middleware' => 'role:admin'
+], function () {
+
+    Route::get('/', 'Admin\LogsController@index')
+        ->name('index');
+    Route::get('/data', 'Admin\LogsController@data')
+        ->name('data');
+    Route::get('/{id?}', 'Admin\LogsController@show')
+        ->name('show');
+
+});
+
+Route::group([
+    'middleware' => 'role:admin'
+], function () {
+
+    Route::get('/object/{type?}/{id?}', 'Admin\AdministratingController@object')
+        ->name('object');
+
+});
 
 

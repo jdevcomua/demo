@@ -86,8 +86,8 @@
                     <span class="sidebar-title">Ролі</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li{!! (strpos($curRoute, 'admin.logs') !== false) ? ' class="active" ' : '' !!}>
+                <a href="{{ route('admin.logs.index') }}">
                     <span class="fa fa-history"></span>
                     <span class="sidebar-title">Журнал дій</span>
                 </a>

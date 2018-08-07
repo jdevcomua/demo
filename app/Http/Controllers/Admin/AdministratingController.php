@@ -86,4 +86,13 @@ class AdministratingController extends Controller
             ->back()
             ->with('success_user', 'Користувач успішно розблокований!');
     }
+
+    public function object($type, $id)
+    {
+        switch ($type) {
+            case 'user' : return redirect()->route('admin.db.users.show', $id);
+            case 'animal' : return redirect()->route('admin.db.animals.edit', $id);
+            default: abort(404);
+        }
+    }
 }
