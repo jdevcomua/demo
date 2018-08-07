@@ -29,6 +29,8 @@ class NewAnimal extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.newAnimal');
+        $email = \Block::get('email.new-animal');
+        return $this->view('emails.newAnimal')
+            ->subject($email->subject);
     }
 }
