@@ -48,6 +48,10 @@ class RolesPermissionsSeeder extends Seeder
         $changeRoles->display_name  = 'Змінювати ролі користувачів';
         $changeRoles->save();
 
+        $blockUser = new Permission();
+        $blockUser->name             =
+        $blockUser->display_name     =
+
 
         $admin->attachPermissions([
             $adminPanel,
