@@ -20,10 +20,10 @@ class CreateUserAddressesTable extends Migration
             $table->string('country')->nullable();
             $table->string('country_code')->nullable();
             $table->string('state')->nullable();
-            $table->string('city');
-            $table->string('district');
-            $table->string('street');
-            $table->string('building');
+            $table->string('city')->nullable();
+            $table->string('district')->nullable();
+            $table->string('street')->nullable();
+            $table->string('building')->nullable();
             $table->string('apartment')->nullable();
             $table->string('postcode')->nullable();
             $table->string('lat')->nullable();
