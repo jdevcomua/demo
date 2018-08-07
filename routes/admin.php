@@ -125,7 +125,8 @@ Route::group([
 
 Route::group([
     'prefix' => 'administrating',
-    'as' => 'administrating.'
+    'as' => 'administrating.',
+    'middleware' => 'role:admin'
 ], function () {
     Route::group([
         'prefix' => 'users',
@@ -136,9 +137,9 @@ Route::group([
         Route::get('data', 'Admin\AdministratingController@userData')
             ->name('data');
         Route::post('ban/{id?}', 'Admin\AdministratingController@banUser')
-            ->name('ban')->middleware('permission:block-user');
+            ->name('ban');
         Route::post('unban/{id?}', 'Admin\AdministratingController@unbanUser')
-            ->name('unban')->middleware('permission:block-user');
+            ->name('unban');
     });
 
     Route::get('banned', 'Admin\AdministratingController@bannedUsers')

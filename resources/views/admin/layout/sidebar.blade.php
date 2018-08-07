@@ -66,7 +66,7 @@
                 </ul>
             </li>
 
-
+            @role('admin')
             <li class="sidebar-label pt20">Адміністрування</li>
             <li  @if($curRoute == 'admin.administrating.users.index') class="active" @endif>
                 <a href="{{route('admin.administrating.users.index')}}">
@@ -92,6 +92,7 @@
                     <span class="sidebar-title">Журнал дій</span>
                 </a>
             </li>
+            @endrole
         </ul>
     </div>
 </aside>
