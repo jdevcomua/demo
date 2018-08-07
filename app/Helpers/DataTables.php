@@ -119,10 +119,7 @@ class DataTables
                     ->get()
                     ->toArray();
             } else {
-                $response['data'] = $query->offset($req['start'])
-                    ->limit(0)
-                    ->get()
-                    ->toArray();
+                $response['data'] = [];
                 $response["recordsFiltered"] = $response["recordsTotal"] = 0;
             }
             return $response;
