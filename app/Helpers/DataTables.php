@@ -40,34 +40,40 @@ class DataTables
                     foreach ($columns as $column) {
                         try {
                             if ($column['search']['value'] !== null) {
-                                if($column['data'] === 'birthday') {
-                                    //reverting format
-                                    $searchValue = explode('.', $column['search']['value']);
-                                    $searchValue = array_reverse($searchValue);
-                                    if (count($searchValue) === 2) {
-                                        if (strlen($searchValue[0]) === 1 || strlen($searchValue[0]) === 3) {
+                                if (((array_search($column['data'], $model->getDates()) !== false
+                                    && preg_match("/^[a-z\d]{1}[a-z\d\s]*[a-z\d]{1}$/i", $column['search']['value'])))
+                                || array_search($column['data'], $model->getDates()) === false) {
+                                    if ($column['data'] === 'birthday') {
+                                        //reverting format
+                                        $searchValue = explode('.', $column['search']['value']);
+                                        $searchValue = array_reverse($searchValue);
+                                        if (count($searchValue) === 2) {
+                                            if (strlen($searchValue[0]) === 1 || strlen($searchValue[0]) === 3) {
+                                                $searchValue[0] .= '%';
+                                            }
+                                        } elseif (count($searchValue) === 3) {
                                             $searchValue[0] .= '%';
                                         }
-                                    } elseif (count($searchValue) === 3) {
-                                        $searchValue[0] .= '%';
-                                    }
-                                    $searchValue = implode('-', $searchValue);
-                                    $query->where($table. '.' .$column['data'], 'like',
-                                        '%' . $searchValue . '%');
-                                } else
-                                    if (!$aliases || !array_key_exists($column['data'], $aliases)) {
-                                    $query->where($table. '.' .$column['data'], 'like',
-                                        '%' . $column['search']['value'] . '%');
+                                        $searchValue = implode('-', $searchValue);
+                                        $query->where($table . '.' . $column['data'], 'like',
+                                            '%' . $searchValue . '%');
+                                    } else
+                                        if (!$aliases || !array_key_exists($column['data'], $aliases)) {
+                                            $query->where($table . '.' . $column['data'], 'like',
+                                                '%' . $column['search']['value'] . '%');
+                                        } else {
+                                            if (!self::isHavingSearch($aliases[$column['data']])) {
+                                                $query->whereRaw($aliases[$column['data']] . ' like '
+                                                    . '\'%' . $column['search']['value'] . '%\''
+                                                );
+                                            } else {
+                                                $query->havingRaw($aliases[$column['data']] . ' like '
+                                                    . '\'%' . $column['search']['value'] . '%\''
+                                                );
+                                            }
+                                        }
                                 } else {
-                                    if (!self::isHavingSearch($aliases[$column['data']])) {
-                                        $query->whereRaw($aliases[$column['data']] . ' like '
-                                            . '\'%' . $column['search']['value'] . '%\''
-                                        );
-                                    } else {
-                                        $query->havingRaw($aliases[$column['data']] . ' like '
-                                            . '\'%' . $column['search']['value'] . '%\''
-                                        );
-                                    }
+                                    $kyrillSymolsInDates = true;
                                 }
                             }
                         } catch (\Exception $exception) {}
@@ -107,10 +113,18 @@ class DataTables
                 $response["recordsFiltered"] = $response["recordsTotal"];
             }
 
-            $response['data'] = $query->offset($req['start'])
-                ->limit($req['length'])
-                ->get()
-                ->toArray();
+            if (!isset($kyrillSymolsInDates)) {
+                $response['data'] = $query->offset($req['start'])
+                    ->limit($req['length'])
+                    ->get()
+                    ->toArray();
+            } else {
+                $response['data'] = $query->offset($req['start'])
+                    ->limit(0)
+                    ->get()
+                    ->toArray();
+                $response["recordsFiltered"] = $response["recordsTotal"] = 0;
+            }
             return $response;
         }
         return null;
