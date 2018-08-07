@@ -18,7 +18,7 @@
         <div class="tray tray-center">
 
             <div class="row flex-grid">
-                <div class="col-md-6">
+                <div class="col-xs-12 col-md-6">
                     <div class="col-xs-12">
                         <div class="panel panel-visible" id="spy5">
                             <div class="panel-heading">
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-xs-12 col-md-6">
                     <div class="col-xs-12">
                         <div class="panel panel-visible" id="spy5">
                             <div class="panel-heading">
@@ -258,7 +258,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-xs-12 col-md-6">
                     <div class="col-xs-12">
                         <div class="panel panel-visible" id="spy5">
                             <div class="panel-heading">
