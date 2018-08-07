@@ -14,6 +14,7 @@ class BlocksSeeder extends Seeder
         DB::table('blocks')->insert([
             [
                 'title' => 'about-page',
+                'subject' => null,
                 'body' => 'Текст сторінки \'Про проект\''
             ],
             [
