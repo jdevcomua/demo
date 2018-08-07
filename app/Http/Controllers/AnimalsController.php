@@ -67,7 +67,7 @@ class AnimalsController extends Controller
             'breed' => 'required|integer|exists:breeds,id',
             'color' => 'required|integer|exists:colors,id',
             'fur' => 'required|integer|exists:furs,id',
-            'birthday' => 'required|date',
+            'birthday' => 'required|date|after:1940-01-01|before:today',
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
             'images' => 'required|array',
@@ -78,6 +78,9 @@ class AnimalsController extends Controller
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
             'birthday.required' => 'Дата народження є обов\'язковим полем',
+            'birthday.before' => 'Дата народження не може бути сьогодні або у майбутньому!',
+            'birthday.date' => 'Дата народження повинна бути корректною датою',
+            'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
         ]);
