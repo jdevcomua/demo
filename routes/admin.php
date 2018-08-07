@@ -44,7 +44,7 @@ Route::group([
     Route::put('update/{id}', 'Admin\DataBasesController@animalUpdate')
         ->name('update');
     Route::delete('remove/{id?}', 'Admin\DataBasesController@animalRemove')
-        ->name('remove');
+        ->name('remove')->middleware('role:admin');
     Route::get('verify/{id}', 'Admin\DataBasesController@animalVerify')
         ->name('verify')
         ->middleware('permission:verify-animal');

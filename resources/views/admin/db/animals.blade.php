@@ -145,9 +145,14 @@
                                     "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>" +
                                     "<a href='#' class='delete' " +
-                                    "data-id=" + data + " >" +
+                                    "data-id=" + data + " >"
+                                    @role('admin')
+                                    +
                                     "<i class=\"fa fa-trash pr10\" aria-hidden=\"true\"></i>" +
-                                    "</a>";
+                                    "</a>"
+                                    @endrole
+                                    ;
+
                             }
                         }
                     },
