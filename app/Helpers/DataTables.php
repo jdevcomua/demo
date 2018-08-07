@@ -40,7 +40,7 @@ class DataTables
                     foreach ($columns as $column) {
                         try {
                             if ($column['search']['value'] !== null) {
-                                if(array_search($column['data'], $model->getDates()) !== false) {
+                                if($column['data'] === 'birthday') {
                                     //reverting format
                                     $searchValue = explode('.', $column['search']['value']);
                                     $searchValue = array_reverse($searchValue);
