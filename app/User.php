@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\UserAddress;
+use App\Models\UserEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
@@ -19,16 +20,17 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property int $inn
  * @property string $passport
  * @property int $gender
- * @property int $banned
+ * @property bool $banned
  * @property string|null $remember_token
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $addresses
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Animal[] $animals
- * @property-read \App\User $bannedBy
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserEmail[] $emails
+ * @property-read mixed $full_name
  * @property-read mixed $living_address
  * @property-read mixed $name
+ * @property-read mixed $primary_email
  * @property-read mixed $registration_address
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPhone[] $phones
@@ -114,6 +116,13 @@ class User extends Authenticatable
     public function emails()
     {
         return $this->hasMany('App\Models\UserEmail');
+    }
+
+    public function getPrimaryEmailAttribute()
+    {
+        $email = $this->emails->where('type', UserEmail::TYPE_PRIMARY)->first();
+        if (!$email) $email = $this->emails->first();
+        return $email;
     }
 
     public function phones()

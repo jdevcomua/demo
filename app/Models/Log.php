@@ -11,15 +11,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property int $action
  * @property int $status
+ * @property int $finished
  * @property string|null $object
  * @property string|null $changes
  * @property string|null $payload
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property-read mixed $action_name
+ * @property-read mixed $status_name
  * @property-read \App\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereAction($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereChanges($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereFinished($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereObject($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log wherePayload($value)

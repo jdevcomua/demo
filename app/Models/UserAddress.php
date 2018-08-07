@@ -9,17 +9,18 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $user_id
- * @property string $country
- * @property string $country_code
- * @property string $state
- * @property string $city
- * @property string $district
- * @property string $street
- * @property string $building
- * @property string $apartment
- * @property string $postcode
- * @property string $lat
- * @property string $lon
+ * @property string $type
+ * @property string|null $country
+ * @property string|null $country_code
+ * @property string|null $state
+ * @property string|null $city
+ * @property string|null $district
+ * @property string|null $street
+ * @property string|null $building
+ * @property string|null $apartment
+ * @property string|null $postcode
+ * @property string|null $lat
+ * @property string|null $lon
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\User $user
@@ -36,11 +37,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress wherePostcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereStreet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUserId($value)
  * @mixin \Eloquent
- * @property string $type
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereType($value)
  */
 class UserAddress extends Model
 {

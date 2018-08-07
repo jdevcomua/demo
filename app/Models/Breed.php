@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
- * @property string|null $fci
+ * @property int $fci
  * @property int $species_id
  * @property bool $available
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Animal[] $animals

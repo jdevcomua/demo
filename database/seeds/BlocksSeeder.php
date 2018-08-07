@@ -11,19 +11,16 @@ class BlocksSeeder extends Seeder
      */
     public function run()
     {
-        $blocks = [
-            'about-page',
-            'email.new-animal'
-        ];
-
-        foreach ($blocks as $block) {
-            $temp = new \App\Models\Block();
-            $temp->title = $block;
-            if (strpos($block, 'email') !== false) {
-                $block->subject = $block;
-            }
-            $block->body = $block;
-            $block->save();
-        }
+        DB::table('blocks')->insert([
+            [
+                'title' => 'about-page',
+                'body' => 'Текст сторінки \'Про проект\''
+            ],
+            [
+                'title' => 'email.new-animal',
+                'subject' => 'Верифікуйте вашого улюбленця',
+                'body' => 'Текст повідомлення'
+            ],
+        ]);
     }
 }

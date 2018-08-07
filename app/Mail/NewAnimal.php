@@ -2,11 +2,10 @@
 
 namespace App\Mail;
 
-use App\Models\Animal;
+use App\Models\Block;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class NewAnimal extends Mailable
 {
@@ -29,7 +28,7 @@ class NewAnimal extends Mailable
      */
     public function build()
     {
-        $email = \Block::get('email.new-animal');
+        $email = Block::where('title', '=', 'email.new-animal')->first();
         return $this->view('emails.newAnimal')
             ->subject($email->subject);
     }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Mail\NewAnimal;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
-use App\Models\UserEmail;
 use App\Services\FilesService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -105,12 +104,9 @@ class AnimalsController extends Controller
         $user = \Auth::user();
 
         $animal = $user->animals()->create($data);
-
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
-        $email = $user->emails()->where('type', UserEmail::TYPE_PRIMARY)->first();
-
-        \Mail::to($email)->send(new NewAnimal());
+        \Mail::to($user->primaryEmail)->send(new NewAnimal());
 
         return response()->json([
             'status' => 'ok',
