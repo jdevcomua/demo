@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FursSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(AnimalSeeder::class);
+        $this->call(BlocksSeeder::class);
     }
 }

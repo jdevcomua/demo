@@ -24,6 +24,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserEmail extends Model
 {
+    const TYPE_PRIMARY = 'PRIMARY';
+    const TYPE_SECONDARY = "SECONDARY";
+
     protected $fillable = [
         'type', 'email',
     ];

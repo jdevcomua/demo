@@ -86,6 +86,21 @@ Route::group([
         ->name('remove.fur');
 });
 
+
+Route::group([
+    'prefix' => 'emails',
+    'as' => 'info.emails.'
+], function () {
+    Route::get('index', 'Admin\InfoController@emailsIndex')
+        ->name('index');
+    Route::get('data', 'Admin\InfoController@emailsData')
+        ->name('data');
+    Route::get('edit/{id?}', 'Admin\InfoController@emailsEdit')
+        ->name('edit');
+    Route::put('edit/{id}', 'Admin\InfoController@emailsStore')
+        ->name('store');
+});
+
 Route::group([
     'prefix' => 'content',
     'as' => 'info.content.'

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
+use App\Models\Block;
 use App\Models\Breed;
 use App\Models\Color;
 use App\Models\Fur;
@@ -254,5 +255,61 @@ class InfoController extends Controller
                 ->with('success_fur_rem', 'Тип шерсті видалено успішно !');
         }
         return response('', 400);
+    }
+
+    public function emailsIndex()
+    {
+        return view('admin.info.emails');
+    }
+
+    public function emailsData(Request $request)
+    {
+        $model = new Block();
+
+        $query = $model->newQuery()
+            ->where('title', 'like', 'email.%');
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function emailsEdit ($id)
+    {
+        $email = Block::findOrFail($id);
+        return view('admin.info.emails_edit', compact('email'));
+    }
+
+    public function emailsStore (Request $request, $id)
+    {
+        $email = Block::findOrFail($id);
+
+        $data = $request->only(['subject', 'body']);
+
+        $validator = Validator::make($data, [
+            'subject' => 'required|string|min:6',
+            'body' => 'required|string|min:6'
+        ],[
+            'subject.required' => 'Тема є обов\'язковим полем',
+            'body.required' => 'Текст є обов\'язковим полем',
+            'subject.min' => 'Тема має буди мінімум 6 символів',
+            'body.min' => 'Текст має буди мінімум 6 символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'email')
+                ->withInput();
+        }
+
+        $email->update($data);
+        $email->save();
+
+        return redirect()
+            ->route('admin.info.emails.index')
+            ->with('success_emails', 'Повідомлення було успішно змінено!');
     }
 }
