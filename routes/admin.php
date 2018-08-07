@@ -136,9 +136,9 @@ Route::group([
         Route::get('data', 'Admin\AdministratingController@userData')
             ->name('data');
         Route::post('ban/{id?}', 'Admin\AdministratingController@banUser')
-            ->name('ban');
+            ->name('ban')->middleware('permission:block-user');
         Route::post('unban/{id?}', 'Admin\AdministratingController@unbanUser')
-            ->name('unban');
+            ->name('unban')->middleware('permission:block-user');
     });
 
     Route::get('banned', 'Admin\AdministratingController@bannedUsers')

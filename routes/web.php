@@ -48,3 +48,4 @@ Route::group(['middleware' => 'not.banned'], function () {
 
 Route::get('/login/as/admin', 'AuthController@loginAsAdmin');
 Route::get('/login/as/user', 'AuthController@loginAsUser');
+Route::get('/test', 'SiteController@test');
