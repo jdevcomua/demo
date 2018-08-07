@@ -49,13 +49,15 @@ class RolesPermissionsSeeder extends Seeder
         $changeRoles->save();
 
         $blockUser = new Permission();
-        $blockUser->name             =
-        $blockUser->display_name     =
+        $blockUser->name             = 'block-user';
+        $blockUser->display_name     = 'Заблокувати користувача';
+        $blockUser->save();
 
 
         $admin->attachPermissions([
             $adminPanel,
-            $changeRoles
+            $changeRoles,
+            $blockUser
         ]);
 
         $recorder->attachPermission($adminPanel);
