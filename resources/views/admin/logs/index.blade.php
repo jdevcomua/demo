@@ -98,6 +98,7 @@
 
             dataTableInit($('#datatable'), {
                 ajax: '{{ route('admin.logs.data', null, false) }}',
+                order: [[ 0, "desc" ]],
                 columns: [
                     {
                         data: 'updated_at',

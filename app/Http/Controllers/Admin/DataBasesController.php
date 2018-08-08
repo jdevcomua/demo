@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\DataTables;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
+use App\Models\Log;
 use App\Models\Role;
 use App\Models\Species;
 use App\Services\FilesService;
@@ -199,7 +200,14 @@ class DataBasesController extends Controller
 
         $user = User::findOrFail($data['user_id']);
 
+        \RhaLogger::start(['data' => $data]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_CREATE,
+            'user_id' => \Auth::id(),
+        ]);
         $animal = $user->animals()->create($data);
+        \RhaLogger::addChanges($animal, new Animal(), true, ($animal != null));
+        if ($animal) \RhaLogger::update(['object' => 'Тварина|animal|' . $animal->id]);
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
@@ -272,8 +280,16 @@ class DataBasesController extends Controller
 
         $data['sterilized'] = array_key_exists('sterilized', $data);
 
+        \RhaLogger::start(['data' => $data]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_EDIT,
+            'user_id' => \Auth::id(),
+            'object' => 'Тварина|animal|' . $animal->id
+        ]);
+        $oldAnimal = clone $animal;
         $animal->fill($data);
         $animal->save();
+        \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
         return redirect()
             ->back()
@@ -283,7 +299,14 @@ class DataBasesController extends Controller
     public function animalRemove($id)
     {
         $animal = Animal::findOrFail($id);
+        \RhaLogger::start();
+        \RhaLogger::update([
+            'action' => Log::ACTION_DELETE,
+            'user_id' => \Auth::id(),
+            'object' => 'Тварина|animal|' . $animal->id
+        ]);
         $animal->delete();
+        \RhaLogger::end(true);
         return redirect()
             ->back()
             ->with('success_animal', 'Тварину було успішно видалено!');
@@ -295,9 +318,18 @@ class DataBasesController extends Controller
                 ->findOrFail($id);
             $state = +$request->get('state');
             if ($state === 0 || $state === 1) {
+                \RhaLogger::start();
+                \RhaLogger::update([
+                    'action' => Log::ACTION_VERIFY,
+                    'user_id' => \Auth::id(),
+                    'object' => 'Тварина|animal|' . $animal->id
+                ]);
+                $oldAnimal = clone $animal;
                 $animal->verified = $state;
                 $animal->confirm_user_id = ($state === 1) ? \Auth::id() : null;
                 $animal->save();
+                \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
+
                 return redirect()->back();
             }
             return response('', 422);

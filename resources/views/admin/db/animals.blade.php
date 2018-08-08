@@ -146,11 +146,11 @@
                                     "</a>" +
                                     "<a href='#' class='delete' " +
                                     "data-id=" + data + " >"
-                                    @role('admin')
+                                    @permission('delete-animal')
                                     +
                                     "<i class=\"fa fa-trash pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>"
-                                    @endrole
+                                    @endpermission
                                     ;
 
                             }

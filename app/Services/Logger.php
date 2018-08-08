@@ -22,11 +22,14 @@ class Logger
         if ($payload) $this->addPayload($payload);
     }
 
-    public function end()
+    public function end($ok = false)
     {
         $this->update([
             'finished' => true
         ]);
+        if ($ok) {
+            $this->update(['status' => Log::STATUS_OK]);
+        }
     }
 
     public function update($data)
@@ -37,9 +40,10 @@ class Logger
     /**
      * @param \Illuminate\Database\Eloquent\Model $newModel
      * @param \Illuminate\Database\Eloquent\Model $oldModel
+     * @param bool $end
      * @return string
      */
-    public function addChanges($newModel, $oldModel)
+    public function addChanges($newModel, $oldModel, $end = false, $ok = false)
     {
         if (count($oldModel->getAttributes()) === 0) {
             $changes = $newModel->getAttributes();
@@ -51,10 +55,10 @@ class Logger
         }
 
         foreach ($attr as $k => $v) {
-            if (array_key_exists($k, $changes)) {
+            if (array_key_exists($k, $changes) && $changes[$k] != $v) {
                 $attr[$k] = [
                     'old' => $v,
-                    'new' => $changes[$k]
+                    'new' => (is_bool($changes[$k])) ? intval($changes[$k]) : $changes[$k],
                 ];
             } else {
                 unset($attr[$k]);
@@ -64,6 +68,8 @@ class Logger
         $this->update([
             'changes' => $this->renderChanges($attr)
         ]);
+
+        if ($end) $this->end($ok);
     }
 
     private function renderChanges($data)
@@ -72,7 +78,7 @@ class Logger
         foreach ($data as $k => $v) {
             $res .= '<span>';
             $res .= '<b>'.$k.'</b>: ';
-            if ($v['old']) $res .= '<c-r>'.$v['old'].'</c-r> ⟶ ';
+            if ($v['old'] !== null) $res .= '<c-r>'.$v['old'].'</c-r> ⟶ ';
             $res .= '<c-g>'.$v['new'].'</c-g>';
             $res .= '</span>';
         }

@@ -110,10 +110,13 @@
                                 return "<a href=\"{{ route('admin.db.users.show') }}/"
                                     + data + "\">" +
                                     "<i class=\"fa fa-eye pr10\" aria-hidden=\"true\"></i>" +
-                                    "</a>" +
-                                    "<a href='#' class='ban' data-id=" + data + ">" +
+                                    "</a>"
+                                    @permission('block-user')
+                                    + "<a href='#' class='ban' data-id=" + data + ">" +
                                     "<i class=\"fa fa-ban\" aria-hidden=\"true\"></i>" +
-                                    "</a>";
+                                    "</a>"
+                                    @endpermission
+                                    ;
                             }
                         }
                     },

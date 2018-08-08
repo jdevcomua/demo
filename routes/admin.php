@@ -24,7 +24,8 @@ Route::group([
         ->name('update.roles')
         ->middleware('permission:change-roles');
     Route::delete('delete/{id?}', 'Admin\DataBasesController@userDelete')
-        ->name('remove');
+        ->name('remove')
+        ->middleware('permission:delete-user');
 });
 
 Route::group([
@@ -45,7 +46,7 @@ Route::group([
         ->name('update');
     Route::delete('remove/{id?}', 'Admin\DataBasesController@animalRemove')
         ->name('remove')
-        ->middleware('role:admin');
+        ->middleware('permission:delete-animal');
     Route::get('verify/{id}', 'Admin\DataBasesController@animalVerify')
         ->name('verify')
         ->middleware('permission:verify-animal');
@@ -57,87 +58,92 @@ Route::group([
 
 });
 
-
 Route::group([
-    'prefix' => 'directories',
-    'as' => 'info.directories.'
+    'middleware' => 'permission:edit-content'
 ], function () {
-    Route::get('index', 'Admin\InfoController@directoryIndex')
-        ->name('index');
 
-    Route::get('data/breed', 'Admin\InfoController@directoryDataBreed')
-        ->name('data.breed');
-    Route::post('store/breed', 'Admin\InfoController@directoryStoreBreed')
-        ->name('store.breed');
-    Route::get('remove/breed', 'Admin\InfoController@directoryRemoveBreed')
-        ->name('remove.breed');
+    Route::group([
+        'prefix' => 'directories',
+        'as' => 'info.directories.'
+    ], function () {
+        Route::get('index', 'Admin\InfoController@directoryIndex')
+            ->name('index');
 
-    Route::get('data/color', 'Admin\InfoController@directoryDataColor')
-        ->name('data.color');
-    Route::post('store/color', 'Admin\InfoController@directoryStoreColor')
-        ->name('store.color');
-    Route::get('remove/color', 'Admin\InfoController@directoryRemoveColor')
-        ->name('remove.color');
+        Route::get('data/breed', 'Admin\InfoController@directoryDataBreed')
+            ->name('data.breed');
+        Route::post('store/breed', 'Admin\InfoController@directoryStoreBreed')
+            ->name('store.breed');
+        Route::get('remove/breed', 'Admin\InfoController@directoryRemoveBreed')
+            ->name('remove.breed');
 
-    Route::get('data/fur', 'Admin\InfoController@directoryDataFur')
-        ->name('data.fur');
-    Route::post('store/fur', 'Admin\InfoController@directoryStoreFur')
-        ->name('store.fur');
-    Route::get('remove/fur', 'Admin\InfoController@directoryRemoveFur')
-        ->name('remove.fur');
-});
+        Route::get('data/color', 'Admin\InfoController@directoryDataColor')
+            ->name('data.color');
+        Route::post('store/color', 'Admin\InfoController@directoryStoreColor')
+            ->name('store.color');
+        Route::get('remove/color', 'Admin\InfoController@directoryRemoveColor')
+            ->name('remove.color');
+
+        Route::get('data/fur', 'Admin\InfoController@directoryDataFur')
+            ->name('data.fur');
+        Route::post('store/fur', 'Admin\InfoController@directoryStoreFur')
+            ->name('store.fur');
+        Route::get('remove/fur', 'Admin\InfoController@directoryRemoveFur')
+            ->name('remove.fur');
+    });
 
 
-Route::group([
-    'prefix' => 'emails',
-    'as' => 'info.emails.'
-], function () {
-    Route::get('index', 'Admin\InfoController@emailsIndex')
-        ->name('index');
-    Route::get('data', 'Admin\InfoController@emailsData')
-        ->name('data');
-    Route::get('edit/{id?}', 'Admin\InfoController@emailsEdit')
-        ->name('edit');
-    Route::put('edit/{id}', 'Admin\InfoController@emailsStore')
-        ->name('store');
-});
+    Route::group([
+        'prefix' => 'emails',
+        'as' => 'info.emails.'
+    ], function () {
+        Route::get('index', 'Admin\InfoController@emailsIndex')
+            ->name('index');
+        Route::get('data', 'Admin\InfoController@emailsData')
+            ->name('data');
+        Route::get('edit/{id?}', 'Admin\InfoController@emailsEdit')
+            ->name('edit');
+        Route::put('edit/{id}', 'Admin\InfoController@emailsStore')
+            ->name('store');
+    });
 
-Route::group([
-    'prefix' => 'notifications',
-    'as' => 'info.notifications.'
-], function () {
-    Route::get('index', 'Admin\InfoController@notificationsIndex')
-        ->name('index');
-    Route::get('data', 'Admin\InfoController@notificationsData')
-        ->name('data');
-    Route::put('edit/{id?}', 'Admin\InfoController@notificationsStore')
-        ->name('store');
-});
+    Route::group([
+        'prefix' => 'notifications',
+        'as' => 'info.notifications.'
+    ], function () {
+        Route::get('index', 'Admin\InfoController@notificationsIndex')
+            ->name('index');
+        Route::get('data', 'Admin\InfoController@notificationsData')
+            ->name('data');
+        Route::put('edit/{id?}', 'Admin\InfoController@notificationsStore')
+            ->name('store');
+    });
 
-Route::group([
-    'prefix' => 'content',
-    'as' => 'info.content.'
-], function () {
-    Route::get('faq', 'Admin\ContentController@faqIndex')
-        ->name('faq.index');
-    Route::get('faq/data', 'Admin\ContentController@faqData')
-        ->name('faq.data');
-    Route::post('faq', 'Admin\ContentController@faqStore')
-        ->name('faq.store');
-    Route::delete('faq/delete/{id?}', 'Admin\ContentController@faqDelete')
-        ->name('faq.delete');
+    Route::group([
+        'prefix' => 'content',
+        'as' => 'info.content.'
+    ], function () {
+        Route::get('faq', 'Admin\ContentController@faqIndex')
+            ->name('faq.index');
+        Route::get('faq/data', 'Admin\ContentController@faqData')
+            ->name('faq.data');
+        Route::post('faq', 'Admin\ContentController@faqStore')
+            ->name('faq.store');
+        Route::delete('faq/delete/{id?}', 'Admin\ContentController@faqDelete')
+            ->name('faq.delete');
 
-    Route::get('block', 'Admin\ContentController@blockIndex')
-        ->name('block.index');
-    Route::put('block/{id}/update', 'Admin\ContentController@blockUpdate')
-        ->name('block.update');
+        Route::get('block', 'Admin\ContentController@blockIndex')
+            ->name('block.index');
+        Route::put('block/{id}/update', 'Admin\ContentController@blockUpdate')
+            ->name('block.update');
+    });
+
+
 });
 
 
 Route::group([
     'prefix' => 'administrating',
     'as' => 'administrating.',
-    'middleware' => 'role:admin'
 ], function () {
     Route::group([
         'prefix' => 'users',
@@ -147,24 +153,29 @@ Route::group([
             ->name('index');
         Route::get('data', 'Admin\AdministratingController@userData')
             ->name('data');
-        Route::post('ban/{id?}', 'Admin\AdministratingController@banUser')
-            ->name('ban');
-        Route::post('unban/{id?}', 'Admin\AdministratingController@unbanUser')
-            ->name('unban');
     });
 
-    Route::get('banned', 'Admin\AdministratingController@bannedUsers')
-        ->name('banned');
-    Route::get('banned/data', 'Admin\AdministratingController@bannedUsersData')
-        ->name('banned.data');
+    Route::group([
+        'middleware' => 'permission:block-user'
+    ], function () {
 
+        Route::post('users/ban/{id?}', 'Admin\AdministratingController@banUser')
+            ->name('users.ban');
+        Route::post('users/unban/{id?}', 'Admin\AdministratingController@unbanUser')
+            ->name('users.unban');
 
+        Route::get('banned', 'Admin\AdministratingController@bannedUsers')
+            ->name('banned');
+        Route::get('banned/data', 'Admin\AdministratingController@bannedUsersData')
+            ->name('banned.data');
+
+    });
 });
 
 Route::group([
     'prefix' => 'roles',
     'as' => 'roles.',
-    'middleware' => 'role:admin'
+    'middleware' => 'permission:edit-roles'
 ], function () {
     Route::get('/', 'Admin\AdminRolesController@index')
         ->name('index');
@@ -183,7 +194,7 @@ Route::group([
 Route::group([
     'prefix' => 'logs',
     'as' => 'logs.',
-    'middleware' => 'role:admin'
+    'middleware' => 'permission:view-syslog'
 ], function () {
 
     Route::get('/', 'Admin\LogsController@index')

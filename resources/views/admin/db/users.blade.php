@@ -114,10 +114,13 @@
                                 return "<a href=\"{{ route('admin.db.users.show') }}/"
                                     + data + "\">" +
                                     "<i class=\"fa fa-eye pr10\" aria-hidden=\"true\"></i>" +
-                                    "</a>" +
-                                    "<a href='#' class='delete' data-id=" + data + ">" +
+                                    "</a>"
+                                    @permission('delete-user')
+                                    + "<a href='#' class='delete' data-id=" + data + ">" +
                                     "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
-                                    "</a>";
+                                    "</a>"
+                                    @endpermission
+                                    ;
                             }
                         }
                     },

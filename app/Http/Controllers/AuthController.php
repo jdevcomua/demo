@@ -42,14 +42,12 @@ class AuthController extends Controller
             throw $e;
         }
 
-        \RhaLogger::end();
-
         if (!$user) {
             \RhaLogger::addPayload(['error' => 'BAD LOGIN - missing passport and itin']);
             return redirect()->route('bad-login');
         }
 
-        \RhaLogger::update(['status' => Log::STATUS_OK]);
+        \RhaLogger::end(true);
 
         Auth::login($user);
 

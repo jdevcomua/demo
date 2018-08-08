@@ -21,9 +21,8 @@ class FilesService
                     if (array_key_exists($i, $skip)) continue;
                     $this->storeAnimalFile($animal, $data['images'][$imgCurr], $i, AnimalsFile::FILE_TYPE_PHOTO);
                     $imgCurr++;
-                    if ($imgCurr >= count($data['images'])) return;
+                    if ($imgCurr >= count($data['images'])) break;
                 }
-
             } else {
                 foreach ($data['images'] as $num => $image) {
                     $this->storeAnimalFile($animal, $image, $num, AnimalsFile::FILE_TYPE_PHOTO);
