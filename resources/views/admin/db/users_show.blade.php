@@ -25,10 +25,7 @@
                             <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Картка користувача</div>
                         </div>
-                        <form class="form-horizontal" role="form"
-                              action="{{ route('admin.db.users.update', $user->id) }}" method="post">
-                            @csrf
-                            @method('PUT')
+                        <form class="form-horizontal" role="form">
                             <div class="panel-body">
                                 @if($errors->user)
                                     @foreach($errors->user->all() as $error)
@@ -51,24 +48,27 @@
                                 <div class="form-group select-gen">
                                     <label for="last_name" class="col-lg-3 control-label">Прізвище</label>
                                     <div class="col-lg-8">
-                                        <input type="text" id="last_name" name="last_name" class="form-control"
-                                               value="{{ old('last_name') ?? $user->last_name}}" disabled>
+                                        <p class="form-control custom-field">
+                                            {{ $user->last_name}}
+                                        </p>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="first_name" class="col-lg-3 control-label">Ім'я</label>
                                     <div class="col-lg-8">
-                                        <input type="text" id="first_name" name="first_name" class="form-control"
-                                               value="{{ old('first_name') ?? $user->first_name}}" disabled>
+                                        <p class="form-control custom-field">
+                                            {{ $user->first_name}}
+                                        </p>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="middle_name" class="col-lg-3 control-label">По батькові</label>
                                     <div class="col-lg-8">
-                                        <input type="text" id="middle_name" name="middle_name" class="form-control"
-                                               value="{{ old('middle_name') ?? $user->middle_name}}" disabled>
+                                        <p class="form-control custom-field">
+                                            {{ $user->middle_name}}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -76,11 +76,11 @@
                                     <label for="email" class="col-lg-3 control-label">email</label>
                                     <div class="col-lg-8">
                                         @forelse($user->emails as $email)
-                                            <input type="text" id="email" name="email" class="form-control"
-                                                   value="{{ $email->email }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $email->email }}
+                                            </p>
                                         @empty
-                                            <input type="text" id="email" name="email" class="form-control"
-                                                   disabled>
+                                            <p class="form-control custom-field"></p>
                                         @endforelse
                                     </div>
                                 </div>
@@ -89,11 +89,11 @@
                                     <label for="phone" class="col-lg-3 control-label">Телефон</label>
                                     <div class="col-lg-8">
                                         @forelse($user->phones as $phone)
-                                            <input type="text" id="phone" name="phone" class="form-control"
-                                                   value="{{ $phone->phone }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $phone->phone }}
+                                            </p>
                                         @empty
-                                            <input type="text" id="email" name="email" class="form-control"
-                                                   disabled>
+                                            <p class="form-control custom-field"></p>
                                         @endforelse
                                     </div>
                                 </div>
@@ -101,8 +101,9 @@
                                 <div class="form-group datepicker">
                                     <label for="birthday" class="col-lg-3 control-label">Дата народження</label>
                                     <div class="col-lg-8 ">
-                                        <input type="text" class="form-control" id="birthday" name="birthday"
-                                               value="{{ $user->birthday->format('d/m/Y') }}" disabled />
+                                        <p class="form-control custom-field">
+                                            {{ $user->birthday->format('d/m/Y') }}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -110,8 +111,9 @@
                                     <div class="form-group">
                                         <label for="inn" class="col-lg-3 control-label">ІПН</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="inn" name="inn" class="form-control"
-                                                   value="{{ old('inn') ?? $user->inn}}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->inn}}
+                                            </p>
                                         </div>
                                     </div>
                                 @endif
@@ -119,20 +121,19 @@
                                 <div class="form-group">
                                     <label for="passport" class="col-lg-3 control-label">Паспорт</label>
                                     <div class="col-lg-8">
-                                        <input type="text" id="passport" name="passport" class="form-control"
-                                               value="{{ old('passport') ?? $user->passport}}" disabled>
+                                        <p class="form-control custom-field">
+                                            {{ $user->passport}}
+                                        </p>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="gender" class="col-lg-3 control-label">Стать</label>
                                     <div class="col-lg-8">
-                                        <select class="form-control" id="gender" name="gender" disabled>
-                                            <option @if($user->gender === \App\User::GENDER_FEMALE) selected @endif
-                                            value="{{ \App\Models\Animal::GENDER_FEMALE }}">Жіноча</option>
-                                            <option @if($user->gender === \App\User::GENDER_MALE) selected @endif
-                                            value="{{ \App\Models\Animal::GENDER_FEMALE }}">Чоловіча</option>
-                                        </select>
+                                        <p class="form-control custom-field">
+                                            @if($user->gender === \App\User::GENDER_FEMALE) Жіноча @endif
+                                            @if($user->gender === \App\User::GENDER_MALE) Чоловіча @endif
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -140,21 +141,18 @@
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">Тварини</label>
                                     <div class="col-lg-8">
-                                        <p class="form-control">
+                                        <p class="form-control custom-field">
                                             @foreach($user->animals as $animal)
                                                 <a href="{{route('admin.db.animals.edit')}}/{{ $animal->id}}">
                                                     {{$animal->nickname}}</a>@if(!$loop->last),@endif
                                             @endforeach
                                         </p>
-                                        <div class="col-sm-12 pn mb25">
+                                        <div class="col-sm-12 pn mt15">
                                             <a href="{{ route('admin.db.animals.create', $user->id) }}"
                                                class="btn btn-success btn-block">Додати тварину</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="panel-footer text-right">
-                                <button type="submit" class="btn btn-default ph25">Зберегти</button>
                             </div>
                         </form>
                     </div>
@@ -165,10 +163,7 @@
                             <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Адреси</div>
                         </div>
-                        <form class="form-horizontal" role="form"
-                              action="{{ route('admin.db.users.update', $user->id) }}" method="post">
-                            @csrf
-                            @method('PUT')
+                        <form class="form-horizontal" role="form">
                             @if($user->registrationAddress)
                                 <div class="panel-body pb5 pt20">
                                     <div class="form-group">
@@ -178,36 +173,41 @@
                                     <div class="form-group">
                                         <label for="registration_district" class="col-lg-3 control-label">Область</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="registration_district" class="form-control"
-                                                   value="{{ $user->registrationAddress->district }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->registrationAddress->district }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="registration_city" class="col-lg-3 control-label">Населений пункт</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="registration_city" class="form-control"
-                                                   value="{{ $user->registrationAddress->city }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->registrationAddress->city }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="registration_street" class="col-lg-3 control-label">Вулиця</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="registration_street" class="form-control"
-                                                   value="{{ $user->registrationAddress->street }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->registrationAddress->street }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="registration_building" class="col-lg-3 control-label">Будинок</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="registration_building" class="form-control"
-                                                   value="{{ $user->registrationAddress->building }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->registrationAddress->building }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="registration_apartment" class="col-lg-3 control-label">Помешкання</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="registration_apartment" class="form-control"
-                                                   value="{{ $user->registrationAddress->apartment }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->registrationAddress->apartment }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -221,36 +221,41 @@
                                     <div class="form-group">
                                         <label for="living_district" class="col-lg-3 control-label">Область</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="living_district" class="form-control"
-                                                   value="{{ $user->livingAddress->district }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->livingAddress->district }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="living_city" class="col-lg-3 control-label">Населений пункт</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="living_city" class="form-control"
-                                                   value="{{ $user->livingAddress->city }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->livingAddress->city }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="living_street" class="col-lg-3 control-label">Вулиця</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="living_street" class="form-control"
-                                                   value="{{ $user->livingAddress->street }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->livingAddress->street }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="living_building" class="col-lg-3 control-label">Будинок</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="living_building" class="form-control"
-                                                   value="{{ $user->livingAddress->building }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->livingAddress->building }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="living_apartment" class="col-lg-3 control-label">Помешкання</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="living_apartment" class="form-control"
-                                                   value="{{ $user->livingAddress->apartment }}" disabled>
+                                            <p class="form-control custom-field">
+                                                {{ $user->livingAddress->apartment }}
+                                            </p>
                                         </div>
                                     </div>
 

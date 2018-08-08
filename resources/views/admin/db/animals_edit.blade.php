@@ -49,6 +49,15 @@
                                 @endif
 
                                 <div class="form-group">
+                                    <label for="nickname" class="col-lg-3 control-label">Власник</label>
+                                    <div class="col-lg-8">
+                                        <p class="form-control custom-field">
+                                            <a href="{{ route('admin.db.users.show', $animal->user->id) }}">
+                                                {{ $animal->user->fullName}}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label for="nickname" class="col-lg-3 control-label">Кличка</label>
                                     <div class="col-lg-8">
                                         <input type="text" id="nickname" name="nickname" class="form-control"

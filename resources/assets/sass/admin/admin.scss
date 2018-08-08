@@ -143,3 +143,9 @@ div#files-container {
 a.delete {
   cursor:pointer;
 }
+
+p.form-control.custom-field {
+  height: auto;
+  min-height: 39px;
+  margin: 0;
+}
