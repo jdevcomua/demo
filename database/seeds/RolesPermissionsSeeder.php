@@ -18,20 +18,16 @@ class RolesPermissionsSeeder extends Seeder
         $admin->display_name = 'Адміністратор системи';
         $admin->save();
 
-//        $role = new Role();
-//        $role->name         = 'content-admin';
-//        $role->display_name = 'Адміністратор контенту';
-//        $role->save();
+        $contentAdmin = new Role();
+        $contentAdmin->name         = 'content-admin';
+        $contentAdmin->display_name = 'Адміністратор контенту';
+        $contentAdmin->save();
 
         $recorder = new Role();
         $recorder->name         = 'recorder';
         $recorder->display_name = 'Реєстратор';
         $recorder->save();
 
-//        $role = new Role();
-//        $role->name         = 'owner';
-//        $role->display_name = 'Власник';
-//        $role->save();
 
         $adminPanel = new Permission();
         $adminPanel->name         = 'admin-panel';
@@ -43,24 +39,63 @@ class RolesPermissionsSeeder extends Seeder
         $verifyAnimal->display_name = 'Верифікація тварин';
         $verifyAnimal->save();
 
+        $deleteAnimal = new Permission();
+        $deleteAnimal->name             = 'delete-animal';
+        $deleteAnimal->display_name     = 'Видалення тварин';
+        $deleteAnimal->save();
+
+        $editContent = new Permission();
+        $editContent->name          = 'edit-content';
+        $editContent->display_name  = 'Редагування контенту';
+        $editContent->save();
+
         $changeRoles = new Permission();
         $changeRoles->name          = 'change-roles';
-        $changeRoles->display_name  = 'Змінювати ролі користувачів';
+        $changeRoles->display_name  = 'Зміна ролей користувачів';
         $changeRoles->save();
+
+        $editRoles = new Permission();
+        $editRoles->name          = 'edit-roles';
+        $editRoles->display_name  = 'Редагування дозволів ролей';
+        $editRoles->save();
 
         $blockUser = new Permission();
         $blockUser->name             = 'block-user';
-        $blockUser->display_name     = 'Заблокувати користувача';
+        $blockUser->display_name     = 'Блокування користувачів';
         $blockUser->save();
+
+        $deleteUser = new Permission();
+        $deleteUser->name             = 'delete-user';
+        $deleteUser->display_name     = 'Видалення користувачів';
+        $deleteUser->save();
+
+        $viewSyslog = new Permission();
+        $viewSyslog->name             = 'view-syslog';
+        $viewSyslog->display_name     = 'Перегляд системного журналу';
+        $viewSyslog->save();
 
 
         $admin->attachPermissions([
             $adminPanel,
+            $verifyAnimal,
+            $deleteAnimal,
+            $editContent,
             $changeRoles,
-            $blockUser
+            $editRoles,
+            $blockUser,
+            $deleteUser,
+            $viewSyslog
         ]);
 
-        $recorder->attachPermission($adminPanel);
-        $recorder->attachPermission($verifyAnimal);
+        $contentAdmin->attachPermissions([
+            $adminPanel,
+            $editContent,
+        ]);
+
+        $recorder->attachPermissions([
+            $adminPanel,
+            $verifyAnimal,
+        ]);
+
     }
 }
