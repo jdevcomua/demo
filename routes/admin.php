@@ -103,6 +103,18 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'notifications',
+    'as' => 'info.notifications.'
+], function () {
+    Route::get('index', 'Admin\InfoController@notificationsIndex')
+        ->name('index');
+    Route::get('data', 'Admin\InfoController@notificationsData')
+        ->name('data');
+    Route::put('edit/{id?}', 'Admin\InfoController@notificationsStore')
+        ->name('store');
+});
+
+Route::group([
     'prefix' => 'content',
     'as' => 'info.content.'
 ], function () {

@@ -40,8 +40,8 @@
                     <span class="sidebar-title">Повідомлення</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li {!! (strpos($curRoute, '.info.notifications') !== false) ? ' class="active" ' : '' !!}>
+                <a href="{{route('admin.info.notifications.index')}}">
                     <span class="fa fa-bell"></span>
                     <span class="sidebar-title">Нотифікації</span>
                 </a>
