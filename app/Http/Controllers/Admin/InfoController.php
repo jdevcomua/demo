@@ -58,11 +58,12 @@ class InfoController extends Controller
             $validator = Validator::make($data, [
                 'b_species' => 'required|integer|exists:species,id',
                 'b_name' => 'required|string|max:256',
-                'b_fci' => 'nullable|string|size:3',
+                'b_fci' => 'nullable|integer|max:999',
             ], [
                 'b_name.required' => 'Назва є обов\'язковим полем',
                 'b_name.max' => 'Назва має бути менше :max символів',
-                'b_fci.size' => 'FCI повинен бути довжиною в :size символа',
+                'b_fci.integer' => 'FCI повинен бути числом',
+                'b_fci.max' => 'FCI повинен бути менше 1000',
             ]);
 
             if ($validator->fails()) {
@@ -71,6 +72,8 @@ class InfoController extends Controller
                     ->withErrors($validator, 'breed')
                     ->withInput();
             }
+
+            if (array_key_exists('b_fci', $data) || !$data['b_fci']) $data['b_fci'] = 0;
 
             $breed = new Breed();
             $breed->species_id = $data['b_species'];
