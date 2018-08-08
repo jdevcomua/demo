@@ -41,7 +41,7 @@ class DataTables
                         try {
                             if ($column['search']['value'] !== null) {
                                 if (((array_search($column['data'], $model->getDates()) !== false
-                                    && preg_match("/^[a-z\d]{1}[a-z\d\s]*[a-z\d]{1}$/i", $column['search']['value'])))
+                                    && preg_match("/^[a-z-:.\d]{1}[a-z-:.\d\s]*[a-z-:.\d]{1}$/i", $column['search']['value'])))
                                 || array_search($column['data'], $model->getDates()) === false) {
                                     if ($column['data'] === 'birthday') {
                                         //reverting format
