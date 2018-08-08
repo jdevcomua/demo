@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\NewAnimal;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
+use App\Models\Log;
 use App\Services\FilesService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -103,7 +104,15 @@ class AnimalsController extends Controller
 
         $user = \Auth::user();
 
+        \RhaLogger::start(['data' => $data]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_CREATE,
+            'user_id' => $user->id,
+        ]);
         $animal = $user->animals()->create($data);
+        \RhaLogger::addChanges($animal, new Animal(), true, ($animal != null));
+        if ($animal) \RhaLogger::update(['object' => 'Тварина|animal|' . $animal->id]);
+
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
         \Mail::to($user->primaryEmail)->send(new NewAnimal());
@@ -207,8 +216,16 @@ class AnimalsController extends Controller
 
         $data['sterilized'] = array_key_exists('sterilized', $data);
 
+        \RhaLogger::start(['data' => $data]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_EDIT,
+            'user_id' => \Auth::id(),
+            'object' => 'Тварина|animal|' . $animal->id
+        ]);
+        $oldAnimal = clone $animal;
         $animal->fill($data);
         $animal->save();
+        \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
@@ -227,7 +244,14 @@ class AnimalsController extends Controller
     public function destroy(Animal $animal)
     {
         if (!$animal->verified) {
+            \RhaLogger::start();
+            \RhaLogger::update([
+                'action' => Log::ACTION_DELETE,
+                'user_id' => \Auth::id(),
+                'object' => 'Тварина|animal|' . $animal->id
+            ]);
             $animal->delete();
+            \RhaLogger::end(true);
         }
         return redirect()->route('animals.index');
     }

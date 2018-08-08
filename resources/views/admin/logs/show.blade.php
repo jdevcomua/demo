@@ -4,6 +4,7 @@
     <style>
         pre.sf-dump, pre.sf-dump .sf-dump-default {
             z-index: 1 !important;
+            min-height: 39px;
         }
         .changes-block {
             display: flex;
