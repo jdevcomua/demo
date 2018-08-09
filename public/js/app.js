@@ -41576,7 +41576,20 @@ $form.on('submit', function (e) {
     if (isAdvancedUpload) {
         e.preventDefault();
 
+        // var form = document.querySelector($form.get(0));
+
+        //Removing empty file inputs - bug in new Safari versions (didn't send files when ajax.send)
+        // for (var i = 0; i < form.elements.length; i++) {
+        //     if (form.elements[i].type == 'file') {
+        //         if (form.elements[i].value == '') {
+        //             form.elements[i].parentNode.removeChild(form.elements[i]);
+        //         }
+        //     }
+        // }
+
         var ajaxData = new FormData($form.get(0));
+        var progressBar = $('.uploader-overlay .progress-bar');
+        var progressValue = $('.uploader-overlay .value');
 
         if (droppedFiles) {
             $.each(droppedFiles, function (i, file) {
@@ -41584,26 +41597,35 @@ $form.on('submit', function (e) {
             });
         }
 
-        $.ajax({
-            url: $form.attr('action'),
-            type: $form.attr('method'),
-            data: ajaxData,
-            dataType: 'json',
-            cache: false,
-            contentType: false,
-            processData: false,
-            complete: function complete() {
-                $form.removeClass('is-uploading');
-            },
-            success: function success(data) {
-                if (data.url) {
-                    window.location.href = data.url;
+        var ajax = new XMLHttpRequest();
+
+        ajax.upload.onprogress = function (event) {
+            var pc = parseInt(event.loaded / event.total * 100);
+
+            progressBar.css('width', pc + "%");
+            progressValue.text(pc + " %");
+        };
+
+        ajax.onload = function () {
+            if (ajax.readyState === 4) {
+                var data = JSON.parse(ajax.responseText);
+                if (ajax.status === 200) {
+                    $form.removeClass('is-uploading');
+                    if (data.url) {
+                        window.location.href = data.url;
+                    }
+                } else {
+                    $('body').removeClass('no-scroll');
+                    $('.uploader-overlay').hide();
+                    showValidationErrors(data.errors);
                 }
-            },
-            error: function error(data) {
-                showValidationErrors(data.responseJSON.errors);
             }
-        });
+        };
+
+        $('.uploader-overlay').show();
+        $('body').addClass('no-scroll');
+        ajax.open($form.attr('method'), $form.attr('action'), true);
+        ajax.send(ajaxData);
     }
 });
 /////////////////////////////////////////

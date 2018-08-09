@@ -158,4 +158,13 @@
             </div>
         </div>
     </form>
+    <div class="uploader-overlay" style="display: none">
+        <div class="uploader-progress">
+            <span class="value"></span>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                     aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+    </div>
 @endsection
