@@ -203,3 +203,27 @@ header {
     }
   }
 }
+@media (max-width: 340px) {
+  header {
+    padding: 20px 4px 0;
+    .menu-btn {
+      .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+        width: 22px;
+      }
+      .hamburger-box {
+        width: 22px;
+      }
+      .hamburger-inner::before {
+        width: 16px;
+      }
+    }
+    .name {
+      width: 88%;
+      padding-left: 0;
+      .title {
+        padding: 0;
+      }
+    }
+  }
+}
+

@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Дані збережено')
+@section('title', 'Верифікуйте вашу тварину')
 
 @section('content')
     <div class="success-page">

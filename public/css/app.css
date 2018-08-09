@@ -14804,6 +14804,35 @@ header .nav:before {
   }
 }
 
+@media (max-width: 340px) {
+  header {
+    padding: 20px 4px 0;
+  }
+
+  header .menu-btn .hamburger-inner,
+  header .menu-btn .hamburger-inner::before,
+  header .menu-btn .hamburger-inner::after {
+    width: 22px;
+  }
+
+  header .menu-btn .hamburger-box {
+    width: 22px;
+  }
+
+  header .menu-btn .hamburger-inner::before {
+    width: 16px;
+  }
+
+  header .name {
+    width: 88%;
+    padding-left: 0;
+  }
+
+  header .name .title {
+    padding: 0;
+  }
+}
+
 footer {
   background-color: #014479;
   color: #fff;
@@ -15910,6 +15939,12 @@ textarea:focus {
   }
 }
 
+@media (max-width: 500px) {
+  .animal-show .files-list .file-item {
+    width: 100%;
+  }
+}
+
 .success-page {
   margin-top: -1.5rem;
   padding: 0 11rem;
@@ -16255,6 +16290,7 @@ img.logo {
 .notification .notification-content {
   width: 30rem;
   text-align: center;
+  word-wrap: break-word;
 }
 
 .notification i.fa.fa-bell {

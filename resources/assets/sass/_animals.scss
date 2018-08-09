@@ -378,6 +378,11 @@
     }
   }
 }
+@media (max-width: 500px) {
+  .animal-show .files-list .file-item {
+    width: 100%;
+  }
+}
 
 .success-page {
   margin-top: -1.5rem;
