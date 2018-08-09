@@ -15560,7 +15560,8 @@ textarea:focus {
   }
 
   .pets-list-item .more-button {
-    right: 1rem;
+    right: -1rem;
+    padding: 0 2rem;
   }
 
   .pets-list-item .more-button .dropdown-item {
@@ -16232,30 +16233,54 @@ img.logo {
 }
 
 .notification {
-  border: 1px solid #517e9b;
-  border-radius: 50px;
-  color: #858585;
-  background-color: #f1f1f1;
-  min-width: 40vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  margin: 0 auto;
+  background: #f2f2f2;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 2rem;
+  border: 2px solid #1c4479;
+  margin-top: 2rem;
+  margin-bottom: -2rem;
+  font-size: 1.2rem;
+  color: #000 !important;
+}
+
+.notification .notification-content {
+  width: 30rem;
   text-align: center;
-  padding: 0 25px;
-  margin: 25px auto;
-  line-height: 3rem;
-  font-size: 16px;
-  position: relative;
 }
 
-.notification:after {
-  position: absolute;
-  right: 20px;
-  font-size: 1.3rem;
-  content: ">";
-  font-weight: bold;
+.notification i.fa.fa-bell {
+  font-size: 2.4rem;
+  padding: 0.5rem 1rem 0.5rem 2rem;
+  color: #f5be18;
 }
 
-.notification a {
-  text-decoration: none !important;
-  font-weight: bold;
-  color: black;
+.notification i.fa.fa-angle-right {
+  padding: 0.5rem 2rem 0.5rem 1rem;
+  font-size: 1.7rem;
+}
+
+.notification:hover {
+  text-decoration: none;
+}
+
+@media (max-width: 650px) {
+  .notification {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .notification {
+    width: 90%;
+  }
 }
 

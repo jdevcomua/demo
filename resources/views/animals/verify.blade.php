@@ -4,8 +4,10 @@
 
 @section('content')
     <div class="success-page">
-        <div class="success-icon"></div>
-        <div class="success-title">Ваші дані збережені!</div>
+        @if(Session::has('new-animal'))
+            <div class="success-icon"></div>
+            <div class="success-title">Ваші дані збережені!</div>
+        @endif
         <div class="success-message">
             <p>
                 Для закінчення реєстрації тварини Вам необхідно звернутися до Служби обліку та реєстрації тварин, за адресою:

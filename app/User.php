@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Notification;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
 use Illuminate\Notifications\Notifiable;
@@ -133,5 +134,30 @@ class User extends Authenticatable
     public function history()
     {
         return $this->morphMany('App\Models\Log', 'object');
+    }
+
+    public function hasNotification()
+    {
+        return $this->animals->where('verified', '=', 0)->count() > 0;
+    }
+
+    public function getNotification()
+    {
+        $animals = $this->animals->where('verified', '=', 0);
+        $count = $animals->count();
+        if ($count) {
+            $notification = Notification::where('min', '>=', $count)
+                ->where('type', Notification::TYPE_NOT_VERIFIED)
+                ->first();
+            if (!$notification) {
+                $notification = Notification::orderByDesc('id')->first();
+            }
+            $text = str_replace('{кількість}', $count, $notification->text);
+            if ($count === 1) {
+                $text = str_replace('{ім\'я}',  '<b>' . $animals->first()->nickname . '</b>', $text);
+            }
+            return $text;
+        }
+        return false;
     }
 }

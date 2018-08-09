@@ -117,9 +117,11 @@ class AnimalsController extends Controller
 
         \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
 
+        \Session::flash('new-animal', ' ');
+
         return response()->json([
             'status' => 'ok',
-            'url' => route('animals.add-success')
+            'url' => route('animals.verify')
         ]);
     }
 
@@ -229,9 +231,11 @@ class AnimalsController extends Controller
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
+        \Session::flash('new-animal', ' ');
+
         return response()->json([
             'status' => 'ok',
-            'url' => route('animals.add-success')
+            'url' => route('animals.verify')
         ]);
     }
 

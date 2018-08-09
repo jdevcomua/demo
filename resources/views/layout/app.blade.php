@@ -10,13 +10,15 @@
 <body>
     <div class="container-fluid">
         @include('layout.header')
-        @if(session()->has('notification'))
-            <div class="container d-flex justify-content-center" >
-                <div class="notification">
-                    {!! session()->get('notification') !!}
-                </div>
-            </div>
+
+        @if($auth->hasNotification())
+            <a href="{{ route('animals.verify') }}" class="notification">
+                <i class="fa fa-bell" aria-hidden="true"></i>
+                <div class="notification-content">{!! $auth->getNotification() !!}</div>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </a>
         @endif
+
         <div class="content">
             @yield('content')
         </div>
