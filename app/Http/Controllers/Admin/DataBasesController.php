@@ -207,7 +207,7 @@ class DataBasesController extends Controller
         ]);
         $animal = $user->animals()->create($data);
         \RhaLogger::addChanges($animal, new Animal(), true, ($animal != null));
-        if ($animal) \RhaLogger::update(['object' => 'Тварина|animal|' . $animal->id]);
+        if ($animal) \RhaLogger::object($animal);
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
@@ -284,8 +284,8 @@ class DataBasesController extends Controller
         \RhaLogger::update([
             'action' => Log::ACTION_EDIT,
             'user_id' => \Auth::id(),
-            'object' => 'Тварина|animal|' . $animal->id
         ]);
+        \RhaLogger::object($animal);
         $oldAnimal = clone $animal;
         $animal->fill($data);
         $animal->save();
@@ -303,8 +303,8 @@ class DataBasesController extends Controller
         \RhaLogger::update([
             'action' => Log::ACTION_DELETE,
             'user_id' => \Auth::id(),
-            'object' => 'Тварина|animal|' . $animal->id
         ]);
+        \RhaLogger::object($animal);
         $animal->delete();
         \RhaLogger::end(true);
         return redirect()
@@ -322,8 +322,8 @@ class DataBasesController extends Controller
                 \RhaLogger::update([
                     'action' => Log::ACTION_VERIFY,
                     'user_id' => \Auth::id(),
-                    'object' => 'Тварина|animal|' . $animal->id
                 ]);
+                \RhaLogger::object($animal);
                 $oldAnimal = clone $animal;
                 $animal->verified = $state;
                 $animal->confirm_user_id = ($state === 1) ? \Auth::id() : null;

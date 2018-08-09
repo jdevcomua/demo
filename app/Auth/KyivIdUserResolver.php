@@ -34,8 +34,8 @@ class KyivIdUserResolver
             \RhaLogger::update([
                 'action' => Log::ACTION_LOGIN,
                 'user_id' => $existUser->id,
-                'object' => 'Користувач|user|' . $existUser->id,
             ]);
+            \RhaLogger::object($existUser);
 
             $oldUser = clone $existUser;
             $existUser = self::update($existUser, $user);
@@ -46,8 +46,8 @@ class KyivIdUserResolver
 
             \RhaLogger::update([
                 'user_id' => $existUser->id,
-                'object' => 'Користувач|user|' . $existUser->id,
             ]);
+            \RhaLogger::object($existUser);
             \RhaLogger::addChanges($existUser, new User());
         }
 

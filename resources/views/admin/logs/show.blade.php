@@ -79,12 +79,9 @@
                                     <label for="date" class="col-lg-2 control-label">Об'єкт:</label>
                                     <div class="col-lg-9">
                                         <p class="form-control mn">
-                                            @if($log->object)
-                                                @php
-                                                    $obj = explode('|', $log->object);
-                                                @endphp
-                                                <a href="{{ route('admin.object') }}/{{ $obj[1] }}/{{ $obj[2] }}">
-                                                    {{ $obj[0] }} #{{ $obj[2] }}
+                                            @if($log->object_id && $log->object_type)
+                                                <a href="{{ route('admin.object') }}/{{ $log->object_type }}/{{ $log->object_id }}">
+                                                    {{ $log->object_type }} #{{ $log->object_id }}
                                                 </a>
                                             @endif
                                         </p>

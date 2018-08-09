@@ -111,7 +111,7 @@ class AnimalsController extends Controller
         ]);
         $animal = $user->animals()->create($data);
         \RhaLogger::addChanges($animal, new Animal(), true, ($animal != null));
-        if ($animal) \RhaLogger::update(['object' => 'Тварина|animal|' . $animal->id]);
+        if ($animal) \RhaLogger::object($animal);
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
@@ -219,9 +219,9 @@ class AnimalsController extends Controller
         \RhaLogger::start(['data' => $data]);
         \RhaLogger::update([
             'action' => Log::ACTION_EDIT,
-            'user_id' => \Auth::id(),
-            'object' => 'Тварина|animal|' . $animal->id
+            'user_id' => \Auth::id()
         ]);
+        \RhaLogger::object($animal);
         $oldAnimal = clone $animal;
         $animal->fill($data);
         $animal->save();
@@ -248,8 +248,8 @@ class AnimalsController extends Controller
             \RhaLogger::update([
                 'action' => Log::ACTION_DELETE,
                 'user_id' => \Auth::id(),
-                'object' => 'Тварина|animal|' . $animal->id
             ]);
+            \RhaLogger::object($animal);
             $animal->delete();
             \RhaLogger::end(true);
         }

@@ -90,8 +90,8 @@ class AdministratingController extends Controller
     public function object($type, $id)
     {
         switch ($type) {
-            case 'user' : return redirect()->route('admin.db.users.show', $id);
-            case 'animal' : return redirect()->route('admin.db.animals.edit', $id);
+            case 'Користувач' : return redirect()->route('admin.db.users.show', $id);
+            case 'Тварина' : return redirect()->route('admin.db.animals.edit', $id);
             default: abort(404);
         }
     }

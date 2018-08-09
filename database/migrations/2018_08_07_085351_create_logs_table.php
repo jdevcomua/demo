@@ -19,7 +19,8 @@ class CreateLogsTable extends Migration
             $table->unsignedTinyInteger('action')->default(0);
             $table->unsignedTinyInteger('status')->default(0);
             $table->boolean('finished')->default(false);
-            $table->text('object')->nullable();
+            $table->unsignedInteger('object_id')->nullable();
+            $table->string('object_type')->nullable();
             $table->text('changes')->nullable();
             $table->text('payload')->nullable();
             $table->timestamps();
