@@ -23,7 +23,6 @@
                         <div class="panel-heading">
                             <div class="panel-title">
                                 <span class="glyphicon glyphicon-envelope"></span>Нотифікації
-                                <span class="danger pull-right">Ви можете використовувати наспупні змінні: {кількість}, {ім'я}</span>
                             </div>
                         </div>
                         <div class="panel-body pn">
@@ -60,6 +59,10 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="panel-footer">
+                            <p>Ви можете використовувати наспупні змінні: <b>{кількість}, {ім'я}</b></p>
+
                         </div>
                     </div>
                 </div>

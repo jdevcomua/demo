@@ -40,8 +40,8 @@
                                     <th>#</th>
                                     <th>Дії</th>
                                     <th>#K</th>
-                                    <th>Ім'я</th>
                                     <th>Прізвище</th>
+                                    <th>Ім'я</th>
                                     <th>По батькові</th>
                                     <th>e-mail</th>
                                     <th>Телефон</th>
@@ -121,8 +121,8 @@
                         }
                     },
                     { "data": "ext_id" },
-                    { "data": "first_name" },
                     { "data": "last_name" },
+                    { "data": "first_name" },
                     { "data": "middle_name" },
                     {
                         data: 'emails',
