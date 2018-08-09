@@ -125,14 +125,13 @@
                         }
                     },
                     {
-                        data: 'object',
                         render: function ( data, type, row ) {
-                            if (data) {
-                                var arr = data.split('|');
-                                return '<a href="{{ route('admin.object') }}/'+arr[1]+'/'+arr[2]+'">'+
-                                    arr[0]+' #'+arr[2]+'</a>';
+                            if (row.object_id && row.object_type) {
+                                return '<a href="{{ route('admin.object') }}/' + row.object_type + '/' + row.object_id + '">' +
+                                    row.object_type + ' #' + row.object_id + '</a>';
+                            } else {
+                                return '';
                             }
-                            return '';
                         }
                     },
                     {

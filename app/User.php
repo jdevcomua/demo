@@ -129,4 +129,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\UserPhone');
     }
+
+    public function history()
+    {
+        return $this->morphMany('App\Models\Log', 'object');
+    }
 }

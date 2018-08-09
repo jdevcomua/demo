@@ -60,7 +60,7 @@ class Log extends Model
 
 
     protected $fillable = [
-        'user_id', 'action', 'status', 'finished', 'object', 'changes', 'payload'
+        'user_id', 'action', 'status', 'finished', 'object_id', 'object_type', 'changes', 'payload'
     ];
 
 
@@ -85,6 +85,11 @@ class Log extends Model
         } else {
             return '?';
         }
+    }
+
+    public function object()
+    {
+        return $this->morphTo('object', 'object_type', 'object_id');
     }
 
 }

@@ -32,6 +32,17 @@ class Logger
         }
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Model $model
+     */
+    public function object($model)
+    {
+        $this->update([
+            'object_id' => $model->id,
+            'object_type' => $model->getMorphClass(),
+        ]);
+    }
+
     public function update($data)
     {
         $this->logModel->update($data);

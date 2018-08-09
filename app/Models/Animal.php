@@ -122,4 +122,9 @@ class Animal extends Model
         return $this->hasMany('App\Models\AnimalsFile')
             ->where('type', '=', AnimalsFile::FILE_TYPE_DOCUMENT);
     }
+
+    public function history()
+    {
+        return $this->morphMany('App\Models\Log', 'object');
+    }
 }
