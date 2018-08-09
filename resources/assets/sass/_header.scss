@@ -5,6 +5,9 @@ header {
   justify-content: space-between;
   flex-flow: row wrap;
   align-items: start;
+  .menu-btn {
+    display: none;
+  }
   .name {
     display: flex;
     .title {
@@ -88,7 +91,7 @@ header {
         cursor: pointer;
         width: 28px;
         height: 28px;
-        margin-right: 18px;
+        margin: 0 9px;
         &.socials-item-facebook { background-image: url('/img/icon/fb.png'); }
         &.socials-item-youtube { background-image: url('/img/icon/youtube.png'); }
         &.socials-item-twitter { background-image: url('/img/icon/twitter.png'); }
@@ -96,5 +99,107 @@ header {
     }
     &:after { content: none; }
     &:before { content: none; }
+  }
+}
+@media (max-width: 900px) {
+  header .nav {
+    justify-content: center;
+    nav {
+      width: 100%;
+      justify-content: space-around;
+      .nav-divider {
+        padding: 1.4rem 0;
+        margin: 0;
+      }
+    }
+    a.nav-item {
+      padding: 1.4rem 0;
+      margin: 0;
+    }
+    .socials {
+      margin: 1rem 0 1.5rem;
+    }
+  }
+}
+@media (max-width: 750px) {
+  header {
+    .name {
+      width: 100%;
+    }
+    .auth {
+      flex-flow: row;
+      width: 100%;
+      justify-content: center;
+      padding-left: 12%;
+      padding-bottom: 0;
+      height: 6rem;
+      .auth-item {
+        width: 35%;
+      }
+    }
+  }
+}
+@media (max-width: 650px) {
+  header {
+    padding: 20px 10px 0;
+  }
+}
+@media (max-width: 600px) {
+  header {
+    justify-content: start;
+    .menu-btn {
+      display: block;
+    }
+    .name {
+      width: auto;
+      padding-left: 1rem;
+      img.logo {
+        display: none;
+      }
+      .title {
+        padding: 0 5px;
+        > span {
+          font-size: 1.8rem;
+        }
+      }
+    }
+    .auth {
+      border-top: 1px solid transparent;
+      margin-top: 1rem;
+      transition: 0.3s ease;
+      max-height: 0;
+      overflow: hidden;
+      .auth-item {
+        width: 50%;
+        &.logout {
+          width: 35%;
+        }
+      }
+    }
+    .nav {
+      border-top: 1px solid transparent;
+      transition: 0.3s ease;
+      max-height: 0;
+      overflow: hidden;
+      nav {
+        flex-flow: row wrap;
+        .nav-divider {
+          display: none;
+        }
+      }
+      a.nav-item {
+        padding: 1.4rem;
+      }
+    }
+    &.menu-open {
+      .auth {
+        border-top: 1px solid #4d7ca1;
+        max-height: 5rem;
+      }
+      .nav {
+        border-top: 1px solid #4d7ca1;
+        max-height: 20rem;
+      }
+    }
   }
 }

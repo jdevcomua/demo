@@ -19,6 +19,7 @@
   border-bottom: 1px solid #ddd;
   position: relative;
   .pet-photo {
+    flex-shrink: 0;
     width: 160px;
     height: 160px;
     overflow: hidden;
@@ -62,6 +63,7 @@
     }
   }
 }
+
 .pet-info-block {
   display: flex;
   flex-flow: column;
@@ -88,7 +90,42 @@
     }
   }
 }
-
+@media (max-width: 900px) {
+  .pets-list-item {
+    padding: 3vw 0 3vw 3vw;
+    .pet-info {
+      padding: 0 4vw;
+    }
+  }
+}
+@media (max-width: 650px) {
+  .pets-list-item {
+    padding: 2rem 1rem 1.5rem;
+    .pet-photo {
+      width: 120px;
+      height: 120px;
+    }
+    .pet-info {
+      padding: 0 0 0 2rem;
+    }
+    .more-button {
+      right: 1rem;
+      .dropdown-item {
+        font-size: 1.2rem;
+      }
+    }
+  }
+  .pet-info-block {
+    width: 50%;
+    padding-right: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+@media (max-width: 510px) {
+  .pet-info-block {
+    width: 100%;
+  }
+}
 
 .add-new-pet-wrap {
   display: flex;
@@ -108,24 +145,35 @@
   align-items: center;
   flex-flow: column;
   font-size: 1.4rem;
+  text-align: center;
   .title {
     font-size: 2.5rem;
     font-weight: bold;
-    margin: 2rem;
+    margin: 2rem 0 0.5rem;
   }
   .gray {
     color: #999;
   }
 }
+@media (max-width: 650px) {
+  .no-pets-container {
+    img {
+      max-width: 90%;
+    }
+    .title {
+      font-size: 2.2rem;
+      text-align: center;
+    }
+  }
+}
 
 .new-pet-photos {
-  display: flex;
-  justify-content: stretch;
   label.photo-item {
+    float: left;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 0 1rem 1.5rem;
+    margin: 0 0.5rem 1rem;
     width: 7.5rem;
     height: 7.5rem;
     border: 2px dashed #999;
@@ -144,7 +192,7 @@
       height: 16rem;
       background-color: #ecf5f6;
       flex-shrink: 0;
-      margin: 0 1rem 0 0;
+      margin: 0 0.5rem 0;
       .add-btn {
         width: 4.2rem;
         height: 4.2rem;
@@ -158,12 +206,23 @@
       height: 2.1rem;
       background-image: url(/img/icon/add.svg);
       background-size: 100%;
+      background-repeat: no-repeat;
     }
   }
-  .small-photos {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
+}
+@media (max-width: 650px) {
+  .new-pet-photos {
+    margin: 0 -1rem;
+    label.photo-item {
+      width: 6rem;
+      height: 6rem;
+      margin: 0.9rem 0.8rem;
+      &.photo-item-main {
+        width: 13.7rem;
+        height: 13.7rem;
+        margin: 0.9rem 0.8rem 0;
+      }
+    }
   }
 }
 
@@ -191,25 +250,22 @@
 .animal-show {
   padding: 0 2.8rem 7rem;
   .animal-images {
-    display: flex;
-    .images-small {
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: space-between;
-      width: 500px;
-    }
+    width: 100%;
+    overflow: hidden;
+    max-width: 60rem;
     .animal-image {
+      float: left;
       width: 110px;
       height: 110px;
       background-position: center;
       background-size: cover;
       border-radius: 12px;
-      margin: 0.7rem 0;
+      margin: 0.8rem 0.9rem;
       &.main {
         width: 240px;
         height: 240px;
         flex-shrink: 0;
-        margin-right: 2.8rem;
+        margin: 0.7rem 1.1rem 0;
       }
     }
   }
@@ -237,7 +293,7 @@
     }
   }
   .animal-options {
-    margin: 3rem 0;
+    margin: 2rem 0;
     display: flex;
     flex-flow: row wrap;
     .animal-option-item {
@@ -253,7 +309,7 @@
       padding-left: 3.4rem;
       letter-spacing: 0.7px;
       border-radius: 0.9rem;
-      margin-right: 2rem;
+      margin: 1rem 2rem 1rem 0;
     }
   }
   hr.divider {
@@ -292,6 +348,35 @@
     }
   }
 }
+@media (max-width: 650px) {
+  .animal-show {
+    padding: 0 1rem 2rem;
+    margin-top: -1.5rem;
+    .animal-images {
+      width: auto;
+      margin: 0 -1rem;
+      .animal-image {
+        width: 65px;
+        height: 65px;
+        margin: 0.8rem 1rem;
+        &.main {
+          width: 150px;
+          height: 150px;
+          margin: 0.7rem 1.1rem 0;
+        }
+      }
+    }
+    .pet-info-block {
+      width: 50%;
+      &.comment {
+        width: 100%;
+      }
+    }
+    .animal-options {
+      margin: 0;
+    }
+  }
+}
 
 .success-page {
   margin-top: -1.5rem;
@@ -304,17 +389,36 @@
     height: 16.3rem;
     background-image: url('/img/icon/ok.svg');
     background-size: contain;
+    background-repeat: no-repeat;
   }
   .success-title {
     font-size: 2.5rem;
     font-weight: bold;
     letter-spacing: 1.2px;
     margin: 3rem 0 3rem;
+    text-align: center;
   }
   .success-message {
     font-size: 1.4rem;
     p {
       margin-bottom: 2rem;
+    }
+  }
+}
+@media (max-width: 1100px) {
+  .success-page {
+    padding: 0 10%;
+  }
+}
+@media (max-width: 650px) {
+  .success-page {
+    padding: 3rem 0 1rem;
+    .success-icon {
+      width: 12.4rem;
+      height: 12.4rem;
+    }
+    .success-title {
+      font-size: 2.1rem;
     }
   }
 }

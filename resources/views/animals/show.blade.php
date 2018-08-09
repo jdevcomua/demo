@@ -15,16 +15,11 @@
             <div class="animal-image main"
                  @if(array_key_exists(1, $animal->images)) style="background-image: url('/{{ $animal->images[1] }}')" @endif>
             </div>
-            <div class="images-small">
-                @for($i = 2; $i < 10; $i++)
-                    @if(array_key_exists($i, $animal->images))
-                        <div class="animal-image" style="background-image: url('/{{ $animal->images[$i] }}')"></div>
-                    @endif
-                @endfor
-                <div class="animal-image gap"></div>
-                <div class="animal-image gap"></div>
-                <div class="animal-image gap"></div>
-            </div>
+            @for($i = 2; $i < 10; $i++)
+                @if(array_key_exists($i, $animal->images))
+                    <div class="animal-image" style="background-image: url('/{{ $animal->images[$i] }}')"></div>
+                @endif
+            @endfor
         </div>
         <div class="pet-info">
             <div class="pet-info-block">
@@ -47,10 +42,6 @@
                 @endif
             </div>
             <div class="pet-info-block">
-                <span class="title">Порода</span>
-                <span class="content">{{ $animal->breed->name }}</span>
-            </div>
-            <div class="pet-info-block">
                 <span class="title">Масть</span>
                 <span class="content">{{ $animal->color->name }}</span>
             </div>
@@ -61,6 +52,10 @@
             <div class="pet-info-block">
                 <span class="title">Дата народження</span>
                 <span class="content">{{ \App\Helpers\Date::getlocalizedDate($animal->birthday) }}</span>
+            </div>
+            <div class="pet-info-block w-100">
+                <span class="title">Порода</span>
+                <span class="content">{{ $animal->breed->name }}</span>
             </div>
         </div>
         <div class="animal-options">

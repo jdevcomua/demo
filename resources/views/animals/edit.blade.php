@@ -26,15 +26,13 @@
                         <input type='file' name="images[1]" id="image1" class="imageInput" />
                         <span class="add-btn"></span>
                     </label>
-                    <div class="small-photos">
-                        @for($i = 2; $i < 10; $i++)
-                            <label class="photo-item @if(array_key_exists($i, $pet->images)) filled @endif " for="image{{ $i }}"
-                                   @if(array_key_exists($i, $pet->images)) style="background-image: url('/{{ $pet->images[$i] }}')" @endif >
-                                <input type='file' name="images[{{ $i }}]" id="image{{ $i }}" class="imageInput" />
-                                <span class="add-btn"></span>
-                            </label>
-                        @endfor
-                    </div>
+                    @for($i = 2; $i < 10; $i++)
+                        <label class="photo-item @if(array_key_exists($i, $pet->images)) filled @endif " for="image{{ $i }}"
+                               @if(array_key_exists($i, $pet->images)) style="background-image: url('/{{ $pet->images[$i] }}')" @endif >
+                            <input type='file' name="images[{{ $i }}]" id="image{{ $i }}" class="imageInput" />
+                            <span class="add-btn"></span>
+                        </label>
+                    @endfor
                 </div>
             </div>
         </div>
@@ -129,7 +127,10 @@
             <div class="cols-block-content form">
                 <div class="file-uploader">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label class="file-dropzone" for="manual-upload">Виберіть файл або просто перетягніть</label>
+                    <label class="file-dropzone" for="manual-upload">
+                        <span class="desktop">Виберіть файл або просто перетягніть</span>
+                        <span class="mobile">Виберіть файл</span>
+                    </label>
                     <input type='file' id="manual-upload" name="manual-upload" multiple />
                     <div class="files-list">
                         @foreach($pet->documents as $doc)

@@ -41369,6 +41369,13 @@ $.ajaxSetup({
     }
 });
 
+$().ready(function () {
+    $(document).on('click', '#menu-toggle', function () {
+        $(this).toggleClass('is-active');
+        $(this).parents('header').toggleClass('menu-open');
+    });
+});
+
 /////////////////////////////////////////
 // Date picker init
 

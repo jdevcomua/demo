@@ -11,6 +11,8 @@
 // Font awesome
 @import "~font-awesome/scss/font-awesome.scss";
 
+@import "hamburgers/hamburgers";
+
 @import "_fonts";
 
 @import "header";
@@ -42,6 +44,24 @@ img.logo {
 .content {
   padding: 80px 50px 40px;
 }
+
+@media (max-width: 900px) {
+  html {
+    font-size: 13px;
+  }
+  .content {
+    padding: 80px 2.5vw 40px;
+  }
+}
+@media (max-width: 650px) {
+  html {
+    font-size: 11px;
+  }
+  .content {
+    padding: 30px 10px 20px;
+  }
+}
+
 .page-title {
   display: flex;
   align-items: center;
@@ -69,6 +89,29 @@ img.logo {
     color: #014479;
     display: block;
     margin-left: 4.6rem;
+  }
+}
+@media (max-width: 1100px) {
+  .page-title {
+    margin-top: -1rem;
+    flex-flow: row wrap;
+    .title {
+      max-width: 40%;
+    }
+  }
+}
+@media (max-width: 650px) {
+  .page-title {
+    margin-top: -1rem;
+    flex-flow: row wrap;
+    .title {
+      max-width: 75%;
+      width: 100%;
+      font-size: 1.3rem;
+    }
+    .action-link {
+      margin-left: 4.4rem;
+    }
   }
 }
 .cols-block {
@@ -113,7 +156,28 @@ img.logo {
 @media (max-width: 760px) {
   .cols-block {
     flex-flow: column;
-    align-items: center;
+    .cols-block-header {
+      padding: 0 1rem;
+      .block-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+      }
+      .block-sub-title {
+        color: #999;
+        font-size: 1rem;
+      }
+    }
+    .cols-block-content {
+      padding: 1rem;
+      &.form {
+        width: 100%;
+      }
+    }
+    &.footer .cols-block-content {
+      padding: 1rem;
+    }
   }
 }
 

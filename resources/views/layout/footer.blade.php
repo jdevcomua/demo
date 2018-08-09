@@ -24,7 +24,7 @@
             <div class="col-about-header">
                 <img src="{{ asset('img/icon/gerb.png') }}" alt="Герб" class="logo">
                 <div class="about-header-content">
-                    <span class="title">Офіційний портал Києва</span>
+                    <span class="title">Реєстр домашніх тварин</span>
                     <div class="demo-label">beta</div>
                     <span class="sub-text">Київська міська державна адміністрація<br>Київська міська рада</span>
                 </div>

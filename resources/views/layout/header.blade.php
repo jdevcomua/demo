@@ -3,6 +3,13 @@
 @endphp
 
 <header>
+    <div class="menu-btn">
+        <div class="hamburger hamburger--slider" id="menu-toggle">
+            <div class="hamburger-box">
+                <div class="hamburger-inner"></div>
+            </div>
+        </div>
+    </div>
     <div class="name">
         <img src="{{ asset('img/icon/gerb.png') }}" alt="Герб" class="logo">
         <div class="title">

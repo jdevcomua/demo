@@ -23,40 +23,38 @@
                         <input type='file' name="images[1]" id="image1" class="imageInput" />
                         <span class="add-btn"></span>
                     </label>
-                    <div class="small-photos">
-                        <label class="photo-item" for="image2">
-                            <input type='file' name="images[2]" id="image2" class="imageInput" />
-                            <span class="add-btn"></span>
-                        </label>
-                        <label class="photo-item" for="image3">
-                            <input type='file' name="images[3]" id="image3" class="imageInput" />
-                            <span class="add-btn"></span>
-                        </label>
-                        <label class="photo-item" for="image4">
-                            <input type='file' name="images[4]" id="image4" class="imageInput" />
-                            <span class="add-btn"></span>
-                        </label>
-                        <label class="photo-item" for="image5">
-                            <input type='file' name="images[5]" id="image5" class="imageInput" />
-                            <span class="add-btn"></span>
-                        </label>
-                        <label class="photo-item" for="image6">
-                            <input type='file' name="images[6]" id="image6" class="imageInput" />
-                            <span class="add-btn"></span>
-                        </label>
-                        <label class="photo-item" for="image7">
-                            <input type='file' name="images[7]" id="image7" class="imageInput" />
-                            <span class="add-btn"></span>
-                        </label>
-                        <label class="photo-item" for="image8">
-                            <input type='file' name="images[8]" id="image8" class="imageInput" />
-                            <span class="add-btn"></span>
-                        </label>
-                        <label class="photo-item" for="image9">
-                            <input type='file' name="images[9]" id="image9" class="imageInput" />
-                            <span class="add-btn"></span>
-                        </label>
-                    </div>
+                    <label class="photo-item" for="image2">
+                        <input type='file' name="images[2]" id="image2" class="imageInput" />
+                        <span class="add-btn"></span>
+                    </label>
+                    <label class="photo-item" for="image3">
+                        <input type='file' name="images[3]" id="image3" class="imageInput" />
+                        <span class="add-btn"></span>
+                    </label>
+                    <label class="photo-item" for="image4">
+                        <input type='file' name="images[4]" id="image4" class="imageInput" />
+                        <span class="add-btn"></span>
+                    </label>
+                    <label class="photo-item" for="image5">
+                        <input type='file' name="images[5]" id="image5" class="imageInput" />
+                        <span class="add-btn"></span>
+                    </label>
+                    <label class="photo-item" for="image6">
+                        <input type='file' name="images[6]" id="image6" class="imageInput" />
+                        <span class="add-btn"></span>
+                    </label>
+                    <label class="photo-item" for="image7">
+                        <input type='file' name="images[7]" id="image7" class="imageInput" />
+                        <span class="add-btn"></span>
+                    </label>
+                    <label class="photo-item" for="image8">
+                        <input type='file' name="images[8]" id="image8" class="imageInput" />
+                        <span class="add-btn"></span>
+                    </label>
+                    <label class="photo-item" for="image9">
+                        <input type='file' name="images[9]" id="image9" class="imageInput" />
+                        <span class="add-btn"></span>
+                    </label>
                 </div>
             </div>
         </div>
@@ -147,7 +145,10 @@
             <div class="cols-block-content form">
                 <div class="file-uploader">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label class="file-dropzone" for="manual-upload">Виберіть файл або просто перетягніть</label>
+                    <label class="file-dropzone" for="manual-upload">
+                        <span class="desktop">Виберіть файл або просто перетягніть</span>
+                        <span class="mobile">Виберіть файл</span>
+                    </label>
                     <input type='file' id="manual-upload" name="manual-upload" multiple />
                     <div class="files-list"></div>
                 </div>

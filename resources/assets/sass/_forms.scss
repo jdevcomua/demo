@@ -30,6 +30,13 @@
     width: 100%;
   }
 }
+@media (max-width: 650px) {
+  .form-group.datepicker {
+    input {
+      background-size: 1.7rem;
+    }
+  }
+}
 
 .btn {
   font-weight: bold;
@@ -59,6 +66,11 @@
   box-shadow: none;
   outline: none;
 }
+@media (max-width: 650px) {
+  .btn {
+    padding: 1.1rem 3.2rem;
+  }
+}
 
 .btn-group-toggle {
   display: flex;
@@ -74,7 +86,7 @@
       color: #333;
       background-color: #f1f1f1;
       border: 3px solid #f1f1f1;
-      border-radius: 3rem;
+      border-radius: 5rem;
       width: 74px;
       height: 74px;
       display: flex;
@@ -130,6 +142,18 @@
     cursor: default !important;
   }
 }
+@media (max-width: 650px) {
+  .btn-group-toggle {
+    justify-content: center;
+    .big-radio {
+      flex-direction: column;
+      align-items: center;
+      .label {
+        margin-right: 0;
+      }
+    }
+  }
+}
 
 .selectize-input.items {
   border: none;
@@ -151,6 +175,8 @@
     font-size: 1.3rem;
     margin-bottom: 1.4rem;
     cursor: pointer;
+    span.desktop { display: inline; }
+    span.mobile { display: none; }
   }
   .file-item {
     display: flex;
@@ -189,6 +215,15 @@
     display: none;
   }
 }
+@media (max-width: 650px) {
+  .file-uploader .file-dropzone {
+    text-align: center;
+    font-size: 2rem;
+    span.desktop { display: none; }
+    span.mobile { display: inline; }
+  }
+}
+
 .validation-error {
   font-size: 1rem;
   &.hidden {
