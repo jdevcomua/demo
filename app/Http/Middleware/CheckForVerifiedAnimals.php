@@ -22,9 +22,12 @@ class CheckForVerifiedAnimals
             $count = $animals->count();
             if ($count) {
                 $notification = Notification::where('min', '>=', $count)->where('type', Notification::TYPE_NOT_VERIFIED)->first();
+                if (!$notification) {
+                    $notification = Notification::orderByDesc('id')->first();
+                }
                 $text = str_replace('{кількість}', $count, $notification->text);
                 if ($count === 1) {
-                    $text = str_replace('{ім\'я}', $animals->first()->name, $text);
+                    $text = str_replace('{ім\'я}',  '<b>' . $animals->first()->nickname . '</b>', $text);
                 }
                 session()->put('notification', $text);
             }
