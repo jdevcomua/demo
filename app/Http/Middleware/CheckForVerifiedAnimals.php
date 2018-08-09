@@ -27,7 +27,7 @@ class CheckForVerifiedAnimals
                 }
                 $text = str_replace('{кількість}', $count, $notification->text);
                 if ($count === 1) {
-                    $text = str_replace('{ім\'я}', $animals->first()->name, $text);
+                    $text = str_replace('{ім\'я}', $animals->first()->nickname, $text);
                 }
                 session()->put('notification', $text);
             }
