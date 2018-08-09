@@ -119,7 +119,15 @@ class DataBasesController extends Controller
             ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
             ->join('colors', 'colors.id', '=', 'animals.color_id')
             ->join('users as users1', 'users1.id', '=', 'animals.user_id')
-            ->leftJoin('users as users2', 'users2.id', '=', 'animals.confirm_user_id');
+            ->leftJoin('logs', function($q) {
+                $q->on('logs.object_id', '=', 'animals.id');
+                $q->where('logs.object_type', '=', 'Тварина');
+                $q->where('logs.action', '=', Log::ACTION_VERIFY);
+                $q->orderBy('logs.id', 'asc');
+                $q->groupBy('animals.id');
+            })
+            ->leftJoin('users as users2', 'users2.id', '=', 'logs.user_id');
+
 
         $aliases = [
             'species_name' => 'species.name',
@@ -221,11 +229,14 @@ class DataBasesController extends Controller
         $animal = $this->animalModel
             ->findOrFail($id);
 
-        $animal->load('files');
+        $animal->load('files', 'history', 'history.user');
+        $verificationDate = $animal->history()->where('action', Log::ACTION_VERIFY)->first();
+        $verificationDate = $verificationDate ? $verificationDate->created_at : null;
 
         return view('admin.db.animals_edit', [
             'animal' => $animal,
-            'species' => Species::get()
+            'species' => Species::get(),
+            'verificationDate' => $verificationDate
         ]);
     }
 

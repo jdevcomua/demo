@@ -83,7 +83,8 @@ class Animal extends Model
 
     public function userThatConfirmed()
     {
-        return $this->belongsTo('App\User', 'confirm_user_id');
+        $log = $this->history()->where('action', Log::ACTION_VERIFY)->first();
+        return $log ? $log->user : null;
     }
 
     public function breed()

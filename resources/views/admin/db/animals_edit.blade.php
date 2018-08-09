@@ -130,6 +130,21 @@
                                                   rows="3" style="resize: none">{{ $animal->comment }}</textarea>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="created_at" class="col-lg-3 control-label">Зареєстровано</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="created_at" name="created_at" class="form-control"
+                                               value="{{ old('created_at') ?? ($animal->created_at ? $animal->created_at->format('d-m-Y H:i') : '')}}" disabled>
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <label for="updated_at" class="col-lg-3 control-label">Оновлено</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="updated_at" name="updated_at" class="form-control"
+                                                   value="{{ old('updated_at') ?? ($animal->updated_at ? $animal->updated_at->format('d-m-Y H:i') : '')}}" disabled>
+                                        </div>
+                                    </div>
+
                             </div>
                             <div class="panel-footer text-right">
                                 <button type="submit" class="btn btn-default ph25">Зберегти</button>
@@ -177,15 +192,19 @@
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label">Ким:</label>
                                         <div class="col-lg-8">
-                                            @if($animal->userThatConfirmed)
-                                                <a href="{{ route('admin.db.users.show', $animal->userThatConfirmed->id) }}">
-                                                    <label class="cursor control-label">{{ $animal->userThatConfirmed->name }}</label>
+                                            @if($animal->userThatConfirmed())
+                                                <a href="{{ route('admin.db.users.show', $animal->userThatConfirmed()->id) }}">
+                                                    <label class="cursor control-label">{{ $animal->userThatConfirmed()->name }}</label>
                                                 </a>
                                             @else
                                                 Помилка - Користувач не вказаний
                                             @endif
                                         </div>
                                     </div>
+                                        <label class="col-lg-3 control-label">Дата Верифікації:</label>
+                                        <div class="col-lg-8">
+                                            <label class="control-label text-success">{{$verificationDate->format('d-m-Y H:i')}}</label>
+                                        </div>
                                 @endif
                             </div>
                             @permission('verify-animal')
