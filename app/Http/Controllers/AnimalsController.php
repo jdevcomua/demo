@@ -115,7 +115,7 @@ class AnimalsController extends Controller
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
-        \Mail::to($user->primaryEmail)->send(new NewAnimal());
+        \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
 
         return response()->json([
             'status' => 'ok',

@@ -22,7 +22,9 @@
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <span class="glyphicon glyphicon-tasks"></span>Редагування повідомлення</div>
+                                <span class="glyphicon glyphicon-tasks"></span>Редагування повідомлення
+                                <span class="danger pull-right">Ви можете використовувати наспупну змінну: {кількість}</span>
+                            </div>
                         </div>
                         <form class="form" role="form"
                               action="{{ route('admin.info.emails.store', $email->id) }}" method="post">
