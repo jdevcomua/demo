@@ -119,13 +119,21 @@ class DataBasesController extends Controller
             ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
             ->join('colors', 'colors.id', '=', 'animals.color_id')
             ->join('users as users1', 'users1.id', '=', 'animals.user_id')
-            ->leftJoin('logs', function($q) {
-                $q->on('logs.object_id', '=', 'animals.id');
-                $q->where('logs.object_type', '=', 'Тварина');
-                $q->where('logs.action', '=', Log::ACTION_VERIFY);
-                $q->orderBy('logs.id', 'asc');
-                $q->groupBy('animals.id');
-            })
+            ->leftJoinSub(
+                Log::select('logs.*')
+                    ->fromSub(
+                        Log::selectRaw('object_id, max(updated_at) as updated_at')
+                            ->where('object_type', '=', 'Тварина')
+                            ->where('action', '=', Log::ACTION_VERIFY)
+                            ->groupBy('object_id'),
+                        'latest_log'
+                    )
+                    ->join('logs', function($q) {
+                        $q->on('logs.object_id', '=', 'latest_log.object_id');
+                        $q->on('logs.updated_at', '=', 'latest_log.updated_at');
+                    }),
+                'logs', 'logs.object_id', '=', 'animals.id'
+            )
             ->leftJoin('users as users2', 'users2.id', '=', 'logs.user_id');
 
 
