@@ -131,7 +131,7 @@
                         <span class="desktop">Виберіть файл або просто перетягніть</span>
                         <span class="mobile">Виберіть файл</span>
                     </label>
-                    <input type='file' id="manual-upload" name="manual-upload" multiple />
+                    <input type='file' id="manual-upload" multiple />
                     <div class="files-list">
                         @foreach($pet->documents as $doc)
                             <div class="file-item exists">

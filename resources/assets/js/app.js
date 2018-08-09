@@ -228,7 +228,6 @@ $form.on('submit', function (e) {
         e.preventDefault();
 
         var ajaxData = new FormData($form.get(0));
-        ajaxData.delete('manual-upload');
 
         if (droppedFiles) {
             $.each( droppedFiles, function(i, file) {
