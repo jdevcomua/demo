@@ -10,6 +10,13 @@
 <body>
     <div class="container-fluid">
         @include('layout.header')
+        @if(session()->has('notification'))
+            <div class="container d-flex justify-content-center" >
+                <div class="notification">
+                    {!! session()->get('notification') !!}
+                </div>
+            </div>
+        @endif
         <div class="content">
             @yield('content')
         </div>
