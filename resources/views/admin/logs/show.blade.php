@@ -103,7 +103,9 @@
                                 <div class="form-group">
                                     <label for="date" class="col-lg-2 control-label">Зміни:</label>
                                     <div class="col-lg-9">
-                                        <p class="form-control mn changes-block">{!! $log->changes !!}</p>
+                                        <p class="form-control mn changes-block">
+                                            {!! \App\Services\Logger::renderChanges($log->changes) !!}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="form-group">

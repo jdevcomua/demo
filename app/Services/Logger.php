@@ -77,23 +77,29 @@ class Logger
         }
 
         $this->update([
-            'changes' => $this->renderChanges($attr)
+            'changes' => json_encode($attr)
         ]);
 
         if ($end) $this->end($ok);
     }
 
-    private function renderChanges($data)
+    public static function renderChanges($data)
     {
-        $res = '';
-        foreach ($data as $k => $v) {
-            $res .= '<span>';
-            $res .= '<b>'.$k.'</b>: ';
-            if ($v['old'] !== null) $res .= '<c-r>'.$v['old'].'</c-r> ⟶ ';
-            $res .= '<c-g>'.$v['new'].'</c-g>';
-            $res .= '</span>';
+        if ($data) {
+            $data = json_decode($data, true);
+        } else return '';
+        if (is_array($data)) {
+            $res = '';
+            foreach ($data as $k => $v) {
+                $res .= '<span>';
+                $res .= '<b>' . $k . '</b>: ';
+                if ($v['old'] !== null) $res .= '<c-r>' . $v['old'] . '</c-r> ⟶ ';
+                $res .= '<c-g>' . $v['new'] . '</c-g>';
+                $res .= '</span>';
+            }
+            return $res;
         }
-        return $res;
+        return '';
     }
 
     /**
