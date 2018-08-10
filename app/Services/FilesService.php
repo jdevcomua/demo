@@ -41,7 +41,7 @@ class FilesService
      */
     private function getUsedImagesNum($animal)
     {
-        return $animal->images()->pluck('id', 'num')->toArray();
+        return $animal->images->pluck('id', 'num')->toArray();
     }
 
     private function storeAnimalFile($animal, $file, $num, $type)
@@ -84,7 +84,7 @@ class FilesService
         $indexOff = strrpos($name, '.');
         $nameFile = substr($name,0, $indexOff);
         $extension = substr($name, $indexOff);
-        $clean = preg_replace("([^\w\d\-_\(\)])", "", $nameFile);
+        $clean = preg_replace("([^\w\d\-_\(\)]+/u)", "", $nameFile);
         $clean = substr($clean, 0, 40);
         return $clean . $extension;
     }
