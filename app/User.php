@@ -60,8 +60,8 @@ class User extends Authenticatable
     const GENDER_MALE = 1;
 
     protected $fillable = [
-        'ext_id', 'first_name', 'last_name', 'middle_name', 'email', 'phone', 'birthday',
-        'inn', 'passport', 'address_living', 'address_registration', 'gender', 'banned'
+        'id', 'ext_id', 'first_name', 'last_name', 'middle_name', 'birthday',
+        'inn', 'passport', 'gender', 'banned'
     ];
 
     protected $dates = [
@@ -72,13 +72,11 @@ class User extends Authenticatable
         'ext_id' => 'integer',
         'inn' => 'integer',
         'gender' => 'integer',
-        'address_living' => 'array',
-        'address_registration' => 'array',
         'banned' => 'boolean',
     ];
 
     protected $hidden = [
-        'remember_token', 'address_living', 'address_registration', 'inn'
+        'remember_token'
     ];
 
     public function animals()

@@ -46,7 +46,9 @@
                                     <th>e-mail</th>
                                     <th>Телефон</th>
                                     <th>Дата народження</th>
+                                    @permission('private-data')
                                     <th>Паспорт</th>
+                                    @endpermission
                                     <th>Стать</th>
                                     <th>Зареєстровано</th>
                                     <th>Оновлено</th>
@@ -63,7 +65,9 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    @permission('private-data')
                                     <th></th>
+                                    @endpermission
                                     <th>
                                         <select>
                                             <option selected value>---</option>
@@ -141,7 +145,9 @@
                             return d.toLocaleDateString('uk')
                         }
                     },
+                    @permission('private-data')
                     { "data": "passport" },
+                    @endpermission
                     {
                         data: 'gender',
                         render: function ( data, type, row ) {

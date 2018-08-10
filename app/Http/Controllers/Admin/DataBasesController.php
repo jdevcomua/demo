@@ -35,6 +35,9 @@ class DataBasesController extends Controller
     public function userData(Request $request)
     {
         $model = new User();
+        if (!\Auth::user()->can('private-data')) {
+            $model->makeHidden(['passport', 'inn']);
+        }
 
         $query = $model->newQuery()
             ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')

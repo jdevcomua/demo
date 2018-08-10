@@ -57,11 +57,11 @@ class Animal extends Model
     const GENDER_MALE = 1;
 
     protected $fillable = [
-        'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id',
-        'birthday', 'sterilized', 'comment', 'verified', 'data', 'number',
+        'id', 'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id',
+        'birthday', 'sterilized', 'comment', 'verified', 'number',
 
         //generated attributes, don't fill them
-        'verification',
+        '_verification',
     ];
 
     protected $dates = [
@@ -128,12 +128,12 @@ class Animal extends Model
 
     public function getVerificationAttribute()
     {
-        if(!array_key_exists('verification', $this->attributes)) {
-            $this->attributes['verification'] = $this->history
+        if(!array_key_exists('_verification', $this->attributes)) {
+            $this->attributes['_verification'] = $this->history
                 ->where('action', '=', Log::ACTION_VERIFY)
                 ->sortByDesc('id')
                 ->first();
         }
-        return $this->attributes['verification'];
+        return $this->attributes['_verification'];
     }
 }

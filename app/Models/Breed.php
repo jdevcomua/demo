@@ -26,7 +26,7 @@ class Breed extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'available', 'fci'
+        'id', 'name', 'available', 'fci'
     ];
 
     protected $casts = [

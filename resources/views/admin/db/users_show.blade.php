@@ -107,16 +107,15 @@
                                     </div>
                                 </div>
 
-                                @if(false)
-                                    <div class="form-group">
-                                        <label for="inn" class="col-lg-3 control-label">ІПН</label>
-                                        <div class="col-lg-8">
-                                            <p class="form-control custom-field">
-                                                {{ $user->inn}}
-                                            </p>
-                                        </div>
+                                @permission('private-data')
+                                <div class="form-group">
+                                    <label for="inn" class="col-lg-3 control-label">ІПН</label>
+                                    <div class="col-lg-8">
+                                        <p class="form-control custom-field">
+                                            {{ $user->inn}}
+                                        </p>
                                     </div>
-                                @endif
+                                </div>
 
                                 <div class="form-group">
                                     <label for="passport" class="col-lg-3 control-label">Паспорт</label>
@@ -126,6 +125,7 @@
                                         </p>
                                     </div>
                                 </div>
+                                @endpermission
 
                                 <div class="form-group">
                                     <label for="gender" class="col-lg-3 control-label">Стать</label>

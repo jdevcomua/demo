@@ -24,7 +24,7 @@ class Fur extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'available'
+        'id', 'name', 'available'
     ];
 
 

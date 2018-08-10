@@ -21,11 +21,28 @@ class DataTables
         array $aliases = null)
     {
         $table = $model->getTable();
+        $tableAttr = array_keys(
+            array_diff_key(
+                array_merge(
+                    array_flip(
+                        array_filter($model->getFillable(),
+                            function ($v) { return (strpos($v, '_') !== 0); }
+                        )
+                    ),
+                    array_flip($model->getDates())
+                ),
+                array_flip($model->getHidden())
+            )
+        );
 
         if ($request->has(['draw', 'start', 'length'])) {
             $req = $request->all();
 
-            $selects[] = DB::raw($table . '.*');
+            if ($tableAttr) {
+                foreach ($tableAttr as $attr) {
+                    $selects[] = DB::raw($table . '.' . $attr);
+                }
+            }
             if ($aliases) {
                 foreach ($aliases as $alias => $value) {
                     $selects[] = DB::raw($value . ' AS ' . $alias);

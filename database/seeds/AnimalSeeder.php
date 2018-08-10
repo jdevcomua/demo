@@ -20,7 +20,7 @@ class AnimalSeeder extends Seeder
             [
                 'species_id' => 1, 'breed_id' => 8, 'gender' => 0, 'color_id' => 8,
                 'fur_id' => 4, 'nickname' => 'Шарик', 'birthday' => \Carbon\Carbon::now()->subYears(3),
-                'user_id' => 1, 'verified' => 1, 'confirm_user_id' => 1
+                'user_id' => 1, 'verified' => 0, 'confirm_user_id' => 1
             ],
         ]);
     }

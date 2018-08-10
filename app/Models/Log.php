@@ -60,7 +60,8 @@ class Log extends Model
 
 
     protected $fillable = [
-        'user_id', 'action', 'status', 'finished', 'object_id', 'object_type', 'changes', 'payload'
+        'id', 'user_id', 'action', 'status', 'finished', 'object_id',
+        'object_type', 'changes', 'payload'
     ];
 
 
