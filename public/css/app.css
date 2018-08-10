@@ -14878,6 +14878,7 @@ footer .gov-sites .header {
 }
 
 footer .gov-sites .header .label {
+  height: 42px;
   width: 11px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -14891,12 +14892,12 @@ footer .gov-sites .header .label {
 
 footer .gov-sites .header .label .blue {
   background-color: #006ae8;
-  height: 50%;
+  height: 21px;
 }
 
 footer .gov-sites .header .label .yellow {
   background-color: #ffe349;
-  height: 50%;
+  height: 21px;
 }
 
 footer .gov-sites .header .title {
@@ -16152,21 +16153,9 @@ img.logo {
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
   }
-
-  .page-title .title {
-    max-width: 40%;
-  }
 }
 
 @media (max-width: 650px) {
-  .page-title {
-    margin-top: -1rem;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-        -ms-flex-flow: row wrap;
-            flex-flow: row wrap;
-  }
-
   .page-title .title {
     max-width: 75%;
     width: 100%;
@@ -16175,6 +16164,15 @@ img.logo {
 
   .page-title .action-link {
     margin-left: 4.4rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .page-title .title {
+    max-width: 86%;
+    width: 100%;
+    font-size: 1.2rem;
+    margin: 0;
   }
 }
 
@@ -16339,7 +16337,7 @@ img.logo {
   border-radius: 2rem;
   border: 2px solid #1c4479;
   margin-top: 2rem;
-  margin-bottom: -2rem;
+  margin-bottom: -1rem;
   font-size: 1.2rem;
   color: #000 !important;
 }

@@ -179,8 +179,8 @@
                                 @endif
 
                                 <div class="form-group">
-                                    <label class="col-lg-3 control-label">Статус:</label>
-                                    <div class="col-lg-8">
+                                    <label class="col-xs-3 control-label">Статус:</label>
+                                    <div class="col-xs-8">
                                         @if($animal->verified)
                                             <label class="control-label text-success">Верифіковано</label>
                                         @else
@@ -190,8 +190,8 @@
                                 </div>
                                 @if($animal->verified)
                                     <div class="form-group">
-                                        <label class="col-lg-3 control-label">Ким:</label>
-                                        <div class="col-lg-8">
+                                        <label class="col-xs-3 control-label">Ким:</label>
+                                        <div class="col-xs-8">
                                             @if($animal->userThatConfirmed())
                                                 <a href="{{ route('admin.db.users.show', $animal->userThatConfirmed()->id) }}">
                                                     <label class="cursor control-label">{{ $animal->userThatConfirmed()->name }}</label>
@@ -201,10 +201,12 @@
                                             @endif
                                         </div>
                                     </div>
-                                        <label class="col-lg-3 control-label">Дата Верифікації:</label>
-                                        <div class="col-lg-8">
-                                            <label class="control-label text-success">{{$verificationDate ? $verificationDate->format('d-m-Y H:i') : 'Тестовий запис'}}</label>
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">Дата Верифікації:</label>
+                                        <div class="col-xs-8">
+                                            <label class="control-label">{{$verificationDate ? $verificationDate->format('d-m-Y H:i') : 'Тестовий запис'}}</label>
                                         </div>
+                                    </div>
                                 @endif
                             </div>
                             @permission('verify-animal')

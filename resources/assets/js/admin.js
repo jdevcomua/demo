@@ -183,3 +183,8 @@ function searchInTable(table, column, search) {
 }
 
 /////////////////////////////////////////
+
+parseDBDate = function (dateString) {
+    dateString = dateString.replace(/-/g, '/');
+    return new Date(dateString)
+};

@@ -35537,6 +35537,11 @@ function searchInTable(table, column, search) {
 
 /////////////////////////////////////////
 
+parseDBDate = function parseDBDate(dateString) {
+    dateString = dateString.replace(/-/g, '/');
+    return new Date(dateString);
+};
+
 /***/ }),
 
 /***/ "./resources/assets/js/smoothscroll.js":

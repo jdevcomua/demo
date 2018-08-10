@@ -89,12 +89,6 @@
 @endsection
 
 @section('scripts-end')
-    <script src="/js/admin/jquery.dataTables.js"></script>
-    <script src="/js/admin/dataTables.tableTools.min.js"></script>
-    <script src="/js/admin/dataTables.colReorder.min.js"></script>
-    <script src="/js/admin/dataTables.bootstrap.js"></script>
-    <script src="/js/admin/dataTables.responsive.js"></script>
-
     <script type="text/javascript">
         jQuery(document).ready(function() {
 

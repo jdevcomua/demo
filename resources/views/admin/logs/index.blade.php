@@ -84,12 +84,6 @@
 @endsection
 
 @section('scripts-end')
-    <script src="/js/admin/jquery.dataTables.js"></script>
-    <script src="/js/admin/dataTables.tableTools.min.js"></script>
-    <script src="/js/admin/dataTables.colReorder.min.js"></script>
-    <script src="/js/admin/dataTables.bootstrap.js"></script>
-    <script src="/js/admin/dataTables.responsive.js"></script>
-
     <script type="text/javascript">
         jQuery(document).ready(function() {
 
@@ -103,7 +97,7 @@
                     {
                         data: 'updated_at',
                         render: function ( data, type, row ) {
-                            var d = new Date(data);
+                            var d = parseDBDate(data);
                             return d.toLocaleDateString('uk') + ' ' + d.toLocaleTimeString('uk');
                         }
                     },

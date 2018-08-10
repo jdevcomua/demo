@@ -98,15 +98,10 @@ img.logo {
   .page-title {
     margin-top: -1rem;
     flex-flow: row wrap;
-    .title {
-      max-width: 40%;
-    }
   }
 }
 @media (max-width: 650px) {
   .page-title {
-    margin-top: -1rem;
-    flex-flow: row wrap;
     .title {
       max-width: 75%;
       width: 100%;
@@ -114,6 +109,16 @@ img.logo {
     }
     .action-link {
       margin-left: 4.4rem;
+    }
+  }
+}
+@media (max-width: 400px) {
+  .page-title {
+    .title {
+      max-width: 86%;
+      width: 100%;
+      font-size: 1.2rem;
+      margin: 0;
     }
   }
 }
@@ -240,7 +245,7 @@ img.logo {
   border-radius: 2rem;
   border: 2px solid #1c4479;
   margin-top: 2rem;
-  margin-bottom: -2rem;
+  margin-bottom: -1rem;
   font-size: 1.2rem;
   color: #000 !important;
   .notification-content {
