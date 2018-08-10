@@ -54,7 +54,7 @@
                                     <th>Стерилізовано</th>
                                     <th>Власник</th>
                                     <th>Верифіковано</th>
-                                    <th>Ким верифіковано</th>
+                                    {{--<th>Ким верифіковано</th>--}}
                                     <th>Зареєстровано</th>
                                     <th>Оновлено</th>
                                 </tr>
@@ -97,7 +97,7 @@
                                             <option value="1">Так</option>
                                         </select>
                                     </th>
-                                    <th></th>
+                                    {{--<th></th>--}}
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -207,16 +207,16 @@
                             }
                         }
                     },
-                    {
-                        data: 'verified_name',
-                        defaultContent: '',
-                        render: function ( data, type, row ) {
-                            if (data) {
-                                var arr = data.split('||');
-                                return '<a href="{{ route('admin.db.users.show') }}/' + arr[1] + '">' + arr[0] + '</a>';
-                            }
-                        }
-                    },
+                    {{--{--}}
+                        {{--data: 'verified_name',--}}
+                        {{--defaultContent: '',--}}
+                        {{--render: function ( data, type, row ) {--}}
+                            {{--if (data) {--}}
+                                {{--var arr = data.split('||');--}}
+                                {{--return '<a href="{{ route('admin.db.users.show') }}/' + arr[1] + '">' + arr[0] + '</a>';--}}
+                            {{--}--}}
+                        {{--}--}}
+                    {{--},--}}
                     { "data": "created_at" },
                     { "data": "updated_at" },
                 ],

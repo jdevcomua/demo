@@ -203,7 +203,7 @@
                                     </div>
                                         <label class="col-lg-3 control-label">Дата Верифікації:</label>
                                         <div class="col-lg-8">
-                                            <label class="control-label text-success">{{$verificationDate->format('d-m-Y H:i')}}</label>
+                                            <label class="control-label text-success">{{$verificationDate ? $verificationDate->format('d-m-Y H:i') : 'Тестовий запис'}}</label>
                                         </div>
                                 @endif
                             </div>

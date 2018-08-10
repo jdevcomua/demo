@@ -118,23 +118,23 @@ class DataBasesController extends Controller
             ->join('species', 'species.id', '=', 'animals.species_id')
             ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
             ->join('colors', 'colors.id', '=', 'animals.color_id')
-            ->join('users as users1', 'users1.id', '=', 'animals.user_id')
-            ->leftJoinSub(
-                Log::select('logs.*')
-                    ->fromSub(
-                        Log::selectRaw('object_id, max(updated_at) as updated_at')
-                            ->where('object_type', '=', 'Тварина')
-                            ->where('action', '=', Log::ACTION_VERIFY)
-                            ->groupBy('object_id'),
-                        'latest_log'
-                    )
-                    ->join('logs', function($q) {
-                        $q->on('logs.object_id', '=', 'latest_log.object_id');
-                        $q->on('logs.updated_at', '=', 'latest_log.updated_at');
-                    }),
-                'logs', 'logs.object_id', '=', 'animals.id'
-            )
-            ->leftJoin('users as users2', 'users2.id', '=', 'logs.user_id');
+            ->join('users as users1', 'users1.id', '=', 'animals.user_id');
+//            ->leftJoinSub(
+//                Log::select('logs.*')
+//                    ->fromSub(
+//                        Log::selectRaw('object_id, max(updated_at) as updated_at')
+//                            ->where('object_type', '=', 'Тварина')
+//                            ->where('action', '=', Log::ACTION_VERIFY)
+//                            ->groupBy('object_id'),
+//                        'latest_log'
+//                    )
+//                    ->join('logs', function($q) {
+//                        $q->on('logs.object_id', '=', 'latest_log.object_id');
+//                        $q->on('logs.updated_at', '=', 'latest_log.updated_at');
+//                    }),
+//                'logs', 'logs.object_id', '=', 'animals.id'
+//            )
+//            ->leftJoin('users as users2', 'users2.id', '=', 'logs.user_id');
 
 
         $aliases = [
@@ -142,7 +142,7 @@ class DataBasesController extends Controller
             'breeds_name' => 'breeds.name',
             'colors_name' => 'colors.name',
             'owner_name' => 'CONCAT(`users1`.last_name, \' \', `users1`.first_name, \'||\', `users1`.id)',
-            'verified_name' => 'CONCAT(`users2`.last_name, \' \', `users2`.first_name, \'||\', `users2`.id)'
+//            'verified_name' => 'CONCAT(`users2`.last_name, \' \', `users2`.first_name, \'||\', `users2`.id)'
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);
