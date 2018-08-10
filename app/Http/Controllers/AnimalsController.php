@@ -29,7 +29,7 @@ class AnimalsController extends Controller
     public function index()
     {
         $user = \Auth::user();
-        $pets = $user->animals()->with(['species', 'color', 'images'])->get();
+        $pets = $user->animals()->with(['species', 'color', 'files'])->get();
 
         return view('animals.index', [
             'pets' => $pets
@@ -133,8 +133,8 @@ class AnimalsController extends Controller
      */
     public function show(Animal $animal)
     {
-        $animal->load(['species', 'color', 'images', 'documents']);
-        $animal->images = $animal->images->pluck('path', 'num')->toArray();
+        $animal->load(['species', 'color', 'files']);
+        $animal->imagesArray = $animal->images->pluck('path', 'num')->toArray();
 
         return view('animals.show', [
             'animal' => $animal
@@ -151,8 +151,8 @@ class AnimalsController extends Controller
     {
         if ($animal->verified) return redirect()->route('animals.show', $animal->id);
 
-        $animal->load(['species', 'color', 'images', 'documents']);
-        $animal->images = $animal->images->pluck('path', 'num')->toArray();
+        $animal->load(['species', 'color', 'files']);
+        $animal->imagesArray = $animal->images->pluck('path', 'num')->toArray();
 
         return view('animals.edit', [
             'pet' => $animal

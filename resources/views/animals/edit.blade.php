@@ -21,14 +21,14 @@
             <div class="cols-block-content">
                 <div class="validation-error alert alert-danger hidden"></div>
                 <div class="new-pet-photos">
-                    <label class="photo-item photo-item-main @if(array_key_exists(1, $pet->images)) filled @endif " for="image1"
-                           @if(array_key_exists(1, $pet->images)) style="background-image: url('/{{ $pet->images[1] }}')" @endif>
+                    <label class="photo-item photo-item-main @if(array_key_exists(1, $pet->imagesArray)) filled @endif " for="image1"
+                           @if(array_key_exists(1, $pet->imagesArray)) style="background-image: url('/{{ $pet->imagesArray[1] }}')" @endif>
                         <input type='file' name="images[1]" id="image1" class="imageInput" />
                         <span class="add-btn"></span>
                     </label>
                     @for($i = 2; $i < 10; $i++)
-                        <label class="photo-item @if(array_key_exists($i, $pet->images)) filled @endif " for="image{{ $i }}"
-                               @if(array_key_exists($i, $pet->images)) style="background-image: url('/{{ $pet->images[$i] }}')" @endif >
+                        <label class="photo-item @if(array_key_exists($i, $pet->imagesArray)) filled @endif " for="image{{ $i }}"
+                               @if(array_key_exists($i, $pet->imagesArray)) style="background-image: url('/{{ $pet->imagesArray[$i] }}')" @endif >
                             <input type='file' name="images[{{ $i }}]" id="image{{ $i }}" class="imageInput" />
                             <span class="add-btn"></span>
                         </label>

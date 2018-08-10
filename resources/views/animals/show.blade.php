@@ -2,8 +2,6 @@
 
 @section('title', $animal->nickname)
 
-
-
 @section('content')
     <div class="page-title">
         <a href="{{ route('index') }}" class="page-back-link"></a>
@@ -13,11 +11,11 @@
     <div class="animal-show">
         <div class="animal-images">
             <div class="animal-image main"
-                 @if(array_key_exists(1, $animal->images)) style="background-image: url('/{{ $animal->images[1] }}')" @endif>
+                 @if(array_key_exists(1, $animal->imagesArray)) style="background-image: url('/{{ $animal->imagesArray[1] }}')" @endif>
             </div>
             @for($i = 2; $i < 10; $i++)
-                @if(array_key_exists($i, $animal->images))
-                    <div class="animal-image" style="background-image: url('/{{ $animal->images[$i] }}')"></div>
+                @if(array_key_exists($i, $animal->imagesArray))
+                    <div class="animal-image" style="background-image: url('/{{ $animal->imagesArray[$i] }}')"></div>
                 @endif
             @endfor
         </div>
