@@ -14851,6 +14851,7 @@ footer .footer-demo {
 
 footer .footer-demo a {
   color: #fff;
+  display: inline-block;
 }
 
 footer > div {
@@ -15105,6 +15106,12 @@ footer .copyright a {
 
   footer .copyright .links {
     padding-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 650px) {
+  footer .footer-demo {
+    padding: 10px 2rem;
   }
 }
 
@@ -16067,6 +16074,7 @@ body {
   font-family: "Montserrat", "Raleway", sans-serif;
   background-color: #effafd;
   color: #333;
+  overflow-x: hidden;
 }
 
 body > .container-fluid {

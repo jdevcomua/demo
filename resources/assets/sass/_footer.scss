@@ -12,6 +12,7 @@ footer {
     margin: 0;
     a {
       color: #fff;
+      display: inline-block;
     }
   }
   > div {
@@ -177,3 +178,9 @@ footer {
     }
   }
 }
+@media (max-width: 650px) {
+  footer .footer-demo {
+    padding: 10px 2rem;
+  }
+}
+
