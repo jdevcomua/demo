@@ -237,14 +237,11 @@ class DataBasesController extends Controller
         $animal = $this->animalModel
             ->findOrFail($id);
 
-        $animal->load('files', 'history', 'history.user');
-        $verificationDate = $animal->history()->where('action', Log::ACTION_VERIFY)->first();
-        $verificationDate = $verificationDate ? $verificationDate->created_at : null;
+        $animal->load('files', 'user', 'history', 'history.user');
 
         return view('admin.db.animals_edit', [
             'animal' => $animal,
             'species' => Species::get(),
-            'verificationDate' => $verificationDate
         ]);
     }
 

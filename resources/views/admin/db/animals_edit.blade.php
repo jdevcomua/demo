@@ -188,23 +188,23 @@
                                         @endif
                                     </div>
                                 </div>
-                                @if($animal->verified)
-                                    <div class="form-group">
+                                @if($animal->verification)
+                                        <div class="form-group">
                                         <label class="col-xs-3 control-label">Ким:</label>
                                         <div class="col-xs-8">
-                                            @if($animal->userThatConfirmed())
-                                                <a href="{{ route('admin.db.users.show', $animal->userThatConfirmed()->id) }}">
-                                                    <label class="cursor control-label">{{ $animal->userThatConfirmed()->name }}</label>
+                                            @if($animal->verification->user)
+                                                <a href="{{ route('admin.db.users.show', $animal->verification->user->id) }}">
+                                                    <label class="cursor control-label">{{ $animal->verification->user->name }}</label>
                                                 </a>
                                             @else
-                                                Помилка - Користувач не вказаний
+                                                <label class="cursor control-label text-danger">Помилка - Користувач не знайдений</label>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-xs-3 control-label">Дата Верифікації:</label>
                                         <div class="col-xs-8">
-                                            <label class="control-label">{{$verificationDate ? $verificationDate->format('d-m-Y H:i') : 'Тестовий запис'}}</label>
+                                            <label class="control-label">{{ $animal->verification->updated_at->format('d-m-Y H:i') }}</label>
                                         </div>
                                     </div>
                                 @endif

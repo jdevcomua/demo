@@ -59,6 +59,9 @@ class Animal extends Model
     protected $fillable = [
         'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id',
         'birthday', 'sterilized', 'comment', 'verified', 'data', 'number',
+
+        //generated attributes, don't fill them
+        'verification',
     ];
 
     protected $dates = [
@@ -79,12 +82,6 @@ class Animal extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
-    }
-
-    public function userThatConfirmed()
-    {
-        $log = $this->history()->where('action', Log::ACTION_VERIFY)->first();
-        return $log ? $log->user : null;
     }
 
     public function breed()
@@ -112,20 +109,31 @@ class Animal extends Model
         return $this->hasMany('App\Models\AnimalsFile');
     }
 
-    public function images()
+    public function getImagesAttribute()
     {
-        return $this->hasMany('App\Models\AnimalsFile')
+        return $this->files
             ->where('type', '=', AnimalsFile::FILE_TYPE_PHOTO);
     }
 
-    public function documents()
+    public function getDocumentsAttribute()
     {
-        return $this->hasMany('App\Models\AnimalsFile')
+        return $this->files
             ->where('type', '=', AnimalsFile::FILE_TYPE_DOCUMENT);
     }
 
     public function history()
     {
         return $this->morphMany('App\Models\Log', 'object');
+    }
+
+    public function getVerificationAttribute()
+    {
+        if(!array_key_exists('verification', $this->attributes)) {
+            $this->attributes['verification'] = $this->history
+                ->where('action', '=', Log::ACTION_VERIFY)
+                ->sortByDesc('id')
+                ->first();
+        }
+        return $this->attributes['verification'];
     }
 }
