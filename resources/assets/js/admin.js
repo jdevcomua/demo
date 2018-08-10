@@ -30,7 +30,7 @@ $(function () {
     $('.datepicker input').datepicker({
         changeMonth: true,
         changeYear: true,
-        format: "dd/mm/yyyy",
+        dateFormat: 'dd/mm/yy',
         language: "uk",
         locale: "uk",
         autoclose: true
