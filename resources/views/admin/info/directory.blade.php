@@ -14,147 +14,78 @@
     <!-- End: Topbar -->
 
     <section id="content" class="animated fadeIn">
-
-        <div class="tray tray-center">
-
-            <div class="row">
-                <div class="col-xs-12 pn">
-                    <div class="col-xs-12 col-md-6 pn">
-                        <div class="col-xs-12">
-                            <div class="panel panel-visible" id="spy5">
-                                <div class="panel-heading">
-                                    <div class="panel-title">
-                                        <span class="glyphicon glyphicon-tasks"></span>Список всіх порід</div>
-                                </div>
-                                <div class="panel-body pn">
-                                    @if($errors->breed_rem)
-                                        @foreach($errors->breed_rem->all() as $error)
-                                            <div class="alert alert-danger alert-dismissable">
-                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                <i class="fa fa-remove pr10"></i>
-                                                {{ $error }}
-                                            </div>
-                                        @endforeach
-                                    @endif
-
-                                    @if (\Session::has('success_breed_rem'))
-                                        <div class="alert alert-success alert-dismissable">
-                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                            <i class="fa fa-check pr10"></i>
-                                            {{ \Session::get('success_breed_rem') }}
-                                        </div>
-                                    @endif
-                                    <table class="table table-striped table-hover display datatable responsive nowrap"
-                                           id="datatable-breed" cellspacing="0" width="100%">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Дії</th>
-                                            <th>Вид тварини</th>
-                                            <th>Назва</th>
-                                            <th>FCI</th>
-                                        </tr>
-                                        </thead>
-                                        <tfoot class="search">
-                                        <tr>
-                                            <th></th>
-                                            <th class="no-search"></th>
-                                            <th>
-                                                <select>
-                                                    <option selected value>---</option>
-                                                    @foreach($species as $s)
-                                                        <option value="{{$s->name}}">{{$s->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </th>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
-                                        </tfoot>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
+        <div class="row">
+            <div class="col-xs-12 pn">
+                <div class="col-xs-12 col-md-6 pn">
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy5">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Список всіх порід</div>
                             </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="panel panel-visible" id="spy5">
-                                <div class="panel-heading">
-                                    <div class="panel-title">
-                                        <span class="glyphicon glyphicon-tasks"></span>Додавання нової породи</div>
-                                </div>
-                                <form class="form-horizontal" role="form"
-                                      action="{{ route('admin.info.directories.store.breed') }}" method="post">
-                                    @csrf
-                                    <div class="panel-body">
-                                        @if($errors->breed)
-                                            @foreach($errors->breed->all() as $error)
-                                                <div class="alert alert-danger alert-dismissable">
-                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                    <i class="fa fa-remove pr10"></i>
-                                                    {{ $error }}
-                                                </div>
-                                            @endforeach
-                                        @endif
+                            <div class="panel-body pn">
+                                @if($errors->breed_rem)
+                                    @foreach($errors->breed_rem->all() as $error)
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-remove pr10"></i>
+                                            {{ $error }}
+                                        </div>
+                                    @endforeach
+                                @endif
 
-                                        @if (\Session::has('success_breed'))
-                                            <div class="alert alert-success alert-dismissable">
-                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                <i class="fa fa-check pr10"></i>
-                                                {{ \Session::get('success_breed') }}
-                                            </div>
-                                        @endif
-
-                                        <div class="form-group">
-                                            <label for="breed-species" class="col-lg-3 control-label">Вид тварини:</label>
-                                            <div class="col-lg-8">
-                                                <div class="bs-component">
-                                                    <select id="breed-species" name="b_species" class="form-control" required>
-                                                        @foreach($species as $s)
-                                                            <option value="{{$s->id}}" @if(old('b_species') == $s->id) selected @endif>
-                                                                {{$s->name}}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="breed-name" class="col-lg-3 control-label">Назва породи:</label>
-                                            <div class="col-lg-8">
-                                                <div class="bs-component">
-                                                    <input type="text" id="breed-name" name="b_name"
-                                                           class="form-control" value="{{ old('b_name') }}" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="breed-fci" class="col-lg-3 control-label">FCI:</label>
-                                            <div class="col-lg-8">
-                                                <div class="bs-component">
-                                                    <input type="text" id="breed-fci" name="b_fci"
-                                                           class="form-control" value="{{ old('b_fci') }}">
-                                                </div>
-                                            </div>
-                                        </div>
+                                @if (\Session::has('success_breed_rem'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_breed_rem') }}
                                     </div>
-                                    <div class="panel-footer text-right">
-                                        <button type="submit" class="btn btn-default ph25">Додати</button>
-                                    </div>
-                                </form>
+                                @endif
+                                <table class="table table-striped table-hover display datatable responsive nowrap"
+                                       id="datatable-breed" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Дії</th>
+                                        <th>Вид тварини</th>
+                                        <th>Назва</th>
+                                        <th>FCI</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot class="search">
+                                    <tr>
+                                        <th></th>
+                                        <th class="no-search"></th>
+                                        <th>
+                                            <select>
+                                                <option selected value>---</option>
+                                                @foreach($species as $s)
+                                                    <option value="{{$s->name}}">{{$s->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-md-6 pn">
-                        <div class="col-xs-12">
-                            <div class="panel panel-visible" id="spy5">
-                                <div class="panel-heading">
-                                    <div class="panel-title">
-                                        <span class="glyphicon glyphicon-tasks"></span>Список усіх мастей</div>
-                                </div>
-                                <div class="panel-body pn">
-                                    @if($errors->color_rem)
-                                        @foreach($errors->color_rem->all() as $error)
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy5">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Додавання нової породи</div>
+                            </div>
+                            <form class="form-horizontal" role="form"
+                                  action="{{ route('admin.info.directories.store.breed') }}" method="post">
+                                @csrf
+                                <div class="panel-body">
+                                    @if($errors->breed)
+                                        @foreach($errors->breed->all() as $error)
                                             <div class="alert alert-danger alert-dismissable">
                                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                                 <i class="fa fa-remove pr10"></i>
@@ -163,219 +94,282 @@
                                         @endforeach
                                     @endif
 
-                                    @if (\Session::has('success_color_rem'))
+                                    @if (\Session::has('success_breed'))
                                         <div class="alert alert-success alert-dismissable">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                             <i class="fa fa-check pr10"></i>
-                                            {{ \Session::get('success_color_rem') }}
+                                            {{ \Session::get('success_breed') }}
                                         </div>
                                     @endif
-                                    <table class="table table-striped table-hover display datatable responsive nowrap"
-                                           id="datatable-color" cellspacing="0" width="100%">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Дії</th>
-                                            <th>Вид тварини</th>
-                                            <th>Назва</th>
-                                        </tr>
-                                        </thead>
-                                        <tfoot class="search">
-                                        <tr>
-                                            <th></th>
-                                            <th class="no-search"></th>
-                                            <th>
-                                                <select>
-                                                    <option selected value>---</option>
-                                                    @foreach($species as $s)
-                                                        <option value="{{$s->name}}">{{$s->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                        </tfoot>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="panel panel-visible" id="spy5">
-                                <div class="panel-heading">
-                                    <div class="panel-title">
-                                        <span class="glyphicon glyphicon-tasks"></span>Додавання нової масті</div>
-                                </div>
-                                <form class="form-horizontal" role="form"
-                                      action="{{ route('admin.info.directories.store.color') }}" method="post">
-                                    @csrf
-                                    <div class="panel-body">
-                                        @if($errors->color)
-                                            @foreach($errors->color->all() as $error)
-                                                <div class="alert alert-danger alert-dismissable">
-                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                    <i class="fa fa-remove pr10"></i>
-                                                    {{ $error }}
-                                                </div>
-                                            @endforeach
-                                        @endif
 
-                                        @if (\Session::has('success_color'))
-                                            <div class="alert alert-success alert-dismissable">
-                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                <i class="fa fa-check pr10"></i>
-                                                {{ \Session::get('success_color') }}
-                                            </div>
-                                        @endif
-                                        <div class="form-group">
-                                            <label for="color-species" class="col-lg-3 control-label">Вид тварини:</label>
-                                            <div class="col-lg-8">
-                                                <div class="bs-component">
-                                                    <select id="color-species" name="c_species" class="form-control" required>
-                                                        @foreach($species as $s)
-                                                            <option value="{{$s->id}}" @if(old('c_species') == $s->id) selected @endif>
-                                                                {{$s->name}}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="color-name" class="col-lg-3 control-label">Назва масті:</label>
-                                            <div class="col-lg-8">
-                                                <div class="bs-component">
-                                                    <input type="text" id="color-name" name="c_name"
-                                                           class="form-control" value="{{ old('c_name') }}" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="panel-footer text-right">
-                                        <button type="submit" class="btn btn-default ph25">Додати</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-12 pn">
-                    <div class="col-xs-12 col-md-6 pn">
-                        <div class="col-xs-12">
-                            <div class="panel panel-visible" id="spy5">
-                                <div class="panel-heading">
-                                    <div class="panel-title">
-                                        <span class="glyphicon glyphicon-tasks"></span>Список усіх типів шерсті</div>
-                                </div>
-                                <div class="panel-body pn">
-                                    @if($errors->fur_rem)
-                                        @foreach($errors->fur_rem->all() as $error)
-                                            <div class="alert alert-danger alert-dismissable">
-                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                <i class="fa fa-remove pr10"></i>
-                                                {{ $error }}
-                                            </div>
-                                        @endforeach
-                                    @endif
-
-                                    @if (\Session::has('success_fur_rem'))
-                                        <div class="alert alert-success alert-dismissable">
-                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                            <i class="fa fa-check pr10"></i>
-                                            {{ \Session::get('success_fur_rem') }}
-                                        </div>
-                                    @endif
-                                    <table class="table table-striped table-hover display datatable responsive nowrap"
-                                           id="datatable-fur" cellspacing="0" width="100%">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Дії</th>
-                                            <th>Вид тварини</th>
-                                            <th>Назва</th>
-                                        </tr>
-                                        </thead>
-                                        <tfoot class="search">
-                                        <tr>
-                                            <th></th>
-                                            <th class="no-search"></th>
-                                            <th>
-                                                <select>
-                                                    <option selected value>---</option>
+                                    <div class="form-group">
+                                        <label for="breed-species" class="col-lg-3 control-label">Вид тварини:</label>
+                                        <div class="col-lg-8">
+                                            <div class="bs-component">
+                                                <select id="breed-species" name="b_species" class="form-control" required>
                                                     @foreach($species as $s)
-                                                        <option value="{{$s->name}}">{{$s->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                        </tfoot>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div class="panel panel-visible" id="spy5">
-                                <div class="panel-heading">
-                                    <div class="panel-title">
-                                        <span class="glyphicon glyphicon-tasks"></span>Додавання нового типу шерсті</div>
-                                </div>
-                                <form class="form-horizontal" role="form"
-                                      action="{{ route('admin.info.directories.store.fur') }}" method="post">
-                                    @csrf
-                                    <div class="panel-body">
-                                        @if($errors->fur)
-                                            @foreach($errors->fur->all() as $error)
-                                                <div class="alert alert-danger alert-dismissable">
-                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                    <i class="fa fa-remove pr10"></i>
-                                                    {{ $error }}
-                                                </div>
-                                            @endforeach
-                                        @endif
-
-                                        @if (\Session::has('success_fur'))
-                                            <div class="alert alert-success alert-dismissable">
-                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                                <i class="fa fa-check pr10"></i>
-                                                {{ \Session::get('success_fur') }}
-                                            </div>
-                                        @endif
-                                        <div class="form-group">
-                                            <label for="fur-species" class="col-lg-3 control-label">Вид тварини:</label>
-                                            <div class="col-lg-8">
-                                                <select id="fur-species" name="f_species" class="form-control" required>
-                                                    @foreach($species as $s)
-                                                        <option value="{{$s->id}}" @if(old('f_species') == $s->id) selected @endif>
+                                                        <option value="{{$s->id}}" @if(old('b_species') == $s->id) selected @endif>
                                                             {{$s->name}}
                                                         </option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="fur-name" class="col-lg-3 control-label">Назва шерсті:</label>
-                                            <div class="col-lg-8">
-                                                <input type="text" id="fur-name" name="f_name"
-                                                       class="form-control" value="{{ old('f_name') }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="breed-name" class="col-lg-3 control-label">Назва породи:</label>
+                                        <div class="col-lg-8">
+                                            <div class="bs-component">
+                                                <input type="text" id="breed-name" name="b_name"
+                                                       class="form-control" value="{{ old('b_name') }}" required>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer text-right">
-                                        <button type="submit" class="btn btn-default ph25">Додати</button>
+                                    <div class="form-group">
+                                        <label for="breed-fci" class="col-lg-3 control-label">FCI:</label>
+                                        <div class="col-lg-8">
+                                            <div class="bs-component">
+                                                <input type="text" id="breed-fci" name="b_fci"
+                                                       class="form-control" value="{{ old('b_fci') }}">
+                                            </div>
+                                        </div>
                                     </div>
-                                </form>
+                                </div>
+                                <div class="panel-footer text-right">
+                                    <button type="submit" class="btn btn-default ph25">Додати</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6 pn">
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy5">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Список усіх мастей</div>
                             </div>
+                            <div class="panel-body pn">
+                                @if($errors->color_rem)
+                                    @foreach($errors->color_rem->all() as $error)
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-remove pr10"></i>
+                                            {{ $error }}
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                                @if (\Session::has('success_color_rem'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_color_rem') }}
+                                    </div>
+                                @endif
+                                <table class="table table-striped table-hover display datatable responsive nowrap"
+                                       id="datatable-color" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Дії</th>
+                                        <th>Вид тварини</th>
+                                        <th>Назва</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot class="search">
+                                    <tr>
+                                        <th></th>
+                                        <th class="no-search"></th>
+                                        <th>
+                                            <select>
+                                                <option selected value>---</option>
+                                                @foreach($species as $s)
+                                                    <option value="{{$s->name}}">{{$s->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy5">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Додавання нової масті</div>
+                            </div>
+                            <form class="form-horizontal" role="form"
+                                  action="{{ route('admin.info.directories.store.color') }}" method="post">
+                                @csrf
+                                <div class="panel-body">
+                                    @if($errors->color)
+                                        @foreach($errors->color->all() as $error)
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <i class="fa fa-remove pr10"></i>
+                                                {{ $error }}
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                    @if (\Session::has('success_color'))
+                                        <div class="alert alert-success alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-check pr10"></i>
+                                            {{ \Session::get('success_color') }}
+                                        </div>
+                                    @endif
+                                    <div class="form-group">
+                                        <label for="color-species" class="col-lg-3 control-label">Вид тварини:</label>
+                                        <div class="col-lg-8">
+                                            <div class="bs-component">
+                                                <select id="color-species" name="c_species" class="form-control" required>
+                                                    @foreach($species as $s)
+                                                        <option value="{{$s->id}}" @if(old('c_species') == $s->id) selected @endif>
+                                                            {{$s->name}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="color-name" class="col-lg-3 control-label">Назва масті:</label>
+                                        <div class="col-lg-8">
+                                            <div class="bs-component">
+                                                <input type="text" id="color-name" name="c_name"
+                                                       class="form-control" value="{{ old('c_name') }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-right">
+                                    <button type="submit" class="btn btn-default ph25">Додати</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-xs-12 pn">
+                <div class="col-xs-12 col-md-6 pn">
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy5">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Список усіх типів шерсті</div>
+                            </div>
+                            <div class="panel-body pn">
+                                @if($errors->fur_rem)
+                                    @foreach($errors->fur_rem->all() as $error)
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-remove pr10"></i>
+                                            {{ $error }}
+                                        </div>
+                                    @endforeach
+                                @endif
 
+                                @if (\Session::has('success_fur_rem'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_fur_rem') }}
+                                    </div>
+                                @endif
+                                <table class="table table-striped table-hover display datatable responsive nowrap"
+                                       id="datatable-fur" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Дії</th>
+                                        <th>Вид тварини</th>
+                                        <th>Назва</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot class="search">
+                                    <tr>
+                                        <th></th>
+                                        <th class="no-search"></th>
+                                        <th>
+                                            <select>
+                                                <option selected value>---</option>
+                                                @foreach($species as $s)
+                                                    <option value="{{$s->name}}">{{$s->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy5">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Додавання нового типу шерсті</div>
+                            </div>
+                            <form class="form-horizontal" role="form"
+                                  action="{{ route('admin.info.directories.store.fur') }}" method="post">
+                                @csrf
+                                <div class="panel-body">
+                                    @if($errors->fur)
+                                        @foreach($errors->fur->all() as $error)
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <i class="fa fa-remove pr10"></i>
+                                                {{ $error }}
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                    @if (\Session::has('success_fur'))
+                                        <div class="alert alert-success alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-check pr10"></i>
+                                            {{ \Session::get('success_fur') }}
+                                        </div>
+                                    @endif
+                                    <div class="form-group">
+                                        <label for="fur-species" class="col-lg-3 control-label">Вид тварини:</label>
+                                        <div class="col-lg-8">
+                                            <select id="fur-species" name="f_species" class="form-control" required>
+                                                @foreach($species as $s)
+                                                    <option value="{{$s->id}}" @if(old('f_species') == $s->id) selected @endif>
+                                                        {{$s->name}}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fur-name" class="col-lg-3 control-label">Назва шерсті:</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="fur-name" name="f_name"
+                                                   class="form-control" value="{{ old('f_name') }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-right">
+                                    <button type="submit" class="btn btn-default ph25">Додати</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </section>
 @endsection
 

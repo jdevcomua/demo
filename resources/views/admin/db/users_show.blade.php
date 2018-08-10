@@ -14,9 +14,6 @@
     <!-- End: Topbar -->
 
     <section id="content" class="animated fadeIn">
-
-        <div class="tray tray-center">
-
             <div class="row">
 
                 <div class="col-md-6">
@@ -310,9 +307,6 @@
                 </div>
                 @endpermission
             </div>
-
-        </div>
-
     </section>
 @endsection
 

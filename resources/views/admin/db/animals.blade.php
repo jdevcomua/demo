@@ -15,8 +15,6 @@
 
     <section id="content" class="animated fadeIn">
 
-        <div class="tray tray-center">
-
             <div class="row">
 
                 @if(false)
@@ -110,8 +108,6 @@
                 </div>
 
             </div>
-
-        </div>
 
         <form action="#" id="destroy" method="post" class="hidden">
             @csrf

@@ -13,9 +13,6 @@
     </header>
     <!-- End: Topbar -->
     <section id="content" class="animated fadeIn">
-
-        <div class="tray tray-center">
-
             <div class="row">
 
                 <div class="col-md-12">
@@ -67,7 +64,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">

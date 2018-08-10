@@ -14,9 +14,6 @@
     <!-- End: Topbar -->
 
     <section id="content" class="animated fadeIn">
-
-        <div class="tray tray-center">
-
             <div class="row">
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
@@ -92,6 +89,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 @endsection

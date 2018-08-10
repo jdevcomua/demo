@@ -14,8 +14,6 @@
     <!-- End: Topbar -->
     <section id="content" class="animated fadeIn">
 
-        <div class="tray tray-center">
-
             <div class="row">
 
                 <div class="col-md-12">
@@ -113,7 +111,6 @@
                     </div>
                 </div>
             </div>
-        </div>
 
         <form action="{{route('admin.info.content.faq.delete')}}" id="destroy" method="post" class="hidden">
             @csrf
