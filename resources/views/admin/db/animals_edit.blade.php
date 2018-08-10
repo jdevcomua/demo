@@ -188,7 +188,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                @if($animal->verification)
+                                @if($animal->verified)
                                         <div class="form-group">
                                         <label class="col-xs-3 control-label">Ким:</label>
                                         <div class="col-xs-8">
