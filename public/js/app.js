@@ -41576,16 +41576,7 @@ $form.on('submit', function (e) {
     if (isAdvancedUpload) {
         e.preventDefault();
 
-        // var form = document.querySelector($form.get(0));
-
-        //Removing empty file inputs - bug in new Safari versions (didn't send files when ajax.send)
-        // for (var i = 0; i < form.elements.length; i++) {
-        //     if (form.elements[i].type == 'file') {
-        //         if (form.elements[i].value == '') {
-        //             form.elements[i].parentNode.removeChild(form.elements[i]);
-        //         }
-        //     }
-        // }
+        hideNames();
 
         var ajaxData = new FormData($form.get(0));
         var progressBar = $('.uploader-overlay .progress-bar');
@@ -41618,6 +41609,7 @@ $form.on('submit', function (e) {
                     $('body').removeClass('no-scroll');
                     $('.uploader-overlay').hide();
                     showValidationErrors(data.errors);
+                    showNames();
                 }
             }
         };
@@ -41628,6 +41620,22 @@ $form.on('submit', function (e) {
         ajax.send(ajaxData);
     }
 });
+
+function hideNames() {
+    var form = $('form#form :input');
+    form.each(function (elem) {
+        if ($(this).attr('type') == 'file' && $(this).val() != '') {
+            $(this).data('name', $(this).attr('name'));
+            $(this).removeAttr('name');
+        }
+    });
+};
+function showNames() {
+    var form = $('form#form :input');
+    form.each(function (elem) {
+        if ($(this).attr('type') === 'file') $(this).attr('name', $(this).data('name'));
+    });
+};
 /////////////////////////////////////////
 
 /////////////////////////////////////////
