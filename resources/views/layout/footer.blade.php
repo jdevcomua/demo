@@ -38,7 +38,7 @@
             </div>
             <div class="contacts-item">
                 <span class="above-text">електронною поштою</span>
-                <span>zvernen@kmda.gov.ua</span>
+                <span><a href="mailto:zvernen@kmda.gov.ua" class="text-white">zvernen@kmda.gov.ua</a></span>
             </div>
         </div>
         <div class="col-links">
