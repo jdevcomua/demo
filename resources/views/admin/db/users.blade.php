@@ -47,7 +47,6 @@
                                     @permission('private-data')
                                     <th>Паспорт</th>
                                     @endpermission
-                                    <th>Стать</th>
                                     <th>Зареєстровано</th>
                                     <th>Оновлено</th>
                                 </tr>
@@ -66,13 +65,6 @@
                                     @permission('private-data')
                                     <th></th>
                                     @endpermission
-                                    <th>
-                                        <select>
-                                            <option selected value>---</option>
-                                            <option value="0">Жін.</option>
-                                            <option value="1">Чол.</option>
-                                        </select>
-                                    </th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -145,16 +137,6 @@
                     @permission('private-data')
                     { "data": "passport" },
                     @endpermission
-                    {
-                        data: 'gender',
-                        render: function ( data, type, row ) {
-                            switch (data) {
-                                case 0: return 'Жін.';
-                                case 1: return 'Чол.';
-                                default: return '?';
-                            }
-                        }
-                    },
                     { "data": "created_at" },
                     { "data": "updated_at" },
                 ],

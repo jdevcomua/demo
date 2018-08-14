@@ -43,7 +43,6 @@
                                     <th>По батькові</th>
                                     <th>e-mail</th>
                                     <th>Телефон</th>
-                                    <th>Стать</th>
                                     <th>Оновлено</th>
                                     <th>Ролі</th>
                                 </tr>
@@ -59,13 +58,6 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th>
-                                        <select>
-                                            <option selected value>---</option>
-                                            <option value="0">Жін.</option>
-                                            <option value="1">Чол.</option>
-                                        </select>
-                                    </th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -125,17 +117,6 @@
                         data: 'phones',
                         render: function ( data, type, row ) {
                             return (data) ? data.split('|').join('<br>') : '';
-                        }
-                    },
-                    {
-                        data: 'gender',
-                        responsivePriority: 4,
-                        render: function ( data, type, row ) {
-                            switch (data) {
-                                case 0: return 'Жін.';
-                                case 1: return 'Чол.';
-                                default: return '?';
-                            }
                         }
                     },
                     { "data": "updated_at" },
