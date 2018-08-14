@@ -106,7 +106,7 @@
                         render: function ( data, type, row ) {
                             if (data) {
                                 var arr = data.split('|');
-                                return '<a href="{{ route('admin.db.users.show') }}/'+arr[1]+'">'+arr[0]
+                                return '<a href="{{ route('admin.db.users.show') }}/'+row.id+'">'+data
                                     +'</a>';
                             }
                             return '';
