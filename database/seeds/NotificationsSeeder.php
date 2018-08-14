@@ -33,7 +33,7 @@ class NotificationsSeeder extends Seeder
             $notificationMany = new \App\Models\Notification();
             $notificationMany->type = $type;
             $notificationMany->min = 5;
-            $notificationMany->max = 1000;
+            $notificationMany->max = 9000;
             $notificationMany->text = 'текст для багатьох тварин';
             $notificationMany->save();
         }
