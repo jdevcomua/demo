@@ -73,7 +73,7 @@ class AnimalsController extends Controller
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
             'images' => 'required|array',
-            'images.*' => 'required|file',
+            'images.*' => 'required|image',
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|file',
         ], [
