@@ -13,7 +13,7 @@
 
         <div class="cols-block">
             <div class="cols-block-header">
-                <div class="block-title">ЗОБРАЖЕННЯ</div>
+                <div class="block-title">ЗОБРАЖЕННЯ  <span class="required-field">*</span></div>
                 <div class="block-sub-title">Що більше фото тим простіше знайти тварину у випадку втрати.<br>
                     Фотографуйте тваринку з різних сторін.</div>
                 <div class="pet-photo-hint"><div>Це фото буде головним</div></div>
@@ -44,7 +44,7 @@
             <div class="cols-block-content form">
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="nickname">Кличка</label>
+                    <label for="nickname">Кличка <span class="required-field">*</span></label>
                     <input type="text" class="form-control" id="nickname" name="nickname" required
                         value="{{ $pet->nickname }}">
                 </div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label>Стать</label>
+                    <label>Стать <span class="required-field">*</span></label>
                     <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn radio-item big-radio @if($pet->gender === \App\Models\Animal::GENDER_MALE) active @endif">
                             <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
@@ -82,22 +82,22 @@
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="breed">Порода</label>
+                    <label for="breed">Порода <span class="required-field">*</span></label>
                     <select name="breed" id="breed" required data-value="{{ $pet->breed_id }}"></select>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="color">Масть</label>
+                    <label for="color">Масть <span class="required-field">*</span></label>
                     <select name="color" id="color" required data-value="{{ $pet->color_id }}"></select>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="fur">Тип шерсті</label>
+                    <label for="fur">Тип шерсті <span class="required-field">*</span></label>
                     <select name="fur" id="fur" required data-value="{{ $pet->fur_id }}"></select>
                 </div>
                 <div class="form-group datepicker">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="birthday">Дата народження</label>
+                    <label for="birthday">Дата народження <span class="required-field">*</span></label>
                     <input type="text" class="form-control" id="birthday" name="birthday" required
                            value="{{ $pet->birthday->format('d/m/Y') }}"/>
                 </div>

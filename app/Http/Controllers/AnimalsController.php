@@ -85,6 +85,7 @@ class AnimalsController extends Controller
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
+            'images.*.image' => 'Файли повинні буди корректними фото!',
         ]);
 
         if ($validator->fails()) {
@@ -188,7 +189,7 @@ class AnimalsController extends Controller
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
             'images' => 'nullable|array',
-            'images.*' => 'nullable|file',
+            'images.*' => 'nullable|image',
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|file',
         ], [
@@ -199,6 +200,8 @@ class AnimalsController extends Controller
             'birthday.date' => 'Дата народження повинна бути корректною датою',
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
+            'images.*.image' => 'Файли повинні буди корректними фото!',
+
         ]);
 
         if ($validator->fails()) {

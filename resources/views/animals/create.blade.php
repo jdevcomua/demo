@@ -11,7 +11,7 @@
         @csrf
         <div class="cols-block">
             <div class="cols-block-header">
-                <div class="block-title">ЗОБРАЖЕННЯ  <span class="required-field">*</span></div>
+                <div class="block-title">ЗОБРАЖЕННЯ <span class="required-field">*</span></div>
                 <div class="block-sub-title">Що більше фото тим простіше знайти тварину у випадку втрати.<br>
                     Фотографуйте тваринку з різних сторін.</div>
                 <div class="pet-photo-hint"><div>Це фото буде головним</div></div>
@@ -111,7 +111,7 @@
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="fur">Тип шерсті</label>
+                    <label for="fur">Тип шерсті <span class="required-field">*</span></label>
                     <select name="fur" id="fur" required-field></select>
                 </div>
                 <div class="form-group datepicker">

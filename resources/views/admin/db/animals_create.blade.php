@@ -28,7 +28,7 @@
                             @csrf
                             <input type="hidden" name="user_id" value="{{ ($user) ? $user->id : \Auth::id() }}">
                             <div class="panel-body">
-                                @if($errors->user)
+                                @if($errors->animal)
                                     @foreach($errors->animal->all() as $error)
                                         <div class="alert alert-danger alert-dismissable">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
