@@ -94,8 +94,11 @@
                     {
                         data: 'updated_at',
                         render: function ( data, type, row ) {
-                            var d = parseDBDate(data);
-                            return d.toLocaleDateString('uk') + ' ' + d.toLocaleTimeString('uk');
+                            if (data) {
+                                var d = parseDBDate(data);
+                                return d.toLocaleDateString('uk') + ' ' + d.toLocaleTimeString('uk');
+                            }
+                            return data
                         }
                     },
                     {

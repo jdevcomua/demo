@@ -60,35 +60,33 @@ class DataTables
                                 if (((array_search($column['data'], $model->getDates()) !== false
                                     && preg_match("/^[a-z-:.\d]{1}[a-z-:.\d\s]*[a-z-:.\d]{1}$/i", $column['search']['value'])))
                                 || array_search($column['data'], $model->getDates()) === false) {
-                                    if ($column['data'] === 'birthday') {
-                                        //reverting format
-                                        $searchValue = explode('.', $column['search']['value']);
-                                        $searchValue = array_reverse($searchValue);
-                                        if (count($searchValue) === 2) {
-                                            if (strlen($searchValue[0]) === 1 || strlen($searchValue[0]) === 3) {
-                                                $searchValue[0] .= '%';
-                                            }
-                                        } elseif (count($searchValue) === 3) {
+                                    //reverting format
+                                    $searchValue = explode('.', $column['search']['value']);
+                                    $searchValue = array_reverse($searchValue);
+                                    if (count($searchValue) === 2) {
+                                        if (strlen($searchValue[0]) === 1 || strlen($searchValue[0]) === 3) {
                                             $searchValue[0] .= '%';
                                         }
-                                        $searchValue = implode('-', $searchValue);
+                                    } elseif (count($searchValue) === 3) {
+                                        $searchValue[0] .= '%';
+                                    }
+                                    $searchValue = implode('-', $searchValue);
+
+                                    if (!$aliases || !array_key_exists($column['data'], $aliases)) {
                                         $query->where($table . '.' . $column['data'], 'like',
                                             '%' . $searchValue . '%');
-                                    } else
-                                        if (!$aliases || !array_key_exists($column['data'], $aliases)) {
-                                            $query->where($table . '.' . $column['data'], 'like',
-                                                '%' . $column['search']['value'] . '%');
+                                    } else {
+                                        if (!self::isHavingSearch($aliases[$column['data']])) {
+                                            $query->whereRaw($aliases[$column['data']] . ' like '
+                                                . '\'%' . $column['search']['value'] . '%\''
+                                            );
                                         } else {
-                                            if (!self::isHavingSearch($aliases[$column['data']])) {
-                                                $query->whereRaw($aliases[$column['data']] . ' like '
-                                                    . '\'%' . $column['search']['value'] . '%\''
-                                                );
-                                            } else {
-                                                $query->havingRaw($aliases[$column['data']] . ' like '
-                                                    . '\'%' . $column['search']['value'] . '%\''
-                                                );
-                                            }
+                                            $query->havingRaw($aliases[$column['data']] . ' like '
+                                                . '\'%' . $column['search']['value'] . '%\''
+                                            );
                                         }
+                                    }
+
                                 } else {
                                     $kyrillSymolsInDates = true;
                                 }
@@ -96,6 +94,7 @@ class DataTables
                         } catch (\Exception $exception) {}
                     }
                 }
+
                 if ($request->has('order')) {
                     try {
                         if (!$aliases || !array_key_exists($columns[$req['order'][0]['column']]['data'], $aliases)) {

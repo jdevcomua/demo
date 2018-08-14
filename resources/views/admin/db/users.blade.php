@@ -135,10 +135,28 @@
                         }
                     },
                     @permission('private-data')
-                    { "data": "passport" },
+                    { data: "passport" },
                     @endpermission
-                    { "data": "created_at" },
-                    { "data": "updated_at" },
+                    { data: "created_at",
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                var d = parseDBDate(data);
+                                return d.toLocaleDateString('uk') + ' ' + d.toLocaleTimeString('uk');
+                            }
+                            return data
+                        }
+                    },
+
+
+                    { data: "updated_at",
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                var d = parseDBDate(data);
+                                return d.toLocaleDateString('uk') + ' ' + d.toLocaleTimeString('uk');
+                            }
+                            return data
+                        }
+                    },
                 ],
             });
 
