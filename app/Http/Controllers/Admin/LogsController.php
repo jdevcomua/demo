@@ -22,7 +22,7 @@ class LogsController extends Controller
             ->leftJoin('users', 'users.id', '=', 'logs.user_id');
 
         $aliases = [
-            'user' => 'CONCAT(users.last_name, " ", users.first_name, " ", users.middle_name, "|", users.id)',
+            'user' => 'CONCAT(users.last_name, " ", users.first_name, " ", users.middle_name)',
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);
