@@ -259,8 +259,8 @@ $form.on('submit', function (e) {
                 } else {
                     $('body').removeClass('no-scroll');
                     $('.uploader-overlay').hide();
-                    showValidationErrors(data.errors);
                     showNames();
+                    showValidationErrors(data.errors);
                 }
             }
 
@@ -299,7 +299,8 @@ function showValidationErrors(err) {
     var $highestElem = false;
     for (var key in err) {
         if (err.hasOwnProperty(key)) {
-            var $elem = findNearest($('[name^='+key+']').first(), '.validation-error');
+            var search_key = key.split('.')[0];
+            var $elem = findNearest($('[name^='+search_key+']').first(), '.validation-error');
             $elem.text(err[key]);
             $elem.removeClass('hidden');
 
