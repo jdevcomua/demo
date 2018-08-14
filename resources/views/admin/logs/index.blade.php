@@ -116,6 +116,7 @@
                         }
                     },
                     {
+                        data: 'object_id',
                         render: function ( data, type, row ) {
                             if (row.object_id && row.object_type) {
                                 return '<a href="{{ route('admin.object') }}/' + row.object_type + '/' + row.object_id + '">' +
