@@ -57,7 +57,7 @@ class AnimalsController extends Controller
         $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
                                 'birthday', 'sterilized', 'comment', 'images', 'documents']);
 
-        if (array_key_exists('birthday', $data)) {
+        if (array_key_exists('birthday', $data) && $data['birthday']) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
             $data['birthday'] = Carbon::createFromTimestamp(strtotime($data['birthday']));
         }
@@ -79,6 +79,11 @@ class AnimalsController extends Controller
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
+            'species.required' => 'Вид є обов\'язковим полем',
+            'gender.required' => 'Стать є обов\'язковим полем',
+            'breed.required' => 'Порода є обов\'язковим полем',
+            'color.required' => 'Масть є обов\'язковим полем',
+            'fur.required' => 'Тип шерсті є обов\'язковим полем',
             'birthday.required' => 'Дата народження є обов\'язковим полем',
             'birthday.before' => 'Дата народження не може бути у майбутньому!',
             'birthday.date' => 'Дата народження повинна бути корректною датою',
@@ -195,11 +200,17 @@ class AnimalsController extends Controller
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
+            'species.required' => 'Вид є обов\'язковим полем',
+            'gender.required' => 'Стать є обов\'язковим полем',
+            'breed.required' => 'Порода є обов\'язковим полем',
+            'color.required' => 'Масть є обов\'язковим полем',
+            'fur.required' => 'Тип шерсті є обов\'язковим полем',
             'birthday.required' => 'Дата народження є обов\'язковим полем',
             'birthday.before' => 'Дата народження не може бути у майбутньому!',
             'birthday.date' => 'Дата народження повинна бути корректною датою',
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
+            'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
             'images.*.image' => 'Файли повинні бути в форматі зображення!',
 
         ]);
