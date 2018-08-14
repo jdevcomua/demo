@@ -11,7 +11,7 @@
         @csrf
         <div class="cols-block">
             <div class="cols-block-header">
-                <div class="block-title">ЗОБРАЖЕННЯ</div>
+                <div class="block-title">ЗОБРАЖЕННЯ  <span class="required">*</span></div>
                 <div class="block-sub-title">Що більше фото тим простіше знайти тварину у випадку втрати.<br>
                     Фотографуйте тваринку з різних сторін.</div>
                 <div class="pet-photo-hint"><div>Це фото буде головним</div></div>
@@ -66,12 +66,12 @@
             <div class="cols-block-content form">
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="nickname">Кличка</label>
+                    <label for="nickname">Кличка <span class="required">*</span></label>
                     <input type="text" class="form-control" id="nickname" name="nickname" required>
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label>Вид</label>
+                    <label>Вид  <span class="required">*</span></label>
                     <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn radio-item big-radio active">
                             <span class="label label-dog"></span>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label>Стать</label>
+                    <label>Стать  <span class="required">*</span></label>
                     <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn radio-item big-radio active">
                             <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
@@ -101,12 +101,12 @@
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="breed">Порода</label>
+                    <label for="breed">Порода  <span class="required">*</span></label>
                     <select name="breed" id="breed" required></select>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="color">Масть</label>
+                    <label for="color">Масть  <span class="required">*</span></label>
                     <select name="color" id="color" required></select>
                 </div>
                 <div class="form-group select">
@@ -116,7 +116,7 @@
                 </div>
                 <div class="form-group datepicker">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="birthday">Дата народження</label>
+                    <label for="birthday">Дата народження  <span class="required">*</span></label>
                     <input type="text" class="form-control" id="birthday" name="birthday"
                            required autocomplete="off" />
                 </div>

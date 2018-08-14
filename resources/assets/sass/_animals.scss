@@ -90,6 +90,9 @@
     }
   }
 }
+.required {
+  color: red;
+}
 @media (max-width: 900px) {
   .pets-list-item {
     padding: 3vw 0 3vw 3vw;
