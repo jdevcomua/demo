@@ -85,7 +85,7 @@ class AnimalsController extends Controller
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
-            'images.*.image' => 'Файли повинні буди корректними фото!',
+            'images.*.image' => 'Файли повинні бути в форматі зображення!',
         ]);
 
         if ($validator->fails()) {
@@ -200,7 +200,7 @@ class AnimalsController extends Controller
             'birthday.date' => 'Дата народження повинна бути корректною датою',
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
-            'images.*.image' => 'Файли повинні буди корректними фото!',
+            'images.*.image' => 'Файли повинні бути в форматі зображення!',
 
         ]);
 
