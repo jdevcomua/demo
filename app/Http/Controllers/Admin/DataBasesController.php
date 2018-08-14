@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
+use App\Mail\NewAnimal;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\Log;
@@ -229,6 +230,7 @@ class DataBasesController extends Controller
         if ($animal) \RhaLogger::object($animal);
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
+        \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
 
         return redirect()
             ->route('admin.db.animals.edit', $animal->id)
