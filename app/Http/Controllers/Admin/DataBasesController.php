@@ -189,7 +189,7 @@ class DataBasesController extends Controller
             'images' => 'required|array',
             'images.*' => 'required|image',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file',
+            'documents.*' => 'nullable|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf',
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
@@ -205,8 +205,8 @@ class DataBasesController extends Controller
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
             'images.*.image' => 'Файли повинні бути в форматі зображення!',
+            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
         ]);
-
         if ($validator->fails()) {
             return redirect()
                 ->back()
@@ -281,7 +281,7 @@ class DataBasesController extends Controller
             'images' => 'nullable|array',
             'images.*' => 'nullable|image',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file',
+            'documents.*' => 'nullable|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf',
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
@@ -297,7 +297,7 @@ class DataBasesController extends Controller
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
             'images.*.image' => 'Файли повинні бути в форматі зображення!',
-
+            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
         ]);
 
         if ($validator->fails()) {
