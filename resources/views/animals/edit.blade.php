@@ -50,7 +50,7 @@
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label>Вид</label>
+                    <label>Вид <span class="required-field">*</span></label>
                     <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn radio-item big-radio @if($pet->species_id === 1) active @endif">
                             <span class="label label-dog"></span>
