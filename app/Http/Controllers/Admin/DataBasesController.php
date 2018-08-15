@@ -177,7 +177,6 @@ class DataBasesController extends Controller
         }
 
         $validator = Validator::make($data, [
-            'user_id' => 'required|integer|exists:users,id',
             'nickname' => 'required|string|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
@@ -188,18 +187,24 @@ class DataBasesController extends Controller
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
             'images' => 'required|array',
-            'images.*' => 'required|file',
+            'images.*' => 'required|image',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file'
+            'documents.*' => 'nullable|file',
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
+            'species.required' => 'Вид є обов\'язковим полем',
+            'gender.required' => 'Стать є обов\'язковим полем',
+            'breed.required' => 'Порода є обов\'язковим полем',
+            'color.required' => 'Масть є обов\'язковим полем',
+            'fur.required' => 'Тип шерсті є обов\'язковим полем',
             'birthday.required' => 'Дата народження є обов\'язковим полем',
             'birthday.before' => 'Дата народження не може бути у майбутньому!',
             'birthday.date' => 'Дата народження повинна бути корректною датою',
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
+            'images.*.image' => 'Файли повинні бути в форматі зображення!',
         ]);
 
         if ($validator->fails()) {
@@ -272,15 +277,27 @@ class DataBasesController extends Controller
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
-            'comment' => 'nullable|string|max:2000'
+            'comment' => 'nullable|string|max:2000',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|image',
+            'documents' => 'nullable|array',
+            'documents.*' => 'nullable|file',
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
+            'species.required' => 'Вид є обов\'язковим полем',
+            'gender.required' => 'Стать є обов\'язковим полем',
+            'breed.required' => 'Порода є обов\'язковим полем',
+            'color.required' => 'Масть є обов\'язковим полем',
+            'fur.required' => 'Тип шерсті є обов\'язковим полем',
             'birthday.required' => 'Дата народження є обов\'язковим полем',
             'birthday.before' => 'Дата народження не може бути у майбутньому!',
             'birthday.date' => 'Дата народження повинна бути корректною датою',
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
+            'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
+            'images.*.image' => 'Файли повинні бути в форматі зображення!',
+
         ]);
 
         if ($validator->fails()) {
