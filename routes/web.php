@@ -21,6 +21,7 @@ Route::group(['middleware' => 'not.banned'], function () {
     Route::group(['middleware' => 'auth'], function () {
 
         Route::resource('animals', 'AnimalsController');
+        Route::post('animals/search-request', 'AnimalsController@findAnimalRequest')->name('animals.search-request');
         Route::post('/animals/file/{animalFile}/remove', 'AnimalsController@removeFile')->name('animals.remove-file');
         Route::view('/animals/verify', 'animals.verify')->name('animals.verify');
 
@@ -41,7 +42,10 @@ Route::group(['middleware' => 'not.banned'], function () {
             ->name('getColors');
         Route::get('/species/{species}/furs', 'AjaxController@getFurs')
             ->name('getFurs');
-
+        Route::post('/search', 'AjaxController@badgeSearch')
+            ->name('animals.search');
+        Route::post('/animal/request', 'AjaxController@requestAnimal')
+            ->name('animals.request');
     });
 
 });

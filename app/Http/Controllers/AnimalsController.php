@@ -282,4 +282,10 @@ class AnimalsController extends Controller
             'status' => 'ok'
         ]);
     }
+
+    public function findAnimalRequest(Request $request)
+    {
+        \Log::info($request->all(), $request->user());
+        return redirect()->back();
+    }
 }

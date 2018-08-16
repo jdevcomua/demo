@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -20,7 +21,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $verified
  * @property string|null $comment
  * @property string|null $number
+ * @property string|null $badge
  * @property int|null $confirm_user_id
+ * @property int|null $request_user_id
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Models\Breed $breed
@@ -32,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Species $species
  * @property-read \App\User $user
  * @property-read \App\User|null $userThatConfirmed
+ * @property-read \App\User|null $userThatRequest
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBreedId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereColorId($value)
@@ -58,7 +62,7 @@ class Animal extends Model
 
     protected $fillable = [
         'id', 'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id',
-        'birthday', 'sterilized', 'comment', 'verified', 'number',
+        'birthday', 'sterilized', 'comment', 'verified', 'number', 'badge', 'request_user_id',
 
         //generated attributes, don't fill them
         '_verification',
@@ -135,5 +139,9 @@ class Animal extends Model
                 ->first();
         }
         return $this->attributes['_verification'];
+    }
+
+    public function userThatRequest () {
+        return $this->belongsTo(User::class, 'request_user_id');
     }
 }
