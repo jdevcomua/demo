@@ -42,6 +42,7 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Номер жетону</th>
                                     <th>Дії</th>
                                     <th>Кличка</th>
                                     <th>Вид</th>
@@ -59,6 +60,7 @@
                                 </thead>
                                 <tfoot class="search">
                                 <tr>
+                                    <th></th>
                                     <th></th>
                                     <th class="no-search"></th>
                                     <th></th>
@@ -125,6 +127,7 @@
                 ajax: '{{ route('admin.db.animals.data', null, false) }}',
                 columns: [
                     { "data": "id"},
+                    { "data": "badge" },
                     {
                         "data": "id",
                         defaultContent: '',

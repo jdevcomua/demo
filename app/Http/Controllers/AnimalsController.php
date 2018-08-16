@@ -285,7 +285,7 @@ class AnimalsController extends Controller
 
     public function findAnimalRequest(Request $request)
     {
-        \Log::info($request->all(), $request->user());
+        \Log::info([$request->all(), $request->user()->toArray()]);
         return redirect()->back();
     }
 }

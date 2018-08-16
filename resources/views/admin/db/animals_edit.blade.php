@@ -46,15 +46,24 @@
                                     </div>
                                 @endif
 
-                                <div class="form-group">
-                                    <label for="nickname" class="col-lg-3 control-label">Власник</label>
+                                {{--<div class="form-group">--}}
+                                    {{--<label for="nickname" class="col-lg-3 control-label">Власник</label>--}}
+                                    {{--<div class="col-lg-8">--}}
+                                        {{--<p class="form-control custom-field">--}}
+                                            {{--@if($animal->user)--}}
+                                            {{--<a href="{{ route('admin.db.users.show', $animal->user->id) }}">--}}
+                                                {{--{{ $animal->user->fullName}}</a>--}}
+                                            {{--@endif--}}
+                                        {{--</p>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                <div class="form-group select">
+                                    <label for="user" class="col-lg-3 control-label">Власник</label>
                                     <div class="col-lg-8">
-                                        <p class="form-control custom-field">
-                                            <a href="{{ route('admin.db.users.show', $animal->user->id) }}">
-                                                {{ $animal->user->fullName}}</a>
-                                        </p>
+                                        <select name="user" id="user" required data-value="{{ $animal->user_id }}"></select>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="nickname" class="col-lg-3 control-label">Кличка</label>
                                     <div class="col-lg-8">
@@ -111,6 +120,15 @@
                                                value="{{ $animal->birthday->format('d/m/Y') }}" required />
                                     </div>
                                 </div>
+                                @permission('verify-animal')
+                                <div class="form-group">
+                                    <label for="badge" class="col-lg-3 control-label">Номер жетону</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="badge" name="badge" class="form-control"
+                                               value="{{ $animal->badge }}" required>
+                                    </div>
+                                </div>
+                                @endpermission
                                 <div class="form-group">
                                     <label for="sterilized" class="col-lg-3 control-label"></label>
                                     <div class="col-lg-8">
@@ -299,6 +317,27 @@
 
     <script type="text/javascript">
         jQuery(document).ready(function() {
+            {{--$('.form-group.select select#user').selectize({--}}
+                {{--options: JSON.parse({!! $users !!}),--}}
+                {{--labelField: 'name',--}}
+                {{--searchField: ['name']--}}
+            {{--});--}}
+            $.ajax({
+                url: '/ajax/users',
+                type: 'get',
+                success: function(data) {
+                    var users = $('.form-group.select select#user').selectize({
+                        options: JSON.parse(data),
+                        labelField: 'name',
+                        valueField: 'value',
+                        searchField: ['name']
+                    });
+                    users[0].selectize.setValue($('.form-group.select select#user').data('value'));
+                },
+                error: function(data) {
+                    console.error(data);
+                }
+            });
 
             $('.form-group.select-gen select').selectize();
 

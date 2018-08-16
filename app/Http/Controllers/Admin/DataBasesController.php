@@ -122,31 +122,13 @@ class DataBasesController extends Controller
             ->join('species', 'species.id', '=', 'animals.species_id')
             ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
             ->join('colors', 'colors.id', '=', 'animals.color_id')
-            ->join('users as users1', 'users1.id', '=', 'animals.user_id');
-//            ->leftJoinSub(
-//                Log::select('logs.*')
-//                    ->fromSub(
-//                        Log::selectRaw('object_id, max(updated_at) as updated_at')
-//                            ->where('object_type', '=', 'Тварина')
-//                            ->where('action', '=', Log::ACTION_VERIFY)
-//                            ->groupBy('object_id'),
-//                        'latest_log'
-//                    )
-//                    ->join('logs', function($q) {
-//                        $q->on('logs.object_id', '=', 'latest_log.object_id');
-//                        $q->on('logs.updated_at', '=', 'latest_log.updated_at');
-//                    }),
-//                'logs', 'logs.object_id', '=', 'animals.id'
-//            )
-//            ->leftJoin('users as users2', 'users2.id', '=', 'logs.user_id');
-
+            ->leftJoin('users as users1', 'users1.id', '=', 'animals.user_id');
 
         $aliases = [
             'species_name' => 'species.name',
             'breeds_name' => 'breeds.name',
             'colors_name' => 'colors.name',
             'owner_name' => 'CONCAT(`users1`.last_name, \' \', `users1`.first_name, \'||\', `users1`.id)',
-//            'verified_name' => 'CONCAT(`users2`.last_name, \' \', `users2`.first_name, \'||\', `users2`.id)'
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);
@@ -160,16 +142,26 @@ class DataBasesController extends Controller
     {
         $user = ($id) ? User::findOrFail($id) : null;
 
+        $users = User::all()->pluck('name', 'id')->toArray();
+
+        $users = array_map(function ($value, $key) {
+            return [
+                'name' => $value,
+                'value' => $key
+            ];
+        }, $users, array_keys($users));
+
         return view('admin.db.animals_create', [
             'species' => Species::get(),
-            'user' => $user
+            'user' => $user,
+            'users' => json_encode($users)
         ]);
     }
 
     public function animalStore(Request $request)
     {
-        $data = $request->only(['user_id', 'nickname', 'species', 'gender', 'breed', 'color', 'fur',
-            'birthday', 'sterilized', 'comment', 'images', 'documents']);
+        $data = $request->only(['user_id', 'nickname', 'species', 'gender', 'breed', 'color', 'fur', 'user',
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'badge']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -177,6 +169,7 @@ class DataBasesController extends Controller
         }
 
         $validator = Validator::make($data, [
+            'user' => 'nullable|integer|exists:users,id',
             'nickname' => 'required|string|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
@@ -218,6 +211,8 @@ class DataBasesController extends Controller
         $data['breed_id'] = $data['breed'];
         $data['color_id'] = $data['color'];
         $data['fur_id'] = $data['fur'];
+        $data['user_id'] = $data['user'];
+        unset($data['user']);
         unset($data['species']);
         unset($data['breed']);
         unset($data['color']);
@@ -248,10 +243,19 @@ class DataBasesController extends Controller
             ->findOrFail($id);
 
         $animal->load('files', 'user', 'history', 'history.user');
+        $users = User::all()->pluck('name', 'id')->toArray();
+
+        $users = array_map(function ($value, $key) {
+            return [
+                'name' => $value,
+                'value' => $key
+            ];
+        }, $users, array_keys($users));
 
         return view('admin.db.animals_edit', [
             'animal' => $animal,
             'species' => Species::get(),
+            'users' => json_encode($users)
         ]);
     }
 
@@ -260,8 +264,8 @@ class DataBasesController extends Controller
         $animal = $this->animalModel
             ->findOrFail($id);
 
-        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
-            'birthday', 'sterilized', 'comment', 'images', 'documents']);
+        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur', 'user',
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'badge']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -269,6 +273,7 @@ class DataBasesController extends Controller
         }
 
         $validator = Validator::make($data, [
+            'user' => 'nullable|integer|exists:users,id',
             'nickname' => 'required|string|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
@@ -277,6 +282,7 @@ class DataBasesController extends Controller
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
+            'badge' => 'nullable',
             'comment' => 'nullable|string|max:2000',
             'images' => 'nullable|array',
             'images.*' => 'nullable|image',
@@ -311,10 +317,12 @@ class DataBasesController extends Controller
         $data['breed_id'] = $data['breed'];
         $data['color_id'] = $data['color'];
         $data['fur_id'] = $data['fur'];
+        $data['user_id'] = $data['user'];
         unset($data['species']);
         unset($data['breed']);
         unset($data['color']);
         unset($data['fur']);
+        unset($data['user']);
 
         $data['sterilized'] = array_key_exists('sterilized', $data);
 

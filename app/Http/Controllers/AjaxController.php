@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Date;
 use App\Models\Animal;
+use App\User;
 use Illuminate\Http\Request;
 
 class AjaxController extends Controller
@@ -49,6 +50,20 @@ class AjaxController extends Controller
         }, $furs, array_keys($furs));
 
         return response(json_encode($furs));
+    }
+
+    public function getUsers()
+    {
+        $users = User::all()->pluck('name', 'id')->toArray();
+
+        $users = array_map(function ($value, $key) {
+            return [
+                'name' => $value,
+                'value' => $key
+            ];
+        }, $users, array_keys($users));
+
+        return response(json_encode($users));
     }
 
     public function badgeSearch(Request $request)

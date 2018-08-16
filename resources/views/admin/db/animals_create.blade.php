@@ -119,6 +119,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                @permission('verify-animal')
+                                <div class="form-group">
+                                    <label for="badge" class="col-lg-3 control-label">Номер жетону</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="badge" name="badge" class="form-control"
+                                               value="{{ old('badge') }}" required>
+                                    </div>
+                                </div>
+                                @endpermission
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label" for="comment">Коментарі (Особливі прикмети)</label>
                                     <div class="col-lg-8">

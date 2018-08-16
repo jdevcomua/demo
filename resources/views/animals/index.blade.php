@@ -75,15 +75,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content" id="modal-content">
-
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="requestSearchModal" tabindex="-1" role="dialog" aria-labelledby="requestSearchModalLabel" aria-hidden="true">
+    <div class="modal fade" id="requestSearchModal" tabindex="-2" role="dialog" aria-labelledby="requestSearchModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -93,17 +85,31 @@
                     </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <h3>ЗАПИТ НА ПОШУК</h3>
                             <p>Після ретельного пошуку ми надішлемо вам лист на пошту з результатами</p>
                         </div>
                         <div class="col-md-12">
-                            <form action="{{route('animals.search-request')}}" method="POST" id="form">
+                            <form action="{{route('animals.search-request')}}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="nickname">Кличка</label>
                                     <input type="text" class="form-control" id="nickname" name="nickname" required="">
+                                </div>
+                                <div class="form-group">
+                                    <div class="validation-error alert alert-danger hidden"></div>
+                                    <label>Вид</label>
+                                    <div class="btn-group-toggle" data-toggle="buttons">
+                                        <label class="btn radio-item big-radio active">
+                                            <span class="label label-dog"></span>
+                                            <input type="radio" name="species" value="1" autocomplete="off" checked>Собака
+                                        </label>
+                                        <label class="btn radio-item big-radio">
+                                            <span class="label label-cat"></span>
+                                            <input type="radio" name="species" value="2" autocomplete="off">Кіт
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
@@ -114,6 +120,11 @@
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="color">Масть</label>
                                     <select name="color" id="color" required-field></select>
+                                </div>
+                                <div class="form-group select hidden">
+                                    <div class="validation-error alert alert-danger hidden"></div>
+                                    <label for="fur">Тип шерсті</label>
+                                    <select name="fur" id="fur" required-field></select>
                                 </div>
                                 <div class="form-group datepicker">
                                     <div class="validation-error alert alert-danger hidden"></div>
@@ -147,6 +158,14 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content" id="modal-content">
+
             </div>
         </div>
     </div>
@@ -203,7 +222,15 @@
     });
     $(document).on('click', '.not-found-search', function() {
         $('#searchModal').modal('hide');
+        setTimeout(function () {
+            $('#requestSearchModal').modal('show');
+        }, 500);
+        $('body').addClass('modal-open');
     });
+    // $('#form').on('submit', function(){
+    //     $(window).scrollTop(0);
+    //     window.location.reload();
+    // })
 </script>
 @endsection
 

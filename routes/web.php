@@ -42,6 +42,8 @@ Route::group(['middleware' => 'not.banned'], function () {
             ->name('getColors');
         Route::get('/species/{species}/furs', 'AjaxController@getFurs')
             ->name('getFurs');
+        Route::get('/users', 'AjaxController@getUsers')
+            ->name('getUsers');
         Route::post('/search', 'AjaxController@badgeSearch')
             ->name('animals.search');
         Route::post('/animal/request', 'AjaxController@requestAnimal')
