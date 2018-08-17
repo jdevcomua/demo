@@ -93,6 +93,19 @@
 .required-field {
   color: red;
 }
+.new-pet-photos label.photo-item.canBeDeleted {
+  position: relative;
+  &:before {
+    content: 'X';
+    font-size: 2rem;
+    line-height: 2rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: red;
+    font-weight: bold;
+  }
+}
 .buttons {
   width: 300px;
   .line {

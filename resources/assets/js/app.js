@@ -47,12 +47,24 @@ function readURL(input) {
         reader.onload = function(e) {
             $(input).parent().css('background-image', 'url(' + e.target.result + ')');
             $(input).parent().addClass('filled');
+            $(input).parent().addClass('canBeDeleted');
         };
         reader.readAsDataURL(input.files[0]);
     }
 }
-$(".imageInput").change(function() {
+$(document).on('change',".imageInput", function() {
     readURL(this);
+});
+$(document).on('click', '.canBeDeleted', function () {
+    var id = $(this).find('input').attr('id');
+    var parent = $(this).parent();
+    var where = $(this).next();
+    $(this).remove();
+    $('<label class="photo-item" for="image'+id+'">\n' +
+        '                        <input type=\'file\' name="images['+id+']" id="image'+id+'" class="imageInput" />\n' +
+        '                        <span class="add-btn"></span>\n' +
+        '                    </label>').insertBefore(where);
+
 });
 /////////////////////////////////////////
 

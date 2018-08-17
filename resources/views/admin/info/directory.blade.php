@@ -443,5 +443,11 @@
             });
 
         });
+        $(document).on('click', '.fa-trash', function(e) {
+            if (confirm('Ви впевнені що хочете видалити запис?')) {
+            } else {
+                e.preventDefault();
+            }
+        });
     </script>
 @endsection
