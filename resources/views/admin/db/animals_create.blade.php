@@ -106,7 +106,7 @@
                                     <label for="birthday" class="col-lg-3 control-label">Дата народження</label>
                                     <div class="col-lg-8 ">
                                         <input type="text" class="form-control" id="birthday" name="birthday"
-                                               value="{{ old('birthday') }}" required autocomplete="off" />
+                                               value="{{ old('birthday') }}" required autocomplete="off" readonly="true" />
                                     </div>
                                 </div>
                                 <div class="form-group">

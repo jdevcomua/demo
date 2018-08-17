@@ -117,7 +117,8 @@
                                     <label for="birthday" class="col-lg-3 control-label">Дата народження</label>
                                     <div class="col-lg-8 ">
                                         <input type="text" class="form-control" id="birthday" name="birthday"
-                                               value="{{ $animal->birthday->format('d/m/Y') }}" required />
+                                               value="{{ $animal->birthday->format('d/m/Y') }}" required readonly="true"
+                                        />
                                     </div>
                                 </div>
                                 @permission('verify-animal')

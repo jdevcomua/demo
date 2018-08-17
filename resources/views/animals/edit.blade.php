@@ -99,7 +99,8 @@
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="birthday">Дата народження <span class="required-field">*</span></label>
                     <input type="text" class="form-control" id="birthday" name="birthday" required
-                           value="{{ $pet->birthday->format('d/m/Y') }}"/>
+                           value="{{ $pet->birthday->format('d/m/Y') }} " readonly="true"
+                    />
                 </div>
                 <div class="form-group btn-group-toggle checkbox-group" data-toggle="buttons">
                     <label class="btn checkbox-item @if($pet->sterilized) active @endif">

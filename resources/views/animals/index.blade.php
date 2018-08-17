@@ -130,7 +130,7 @@
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="birthday">Дата народження</label>
                                     <input type="text" class="form-control" id="birthday" name="birthday"
-                                           required-field autocomplete="off" />
+                                           required-field autocomplete="off" readonly="true" />
                                 </div>
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
