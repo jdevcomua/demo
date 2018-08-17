@@ -53,6 +53,14 @@
                                         <input type="file" id="images" name="images[]" multiple required>
                                     </div>
                                 </div>
+
+                                <div class="form-group select">
+                                    <label for="user" class="col-lg-3 control-label">Власник</label>
+                                    <div class="col-lg-8">
+                                        <select name="user" id="user" requiredй></select>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label for="nickname" class="col-lg-3 control-label">Кличка</label>
                                     <div class="col-lg-8">
@@ -161,6 +169,26 @@
         jQuery(document).ready(function() {
 
             $('.form-group.select-gen select').selectize();
+
+            $.ajax({
+                url: '/ajax/users',
+                type: 'get',
+                success: function(data) {
+                    var users = $('.form-group.select select#user').selectize({
+                        options: JSON.parse(data),
+                        labelField: 'name',
+                        valueField: 'value',
+                        searchField: ['name']
+                    });
+                    users[0].selectize.setValue($('.form-group.select select#user').data('value'));
+                },
+                error: function(data) {
+                    console.error(data);
+                }
+            });
+
+            $('.form-group.select-gen select').selectize();
+
 
         });
     </script>
