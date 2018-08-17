@@ -27,7 +27,7 @@
                 @csrf
             </form>
         @else
-            <a href="{{ route('login') }}" class="auth-item profile">ВВІЙТИ</a>
+            <a href="{{ route('login') }}" class="auth-item profile">УВІЙТИ</a>
         @endauth
     </div>
     <div class="nav">
