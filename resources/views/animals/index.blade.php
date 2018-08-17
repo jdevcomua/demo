@@ -114,23 +114,23 @@
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="breed">Порода</label>
-                                    <select name="breed" id="breed" required-field></select>
+                                    <select name="breed" id="breed" required required-field></select>
                                 </div>
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="color">Масть</label>
-                                    <select name="color" id="color" required-field></select>
+                                    <select name="color" id="color" required required-field></select>
                                 </div>
                                 <div class="form-group select hidden">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="fur">Тип шерсті</label>
-                                    <select name="fur" id="fur" required-field></select>
+                                    <select name="fur" id="fur" required required-field></select>
                                 </div>
                                 <div class="form-group datepicker">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="birthday">Дата народження</label>
                                     <input type="text" class="form-control" id="birthday" name="birthday"
-                                           required-field autocomplete="off" readonly="true" />
+                                           required-field required autocomplete="off" readonly="true" />
                                 </div>
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
