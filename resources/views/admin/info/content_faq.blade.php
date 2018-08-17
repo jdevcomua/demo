@@ -145,10 +145,12 @@
             });
         });
         jQuery(document).on('click','.delete', function() {
-            var form = jQuery('#destroy');
-            var id =  jQuery(this).attr('data-id');
-            jQuery(form).attr('action', '{{route('admin.info.content.faq.delete')}}/' +id);
-            jQuery(form).submit();
+            if (confirm('Ви впевнені що хочете видалити питання?')) {
+                var form = jQuery('#destroy');
+                var id = jQuery(this).attr('data-id');
+                jQuery(form).attr('action', '{{route('admin.info.content.faq.delete')}}/' + id);
+                jQuery(form).submit();
+            }
         });
     </script>
 @endsection
