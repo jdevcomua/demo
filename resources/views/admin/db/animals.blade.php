@@ -17,11 +17,9 @@
 
             <div class="row">
 
-                @if(false)
-                    <div class="col-md-2 col-sm-3 col-xs-6 mb25">
-                        <a href="{{ route('admin.db.animals.create') }}" class="btn btn-success btn-block">Додати тварину</a>
-                    </div>
-                @endif
+                <div class="col-md-2 col-sm-3 col-xs-6 mb25">
+                    <a href="{{ route('admin.db.animals.create') }}" class="btn btn-success btn-block">Додати тварину</a>
+                </div>
 
                 <div class="col-xs-12">
                     <div class="panel panel-visible" id="spy5">
