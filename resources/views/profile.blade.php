@@ -251,7 +251,7 @@
                                 Email
                             </label>
 
-                            <input type="text" name="email" class="form-control">
+                            <input type="email" name="email" class="form-control">
                         </div>
                         <button type="submit" class="ml-auto btn btn-primary">+ Додати</button>
                     </div>
