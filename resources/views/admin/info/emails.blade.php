@@ -92,7 +92,7 @@
         });
 
         jQuery(document).on('click','.delete', function() {
-            if (confirm('Ви впевнені що хочете видалити питання?')) {
+            if (confirm('Ви впевнені що хочете видалити повідомлення?')) {
                 var form = jQuery('#destroy');
                 var id = jQuery(this).attr('data-id');
                 jQuery(form).attr('action', '{{route('admin.info.content.faq.delete')}}/' + id);

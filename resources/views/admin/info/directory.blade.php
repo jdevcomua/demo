@@ -444,8 +444,7 @@
 
         });
         $(document).on('click', '.fa-trash', function(e) {
-            if (confirm('Ви впевнені що хочете видалити запис?')) {
-            } else {
+            if (!confirm('Ви впевнені що хочете видалити запис?')) {
                 e.preventDefault();
             }
         });

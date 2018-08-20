@@ -180,5 +180,10 @@
             });
 
         });
+        jQuery(document).on('click','.fa-trash', function(e) {
+            if (!confirm('Ви впевнені що хочете видалити роль?')) {
+                e.preventDefault();
+            }
+        });
     </script>
 @endsection
