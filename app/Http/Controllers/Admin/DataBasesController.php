@@ -218,22 +218,28 @@ class DataBasesController extends Controller
         unset($data['color']);
         unset($data['fur']);
 
-        $user = User::findOrFail($data['user_id']);
+        $user = User::find($data['user_id']);
 
         \RhaLogger::start(['data' => $data]);
         \RhaLogger::update([
             'action' => Log::ACTION_CREATE,
             'user_id' => \Auth::id(),
         ]);
-        $animal = $user->animals()->create($data);
+
+        if ($user) {
+            $animal = $user->animals()->create($data);
+            \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
+        } else {
+            $animal = Animal::create($data);
+        }
+
+        $this->filesService->handleAnimalFilesUpload($animal, $data);
+
         \RhaLogger::addChanges($animal, new Animal(), true, ($animal != null));
         if ($animal) \RhaLogger::object($animal);
 
-        $this->filesService->handleAnimalFilesUpload($animal, $data);
-        \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
-
         return redirect()
-            ->route('admin.db.animals.edit', $animal->id)
+            ->route('admin.db.animals.index', $animal->id)
             ->with('success_animal', 'Тварину додано успішно !');
     }
 
