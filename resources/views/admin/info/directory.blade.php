@@ -381,7 +381,7 @@
             dataTableInit($('#datatable-breed'), {
                 ajax: '{{ route('admin.info.directories.data.breed', null, false) }}',
                 columns: [
-                    { "data": "id" },
+                    { "data": "id", 'width': '10%' },
                     {
                         "data": "id",
                         defaultContent: '',
@@ -403,7 +403,7 @@
             dataTableInit($('#datatable-color'), {
                 ajax: '{{ route('admin.info.directories.data.color', null, false) }}',
                 columns: [
-                    { "data": "id" },
+                    { "data": "id", 'width': '10%' },
                     {
                         "data": "id",
                         defaultContent: '',
@@ -424,7 +424,7 @@
             dataTableInit($('#datatable-fur'), {
                 ajax: '{{ route('admin.info.directories.data.fur', null, false) }}',
                 columns: [
-                    { "data": "id" },
+                    { "data": "id", 'width': '10%' },
                     {
                         "data": "id",
                         defaultContent: '',
