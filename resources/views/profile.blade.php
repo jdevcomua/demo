@@ -7,6 +7,44 @@
         <a href="{{ route('index') }}" class="page-back-link"></a>
         <div class="title">Профіль</div>
     </div>
+
+    @if($errors->email)
+        @foreach($errors->email->all() as $error)
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="fa fa-remove pr10"></i>
+                {{ $error }}
+            </div>
+        @endforeach
+    @endif
+
+    @if (\Session::has('success_email'))
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <i class="fa fa-check pr10"></i>
+            {{ \Session::get('success_email') }}
+        </div>
+    @endif
+
+    @if($errors->phone)
+        @foreach($errors->phone->all() as $error)
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="fa fa-remove pr10"></i>
+                {{ $error }}
+            </div>
+        @endforeach
+    @endif
+
+    @if (\Session::has('success_phone'))
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <i class="fa fa-check pr10"></i>
+            {{ \Session::get('success_phone') }}
+        </div>
+    @endif
+
+
     <form action="{{ route('profile.update') }}" method="POST">
         @csrf
         <div class="cols-block">
@@ -58,6 +96,8 @@
                                    value="{{ $phone->phone }}" readonly>
                         @endforeach
                     </div>
+                    <a href="" class="btn btn-block btn-default" data-toggle="modal" data-target="#modalPhone">+ Додати ще номер телефону</a>
+
                 @endif
                 @if(count($auth->emails))
                     <div class="form-group">
@@ -68,6 +108,8 @@
                         @endforeach
                     </div>
                 @endif
+                <a href="" class="btn btn-block btn-default" data-toggle="modal" data-target="#modalEmail">+ Додати ще Email</a>
+
             </div>
         </div>
         @if($auth->registrationAddress)
@@ -167,4 +209,54 @@
             </div>
         @endif
     </form>
+
+    <div class="modal fade" id="modalPhone" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title mb-3">Додати номер телефону</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="{{route('profile.phone.add')}}" method="post">
+
+                    <div class="modal-body">
+                        @csrf
+                        <div class="form-group">
+                            <label for="min" class="control-label">
+                                Номер телефону
+                            </label>
+
+                            <input type="text" name="phone" class="form-control">
+                        </div>
+                        <button type="submit" class="ml-auto btn btn-primary">+ Додати</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEmail" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title mb-3">Додати Email</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="{{route('profile.email.add')}}" method="post">
+
+                    <div class="modal-body">
+                        @csrf
+                        <div class="form-group">
+                            <label for="min" class="control-label">
+                                Email
+                            </label>
+
+                            <input type="text" name="email" class="form-control">
+                        </div>
+                        <button type="submit" class="ml-auto btn btn-primary">+ Додати</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

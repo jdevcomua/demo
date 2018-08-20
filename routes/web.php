@@ -27,6 +27,8 @@ Route::group(['middleware' => 'not.banned'], function () {
 
         Route::get('/profile', 'ProfileController@show')->name('profile');
         Route::post('/profile', 'ProfileController@update')->name('profile.update');
+        Route::post('/phone/add', 'ProfileController@addPhone')->name('profile.phone.add');
+        Route::post('/email/add', 'ProfileController@addEmail')->name('profile.email.add');
 
     });
 
