@@ -184,7 +184,6 @@ class AnimalsController extends Controller
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
             $data['birthday'] = Carbon::createFromTimestamp(strtotime($data['birthday']));
         }
-//        dd($request, $data, $animal);
 
         $validator = Validator::make($data, [
             'nickname' => 'required|string|max:256',
@@ -197,7 +196,6 @@ class AnimalsController extends Controller
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
             'images' => 'nullable|array',
-            'images.1' => 'required|image',
             'images.*' => 'nullable|image',
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf',
@@ -215,7 +213,6 @@ class AnimalsController extends Controller
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
-            'images.1.required' => 'Додайте головне фото тварини!',
             'images.*.image' => 'Файли повинні бути в форматі зображення!',
             'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
         ]);
