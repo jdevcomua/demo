@@ -62,7 +62,7 @@
                         </li>
                         <li{!! (strpos($curRoute, '.content.block') !== false) ? ' class="active" ' : '' !!}>
                             <a href="{{route('admin.info.content.block.index')}}">
-                                <span class="fa fa-info-circle"></span>Про проект
+                                <span class="fa fa-info-circle"></span>Блоки
                             </a>
                         </li>
                     </ul>

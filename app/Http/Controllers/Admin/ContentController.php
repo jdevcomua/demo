@@ -6,12 +6,14 @@ use App\Helpers\DataTables;
 use App\Http\Controllers\Controller;
 use App\Models\Block;
 use App\Models\Faq;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class ContentController extends Controller
 {
 
     const ABOUT_PAGE = 'about-page';
+    const ANIMAL_VERIFY = 'animal-verify';
 
     public function faqIndex()
     {
@@ -65,18 +67,27 @@ class ContentController extends Controller
 
     public function blockIndex()
     {
-        $block = Block::where('title', '=', self::ABOUT_PAGE)->first();
+        $blocks = Block::whereNull('subject')->get();
 
-        if (!$block) {
+        if (!$blocks->count()) {
             $block = new Block([
                 'title' => self::ABOUT_PAGE,
                 'body' => ''
             ]);
             $block->save();
+
+            $block2 = new Block([
+                'title' => self::ANIMAL_VERIFY,
+                'body' => ''
+            ]);
+            $block2->save();
+
+            $blocks = new Collection();
+            $blocks->merge($block, $block2);
         }
 
         return view('admin.info.content_block', [
-            'block' => $block
+            'blocks' => $blocks
         ]);
     }
 
