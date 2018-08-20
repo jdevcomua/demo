@@ -25,6 +25,14 @@ body.tray-rescale .tray-center {
   padding: 0;
 }
 
+.hasDatepicker {
+  cursor: pointer !important;
+}
+
+#birthday {
+  cursor: pointer !important;
+}
+
 div#files-container {
   display: flex;
   flex-flow: row wrap;
