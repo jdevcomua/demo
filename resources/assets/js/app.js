@@ -60,10 +60,8 @@ $(document).on('click', '.canBeDeleted', function () {
     var parent = $(this).parent();
     if($(this).hasClass('photo-item-main')) {
         var main = true;
-        console.log(123);
     }
     var where = $(this).next();
-    console.log(main);
     $(this).remove();
     if (main) {
         $('<label class="photo-item photo-item-main" for="image' + id + '">\n' +
