@@ -323,7 +323,11 @@ function showValidationErrors(err) {
     for (var key in err) {
         if (err.hasOwnProperty(key)) {
             var search_key = key.split('.')[0];
-            var $elem = findNearest($('[name^='+search_key+']').first(), '.validation-error');
+            if (search_key == 'documents') {
+                $elem = $('.file-uploader .validation-error');
+            } else {
+                var $elem = findNearest($('[name^=' + search_key + ']').first(), '.validation-error');
+            }
             $elem.text(err[key]);
             $elem.removeClass('hidden');
 
