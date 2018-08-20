@@ -381,9 +381,9 @@
             dataTableInit($('#datatable-breed'), {
                 ajax: '{{ route('admin.info.directories.data.breed', null, false) }}',
                 columns: [
-                    { "data": "id", 'width': '10%' },
+                    { "data": "id", 'width': '7%' },
                     {
-                        "data": "id",
+                        "data": "id", 'width': '7%',
                         defaultContent: '',
                         render: function ( data, type, row ) {
                             if (data) {
@@ -394,9 +394,9 @@
                             }
                         }
                     },
-                    { "data": "species_name" },
+                    { "data": "species_name", 'width': '20%' },
                     { "data": "name" },
-                    { "data": "fci" },
+                    { "data": "fci", 'width': '10%' },
                 ],
             });
 
