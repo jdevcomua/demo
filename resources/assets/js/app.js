@@ -58,12 +58,22 @@ $(document).on('change',".imageInput", function() {
 $(document).on('click', '.canBeDeleted', function () {
     var id = $(this).find('input').attr('id');
     var parent = $(this).parent();
+    if($(parent).hasClass('photo-item-main')) {
+        var main = true;
+    }
     var where = $(this).next();
     $(this).remove();
-    $('<label class="photo-item" for="image'+id+'">\n' +
-        '                        <input type=\'file\' name="images['+id+']" id="image'+id+'" class="imageInput" />\n' +
-        '                        <span class="add-btn"></span>\n' +
-        '                    </label>').insertBefore(where);
+    if (main) {
+        $('<label class="photo-item photo-item-main" for="image' + id + '">\n' +
+            '                        <input type=\'file\' name="images[' + id + ']" id="image' + id + '" class="imageInput" />\n' +
+            '                        <span class="add-btn"></span>\n' +
+            '                    </label>').insertBefore(where);
+    } else {
+        $('<label class="photo-item" for="image' + id + '">\n' +
+            '                        <input type=\'file\' name="images[' + id + ']" id="image' + id + '" class="imageInput" />\n' +
+            '                        <span class="add-btn"></span>\n' +
+            '                    </label>').insertBefore(where);
+    }
 
 });
 /////////////////////////////////////////
