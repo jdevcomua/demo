@@ -15,14 +15,19 @@
 
     <section id="content" class="animated fadeIn">
             <div class="row">
-
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
                             <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Картка користувача</div>
                         </div>
+                        @permission('edit-user')
+                        <form class="form-horizontal" action="{{route('admin.db.users.update', $user->id)}}" method="post" role="form">
+                            @method('PUT')
+                            @csrf
+                        @else
                         <form class="form-horizontal" role="form">
+                        @endpermission
                             <div class="panel-body">
                                 @if($errors->user)
                                     @foreach($errors->user->all() as $error)
@@ -70,28 +75,44 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email" class="col-lg-3 control-label">email</label>
+                                    <label for="email" class="col-lg-3 control-label">Email</label>
                                     <div class="col-lg-8">
-                                        @forelse($user->emails as $email)
-                                            <p class="form-control custom-field">
-                                                {{ $email->email }}
-                                            </p>
-                                        @empty
-                                            <p class="form-control custom-field"></p>
-                                        @endforelse
+                                        @permission('edit-user')
+                                            @forelse($user->emails as $email)
+                                                <input class="form-control custom-field" name="emails[]" value="{{ $email->email }}">
+                                            @empty
+                                                <input class="form-control custom-field" name="emails[]">
+                                            @endforelse
+                                        @else
+                                            @forelse($user->emails as $email)
+                                                <p class="form-control custom-field">
+                                                    {{ $email->email }}
+                                                </p>
+                                            @empty
+                                                <p class="form-control custom-field"></p>
+                                            @endforelse
+                                        @endpermission
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="phone" class="col-lg-3 control-label">Телефон</label>
                                     <div class="col-lg-8">
-                                        @forelse($user->phones as $phone)
-                                            <p class="form-control custom-field">
-                                                {{ $phone->phone }}
-                                            </p>
-                                        @empty
-                                            <p class="form-control custom-field"></p>
-                                        @endforelse
+                                        @permission('edit-user')
+                                            @forelse($user->phones as $phone)
+                                                <input class="form-control custom-field" name="phones[]" value="{{ $phone->phone }}">
+                                            @empty
+                                                <input class="form-control custom-field" name="phones[]" value="">
+                                            @endforelse
+                                        @else
+                                            @forelse($user->phones as $phone)
+                                                <p class="form-control custom-field">
+                                                    {{ $phone->phone }}
+                                                </p>
+                                            @empty
+                                                <p class="form-control custom-field"></p>
+                                            @endforelse
+                                        @endpermission
                                     </div>
                                 </div>
 
@@ -117,9 +138,13 @@
                                 <div class="form-group">
                                     <label for="passport" class="col-lg-3 control-label">Паспорт</label>
                                     <div class="col-lg-8">
-                                        <p class="form-control custom-field">
-                                            {{ $user->passport}}
-                                        </p>
+                                        @permission('edit-user')
+                                            <input type="text" class="form-control custom-field" name="passport" value="{{$user->passport}}">
+                                        @else
+                                            <p class="form-control custom-field">
+                                                {{ $user->passport}}
+                                            </p>
+                                        @endpermission
                                     </div>
                                 </div>
                                 @endpermission
@@ -134,6 +159,11 @@
                                     </div>
                                 </div>
                             </div>
+                            @permission('edit-user')
+                            <div class="panel-footer text-right">
+                                <button type="submit" class="btn btn-info ph25">Зберегти</button>
+                            </div>
+                            @endpermission
                             <div class="panel-body pb5 pt20">
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label">Тварини</label>
@@ -160,7 +190,12 @@
                             <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Адреси</div>
                         </div>
-                        <form class="form-horizontal" role="form">
+                        @permission('edit-user')
+
+                            @include('admin.db.partials.address_form')
+
+                        @else
+                            <form class="form-horizontal" role="form">
                             @if($user->registrationAddress)
                                 <div class="panel-body pb5 pt20">
                                     <div class="form-group">
@@ -258,7 +293,8 @@
 
                                 </div>
                             @endif
-                        </form>
+                            </form>
+                        @endpermission
                     </div>
                 </div>
                 @permission('change-roles')

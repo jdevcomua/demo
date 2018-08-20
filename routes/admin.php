@@ -18,8 +18,14 @@ Route::group([
         ->name('data');
     Route::get('show/{id?}', 'Admin\DataBasesController@userShow')
         ->name('show');
-    Route::put('update/{id?}', 'Admin\DataBasesController@userUpdate')
-        ->name('update');
+    Route::put('update/{id}', 'Admin\DataBasesController@userUpdate')
+        ->name('update')
+        ->middleware('permission:edit-user');
+
+    Route::put('update/{id}/address', 'Admin\DataBasesController@userUpdateAddress')
+        ->name('update.address')
+        ->middleware('permission:edit-user');
+
     Route::put('roles/update/{id?}', 'Admin\DataBasesController@userUpdateRoles')
         ->name('update.roles')
         ->middleware('permission:change-roles');

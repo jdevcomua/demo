@@ -69,6 +69,11 @@ class RolesPermissionsSeeder extends Seeder
         $deleteUser->display_name     = 'Видалення користувачів';
         $deleteUser->save();
 
+        $editUser = new Permission();
+        $editUser->name             = 'edit-user';
+        $editUser->display_name     = 'Редагування користувачів';
+        $editUser->save();
+
         $editRoles = new Permission();
         $editRoles->name          = 'edit-roles';
         $editRoles->display_name  = 'Редагування дозволів ролей';
@@ -88,6 +93,7 @@ class RolesPermissionsSeeder extends Seeder
             $changeRoles,
             $editRoles,
             $blockUser,
+            $editUser,
             $deleteUser,
             $viewSyslog,
             $privateData

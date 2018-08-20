@@ -24,6 +24,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserPhone extends Model
 {
+
+    const TYPE_PRIMARY = 'PRIMARY';
+    const TYPE_ADDITIONAL = 'ADDITIONAL';
+
     protected $fillable = [
         'type', 'phone',
     ];

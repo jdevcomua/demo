@@ -9,11 +9,16 @@ use App\Models\AnimalsFile;
 use App\Models\Log;
 use App\Models\Role;
 use App\Models\Species;
+use App\Models\UserAddress;
+use App\Models\UserEmail;
+use App\Models\UserPhone;
 use App\Services\FilesService;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Input;
+use PharIo\Manifest\Email;
 use Validator;
 
 class DataBasesController extends Controller
@@ -67,7 +72,146 @@ class DataBasesController extends Controller
 
     public function userUpdate(Request $request, $id)
     {
-        return redirect()->back();
+        $data = $request->only([
+            'emails',
+            'phones',
+            'passport'
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $validator = Validator::make($data, [
+            'passport' => 'required|min:7|max:10',
+        ], [
+            'passport.required' => 'Паспорт є обов\'язковим полем',
+            'passport.min' => 'Паспорт має бути більше ніж :min символів',
+            'passport.max' => 'Паспорт має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'user')
+                ->withInput();
+        }
+
+        $user->passport = $data['passport'];
+        $user->save();
+
+        $userExistingEmailsCount = $user->emails()->count();
+        $userExistingPhonesCount = $user->phones()->count();
+
+        foreach ($data['emails'] as $email) {
+            $existing = $user->emails()->where('email', $email)->first();
+            if (!$existing) {
+                $user->emails()->create([
+                    'user_id' => $user->id,
+                    'email' => trim($email),
+                    'type' => UserEmail::TYPE_ADDITIONAL
+                ]);
+            }
+        }
+
+        foreach ($data['phones'] as $phone) {
+            $existing = $user->phones()->where('phone', $phone)->first();
+            if (!$existing) {
+                $user->phones()->create([
+                    'user_id' => $user->id,
+                    'phone' => trim($phone),
+                    'type' => UserPhone::TYPE_ADDITIONAL
+                ]);
+            }
+        }
+
+        if (!$userExistingEmailsCount) {
+            $temp = $user->emails()->first();
+            if ($temp) {
+                $temp->type = UserEmail::TYPE_PRIMARY;
+                $temp->save();
+            }
+        }
+
+        if (!$userExistingPhonesCount) {
+            $temp = $user->phones()->first();
+            if ($temp) {
+                $temp->type = UserPhone::TYPE_PRIMARY;
+                $temp->save();
+            }
+        }
+
+        return redirect()
+            ->back()
+            ->with('success_user', 'Користувач був успішно змінений!');
+    }
+
+    public function userUpdateAddress(Request $request, $id)
+    {
+        $data = $request->only([
+            'registrationAddress',
+            'livingAddress',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $validator = Validator::make($data, [
+            'registrationAddress' => 'required|array',
+            'registrationAddress.*' => 'required',
+        ], [
+            'registrationAddress.required' => 'Адреса реєстрації є обов\'язковою',
+            'registrationAddress.state.required' => 'Область є обов\'язковим полем',
+            'registrationAddress.city.required' => 'Населений пункт є обов\'язковим полем',
+            'registrationAddress.street.required' => 'Вулиця є обов\'язковим полем',
+            'registrationAddress.building.required' => 'Будинок є обов\'язковим полем',
+            'registrationAddress.apartment.required' => 'Помешкання є обов\'язковим полем',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'user_address')
+                ->withInput();
+        }
+
+        $registrationAddress = $user->addresses()->where('type', UserAddress::ADDRESS_TYPE_REGISTRATION)->first();
+
+        if (!$registrationAddress) {
+            $registrationAddress = new UserAddress();
+            $registrationAddress->type = UserAddress::ADDRESS_TYPE_REGISTRATION;
+            $registrationAddress->country_code = 'ua';
+            $registrationAddress->user_id = $user->id;
+        }
+
+        $registrationAddress->state = $data['registrationAddress']['state'];
+        $registrationAddress->city = $data['registrationAddress']['city'];
+        $registrationAddress->street = $data['registrationAddress']['street'];
+        $registrationAddress->building = $data['registrationAddress']['building'];
+        $registrationAddress->apartment = $data['registrationAddress']['apartment'];
+        $registrationAddress->save();
+
+
+        if($data['livingAddress']['city']) {
+
+            $livingAddress = $user->addresses()->where('type', UserAddress::ADDRESS_TYPE_LIVING)->first();
+
+            if (!$livingAddress) {
+                $livingAddress = new UserAddress();
+                $livingAddress->type = UserAddress::ADDRESS_TYPE_LIVING;
+                $livingAddress->country_code = 'ua';
+                $livingAddress->user_id = $user->id;
+            }
+
+            $livingAddress->state = $data['livingAddress']['state'];
+            $livingAddress->city = $data['livingAddress']['city'];
+            $livingAddress->street = $data['livingAddress']['street'];
+            $livingAddress->building = $data['livingAddress']['building'];
+            $livingAddress->apartment = $data['livingAddress']['apartment'];
+            $livingAddress->save();
+
+        }
+
+        return redirect()
+            ->back()
+            ->with('success_user_address', 'Адреса була змінена успішно!');
     }
 
     public function userUpdateRoles(Request $request, $id)
