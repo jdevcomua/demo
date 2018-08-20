@@ -74,7 +74,7 @@ class InfoController extends Controller
                     ->withInput();
             }
 
-            if (array_key_exists('b_fci', $data) || !$data['b_fci']) $data['b_fci'] = 0;
+            if (!array_key_exists('b_fci', $data) || !$data['b_fci']) $data['b_fci'] = 0;
 
             $breed = new Breed();
             $breed->species_id = $data['b_species'];
