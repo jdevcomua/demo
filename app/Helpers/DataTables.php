@@ -71,6 +71,9 @@ class DataTables
                                         $searchValue[0] .= '%';
                                     }
                                     $searchValue = implode('-', $searchValue);
+                                    if ($column['data'] ==='object_id' && (strpos($column['search']['value'], '#')) !== false) {
+                                        $searchValue = str_replace('#', '', $searchValue);
+                                    }
 
                                     if (!$aliases || !array_key_exists($column['data'], $aliases)) {
                                         $query->where($table . '.' . $column['data'], 'like',
