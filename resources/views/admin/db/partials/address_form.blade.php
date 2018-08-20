@@ -26,7 +26,7 @@
         <div class="form-group">
             <label for="registration_district" class="col-lg-3 control-label">Область</label>
             <div class="col-lg-8">
-                <input class="form-control custom-field" name="registrationAddress[state]" value="{{ $user->registrationAddress ? $user->registrationAddress->district : '' }}">
+                <input class="form-control custom-field" name="registrationAddress[district]" value="{{ $user->registrationAddress ? $user->registrationAddress->district : '' }}">
             </div>
         </div>
         <div class="form-group">
@@ -62,7 +62,7 @@
         <div class="form-group">
             <label for="living_district" class="col-lg-3 control-label">Область</label>
             <div class="col-lg-8">
-                <input class="form-control custom-field" name="livingAddress[state]"  value="{{ $user->livingAddress ? $user->livingAddress->district : ''}}">
+                <input class="form-control custom-field" name="livingAddress[district]"  value="{{ $user->livingAddress ? $user->livingAddress->district : ''}}">
             </div>
         </div>
         <div class="form-group">

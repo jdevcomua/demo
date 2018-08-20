@@ -158,7 +158,7 @@ class DataBasesController extends Controller
             'registrationAddress.*' => 'required',
         ], [
             'registrationAddress.required' => 'Адреса реєстрації є обов\'язковою',
-            'registrationAddress.state.required' => 'Область є обов\'язковим полем',
+            'registrationAddress.district.required' => 'Область є обов\'язковим полем',
             'registrationAddress.city.required' => 'Населений пункт є обов\'язковим полем',
             'registrationAddress.street.required' => 'Вулиця є обов\'язковим полем',
             'registrationAddress.building.required' => 'Будинок є обов\'язковим полем',
@@ -181,7 +181,7 @@ class DataBasesController extends Controller
             $registrationAddress->user_id = $user->id;
         }
 
-        $registrationAddress->state = $data['registrationAddress']['state'];
+        $registrationAddress->district = $data['registrationAddress']['district'];
         $registrationAddress->city = $data['registrationAddress']['city'];
         $registrationAddress->street = $data['registrationAddress']['street'];
         $registrationAddress->building = $data['registrationAddress']['building'];
@@ -200,7 +200,7 @@ class DataBasesController extends Controller
                 $livingAddress->user_id = $user->id;
             }
 
-            $livingAddress->state = $data['livingAddress']['state'];
+            $livingAddress->district = $data['livingAddress']['district'];
             $livingAddress->city = $data['livingAddress']['city'];
             $livingAddress->street = $data['livingAddress']['street'];
             $livingAddress->building = $data['livingAddress']['building'];
