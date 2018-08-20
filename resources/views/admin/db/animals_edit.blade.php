@@ -60,7 +60,14 @@
                                 <div class="form-group select">
                                     <label for="user" class="col-lg-3 control-label">Власник</label>
                                     <div class="col-lg-8">
-                                        <select name="user" id="user" required data-value="{{ $animal->user_id }}"></select>
+                                        <select name="user" id="user" data-value="{{ $animal->user_id }}"></select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-lg-3 col-md-hidden"></div>
+                                    <div class="col-lg-8">
+                                        <a href="" class="btn drop-owner btn-default pull-right">Видалити власника</a>
                                     </div>
                                 </div>
 
@@ -334,6 +341,10 @@
                         searchField: ['name']
                     });
                     users[0].selectize.setValue($('.form-group.select select#user').data('value'));
+                    $('.drop-owner').on('click', function (e) {
+                        e.preventDefault();
+                        users[0].selectize.setValue('');
+                    })
                 },
                 error: function(data) {
                     console.error(data);
@@ -356,7 +367,6 @@
                     }
                 });
             })
-
         });
 
         document.getElementById("images").onchange = function() {
