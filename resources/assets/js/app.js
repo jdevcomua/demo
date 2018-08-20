@@ -58,10 +58,12 @@ $(document).on('change',".imageInput", function() {
 $(document).on('click', '.canBeDeleted', function () {
     var id = $(this).find('input').attr('id');
     var parent = $(this).parent();
-    if($(parent).hasClass('photo-item-main')) {
+    if($(this).hasClass('photo-item-main')) {
         var main = true;
+        console.log(123);
     }
     var where = $(this).next();
+    console.log(main);
     $(this).remove();
     if (main) {
         $('<label class="photo-item photo-item-main" for="image' + id + '">\n' +

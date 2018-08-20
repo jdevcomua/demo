@@ -35395,7 +35395,9 @@ $(function () {
 
 var options = {
     valueField: 'value',
-    labelField: 'name'
+    labelField: 'name',
+    searchField: ['name']
+
 };
 var breeds = $('.form-group.select select#breed').selectize(options);
 var colors = $('.form-group.select select#color').selectize(options);
