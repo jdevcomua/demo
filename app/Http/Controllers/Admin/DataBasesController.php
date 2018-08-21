@@ -48,11 +48,13 @@ class DataBasesController extends Controller
         $query = $model->newQuery()
             ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
             ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
+            ->leftJoin('user_addresses', 'user_addresses.user_id', '=', 'users.id')
             ->groupBy('users.id');
 
         $aliases = [
             'emails' => 'GROUP_CONCAT(DISTINCT `user_emails`.email SEPARATOR \'|\')',
             'phones' => 'GROUP_CONCAT(DISTINCT `user_phones`.phone SEPARATOR \'|\')',
+            'addresses' => 'GROUP_CONCAT(CONCAT(`user_addresses`.city, ", " , `user_addresses`.street, ", " , `user_addresses`.building) SEPARATOR "|")',
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);

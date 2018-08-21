@@ -47,6 +47,7 @@
                                     @permission('private-data')
                                     <th>Паспорт</th>
                                     @endpermission
+                                    <th>Адреси</th>
                                     <th>Зареєстровано</th>
                                     <th>Оновлено</th>
                                 </tr>
@@ -65,6 +66,7 @@
                                     @permission('private-data')
                                     <th></th>
                                     @endpermission
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -137,6 +139,7 @@
                     @permission('private-data')
                     { data: "passport" },
                     @endpermission
+                    { data: "addresses" },
                     { data: "created_at",
                         render: function ( data, type, row ) {
                             if (data) {
