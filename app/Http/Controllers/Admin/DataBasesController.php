@@ -54,7 +54,7 @@ class DataBasesController extends Controller
         $aliases = [
             'emails' => 'GROUP_CONCAT(DISTINCT `user_emails`.email SEPARATOR \'|\')',
             'phones' => 'GROUP_CONCAT(DISTINCT `user_phones`.phone SEPARATOR \'|\')',
-            'addresses' => 'GROUP_CONCAT(CONCAT(`user_addresses`.city, ", " , `user_addresses`.street, ", " , `user_addresses`.building) SEPARATOR "|")',
+            'addresses' => 'GROUP_CONCAT(CONCAT(`user_addresses`.city, ", " , `user_addresses`.street, ", " , `user_addresses`.building, ", " , `user_addresses`.apartment) SEPARATOR "|")',
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);
