@@ -220,7 +220,7 @@ class DataBasesController extends Controller
 
         $validator = \Validator::make($data, [
             'roles' => 'nullable|array',
-            'roles.*' => 'exists:users,id', // check each item in the array
+            'roles.*' => 'exists:roles,id', // check each item in the array
         ]);
 
         if ($validator->fails()) {

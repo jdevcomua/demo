@@ -92,7 +92,7 @@
             dataTableInit($('#datatable'), {
                 ajax: '{{ route('admin.db.users.data', null, false) }}',
                 columns: [
-                    { "data": "id" },
+                    { "data": "id", 'width': '4%' },
                     {
                         "data": "id",
                         defaultContent: '',
