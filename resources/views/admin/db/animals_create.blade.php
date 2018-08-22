@@ -53,6 +53,10 @@
                                         <input type="file" id="images" name="images[]" multiple required>
                                     </div>
                                 </div>
+                                    <small id="passwordHelpBlock" class="form-text text-left text-muted">
+                                        Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg та не більше ніж 10Mb
+                                    </small>
+
 
                                 <div class="form-group select">
                                     <label for="user" class="col-lg-3 control-label">Власник</label>
@@ -149,6 +153,11 @@
                                         <input type="file" id="documents" name="documents[]" multiple>
                                     </div>
                                 </div>
+                                    <small id="passwordHelpBlock" class="form-text text-muted">
+                                        Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf
+                                        <br>
+                                        та не більше ніж 10Mb
+                                    </small>
 
                             </div>
                             <div class="panel-footer text-right">

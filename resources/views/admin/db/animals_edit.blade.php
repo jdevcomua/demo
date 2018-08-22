@@ -254,6 +254,11 @@
                                 <span class="glyphicon glyphicon-tasks"></span>Файли тварини</div>
                         </div>
                         <div class="panel-body pn">
+                            <small id="passwordHelpBlock" class="form-text text-muted">
+                                Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 10Mb
+                                <br>
+                                Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg та не більше ніж 10Mb
+                            </small>
                             <form role="form" enctype="multipart/form-data" id="upload-form"
                                   action="{{ route('admin.db.animals.upload-file', $animal->id) }}" method="post">
                                 @csrf
