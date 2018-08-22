@@ -96,9 +96,9 @@
                                    value="{{ $phone->phone }}" readonly>
                         @endforeach
                     </div>
-                    <a href="" class="btn btn-block btn-default" data-toggle="modal" data-target="#modalPhone">+ Додати ще номер телефону</a>
 
                 @endif
+                <a href="" class="btn btn-block btn-default" data-toggle="modal" data-target="#modalPhone">+ Додати ще номер телефону</a>
                 @if(count($auth->emails))
                     <div class="form-group">
                         <label for="email">Пошта</label>
