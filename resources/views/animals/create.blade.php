@@ -56,6 +56,11 @@
                         <span class="add-btn"></span>
                     </label>
                 </div>
+                <small id="passwordHelpBlock" class="form-text text-muted">
+                    Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg
+                    <br>
+                    та не більше ніж 10Mb
+                </small>
             </div>
         </div>
         <div class="cols-block">
