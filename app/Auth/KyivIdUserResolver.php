@@ -75,7 +75,7 @@ class KyivIdUserResolver
         $existing->birthday = $user->birthday;
         $existing->inn = $user->inn;
         $existing->passport = $user->passport;
-        $existing->gender = $user->gender;
+        $existing->gender = $user->gender === 'MALE' ? true : false;
 
         $existing->save();
 
@@ -131,7 +131,7 @@ class KyivIdUserResolver
         $newUser->birthday = $user->birthday;
         $newUser->inn = $user->inn;
         $newUser->passport = $user->passport;
-        $newUser->gender = $user->gender;
+        $newUser->gender = $user->gender === 'MALE' ? true : false;
 
         $newUser->save();
 
