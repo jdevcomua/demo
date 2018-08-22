@@ -19,6 +19,10 @@
                             <span class="content">{{ $pet->nickname }}</span>
                         </div>
                         <div class="pet-info-block">
+                            <span class="title">Порода</span>
+                            <span class="content">{{ $pet->breed->name }}</span>
+                        </div>
+                        <div class="pet-info-block">
                             <span class="title">Масть</span>
                             <span class="content">{{ $pet->color->name }}</span>
                         </div>

@@ -29,7 +29,7 @@ class AnimalsController extends Controller
     public function index()
     {
         $user = \Auth::user();
-        $pets = $user->animals()->with(['species', 'color', 'files'])->get();
+        $pets = $user->animals()->with(['species', 'color', 'breed', 'files'])->get();
 
         return view('animals.index', [
             'pets' => $pets
