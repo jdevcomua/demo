@@ -139,7 +139,11 @@
                     @permission('private-data')
                     { data: "passport" },
                     @endpermission
-                    { data: "addresses" },
+                    { data: "addresses",
+                        render: function ( data, type, row ) {
+                            return (data) ? data.split('|').join('<br>') : '';
+                        }
+                    },
                     { data: "created_at",
                         render: function ( data, type, row ) {
                             if (data) {

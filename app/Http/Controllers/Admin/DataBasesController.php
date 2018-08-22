@@ -51,12 +51,19 @@ class DataBasesController extends Controller
             ->leftJoin('user_addresses', 'user_addresses.user_id', '=', 'users.id')
             ->groupBy('users.id');
 
+        //COALESCE для того, чтоб не обваливалось при пустых значениях
+
         $aliases = [
             'emails' => 'GROUP_CONCAT(DISTINCT `user_emails`.email SEPARATOR \'|\')',
             'phones' => 'GROUP_CONCAT(DISTINCT `user_phones`.phone SEPARATOR \'|\')',
-            'addresses' => 'GROUP_CONCAT(CONCAT(`user_addresses`.city, ", " , `user_addresses`.street, ", " , `user_addresses`.building, ", " , `user_addresses`.apartment) SEPARATOR "|")',
+            'addresses' => 'GROUP_CONCAT(
+                CONCAT(
+                    COALESCE(`user_addresses`.city, " "), ", " ,
+                    COALESCE(`user_addresses`.street, " "), ", " ,
+                    COALESCE(`user_addresses`.building, " "), ", " ,
+                    COALESCE(`user_addresses`.apartment, " ")
+                       ) SEPARATOR "|")',
         ];
-
         $response = DataTables::provide($request, $model, $query, $aliases);
 
         if ($response) return response()->json($response);
