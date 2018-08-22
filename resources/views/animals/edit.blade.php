@@ -138,6 +138,11 @@
                         <span class="desktop">Виберіть файл або просто перетягніть</span>
                         <span class="mobile">Виберіть файл</span>
                     </label>
+                    <small id="passwordHelpBlock" class="form-text text-muted">
+                        Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf
+                        <br>
+                        та не більше ніж 10Mb
+                    </small>
                     <input type='file' id="manual-upload" multiple />
                     <div class="files-list">
                         @foreach($pet->documents as $doc)
