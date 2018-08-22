@@ -48,7 +48,7 @@ class DataBasesController extends Controller
         $query = $model->newQuery()
             ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
             ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
-            ->leftJoin('user_addresses', 'user_addresses.user_id', '=', 'users.id')
+            ->join('user_addresses', 'user_addresses.user_id', '=', 'users.id')
             ->groupBy('users.id');
 
         //COALESCE для того, чтоб не обваливалось при пустых значениях
@@ -56,7 +56,7 @@ class DataBasesController extends Controller
         $aliases = [
             'emails' => 'GROUP_CONCAT(DISTINCT `user_emails`.email SEPARATOR \'|\')',
             'phones' => 'GROUP_CONCAT(DISTINCT `user_phones`.phone SEPARATOR \'|\')',
-            'addresses' => 'GROUP_CONCAT(
+            'addresses' => 'GROUP_CONCAT(DISTINCT
                 CONCAT(
                     COALESCE(`user_addresses`.city, " "), ", " ,
                     COALESCE(`user_addresses`.street, " "), ", " ,
