@@ -51,7 +51,7 @@
                                     <th>Стерилізовано</th>
                                     <th>Власник</th>
                                     <th>Верифіковано</th>
-                                    {{--<th>Ким верифіковано</th>--}}
+                                    <th>Належність тварини</th>
                                     <th>Зареєстровано</th>
                                     <th>Оновлено</th>
                                 </tr>
@@ -95,7 +95,13 @@
                                             <option value="1">Так</option>
                                         </select>
                                     </th>
-                                    {{--<th></th>--}}
+                                    <th>
+                                        <select>
+                                            <option selected value>---</option>
+                                            <option value="0">Безпритульна</option>
+                                            <option value="1">Власницька</option>
+                                        </select>
+                                    </th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -198,16 +204,18 @@
                             }
                         }
                     },
-                    {{--{--}}
-                        {{--data: 'verified_name',--}}
-                        {{--defaultContent: '',--}}
-                        {{--render: function ( data, type, row ) {--}}
-                            {{--if (data) {--}}
-                                {{--var arr = data.split('||');--}}
-                                {{--return '<a href="{{ route('admin.db.users.show') }}/' + arr[1] + '">' + arr[0] + '</a>';--}}
-                            {{--}--}}
-                        {{--}--}}
-                    {{--},--}}
+                    {
+                        data: 'owner_type',
+                        defaultContent: '',
+                        render: function ( data, type, row ) {
+                            console.log(row);
+                            if (data) {
+                                return '<i class="fa fa-home"></i>';
+                            } else {
+                                return '<i class="far fa-frown"></i>';
+                            }
+                        }
+                    },
                     { data: "created_at",
                         render: function ( data, type, row ) {
                             if (data) {
