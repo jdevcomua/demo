@@ -6,7 +6,7 @@
         <div class="topbar-left">
             <ol class="breadcrumb">
                 <li class="crumb-active">
-                    <a href="#">Редагування користувача</a>
+                    <a href="#">Перегляд користувача</a>
                 </li>
             </ol>
         </div>
