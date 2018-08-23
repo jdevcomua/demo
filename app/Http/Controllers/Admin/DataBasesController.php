@@ -282,7 +282,7 @@ class DataBasesController extends Controller
             'breeds_name' => 'breeds.name',
             'colors_name' => 'colors.name',
             'owner_name' => 'CONCAT(`users1`.last_name, \' \', `users1`.first_name, \'||\', `users1`.id)',
-            'owner_type' => 'CASE animals.user_id WHEN NULL THEN 0 else 1 end',
+            'owner_type' => 'if (animals.user_id IS NULL, 0, 1)',
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);

@@ -212,7 +212,7 @@
                             if (data) {
                                 return '<i class="fa fa-home"></i>';
                             } else {
-                                return '<i class="far fa-frown"></i>';
+                                return '<i class="fa fa-ban"></i>';
                             }
                         }
                     },
