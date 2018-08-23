@@ -361,6 +361,9 @@ $width: 100px;
   .gray {
     color: #999;
   }
+  img {
+    max-width: 55%;
+  }
 }
 @media (max-width: 650px) {
   .no-pets-container {
