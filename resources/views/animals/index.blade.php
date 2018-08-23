@@ -67,7 +67,7 @@
     @endif
     <div class="add-new-pet-wrap">
         @if(count($pets))
-            <div class="above-text">Маєш ще тваринку? Додавай!</div>
+            <div class="above-text">Маєте ще тварину? Додавайте!</div>
         @endif
         <div class="buttons">
             <a href="{{ route('animals.create') }}" class="add-new-pet btn btn-big btn-block btn-primary">+ Додати</a>
