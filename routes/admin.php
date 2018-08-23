@@ -79,6 +79,8 @@ Route::group([
             ->name('data.breed');
         Route::post('store/breed', 'Admin\InfoController@directoryStoreBreed')
             ->name('store.breed');
+        Route::post('update/breed', 'Admin\InfoController@directoryUpdateBreed')
+            ->name('update.breed');
         Route::get('remove/breed', 'Admin\InfoController@directoryRemoveBreed')
             ->name('remove.breed');
 
@@ -86,6 +88,8 @@ Route::group([
             ->name('data.color');
         Route::post('store/color', 'Admin\InfoController@directoryStoreColor')
             ->name('store.color');
+        Route::post('update/color', 'Admin\InfoController@directoryUpdateColor')
+            ->name('update.color');
         Route::get('remove/color', 'Admin\InfoController@directoryRemoveColor')
             ->name('remove.color');
 

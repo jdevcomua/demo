@@ -89,6 +89,19 @@ class InfoController extends Controller
         return response('', 400);
     }
 
+    public function directoryUpdateBreed(Request $request)
+    {
+        $breed = Breed::findOrFail($request->get('id'));
+        $breed->species_id = $request->get('species_id');
+        $breed->name = $request->get('name');
+        $breed->fci = $request->get('fci');
+        $breed->save();
+
+        return redirect()
+            ->back()
+            ->with('success_fur', 'Порода змінена успішно!');
+    }
+
     public function directoryRemoveBreed(Request $request)
     {
         if ($request->has('id')) {
@@ -161,6 +174,18 @@ class InfoController extends Controller
                 ->with('success_color', 'Масть додана успішно !');
         }
         return response('', 400);
+    }
+
+    public function directoryUpdateColor(Request $request)
+    {
+        $fur = Color::findOrFail($request->get('id'));
+        $fur->species_id = $request->get('species_id');
+        $fur->name = $request->get('name');
+        $fur->save();
+
+        return redirect()
+            ->back()
+            ->with('success_fur', 'Масть змінена успішно!');
     }
 
     public function directoryRemoveColor(Request $request)

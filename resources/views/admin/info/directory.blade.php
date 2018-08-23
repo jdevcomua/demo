@@ -408,6 +408,89 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modalColor" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Змінити тип шерсті</h4>
+                    </div>
+                    <form action="{{ route('admin.info.directories.update.color') }}" class="form-horizontal" id="change-fur" method="post">
+                        <div class="modal-body">
+                            @csrf
+                            <input type="hidden" name="id" id="colorId">
+                            <div class="form-group">
+                                <label for="color-species" class="col-lg-3 control-label">Вид тварини:</label>
+                                <div class="col-lg-8">
+                                    <select id="color-species-modal" name="species_id" class="form-control" required>
+                                        @foreach($species as $s)
+                                            <option value="{{$s->id}}" @if(old('species_id') == $s->id) selected @endif>
+                                                {{$s->name}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="color-name" class="col-lg-3 control-label">Назва шерсті:</label>
+                                <div class="col-lg-8">
+                                    <input type="text" id="color-name-modal" name="name"
+                                           class="form-control" value="{{ old('name') }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning pull-right">Змінити</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalBreed" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Змінити тип шерсті</h4>
+                    </div>
+                    <form action="{{ route('admin.info.directories.update.breed') }}" class="form-horizontal" id="change-breed" method="post">
+                        <div class="modal-body">
+                            @csrf
+                            <input type="hidden" name="id" id="breedId">
+                            <div class="form-group">
+                                <label for="breed-species" class="col-lg-3 control-label">Вид тварини:</label>
+                                <div class="col-lg-8">
+                                    <select id="breed-species-modal" name="species_id" class="form-control" required>
+                                        @foreach($species as $s)
+                                            <option value="{{$s->id}}" @if(old('species_id') == $s->id) selected @endif>
+                                                {{$s->name}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="breed-name" class="col-lg-3 control-label">Назва шерсті:</label>
+                                <div class="col-lg-8">
+                                    <input type="text" id="breed-name-modal" name="name"
+                                           class="form-control" value="{{ old('name') }}" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="breed-fci" class="col-lg-3 control-label">FCI</label>
+                                <div class="col-lg-8">
+                                    <input type="text" id="breed-fci-modal" name="fci"
+                                           class="form-control" value="{{ old('fci') }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning pull-right">Змінити</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </section>
 @endsection
 
@@ -424,7 +507,11 @@
                         defaultContent: '',
                         render: function ( data, type, row ) {
                             if (data) {
-                                return "<a href=\"{{ route('admin.info.directories.remove.breed') }}?id="
+                                return "<a href=\"\" data-id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-pencil update-breed pr10\" aria-hidden=\"true\" data-toggle='modal'" +
+                                    " data-target=\"#modalBreed\" data-fci='"+ row.fci+ "'></i>" +
+                                    "<a href=\"{{ route('admin.info.directories.remove.breed') }}?id="
                                     + data + "\">" +
                                     "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
                                     "</a>";
@@ -446,7 +533,11 @@
                         defaultContent: '',
                         render: function ( data, type, row ) {
                             if (data) {
-                                return "<a href=\"{{ route('admin.info.directories.remove.color') }}?id="
+                                return "<a href=\"\" data-id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-pencil update-color pr10\" aria-hidden=\"true\" data-toggle='modal'" +
+                                    " data-target=\"#modalColor\"></i>" +
+                                    "<a href=\"{{ route('admin.info.directories.remove.color') }}?id="
                                     + data + "\">" +
                                     "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
                                     "</a>";
@@ -501,6 +592,33 @@
                     $('#fur-species-modal').val(1);
                 }
                 $('#fur-name-modal').val(text);
+        });
+        $(document).on('click', '.fa-pencil.update-color', function(e) {
+                e.preventDefault();
+                var text = $(this).parents('td').next().next().text();
+                var id = $(this).parent().attr('data-id');
+                $('#colorId').val(id);
+                if ($(this).parents('td').next().text() === 'Кiт')  {
+                    $('#color-species-modal').val(2);
+                } else {
+                    $('#color-species-modal').val(1);
+                }
+                $('#color-name-modal').val(text);
+        });
+        $(document).on('click', '.fa-pencil.update-breed', function(e) {
+            e.preventDefault();
+            var text = $(this).parents('td').next().next().text();
+            var id = $(this).parent().attr('data-id');
+            var fci = $(this).attr('data-fci');
+            console.log(fci);
+            $('#breedId').val(id);
+            if ($(this).parents('td').next().text() === 'Кiт')  {
+                $('#breed-species-modal').val(2);
+            } else {
+                $('#breed-species-modal').val(1);
+            }
+            $('#breed-name-modal').val(text);
+            $('#breed-fci-modal').val(fci);
         });
     </script>
 @endsection
