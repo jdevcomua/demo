@@ -11,9 +11,9 @@
         </div>
     </div>
     <div class="name">
-        <img src="{{ asset('img/icon/gerb.png') }}" alt="Герб" class="logo">
+        <a href="{{route('index')}}"><img src="{{ asset('img/icon/gerb.png') }}" alt="Герб" class="logo"></a>
         <div class="title">
-            <span>Реєстр домашніх тварин</span>
+            <span><a class="text-white" href="{{route('index')}}">Реєстр домашніх тварин<a href="{{route('index')}}"></a></span>
             <span class="sub-title">Київська міська державна адміністрація</span>
         </div>
     </div>
