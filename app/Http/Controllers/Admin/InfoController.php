@@ -237,6 +237,18 @@ class InfoController extends Controller
         return response('', 400);
     }
 
+    public function directoryUpdateFur(Request $request)
+    {
+        $fur = Fur::findOrFail($request->get('id'));
+        $fur->species_id = $request->get('species_id');
+        $fur->name = $request->get('name');
+        $fur->save();
+
+        return redirect()
+            ->back()
+            ->with('success_fur', 'Тип шерсті змінено успішно !');
+    }
+
     public function directoryRemoveFur(Request $request)
     {
         if ($request->has('id')) {

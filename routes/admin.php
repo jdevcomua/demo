@@ -93,6 +93,8 @@ Route::group([
             ->name('data.fur');
         Route::post('store/fur', 'Admin\InfoController@directoryStoreFur')
             ->name('store.fur');
+        Route::post('update/fur', 'Admin\InfoController@directoryUpdateFur')
+            ->name('update.fur');
         Route::get('remove/fur', 'Admin\InfoController@directoryRemoveFur')
             ->name('remove.fur');
     });
