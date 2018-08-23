@@ -1,8 +1,8 @@
 <footer>
     <div class="footer-demo">
-        Портал працює в тестовому режимі. Якщо ви маєте зауваження або пропозиції, будь-ласка, напишіть нам:
-        <a href="mailto:support.web@kyivcity.gov.ua">support.web@kyivcity.gov.ua</a> або зателефонуйте за номером:
-        <a href="tel:0443668013">(044) 366-80-13</a>
+        Сайт працює в тестовому режимі. Якщо ви маєте зауваження або пропозиції, будь-ласка, напишіть нам:
+        <a href="mailto:support.rdt@kyivcity.gov.ua ">support.rdt@kyivcity.gov.ua </a> або зателефонуйте за номером:
+        <a href="tel:0443668019">(044) 366-80-19</a>
     </div>
     <div class="gov-sites">
         <div class="header">
