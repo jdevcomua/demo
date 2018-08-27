@@ -86,6 +86,7 @@ class AjaxController extends Controller
         $animalId = $request->get('animal_id');
         $animal = Animal::findOrFail($animalId);
         $animal->request_user_id = \Auth::id();
+        $animal->user_id = \Auth::id();
         $animal->save();
         return response()->json(['message' => 'Success!']);
     }

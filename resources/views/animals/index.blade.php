@@ -218,6 +218,7 @@
             },
             success: function(data) {
                 $('#searchModal').modal('hide');
+                window.location.reload();
             },
             error: function(data) {
                 $('#modal-content').html(@include('animals.partials.not-found'));
