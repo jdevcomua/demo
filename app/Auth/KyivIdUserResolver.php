@@ -61,6 +61,7 @@ class KyivIdUserResolver
      */
     private static function update($existing, $user):? User
     {
+        \Log::critical($existing, $user);
         $existing->load(['addresses', 'emails', 'phones']);
 
         $emails = $user->emails;
