@@ -210,7 +210,7 @@ class InfoController extends Controller
         $color = Color::findOrFail($request->get('id'));
 
         $validator = Validator::make($request->all(), [
-            'species' => 'required|integer|exists:species,id',
+            'species_id' => 'required|integer|exists:species,id',
             'name' => ['required',
                 'string',
                 'max:256',
@@ -317,7 +317,7 @@ class InfoController extends Controller
     {
         $fur = Fur::findOrFail($request->get('id'));
         $validator = Validator::make($request->all(), [
-            'species' => 'required|integer|exists:species,id',
+            'species_id' => 'required|integer|exists:species,id',
             'name' => ['required',
                 'string',
                 'max:256',
