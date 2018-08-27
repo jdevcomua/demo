@@ -83,8 +83,8 @@
                                     <th>
                                         <select>
                                             <option selected value>---</option>
-                                            <option value="0">Ні</option>
-                                            <option value="1">Так</option>
+                                            <option value="0">Не стерилізовано</option>
+                                            <option value="1">Стерилізовано</option>
                                         </select>
                                     </th>
                                     <th></th>
@@ -178,8 +178,8 @@
                         data: 'sterilized',
                         render: function ( data, type, row ) {
                             switch (data) {
-                                case 0: return 'Ні';
-                                case 1: return 'Так';
+                                case 0: return 'Не стерилізовано';
+                                case 1: return 'Стерилізовано';
                                 default: return '?';
                             }
                         }
