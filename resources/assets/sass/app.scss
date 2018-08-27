@@ -248,6 +248,11 @@ img {
     }
   }
 }
+.cols-block .cols-block-content.faq, .about-page {
+  width: 100%;
+  padding-top: 0px !important;
+  margin-top: -1%;
+}
 
 .notification {
   display: flex;
