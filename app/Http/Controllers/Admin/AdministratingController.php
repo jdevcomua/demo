@@ -30,7 +30,7 @@ class AdministratingController extends Controller
         $aliases = [
             'emails' => 'GROUP_CONCAT(DISTINCT `user_emails`.email SEPARATOR \'|\')',
             'phones' => 'GROUP_CONCAT(DISTINCT `user_phones`.phone SEPARATOR \'|\')',
-            'role_names' =>'GROUP_CONCAT(`roles`.display_name SEPARATOR \'|\')',
+            'role_names' =>'GROUP_CONCAT(DISTINCT `roles`.display_name SEPARATOR \'|\')',
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);
