@@ -110,7 +110,7 @@ class InfoController extends Controller
                 Rule::unique('breeds')->where(function ($query) use($breed, $request) {
                     return $query->where('name', $request->get('name'))
                         ->where('species_id', $request->get('species_id'))
-                        ->whereNot('id', $breed->id);
+                        ->where('id','!=', $breed->id);
                 })
             ],
             'fci' => 'nullable|integer|max:999',
@@ -136,7 +136,7 @@ class InfoController extends Controller
 
         return redirect()
             ->back()
-            ->with('success_fur', 'Порода змінена успішно!');
+            ->with('success_breed_rem', 'Порода змінена успішно!');
     }
 
     public function directoryRemoveBreed(Request $request)
@@ -233,7 +233,7 @@ class InfoController extends Controller
                 Rule::unique('colors')->where(function ($query) use($color, $request) {
                     return $query->where('name', $request->get('name'))
                         ->where('species_id', $request->get('species_id'))
-                        ->whereNot('id', $color->id);
+                        ->where('id','!=', $color->id);
                 })
             ],
         ], [
@@ -255,7 +255,7 @@ class InfoController extends Controller
 
         return redirect()
             ->back()
-            ->with('success_fur', 'Масть змінена успішно!');
+            ->with('success_color_rem', 'Масть змінена успішно!');
     }
 
     public function directoryRemoveColor(Request $request)
@@ -351,7 +351,7 @@ class InfoController extends Controller
                 Rule::unique('furs')->where(function ($query) use($fur, $request) {
                     return $query->where('name', $request->get('name'))
                         ->where('species_id', $request->get('species_id'))
-                        ->whereNot('id', $fur->id);
+                        ->where('id','!=', $fur->id);
                 })
             ],
         ], [
@@ -372,7 +372,7 @@ class InfoController extends Controller
 
         return redirect()
             ->back()
-            ->with('success_fur', 'Тип шерсті змінено успішно !');
+            ->with('success_fur_rem', 'Тип шерсті змінено успішно !');
     }
 
     public function directoryRemoveFur(Request $request)
