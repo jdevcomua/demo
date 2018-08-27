@@ -61,7 +61,6 @@ class KyivIdUserResolver
      */
     private static function update($existing, $user):? User
     {
-        \Log::critical([$existing->toArray(), $user->toArray()]);
         $existing->load(['addresses', 'emails', 'phones']);
 
         $emails = $user->emails;
@@ -76,7 +75,7 @@ class KyivIdUserResolver
         $existing->birthday = $user->birthday;
         $existing->inn = $user->inn;
         $existing->passport = $user->passport;
-        $existing->gender = $user->gender === 'MALE' ? true : false;
+        $existing->gender = $user->gender === 'MALE' ? User::GENDER_MALE : User::GENDER_FEMALE;
 
         $existing->save();
 
@@ -132,7 +131,7 @@ class KyivIdUserResolver
         $newUser->birthday = $user->birthday;
         $newUser->inn = $user->inn;
         $newUser->passport = $user->passport;
-        $newUser->gender = $user->gender === 'MALE' ? true : false;
+        $newUser->gender = $user->gender === 'MALE' ? User::GENDER_MALE : User::GENDER_FEMALE;
 
         $newUser->save();
 
