@@ -59,7 +59,14 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'b_species' => 'required|integer|exists:species,id',
-                'b_name' => 'required|string|max:256|unique:breeds,name',
+                'b_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('breeds', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('b_name'))
+                            ->where('species_id', $request->get('b_species'));
+                    })
+                ],
                 'b_fci' => 'nullable|integer|max:999',
             ], [
                 'b_name.required' => 'Назва є обов\'язковим полем',
@@ -97,12 +104,14 @@ class InfoController extends Controller
 
         $validator = Validator::make($request->all(), [
             'species_id' => 'required|integer|exists:species,id',
-            'name' => [
-                'required',
+            'name' => ['required',
                 'string',
                 'max:256',
-                Rule::unique('breeds')->ignore($breed->id, 'id')
-
+                Rule::unique('breeds')->where(function ($query) use($breed, $request) {
+                    return $query->where('name', $request->get('name'))
+                        ->where('species_id', $request->get('species_id'))
+                        ->whereNot('id', $breed->id);
+                })
             ],
             'fci' => 'nullable|integer|max:999',
         ], [
@@ -179,7 +188,14 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'c_species' => 'required|integer|exists:species,id',
-                'c_name' => 'required|string|max:256|unique:colors,name',
+                'c_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('colors', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('c_name'))
+                            ->where('species_id', $request->get('c_species'));
+                    })
+                ],
             ], [
                 'c_name.required' => 'Назва є обов\'язковим полем',
                 'c_name.unique' => 'Назва має бути унікальною',
@@ -214,8 +230,12 @@ class InfoController extends Controller
             'name' => ['required',
                 'string',
                 'max:256',
-                Rule::unique('colors')->ignore($color->id, 'id')
-                ]
+                Rule::unique('colors')->where(function ($query) use($color, $request) {
+                    return $query->where('name', $request->get('name'))
+                        ->where('species_id', $request->get('species_id'))
+                        ->whereNot('id', $color->id);
+                })
+            ],
         ], [
             'name.required' => 'Назва є обов\'язковим полем',
             'name.unique' => 'Назва має бути унікальною',
@@ -287,7 +307,14 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'f_species' => 'required|integer|exists:species,id',
-                'f_name' => 'required|string|max:256|unique:furs,name',
+                'f_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('furs', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('f_name'))
+                            ->where('species_id', $request->get('f_species'));
+                    })
+                ],
             ], [
                 'f_name.required' => 'Тип шерсті є обов\'язковим полем',
                 'f_name.unique' => 'Тип шерсті має бути унікальним',
@@ -321,8 +348,12 @@ class InfoController extends Controller
             'name' => ['required',
                 'string',
                 'max:256',
-                Rule::unique('furs')->ignore($fur->id, 'id')
-                ]
+                Rule::unique('furs')->where(function ($query) use($fur, $request) {
+                    return $query->where('name', $request->get('name'))
+                        ->where('species_id', $request->get('species_id'))
+                        ->whereNot('id', $fur->id);
+                })
+            ],
         ], [
             'name.required' => 'Тип шерсті є обов\'язковим полем',
             'name.unique' => 'Тип шерсті має бути унікальним',
