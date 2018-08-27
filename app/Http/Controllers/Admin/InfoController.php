@@ -59,7 +59,7 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'b_species' => 'required|integer|exists:species,id',
-                'b_name' => 'required|string|max:256|unique:breed,name',
+                'b_name' => 'required|string|max:256|unique:breeds,name',
                 'b_fci' => 'nullable|integer|max:999',
             ], [
                 'b_name.required' => 'Назва є обов\'язковим полем',
@@ -179,7 +179,7 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'c_species' => 'required|integer|exists:species,id',
-                'c_name' => 'required|string|max:256|unique:color,name',
+                'c_name' => 'required|string|max:256|unique:colors,name',
             ], [
                 'c_name.required' => 'Назва є обов\'язковим полем',
                 'c_name.unique' => 'Назва має бути унікальною',
@@ -287,7 +287,7 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'f_species' => 'required|integer|exists:species,id',
-                'f_name' => 'required|string|max:256|unique:fur,name',
+                'f_name' => 'required|string|max:256|unique:furs,name',
             ], [
                 'f_name.required' => 'Тип шерсті є обов\'язковим полем',
                 'f_name.unique' => 'Тип шерсті має бути унікальним',
