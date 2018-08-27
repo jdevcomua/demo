@@ -11,6 +11,7 @@ use App\Models\Notification;
 use App\Models\Species;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rule;
 use Validator;
 
 class InfoController extends Controller
@@ -58,10 +59,11 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'b_species' => 'required|integer|exists:species,id',
-                'b_name' => 'required|string|max:256|unique',
+                'b_name' => 'required|string|max:256|unique:breed,name',
                 'b_fci' => 'nullable|integer|max:999',
             ], [
                 'b_name.required' => 'Назва є обов\'язковим полем',
+                'b_name.unique' => 'Назва має бути унікальною',
                 'b_name.max' => 'Назва має бути менше :max символів',
                 'b_fci.integer' => 'FCI повинен бути числом',
                 'b_fci.max' => 'FCI повинен бути менше 1000',
@@ -92,6 +94,32 @@ class InfoController extends Controller
     public function directoryUpdateBreed(Request $request)
     {
         $breed = Breed::findOrFail($request->get('id'));
+
+        $validator = Validator::make($request->all(), [
+            'species_id' => 'required|integer|exists:species,id',
+            'name' => [
+                'required',
+                'string',
+                'max:256',
+                Rule::unique('breeds')->ignore($breed->id, 'id')
+
+            ],
+            'fci' => 'nullable|integer|max:999',
+        ], [
+            'name.required' => 'Назва є обов\'язковим полем',
+            'name.unique' => 'Назва має бути унікальною',
+            'name.max' => 'Назва має бути менше :max символів',
+            'fci.integer' => 'FCI повинен бути числом',
+            'fci.max' => 'FCI повинен бути менше 1000',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'breed_rem')
+                ->withInput();
+        }
+
         $breed->species_id = $request->get('species_id');
         $breed->name = $request->get('name');
         $breed->fci = $request->get('fci');
@@ -151,9 +179,10 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'c_species' => 'required|integer|exists:species,id',
-                'c_name' => 'required|string|max:256',
+                'c_name' => 'required|string|max:256|unique:color,name',
             ], [
                 'c_name.required' => 'Назва є обов\'язковим полем',
+                'c_name.unique' => 'Назва має бути унікальною',
                 'c_name.max' => 'Назва має бути менше :max символів',
             ]);
 
@@ -178,10 +207,31 @@ class InfoController extends Controller
 
     public function directoryUpdateColor(Request $request)
     {
-        $fur = Color::findOrFail($request->get('id'));
-        $fur->species_id = $request->get('species_id');
-        $fur->name = $request->get('name');
-        $fur->save();
+        $color = Color::findOrFail($request->get('id'));
+
+        $validator = Validator::make($request->all(), [
+            'species' => 'required|integer|exists:species,id',
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('colors')->ignore($color->id, 'id')
+                ]
+        ], [
+            'name.required' => 'Назва є обов\'язковим полем',
+            'name.unique' => 'Назва має бути унікальною',
+            'name.max' => 'Назва має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'color_rem')
+                ->withInput();
+        }
+
+        $color->species_id = $request->get('species_id');
+        $color->name = $request->get('name');
+        $color->save();
 
         return redirect()
             ->back()
@@ -237,10 +287,11 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'f_species' => 'required|integer|exists:species,id',
-                'f_name' => 'required|string|max:256',
+                'f_name' => 'required|string|max:256|unique:fur,name',
             ], [
-                'f_name.required' => 'Назва є обов\'язковим полем',
-                'f_name.max' => 'Назва має бути менше :max символів',
+                'f_name.required' => 'Тип шерсті є обов\'язковим полем',
+                'f_name.unique' => 'Тип шерсті має бути унікальним',
+                'f_name.max' => 'Тип шерсті має бути менше :max символів',
             ]);
 
             if ($validator->fails()) {
@@ -265,6 +316,25 @@ class InfoController extends Controller
     public function directoryUpdateFur(Request $request)
     {
         $fur = Fur::findOrFail($request->get('id'));
+        $validator = Validator::make($request->all(), [
+            'species' => 'required|integer|exists:species,id',
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('furs')->ignore($fur->id, 'id')
+                ]
+        ], [
+            'name.required' => 'Тип шерсті є обов\'язковим полем',
+            'name.unique' => 'Тип шерсті має бути унікальним',
+            'name.max' => 'Тип шерсті має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'fur_rem')
+                ->withInput();
+        }
         $fur->species_id = $request->get('species_id');
         $fur->name = $request->get('name');
         $fur->save();
