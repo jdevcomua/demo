@@ -58,7 +58,7 @@ class InfoController extends Controller
 
             $validator = Validator::make($data, [
                 'b_species' => 'required|integer|exists:species,id',
-                'b_name' => 'required|string|max:256',
+                'b_name' => 'required|string|max:256|unique',
                 'b_fci' => 'nullable|integer|max:999',
             ], [
                 'b_name.required' => 'Назва є обов\'язковим полем',

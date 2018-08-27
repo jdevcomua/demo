@@ -1,6 +1,7 @@
 window._ = require('lodash');
 window.Popper = require('popper.js').default;
 
+
 try {
     window.$ = window.jQuery = require('jquery');
 } catch (e) {}
@@ -17,7 +18,6 @@ if (token) {
 }
 
 require('./smoothscroll');
-
 require('selectize');
 
 $.ajaxSetup({
@@ -27,16 +27,6 @@ $.ajaxSetup({
 });
 
 $(function () {
-    $.fn.datepicker.dates['uk'] = {
-        days: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"],
-        daysShort: ["Нед", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
-        daysMin: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-        months: ["Cічень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
-        monthsShort: ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"],
-        today: "Сьогодні",
-        clear: "Очистити",
-        weekStart: 1
-    };
     $('.datepicker input').datepicker({
         changeMonth: true,
         changeYear: true,
@@ -45,6 +35,24 @@ $(function () {
         locale: "uk",
         autoclose: true
     });
+    $.datepicker.regional.uk = {
+        closeText: "Закрити",
+        prevText: "&#x3C;",
+        nextText: "&#x3E;",
+        currentText: "Сьогодні",
+        monthNames: [ "Січень","Лютий","Березень","Квітень","Травень","Червень",
+            "Липень","Серпень","Вересень","Жовтень","Листопад","Грудень" ],
+        monthNamesShort: [ "Січ","Лют","Бер","Кві","Тра","Чер",
+            "Лип","Сер","Вер","Жов","Лис","Гру" ],
+        dayNames: [ "неділя","понеділок","вівторок","середа","четвер","п’ятниця","субота" ],
+        dayNamesShort: [ "нед","пнд","вів","срд","чтв","птн","сбт" ],
+        dayNamesMin: [ "Нд","Пн","Вт","Ср","Чт","Пт","Сб" ],
+        weekHeader: "Тиж",
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: "" };
+    $.datepicker.setDefaults( $.datepicker.regional.uk );
 });
 
 /////////////////////////////////////////

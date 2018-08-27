@@ -30,6 +30,7 @@
 
     <script src="{{ mix('js/admin.js') }}"></script>
     <script src="/js/admin/jquery-ui.min.js"></script>
+    <script src="/js/admin/datepicker-uk.js"></script>
     <script src="/js/admin/utility.js"></script>
     <script src="/js/admin/main.js"></script>
     <script type="text/javascript">

@@ -208,7 +208,6 @@
                         data: 'owner_type',
                         defaultContent: '',
                         render: function ( data, type, row ) {
-                            console.log(row);
                             if (data) {
                                 return '<i class="fa fa-home"></i>';
                             } else {
