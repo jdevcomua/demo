@@ -156,7 +156,7 @@
         @if($auth->livingAddress)
             <div class="cols-block">
                 <div class="cols-block-header">
-                    <div class="block-title">КОНТАКТИ</div>
+                    <div class="block-title">ПРОЖИВАННЯ</div>
                     <div class="block-sub-title">Адреса вашого проживання</div>
                 </div>
                 <div class="cols-block-content form">
