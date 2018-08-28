@@ -49,8 +49,9 @@
                                         <button type="button">
                                             <label for="images" class="mn">Оберіть файли</label>
                                         </button>
-                                        <input type="file" id="images" name="images[]" multiple
-                                               required style="display: none">
+                                        <span class="file-count pl5"></span>
+                                        <input type="file" id="images" name="images[]"
+                                               multiple class="custom-file-input">
                                         <span class="help-block mt5">Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg та не більше ніж 10Mb</span>
                                     </div>
                                 </div>
@@ -151,8 +152,9 @@
                                         <button type="button">
                                             <label for="documents" class="mn">Оберіть файли</label>
                                         </button>
+                                        <span class="file-count pl5"></span>
                                         <input type="file" id="documents" name="documents[]"
-                                               multiple style="display: none">
+                                               multiple class="custom-file-input">
                                         <span class="help-block mt5">Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 10Mb</span>
                                     </div>
                                 </div>
