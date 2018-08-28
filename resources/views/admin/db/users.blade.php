@@ -48,6 +48,7 @@
                                     <th>Паспорт</th>
                                     @endpermission
                                     <th>Адреси</th>
+                                    <th>Тварини</th>
                                     <th>Зареєстровано</th>
                                     <th>Оновлено</th>
                                 </tr>
@@ -56,6 +57,7 @@
                                 <tr>
                                     <th></th>
                                     <th class="no-search"></th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -144,6 +146,12 @@
                             return (data) ? data.split('|').join('<br>') : '';
                         }
                     },
+                    {
+                        data: 'animals',
+                        render: function ( data, type, row ) {
+                            return '<a href="{{ route('admin.db.users.animals') }}/' + row.id + '">' + data + '</a>';
+                        }
+                    },
                     { data: "created_at",
                         render: function ( data, type, row ) {
                             if (data) {
@@ -153,8 +161,6 @@
                             return data
                         }
                     },
-
-
                     { data: "updated_at",
                         render: function ( data, type, row ) {
                             if (data) {

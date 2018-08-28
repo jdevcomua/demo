@@ -32,6 +32,9 @@ Route::group([
     Route::delete('delete/{id?}', 'Admin\DataBasesController@userDelete')
         ->name('remove')
         ->middleware('permission:delete-user');
+
+    Route::get('animals/{id?}', 'Admin\DataBasesController@userShowAnimals')
+        ->name('animals');
 });
 
 Route::group([
@@ -40,7 +43,7 @@ Route::group([
 ], function () {
     Route::get('index', 'Admin\DataBasesController@animalIndex')
         ->name('index');
-    Route::get('data', 'Admin\DataBasesController@animalData')
+    Route::get('data/{id?}', 'Admin\DataBasesController@animalData')
         ->name('data');
     Route::get('create/{id?}', 'Admin\DataBasesController@animalCreate')
         ->name('create');

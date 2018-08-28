@@ -49,6 +49,7 @@ class DataBasesController extends Controller
             ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
             ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
             ->leftJoin('user_addresses', 'user_addresses.user_id', '=', 'users.id')
+            ->leftJoin('animals', 'animals.user_id', '=', 'users.id')
             ->groupBy('users.id');
 
         //COALESCE для того, чтоб не обваливалось при пустых значениях
@@ -63,6 +64,7 @@ class DataBasesController extends Controller
                     COALESCE(`user_addresses`.building, " "), ", " ,
                     COALESCE(`user_addresses`.apartment, " ")
                        ) SEPARATOR "|")',
+            'animals' => 'COUNT(`animals`.id)',
         ];
         $response = DataTables::provide($request, $model, $query, $aliases);
 
@@ -267,7 +269,7 @@ class DataBasesController extends Controller
         ]);
     }
 
-    public function animalData(Request $request)
+    public function animalData(Request $request, $id = null)
     {
         $model = new Animal();
 
@@ -276,6 +278,8 @@ class DataBasesController extends Controller
             ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
             ->join('colors', 'colors.id', '=', 'animals.color_id')
             ->leftJoin('users as users1', 'users1.id', '=', 'animals.user_id');
+
+        if ($id) $query->where('users1.id', '=', $id);
 
         $aliases = [
             'species_name' => 'species.name',
@@ -577,6 +581,16 @@ class DataBasesController extends Controller
         $file->delete();
         return response()->json([
             'status' => 'ok'
+        ]);
+    }
+
+    public function userShowAnimals($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('admin.db.user_animals', [
+            'species' => Species::get(),
+            'user' => $user
         ]);
     }
 }
