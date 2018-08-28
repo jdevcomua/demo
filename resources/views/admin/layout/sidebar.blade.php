@@ -6,7 +6,7 @@
 <aside id="sidebar_left" class="nano nano-primary affix">
     <div class="sidebar-left-content nano-content">
         <ul class="nav sidebar-menu">
-            <li class="sidebar-label pt20">Бази</li>
+            <li class="sidebar-label pt20">Реєстри</li>
             <li @if($curRoute == 'admin.db.animals.index' || $curRoute == 'admin.db.animals.edit') class="active" @endif>
                 <a href="{{ route('admin.db.animals.index') }}">
                     <span class="fa fa-paw"></span>
