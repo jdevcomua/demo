@@ -93,7 +93,7 @@
 .required-field {
   color: red;
 }
-.new-pet-photos label.photo-item.canBeDeleted {
+.new-pet-photos label.photo-item.filled {
   position: relative;
   &:before {
     content: 'X';

@@ -57,7 +57,6 @@ function readURL(input) {
         reader.onload = function(e) {
             $(input).parent().css('background-image', 'url(' + e.target.result + ')');
             $(input).parent().addClass('filled');
-            $(input).parent().addClass('canBeDeleted');
         };
         reader.readAsDataURL(input.files[0]);
     }
@@ -65,26 +64,11 @@ function readURL(input) {
 $(document).on('change',".imageInput", function() {
     readURL(this);
 });
-$(document).on('click', '.canBeDeleted', function () {
-    var id = $(this).find('input').attr('id');
-    var parent = $(this).parent();
-    if($(this).hasClass('photo-item-main')) {
-        var main = true;
-    }
-    var where = $(this).next();
-    $(this).remove();
-    if (main) {
-        $('<label class="photo-item photo-item-main" for="image' + id + '">\n' +
-            '                        <input type=\'file\' name="images[' + id + ']" id="image' + id + '" class="imageInput" />\n' +
-            '                        <span class="add-btn"></span>\n' +
-            '                    </label>').insertBefore(where);
-    } else {
-        $('<label class="photo-item" for="image' + id + '">\n' +
-            '                        <input type=\'file\' name="images[' + id + ']" id="image' + id + '" class="imageInput" />\n' +
-            '                        <span class="add-btn"></span>\n' +
-            '                    </label>').insertBefore(where);
-    }
-
+$(document).on('click', '.filled', function (e) {
+    $(this).find('input').val('');
+    $(this).css('background-image', '');
+    $(this).removeClass('filled');
+    return false;
 });
 /////////////////////////////////////////
 
