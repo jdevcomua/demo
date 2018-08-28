@@ -208,9 +208,19 @@
       box-shadow: none;
       outline: none;
       font-size: 1.2rem;
+      width: 100%;
     }
   }
 }
+
+@media (max-width: 576px) {
+  .modal-body {
+    .col-sm-6 + .col-sm-6 {
+      padding: 15px;
+    }
+  }
+}
+
 //preloader
 $green: #008744;
 $blue: #0057e7;
