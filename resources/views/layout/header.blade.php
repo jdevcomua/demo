@@ -13,7 +13,7 @@
     <div class="name">
         <a href="{{route('index')}}"><img src="{{ asset('img/icon/gerb.png') }}" alt="Герб" class="logo"></a>
         <div class="title">
-            <span><a class="text-white" href="{{route('index')}}">Реєстр домашніх тварин<a href="{{route('index')}}"></a></span>
+            <span><a class="text-white" href="{{route('index')}}">Реєстр домашніх тварин</a></span>
             <span class="sub-title mt-3">Київська міська державна адміністрація</span>
         </div>
     </div>

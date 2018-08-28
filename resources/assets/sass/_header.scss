@@ -13,16 +13,18 @@ header {
     .title {
       display: flex;
       flex-flow: column;
-      padding: 16px 30px;
+      padding: 0 30px 16px;
       color: #fff;
       & > span {
         font-size: 2rem;
         line-height: 2rem;
         font-weight: 600;
+        a {
+          text-transform: uppercase;
+        }
       }
       .sub-title {
         font-size: 1.1rem;
-        color: rgba(255, 255, 255, 0.4);
         font-weight: 400;
       }
     }
