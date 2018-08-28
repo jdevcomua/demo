@@ -503,7 +503,7 @@ class DataBasesController extends Controller
 
         return redirect()
             ->back()
-            ->with('success_animal', 'Данні оновлено успішно !');
+            ->with('success_animal', 'Дані оновлено успішно !');
     }
 
     public function animalRemove($id)
