@@ -64,7 +64,7 @@ class DataBasesController extends Controller
                     COALESCE(`user_addresses`.building, " "), ", " ,
                     COALESCE(`user_addresses`.apartment, " ")
                        ) SEPARATOR "|")',
-            'animals' => 'COUNT(`animals`.id)',
+            'animals' => 'COUNT(DISTINCT `animals`.id)',
         ];
         $response = DataTables::provide($request, $model, $query, $aliases);
 
