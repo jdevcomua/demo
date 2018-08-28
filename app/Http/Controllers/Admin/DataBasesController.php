@@ -48,7 +48,7 @@ class DataBasesController extends Controller
         $query = $model->newQuery()
             ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
             ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
-            ->join('user_addresses', 'user_addresses.user_id', '=', 'users.id')
+            ->leftJoin('user_addresses', 'user_addresses.user_id', '=', 'users.id')
             ->groupBy('users.id');
 
         //COALESCE для того, чтоб не обваливалось при пустых значениях

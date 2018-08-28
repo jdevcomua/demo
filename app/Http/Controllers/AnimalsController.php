@@ -124,7 +124,9 @@ class AnimalsController extends Controller
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
-        \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
+        if ($user->primaryEmail) {
+            \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
+        }
 
         \Session::flash('new-animal', ' ');
 

@@ -55,24 +55,24 @@ class UserSeeder extends Seeder
 //                ],
 //                ]);
 //        });
-//        DB::transaction(function () {
-//            for ($i = 1; $i < 1000; $i++)
-//                DB::table('user_emails')->insert([[
-//                    'user_id' => $i,
-//                    'type' => "PRIMARY",
-//                    'email' => str_random(14) . '@qwe.com',
-//                ],
-//                ]);
-//        });
-//        DB::transaction(function () {
-//            for ($i = 1; $i < 1000; $i++)
-//                DB::table('user_phones')->insert([[
-//                    'user_id' => $i,
-//                    'type' => "PRIMARY",
-//                    'phone' => '+38050' . (9876541 + $i),
-//                ],
-//                ]);
-//        });
+        DB::transaction(function () {
+            for ($i = 1; $i < 2; $i++)
+                DB::table('user_emails')->insert([[
+                    'user_id' => $i,
+                    'type' => "PRIMARY",
+                    'email' => str_random(14) . '@qwe.com',
+                ],
+                ]);
+        });
+        DB::transaction(function () {
+            for ($i = 1; $i < 2; $i++)
+                DB::table('user_phones')->insert([[
+                    'user_id' => $i,
+                    'type' => "PRIMARY",
+                    'phone' => '+38050' . (9876541 + $i),
+                ],
+                ]);
+        });
 
         DB::table('role_user')->insert([
             [
