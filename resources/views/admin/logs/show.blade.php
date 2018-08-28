@@ -28,11 +28,7 @@
     <!-- Start: Topbar -->
     <header id="topbar">
         <div class="topbar-left">
-            <ol class="breadcrumb">
-                <li class="crumb-active">
-                    <a href="#">Подія #{{ $log->id }}</a>
-                </li>
-            </ol>
+            <span>Подія #{{ $log->id }}</span>
         </div>
     </header>
     <!-- End: Topbar -->

@@ -4,11 +4,7 @@
     <!-- Start: Topbar -->
     <header id="topbar">
         <div class="topbar-left">
-            <ol class="breadcrumb">
-                <li class="crumb-active">
-                    <a href="#">Системні ролі</a>
-                </li>
-            </ol>
+            <span>Системні ролі</span>
         </div>
     </header>
     <!-- End: Topbar -->

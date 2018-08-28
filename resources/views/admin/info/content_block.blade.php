@@ -4,11 +4,7 @@
     <!-- Start: Topbar -->
     <header id="topbar">
         <div class="topbar-left">
-            <ol class="breadcrumb">
-                <li class="crumb-active">
-                    <a href="#">Редагування блоків</a>
-                </li>
-            </ol>
+            <span>Редагування блоків</span>
         </div>
     </header>
     <!-- End: Topbar -->

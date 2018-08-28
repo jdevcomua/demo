@@ -4,11 +4,7 @@
     <!-- Start: Topbar -->
     <header id="topbar">
         <div class="topbar-left">
-            <ol class="breadcrumb">
-                <li class="crumb-active">
-                    <a href="#">Перегляд користувача</a>
-                </li>
-            </ol>
+            <span>Перегляд користувача</span>
         </div>
     </header>
     <!-- End: Topbar -->

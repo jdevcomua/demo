@@ -4,11 +4,7 @@
     <!-- Start: Topbar -->
     <header id="topbar">
         <div class="topbar-left">
-            <ol class="breadcrumb">
-                <li class="crumb-active">
-                    <a href="#">{{ $user->full_name }}</a>
-                </li>
-            </ol>
+            <span>{{ $user->full_name }}</span>
         </div>
     </header>
     <!-- End: Topbar -->

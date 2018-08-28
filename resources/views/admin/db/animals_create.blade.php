@@ -4,11 +4,7 @@
     <!-- Start: Topbar -->
     <header id="topbar">
         <div class="topbar-left">
-            <ol class="breadcrumb">
-                <li class="crumb-active">
-                    <a href="#">Додавання тварини</a>
-                </li>
-            </ol>
+            <span>Додавання тварини</span>
         </div>
     </header>
     <!-- End: Topbar -->
