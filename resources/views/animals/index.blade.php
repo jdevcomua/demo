@@ -181,8 +181,8 @@
     $(document).on('click', '.btn-grey', function(e) {
         $('#modal-content').html(@include('animals.partials.modal'));
     });
-    $(document).on('click', '.search', function(e){
-        e.preventDefault();
+
+    function searchAnimal() {
         var loader = '<div class="showbox">\n' +
             '  <div class="loader">\n' +
             '    <svg class="circular" viewBox="25 25 50 50">\n' +
@@ -206,7 +206,15 @@
                 $('#modal-content').html(@include('animals.partials.not-found'));
             }
         });
+
+        return false;
+    }
+
+    $(document).on('click', '.search', function(e) {
+        e.preventDefault();
+        searchAnimal();
     });
+
     $(document).on('click', '.confirm', function() {
         var id = $(this).attr('data-id');
 

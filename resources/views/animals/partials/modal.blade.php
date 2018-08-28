@@ -4,7 +4,7 @@
     '</button>' +
 '</div>' +
 '<div class="modal-body">' +
-    '<form>' +
+    '<form onsubmit="return searchAnimal()">' +
         '<div class="row">' +
             '<div class="col-sm-6">' +
                 '<h3>НОМЕР ЖЕТОНУ</h3>' +
