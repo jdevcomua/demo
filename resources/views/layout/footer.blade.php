@@ -40,7 +40,7 @@
     <div class="copyright">
         <div class="text">
             <span>&copy; 2018 Київська міська державна адміністрація, Київська міська рада. Реалізовано в рамках проекту</span>
-            <a href="#">Kyiv Smart City</a>
+            <a href="https://www.kyivsmartcity.com/" rel="noopener noreferrer" target="_blank">Kyiv Smart City</a>
         </div>
     </div>
 </footer>
