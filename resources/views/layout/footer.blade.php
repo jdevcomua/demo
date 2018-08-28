@@ -4,21 +4,6 @@
         <a href="mailto:support.rdt@kyivcity.gov.ua ">support.rdt@kyivcity.gov.ua </a> або зателефонуйте за номером:
         <a href="tel:0443668019">(044) 366-80-19</a>
     </div>
-    <div class="gov-sites">
-        <div class="header">
-            <div class="label">
-                <div class="blue"></div>
-                <div class="yellow"></div>
-            </div>
-            <div class="title">
-                <span>gov.ua</span>
-                <span class="sub-title">Державні сайти України</span>
-            </div>
-        </div>
-        <div class="collapse-btn">
-            <i class="fa fa-angle-down" aria-hidden="true"></i>
-        </div>
-    </div>
     <div class="footer-kiev-portal">
         <div class="col col-about">
             <div class="col-about-header">
