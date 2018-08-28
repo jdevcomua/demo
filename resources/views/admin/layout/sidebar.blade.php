@@ -7,7 +7,7 @@
     <div class="sidebar-left-content nano-content">
         <ul class="nav sidebar-menu">
             <li class="sidebar-label pt20">Реєстри</li>
-            <li @if($curRoute == 'admin.db.animals.index' || $curRoute == 'admin.db.animals.edit') class="active" @endif>
+            <li{!! (strpos($curRoute, '.db.animals') !== false) ? ' class="active" ' : '' !!}>
                 <a href="{{ route('admin.db.animals.index') }}">
                     <span class="fa fa-paw"></span>
                     <span class="sidebar-title">Тварини</span>
