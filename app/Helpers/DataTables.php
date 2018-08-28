@@ -148,7 +148,7 @@ class DataTables
 
     private static function isHavingSearch($alias)
     {
-        $mustUseHaving = ['GROUP_CONCAT'];
+        $mustUseHaving = ['GROUP_CONCAT', 'COUNT'];
         foreach ($mustUseHaving as $m) {
             if (strpos($alias, $m) !== false) return true;
         }

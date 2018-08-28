@@ -59,8 +59,8 @@
                                     <th class="no-search"></th>
                                     <th></th>
                                     <th></th>
-                                    <th class="no-search"></th>
-                                    <th class="no-search"></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
