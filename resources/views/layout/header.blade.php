@@ -43,7 +43,7 @@
         <div class="socials">
             <a href="#" class="socials-item socials-item-facebook"></a>
             <a href="#" class="socials-item socials-item-youtube"></a>
-            <a href="#" class="socials-item socials-item-twitter"></a>
+            {{--<a href="#" class="socials-item socials-item-twitter"></a>--}}
         </div>
     </div>
 </header>
