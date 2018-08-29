@@ -145,15 +145,15 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="validation-error alert alert-danger hidden"></div>
-                                            <label for="house">Будинок</label>
-                                            <input type="text" class="form-control" id="house" name="house" required="" >
+                                            <label for="building">Будинок</label>
+                                            <input type="text" class="form-control" id="building" name="building" required="" >
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="validation-error alert alert-danger hidden"></div>
-                                            <label for="appartment">Приміщення</label>
-                                            <input type="text" class="form-control" id="appartment" name="appartment" required="" >
+                                            <label for="apartment">Приміщення</label>
+                                            <input type="text" class="form-control" id="apartment" name="apartment" required="" >
                                         </div>
                                     </div>
                                 </div>

@@ -291,10 +291,10 @@ class AnimalsController extends Controller
     {
         $animalRequest = new AnimalsRequest();
         $animalRequest->user_id = \Auth::id();
-        $animalRequest->breed_id = $request->get('breed_id');
-        $animalRequest->color_id = $request->get('color_id');
-        $animalRequest->fur_id = $request->get('fur_id');
-        $animalRequest->species_id = $request->get('species_id');
+        $animalRequest->breed_id = $request->get('breed');
+        $animalRequest->color_id = $request->get('color');
+        $animalRequest->fur_id = $request->get('fur');
+        $animalRequest->species_id = $request->get('species');
         $animalRequest->street = $request->get('street');
         $animalRequest->building = $request->get('building');
         $animalRequest->apartment = $request->get('apartment');
