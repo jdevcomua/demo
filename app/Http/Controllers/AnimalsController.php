@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\NewAnimal;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
+use App\Models\AnimalsRequest;
 use App\Models\Log;
 use App\Services\FilesService;
 use Carbon\Carbon;
@@ -288,7 +289,18 @@ class AnimalsController extends Controller
 
     public function findAnimalRequest(Request $request)
     {
-        \Log::info([$request->all(), $request->user()->toArray()]);
+        $animalRequest = new AnimalsRequest();
+        $animalRequest->user_id = \Auth::id();
+        $animalRequest->breed_id = $request->get('breed_id');
+        $animalRequest->color_id = $request->get('color_id');
+        $animalRequest->fur_id = $request->get('fur_id');
+        $animalRequest->species_id = $request->get('species_id');
+        $animalRequest->street = $request->get('street');
+        $animalRequest->building = $request->get('building');
+        $animalRequest->apartment = $request->get('apartment');
+        $animalRequest->nickname = $request->get('nickname');
+        $animalRequest->birthday = Carbon::createFromFormat('d/m/Y',$request->get('birthday'));
+        $animalRequest->save();
         return redirect()->back();
     }
 }

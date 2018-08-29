@@ -184,6 +184,17 @@ Route::group([
             ->name('banned.data');
 
     });
+    Route::get('requests', 'Admin\AdministratingController@animalsRequests')
+        ->name('requests');
+    Route::get('requests/data', 'Admin\AdministratingController@animalsRequestsData')
+        ->name('requests.data');
+    Route::get('requests/accept/{id?}', 'Admin\AdministratingController@confirmAnimalsRequest')
+        ->name('requests.accept');
+    Route::get('requests/decline/{id?}', 'Admin\AdministratingController@cancelAnimalsRequest')
+        ->name('requests.decline');
+    Route::get('requests/proceed/{id?}', 'Admin\AdministratingController@proceedAnimalsRequest')
+        ->name('requests.proceed');
+
 });
 
 Route::group([

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Date;
 use App\Models\Animal;
+use App\Models\AnimalsRequest;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -85,9 +86,10 @@ class AjaxController extends Controller
     public function requestAnimal(Request $request) {
         $animalId = $request->get('animal_id');
         $animal = Animal::findOrFail($animalId);
-        $animal->request_user_id = \Auth::id();
-        $animal->user_id = \Auth::id();
-        $animal->save();
+        $animalRequest = new AnimalsRequest();
+        $animalRequest->user_id = \Auth::id();
+        $animalRequest->animal_id = $animalId;
+        $animalRequest->save();
         return response()->json(['message' => 'Success!']);
     }
 }

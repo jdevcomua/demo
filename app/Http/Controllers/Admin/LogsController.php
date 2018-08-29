@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
+use App\Http\Controllers\AdminController;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class LogsController extends Controller
+class LogsController extends AdminController
 {
     public function index()
     {

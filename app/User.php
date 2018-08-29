@@ -50,6 +50,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
  */
 class User extends Authenticatable
 {

@@ -69,8 +69,8 @@
                 </li>
             @endpermission
 
+            <li class="sidebar-label pt20">Адміністрування</li>
             @permission(['change-roles', 'block-user', 'delete-user', 'edit-roles', 'view-syslog'])
-                <li class="sidebar-label pt20">Адміністрування</li>
                 <li  @if($curRoute == 'admin.administrating.users.index') class="active" @endif>
                     <a href="{{route('admin.administrating.users.index')}}">
                         <span class="fa fa-users"></span>
@@ -102,6 +102,13 @@
                     </li>
                 @endpermission
             @endpermission
+            <li{!! (strpos($curRoute, 'admin.administrating.requests') !== false) ? ' class="active" ' : '' !!}>
+                <a href="{{ route('admin.administrating.requests') }}">
+                    <span class="fa fa-question-circle"></span>
+                    <span class="sidebar-title">Запити</span>
+                    @if(isset ($hasNewRequests)) <span class="gold">New</span>@endif
+                </a>
+            </li>
         </ul>
     </div>
 </aside>

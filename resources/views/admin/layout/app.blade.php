@@ -37,6 +37,7 @@
         jQuery(document).ready(function() {
             "use strict";
             Core.init();
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
     <script src="/js/admin/jquery.dataTables.js"></script>

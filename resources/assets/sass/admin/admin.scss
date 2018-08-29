@@ -36,6 +36,19 @@ body.tray-rescale .tray-center {
 #birthday {
   cursor: pointer !important;
 }
+.gold {
+  color: yellow;
+  margin-left: 20px;
+}
+.sb-l-m {
+  .gold {
+    display: inline-block;
+    position: absolute;
+    left: 17px;
+    top: 15px;
+    margin: 0;
+  }
+}
 
 div#files-container {
   display: flex;

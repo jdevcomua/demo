@@ -53,6 +53,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereVerified($value)
  * @mixin \Eloquent
+ * @property-read mixed $verification
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBadge($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereRequestUserId($value)
  */
 class Animal extends Model
 {

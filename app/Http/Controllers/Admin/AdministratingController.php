@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
+use App\Mail\AnimalRequestWasAcceped;
+use App\Mail\AnimalRequestWasDeclined;
+use App\Models\Animal;
+use App\Models\AnimalsRequest;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\AdminController;
 
-class AdministratingController extends Controller
+class AdministratingController extends AdminController
 {
     public function users()
     {
@@ -94,5 +98,87 @@ class AdministratingController extends Controller
             case 'Тварина' : return redirect()->route('admin.db.animals.edit', $id);
             default: abort(404);
         }
+    }
+
+    public function animalsRequests()
+    {
+        return view('admin.administrating.requests');
+    }
+
+    public function animalsRequestsData(Request $request)
+    {
+        $model = new AnimalsRequest();
+
+        $query = $model->newQuery()
+            ->leftJoin('users', 'animals_requests.user_id', '=', 'users.id')
+            ->leftJoin('animals', 'animals_requests.animal_id', '=', 'animals.id')
+            ->leftJoin('breeds', 'animals_requests.breed_id', '=', 'breeds.id')
+            ->leftJoin('species', 'animals_requests.species_id', '=', 'species.id')
+            ->leftJoin('furs', 'animals_requests.fur_id', '=', 'furs.id')
+            ->leftJoin('colors', 'animals_requests.color_id', '=', 'colors.id')
+            ->groupBy('animals_requests.id');
+
+        $aliases = [
+            'user' => 'CONCAT(`users`.last_name, \' \', `users`.first_name)',
+            'species_name' => 'species.name',
+            'breed_name' => 'breeds.name',
+            'fur_name' => 'furs.name',
+            'color_name' => 'colors.name',
+            'address' => 'CONCAT(
+                 COALESCE(`animals_requests`.street, " "), ", " ,
+                 COALESCE(`animals_requests`.building, " "), ", " ,
+                 COALESCE(`animals_requests`.apartment, " ")
+           )',
+        ];
+
+        $response = DataTables::provide($request, $model, $query, $aliases);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+    public function confirmAnimalsRequest($id)
+    {
+        $animalRequest = AnimalsRequest::findOrFail($id);
+        $animalRequest->processed = 1;
+        $animalRequest->save();
+
+        $animal = Animal::findOrFail($animalRequest->animal_id);
+        $animal->user_id = $animalRequest->user_id;
+        $animal->save();
+
+        $user = User::find($animalRequest->user_id);
+
+        \Mail::to($user->primaryEmail)->send(new AnimalRequestWasAcceped());
+
+        return redirect()
+            ->back()
+            ->with('success_request', 'Запит було прийнято успішно');
+    }
+
+    public function proceedAnimalsRequest($id)
+    {
+        $animalRequest = AnimalsRequest::findOrFail($id);
+        $animalRequest->processed = 1;
+        $animalRequest->save();
+
+        return redirect()
+            ->back()
+            ->with('success_request', 'Запит було оброблено успішно');
+    }
+
+    public function cancelAnimalsRequest(Request $request, $id)
+    {
+        $animalRequest = AnimalsRequest::findOrFail($id);
+        $animalRequest->processed = 1;
+        $animalRequest->save();
+
+        $user = User::find($animalRequest->user_id);
+
+        \Mail::to($user->primaryEmail)->send(new AnimalRequestWasDeclined());
+
+        return redirect()
+            ->back()
+            ->with('success_request', 'Запит було відхилено успішно!');
     }
 }
