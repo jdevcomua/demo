@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Block;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -28,7 +29,7 @@ class AnimalRequestWasDeclined extends Mailable
      */
     public function build()
     {
-        $email = \Block::where('title', '=', 'email.request-cancelled')->first();
+        $email = Block::where('title', '=', 'email.request-cancelled')->first();
         return $this->view('emails.AnimalRequestWasDeclined', [
             'body' => $email->body
         ])

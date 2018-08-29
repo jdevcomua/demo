@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Block;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -28,7 +29,7 @@ class AnimalRequestWasAcceped extends Mailable
      */
     public function build()
     {
-        $email = \Block::where('title', '=', 'email.request-accepted')->first();
+        $email = Block::where('title', '=', 'email.request-accepted')->first();
         return $this->view('emails.AnimalRequestWasAccepted', [
             'body' => $email->body
         ])

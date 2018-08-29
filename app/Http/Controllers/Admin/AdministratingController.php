@@ -149,11 +149,10 @@ class AdministratingController extends AdminController
 
         $user = User::find($animalRequest->user_id);
 
-        try {
+        if ($user->primaryEmail) {
             \Mail::to($user->primaryEmail)->send(new AnimalRequestWasAcceped());
-        } catch (\Exception $exception) {
-            dd($exception->getMessage());
         }
+
         return redirect()
             ->back()
             ->with('success_request', 'Запит було прийнято успішно');
@@ -178,10 +177,8 @@ class AdministratingController extends AdminController
 
         $user = User::find($animalRequest->user_id);
 
-        try {
+        if ($user->primaryEmail) {
             \Mail::to($user->primaryEmail)->send(new AnimalRequestWasDeclined());
-        } catch (\Exception $exception) {
-            dd($exception->getMessage());
         }
 
         return redirect()
