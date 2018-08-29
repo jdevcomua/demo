@@ -75,7 +75,7 @@
                 <hr>
                 <span>або</span>
             </div>
-            <a href="" class="btn btn-block btn-grey" data-toggle="modal" data-target="#searchModal">Мою тварину вже <br> зареєстровано</a>
+            <a href="" class="btn btn-block btn-grey" id="animal-search" data-toggle="modal" data-target="#searchModal">Мою тварину вже <br> зареєстровано</a>
         </div>
     </div>
 
@@ -168,83 +168,22 @@
 
     <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content" id="modal-content">
-
-            </div>
+            <div class="modal-content" id="modal-content"></div>
         </div>
     </div>
 @endsection
 
 @section('scripts-end')
     @parent
-<script>
-    $(document).on('click', '.btn-grey', function(e) {
-        $('#modal-content').html(@include('animals.partials.modal'));
-    });
-
-    function searchAnimal() {
-        var loader = '<div class="showbox">\n' +
-            '  <div class="loader">\n' +
-            '    <svg class="circular" viewBox="25 25 50 50">\n' +
-            '      <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>\n' +
-            '    </svg>\n' +
-            '  </div>\n' +
-            '</div>';
-        var badge = $('#badge').val();
-
-        $.ajax({
-            url: '{{route('ajax.animals.search')}}',
-            type: 'post',
-            data: {
-                badge: badge
-            },
-            success: function(data) {
-                console.log(data);
-                $('#modal-content').html(@include('animals.partials.found'));
-            },
-            error: function(data) {
-                $('#modal-content').html(@include('animals.partials.not-found'));
-            }
-        });
-
-        return false;
-    }
-
-    $(document).on('click', '.search', function(e) {
-        e.preventDefault();
-        searchAnimal();
-    });
-
-    $(document).on('click', '.confirm', function() {
-        var id = $(this).attr('data-id');
-
-        $.ajax({
-            url: '{{route('ajax.animals.request')}}',
-            type: 'post',
-            data: {
-                animal_id: id
-            },
-            success: function(data) {
-                $('#searchModal').modal('hide');
-                window.location.reload();
-            },
-            error: function(data) {
-                $('#modal-content').html(@include('animals.partials.not-found'));
-            }
-        });
-    });
-    $(document).on('click', '.not-found-search', function() {
-        $('#searchModal').modal('hide');
-        setTimeout(function () {
-            $('#requestSearchModal').modal('show');
-        }, 500);
-        $('body').addClass('modal-open');
-    });
-    // $('#form').on('submit', function(){
-    //     $(window).scrollTop(0);
-    //     window.location.reload();
-    // })
-</script>
+    <script>
+        animalSearch.Init(
+            '{{route('ajax.animals.search')}}',
+            '{{route('ajax.animals.request')}}',
+            @include('animals.partials.modal'),
+            @include('animals.partials.found'),
+            @include('animals.partials.not-found'),
+        );
+    </script>
 @endsection
 
 

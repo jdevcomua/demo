@@ -11,6 +11,7 @@ require('./parts/image-input');
 require('./parts/selectize');
 require('./parts/dropzone');
 require('./parts/validation');
+require('./parts/animal-search');
 
 $.ajaxSetup({
     headers: {

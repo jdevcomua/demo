@@ -74,7 +74,9 @@ class AjaxController extends Controller
             ->whereNull('user_id')
             ->first();
         if (!$animal) {
-            return response()->json(['message' => 'not found'],400);
+            return response()->json([
+                'message' => 'not found'
+            ],400);
         }
         $animal->breed_text = $animal->breed->name;
         $animal->color_text = $animal->color->name;
@@ -84,12 +86,31 @@ class AjaxController extends Controller
     }
 
     public function requestAnimal(Request $request) {
-        $animalId = $request->get('animal_id');
-        $animal = Animal::findOrFail($animalId);
-        $animalRequest = new AnimalsRequest();
-        $animalRequest->user_id = \Auth::id();
-        $animalRequest->animal_id = $animalId;
-        $animalRequest->save();
-        return response()->json(['message' => 'Success!']);
+        if ($request->has('animal_id')) {
+            $animal = Animal::findOrFail($request->get('animal_id'));
+            if ($animal) {
+                $isset = AnimalsRequest::where('animal_id', '=', $animal->id)
+                    ->where('user_id', '=', \Auth::id())
+                    ->count();
+                if ($isset) {
+                    return response()->json([
+                        'message' => 'already'
+                    ]);
+                } else {
+                    $animalRequest = new AnimalsRequest();
+                    $animalRequest->user_id = \Auth::id();
+                    $animalRequest->animal_id = $animal->id;
+                    $animalRequest->save();
+                    return response()->json([
+                        'message' => 'success'
+                    ]);
+                }
+            } else {
+                abort(404);
+            }
+        }
+        return response()->json([
+            'message' => 'error'
+        ], 400);
     }
 }
