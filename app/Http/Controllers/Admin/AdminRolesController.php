@@ -6,10 +6,10 @@ use App\Helpers\DataTables;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Controller;
 use Validator;
 
-class AdminRolesController extends AdminController
+class AdminRolesController extends Controller
 {
     private $rolesModel;
     private $request;
@@ -18,7 +18,6 @@ class AdminRolesController extends AdminController
     {
         $this->rolesModel = $rolesModel;
         $this->request = $request;
-        parent::__construct();
     }
 
     public function index()

@@ -10,9 +10,9 @@ use App\Models\AnimalsRequest;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Controller;
 
-class AdministratingController extends AdminController
+class AdministratingController extends Controller
 {
     public function users()
     {

@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Controller;
 use App\Models\Block;
 use App\Models\Faq;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
-class ContentController extends AdminController
+class ContentController extends Controller
 {
 
     const ABOUT_PAGE = 'about-page';

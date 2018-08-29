@@ -10,11 +10,11 @@ use App\Models\Fur;
 use App\Models\Notification;
 use App\Models\Species;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use Validator;
 
-class InfoController extends AdminController
+class InfoController extends Controller
 {
     private $breedModel;
     private $colorModel;
@@ -25,7 +25,6 @@ class InfoController extends AdminController
         $this->breedModel = $breedModel;
         $this->colorModel = $colorModel;
         $this->furModel = $furModel;
-        parent::__construct();
     }
 
     public function directoryIndex()

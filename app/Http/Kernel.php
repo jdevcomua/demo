@@ -66,5 +66,7 @@ class Kernel extends HttpKernel
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
 
         'not.banned' => \App\Http\Middleware\NotBanned::class,
+
+        'check.new.requests' => \App\Http\Middleware\NewRequestsShare::class,
     ];
 }

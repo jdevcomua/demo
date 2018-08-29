@@ -15,13 +15,11 @@ use App\Models\UserPhone;
 use App\Services\FilesService;
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Input;
-use PharIo\Manifest\Email;
 use Validator;
 
-class DataBasesController extends AdminController
+class DataBasesController extends Controller
 {
     private $filesService;
     private $animalModel;
@@ -30,7 +28,6 @@ class DataBasesController extends AdminController
     {
         $this->animalModel = $animalModel;
         $this->filesService = $filesService;
-        parent::__construct();
     }
 
 
