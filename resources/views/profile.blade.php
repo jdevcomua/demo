@@ -50,7 +50,7 @@
         <div class="cols-block">
             <div class="cols-block-header">
                 <div class="block-title">ОСНОВНІ ВІДОМОСТІ</div>
-                <div class="block-sub-title">Додайте усі данні про вас</div>
+                <div class="block-sub-title"></div>
             </div>
             <div class="cols-block-content form">
                 <div class="form-group">

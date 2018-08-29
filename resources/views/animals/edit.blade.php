@@ -45,7 +45,7 @@
         <div class="cols-block">
             <div class="cols-block-header">
                 <div class="block-title">ОСНОВНІ ВІДОМОСТІ</div>
-                <div class="block-sub-title">Додайте усі данні про вашу тварину.</div>
+                <div class="block-sub-title">Додайте усі дані про вашу тварину.</div>
             </div>
             <div class="cols-block-content form">
                 <div class="form-group">
