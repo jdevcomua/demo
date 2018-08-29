@@ -48,6 +48,9 @@ $('input.custom-file-input').change(function () {
 
 
 parseDBDate = function (dateString) {
-    dateString = dateString.replace(/-/g, '/');
-    return new Date(dateString)
+    if (dateString) {
+        dateString = dateString.replace(/-/g, '/');
+        return new Date(dateString)
+    }
+    return null;
 };

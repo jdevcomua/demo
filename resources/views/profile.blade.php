@@ -71,7 +71,7 @@
                 <div class="form-group">
                     <label for="birthday">Дата народження</label>
                     <input type="text" class="form-control" id="birthday"
-                           value="{{ $auth->birthday->format('d/m/Y') }}" readonly/>
+                           value="{{ $auth->birthday ? $auth->birthday->format('d/m/Y') : '' }}" readonly/>
                 </div>
                 <div class="form-group">
                     <label>Стать</label>

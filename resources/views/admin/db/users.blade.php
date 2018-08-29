@@ -129,8 +129,11 @@
                     {
                         data: 'birthday',
                         render: function ( data, type, row ) {
-                            var d = parseDBDate(data);
-                            return d.toLocaleDateString('uk')
+                            if (data) {
+                                var d = parseDBDate(data);
+                                return d.toLocaleDateString('uk')
+                            }
+                            return '';
                         }
                     },
                     @permission('private-data')
