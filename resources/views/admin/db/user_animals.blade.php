@@ -46,14 +46,12 @@
                                     <th>Зареєстровано</th>
                                     <th>Оновлено</th>
                                 </tr>
-                                </thead>
-                                <tfoot class="search">
                                 <tr>
                                     <th></th>
                                     <th></th>
                                     <th class="no-search"></th>
                                     <th></th>
-                                    <th>
+                                    <th class="select">
                                         <select>
                                             <option selected value>---</option>
                                             @foreach($species as $s)
@@ -63,7 +61,7 @@
                                     </th>
                                     <th></th>
                                     <th></th>
-                                    <th>
+                                    <th class="select">
                                         <select>
                                             <option selected value>---</option>
                                             <option value="0">Самка</option>
@@ -71,21 +69,21 @@
                                         </select>
                                     </th>
                                     <th></th>
-                                    <th>
+                                    <th class="select">
                                         <select>
                                             <option selected value>---</option>
                                             <option value="0">Не стерилізовано</option>
                                             <option value="1">Стерилізовано</option>
                                         </select>
                                     </th>
-                                    <th>
+                                    <th class="select">
                                         <select>
                                             <option selected value>---</option>
                                             <option value="0">Ні</option>
                                             <option value="1">Так</option>
                                         </select>
                                     </th>
-                                    <th>
+                                    <th class="select">
                                         <select>
                                             <option selected value>---</option>
                                             <option value="0">Безпритульна</option>
@@ -95,7 +93,7 @@
                                     <th></th>
                                     <th></th>
                                 </tr>
-                                </tfoot>
+                                </thead>
                                 <tbody>
                                 </tbody>
                             </table>
@@ -125,6 +123,7 @@
                     {
                         "data": "id",
                         defaultContent: '',
+                        orderable: false,
                         render: function ( data, type, row ) {
                             if (data) {
                                 return "<a href=\"{{ route('admin.db.animals.edit') }}/"

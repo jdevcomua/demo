@@ -42,22 +42,19 @@
                                     <th>Оновлено</th>
                                     <th>Ролі</th>
                                 </tr>
-                                </thead>
-                                <tfoot class="search">
                                 <tr>
                                     <th></th>
                                     <th class="no-search"></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
-
                                     <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
                                 </tr>
-                                </tfoot>
+                                </thead>
                                 <tbody>
                                 </tbody>
                             </table>
@@ -84,6 +81,7 @@
                     {
                         "data": "id",
                         defaultContent: '',
+                        orderable: false,
                         render: function ( data, type, row ) {
                             if (data) {
                                 return "<a href=\"{{ route('admin.db.users.show') }}/"

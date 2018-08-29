@@ -9,6 +9,13 @@ table.datatable {
   }
   thead th {
     padding-right: 18px;
+    &.select {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+    input {
+      min-width: 40px
+    }
   }
   tfoot.search {
     display: table-header-group;
