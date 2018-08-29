@@ -72,7 +72,7 @@
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="nickname">Кличка <span class="required-field">*</span></label>
-                    <input type="text" class="form-control" id="nickname" name="nickname" required-field>
+                    <input type="text" class="form-control" id="nickname" name="nickname" required>
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
@@ -107,23 +107,23 @@
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="breed">Порода  <span class="required-field">*</span></label>
-                    <select name="breed" id="breed" required-field></select>
+                    <select name="breed" id="breed" required></select>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="color">Масть  <span class="required-field">*</span></label>
-                    <select name="color" id="color" required-field></select>
+                    <select name="color" id="color" required></select>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="fur">Тип шерсті <span class="required-field">*</span></label>
-                    <select name="fur" id="fur" required-field></select>
+                    <select name="fur" id="fur" required></select>
                 </div>
                 <div class="form-group datepicker">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="birthday">Дата народження  <span class="required-field">*</span></label>
                     <input type="text" class="form-control" id="birthday" name="birthday"
-                           required-field autocomplete="off" readonly="true"
+                           required autocomplete="off" readonly="true"
                     />
                 </div>
                 <div class="form-group btn-group-toggle checkbox-group" data-toggle="buttons">

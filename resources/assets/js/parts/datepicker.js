@@ -15,6 +15,4 @@ $(function () {
         locale: "uk",
         autoclose: true
     });
-
-    updateFileDeletes();
 });

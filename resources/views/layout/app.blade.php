@@ -22,7 +22,7 @@
             </a>
         @endif
 
-        <div class="content">
+        <div class="content-body">
             @yield('content')
         </div>
         @include('layout.footer')

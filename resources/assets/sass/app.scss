@@ -48,8 +48,9 @@ img.logo {
 img {
   max-width: 100%;
 }
-.content {
+.content-body {
   padding: 80px 50px 40px;
+  min-height: 26rem;
 }
 
 @media (max-width: 900px) {

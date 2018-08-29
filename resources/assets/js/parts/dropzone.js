@@ -65,7 +65,7 @@ function showFiles(files) {
     updateFileDeletes()
 }
 
-function updateFileDeletes() {
+updateFileDeletes = function () {
     var $files = $('.file-delete');
     $files.off();
     $files.on('click', function () {
@@ -83,7 +83,11 @@ function updateFileDeletes() {
             showFiles(droppedFiles);
         }
     })
-}
+};
+
+$(function () {
+    updateFileDeletes();
+});
 
 $form.on('submit', function (e) {
     if (isAdvancedUpload) {

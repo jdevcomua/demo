@@ -1,4 +1,4 @@
-function showValidationErrors(err) {
+showValidationErrors = function (err) {
     var $highestElem = false;
     for (var key in err) {
         if (err.hasOwnProperty(key)) {
@@ -20,7 +20,7 @@ function showValidationErrors(err) {
     $([document.documentElement, document.body]).animate({
         scrollTop: $highestElem.offset().top
     }, 1000);
-}
+};
 
 function findNearest(elem, selector) {
     var $res;
