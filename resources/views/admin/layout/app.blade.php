@@ -42,9 +42,7 @@
     </script>
     <script src="/js/admin/jquery.dataTables.js"></script>
     <script src="/js/admin/dataTables.tableTools.min.js"></script>
-    <script src="/js/admin/dataTables.colReorder.min.js"></script>
     <script src="/js/admin/dataTables.bootstrap.js"></script>
-    <script src="/js/admin/dataTables.responsive.js"></script>
     @yield('scripts-end')
 </body>
 </html>

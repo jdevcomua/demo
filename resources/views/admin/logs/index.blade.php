@@ -32,12 +32,10 @@
                                     <th>Завершено</th>
                                     <th>Дії</th>
                                 </tr>
-                                </thead>
-                                <tfoot class="search">
                                 <tr>
                                     <th>Дата</th>
                                     <th>Користувач</th>
-                                    <th>
+                                    <th class="select">
                                         <select>
                                             <option selected value>---</option>
                                             @foreach(\App\Models\Log::ACTIONS as $k => $action)
@@ -46,7 +44,7 @@
                                         </select>
                                     </th>
                                     <th>Об'єкт</th>
-                                    <th>
+                                    <th class="select">
                                         <select>
                                             <option selected value>---</option>
                                             @foreach(\App\Models\Log::STATUSES as $k => $status)
@@ -54,7 +52,7 @@
                                             @endforeach
                                         </select>
                                     </th>
-                                    <th>
+                                    <th class="select">
                                         <select>
                                             <option selected value>---</option>
                                             <option value="0">Ні</option>
@@ -63,7 +61,7 @@
                                     </th>
                                     <th class="no-search"></th>
                                 </tr>
-                                </tfoot>
+                                </thead>
                                 <tbody>
                                 </tbody>
                             </table>
@@ -148,6 +146,7 @@
                     },
                     {
                         data: 'id',
+                        orderable: false,
                         render: function ( data, type, row ) {
                             return '<a href="{{ route('admin.logs.show') }}/'+data+'" class="btn btn-sm ' +
                                 'btn-primary btn-block">Докладніше ...</a>';

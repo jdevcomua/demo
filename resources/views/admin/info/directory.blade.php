@@ -47,12 +47,10 @@
                                         <th>Назва</th>
                                         <th>FCI</th>
                                     </tr>
-                                    </thead>
-                                    <tfoot class="search">
                                     <tr>
                                         <th></th>
                                         <th class="no-search"></th>
-                                        <th>
+                                        <th class="select">
                                             <select>
                                                 <option selected value>---</option>
                                                 @foreach($species as $s)
@@ -63,7 +61,7 @@
                                         <th></th>
                                         <th></th>
                                     </tr>
-                                    </tfoot>
+                                    </thead>
                                     <tbody>
                                     </tbody>
                                 </table>
@@ -172,12 +170,10 @@
                                         <th>Вид тварини</th>
                                         <th>Назва</th>
                                     </tr>
-                                    </thead>
-                                    <tfoot class="search">
                                     <tr>
                                         <th></th>
                                         <th class="no-search"></th>
-                                        <th>
+                                        <th class="select">
                                             <select>
                                                 <option selected value>---</option>
                                                 @foreach($species as $s)
@@ -187,7 +183,7 @@
                                         </th>
                                         <th></th>
                                     </tr>
-                                    </tfoot>
+                                    </thead>
                                     <tbody>
                                     </tbody>
                                 </table>
@@ -288,12 +284,10 @@
                                         <th>Вид тварини</th>
                                         <th>Назва</th>
                                     </tr>
-                                    </thead>
-                                    <tfoot class="search">
                                     <tr>
                                         <th></th>
                                         <th class="no-search"></th>
-                                        <th>
+                                        <th class="select">
                                             <select>
                                                 <option selected value>---</option>
                                                 @foreach($species as $s)
@@ -303,7 +297,7 @@
                                         </th>
                                         <th></th>
                                     </tr>
-                                    </tfoot>
+                                    </thead>
                                     <tbody>
                                     </tbody>
                                 </table>
@@ -501,6 +495,7 @@
                     {
                         "data": "id", 'width': '7%',
                         defaultContent: '',
+                        orderable: false,
                         render: function ( data, type, row ) {
                             if (data) {
                                 return "<a href=\"\" data-id="
@@ -527,6 +522,7 @@
                     {
                         "data": "id",
                         defaultContent: '',
+                        orderable: false,
                         render: function ( data, type, row ) {
                             if (data) {
                                 return "<a href=\"\" data-id="
@@ -552,6 +548,7 @@
                     {
                         "data": "id",
                         defaultContent: '',
+                        orderable: false,
                         render: function ( data, type, row ) {
                             if (data) {
                                 return "<a href=\"\" data-id="
