@@ -23,7 +23,6 @@ dataTableLang = {
 var dataTablesDefs = {
     sDom: 't<"dt-panelfooter clearfix"ip>',
     serverSide: true,
-    scrollX: true,
     language: dataTableLang,
     bSortCellsTop: true
 };
@@ -37,6 +36,8 @@ dataTableInit = function (table, options) {
     });
 
     var dt = table.DataTable({...dataTablesDefs, ...options});
+
+    table.wrap('<div class="scroll-table"></div>');
 
     dt.columns().eq(0).each(function(colIdx) {
         var header = $(dt.column(colIdx).header());

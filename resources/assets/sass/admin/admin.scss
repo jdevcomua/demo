@@ -21,6 +21,10 @@ table.datatable {
     display: table-header-group;
   }
 }
+.scroll-table {
+  width: 100%;
+  overflow-x: auto;
+}
 .datatable_wrapper, .panel-body {
   overflow: hidden;
 }
