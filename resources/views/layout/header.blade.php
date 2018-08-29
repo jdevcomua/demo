@@ -41,8 +41,8 @@
             <a href="{{ route('faq') }}" class="nav-item @if($curRoute == 'faq') active @endif">Часті запитання</a>
         </nav>
         <div class="socials">
-            <a href="#" class="socials-item socials-item-facebook"></a>
-            <a href="#" class="socials-item socials-item-youtube"></a>
+            <a href="https://facebook.com" class="socials-item socials-item-facebook"></a>
+            <a href="https://youtube.com" class="socials-item socials-item-youtube"></a>
             {{--<a href="#" class="socials-item socials-item-twitter"></a>--}}
         </div>
     </div>
