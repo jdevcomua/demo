@@ -31,7 +31,7 @@
             <span class="above-text">"Київська міська лікарня</span>
             <span class="above-text">ветеринарноі медицини" (КП КМЛВМ)</span><br><br>
             <span class="above-text">Електротехнічна 5-А місто Київ</span>
-            <span class="above-text">телефон: <span class="text-white">+38 (044) 366-6401</span></span>
+            <span class="above-text">телефон: <span class="text-white">+38 (044) 366-69-99</span></span>
             <span class="above-text">e-mail: <a class="text-white" href="mailto:info@kmlvm.com.ua ">info@kmlvm.com.ua </a></span>
             <span class="above-text">сайт: <a class="text-white" href="http://www.kmlvm.com.ua">http://www.kmlvm.com.ua </a></span>
 
