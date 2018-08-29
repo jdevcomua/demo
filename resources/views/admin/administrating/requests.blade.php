@@ -97,7 +97,7 @@
                         render: function ( data, type, row ) {
                             if (data) {
                                 return "<a href=\"{{ route('admin.db.animals.edit') }}/"
-                                    + row.user_id + "\">" + data +
+                                    + row.animal_id + "\">" + data +
                                     "</a>";
                             }
                             return '';
