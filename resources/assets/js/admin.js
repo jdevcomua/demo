@@ -26,6 +26,22 @@ $.ajaxSetup({
     }
 });
 
+$('input[required]').each(function () {
+    $(this).attr('title', 'Заповніть це поле.');
+});
+$('input.custom-file-input').change(function () {
+    var count = this.files.length;
+    var txt;
+    switch (count) {
+        case 1: txt = ' файл'; break;
+        case 2:
+        case 3:
+        case 4: txt = ' файли'; break;
+        default: txt = ' файлів';
+    }
+    $(this).prev().text('Обрано: ' + count + txt);
+});
+
 $(function () {
     $('.datepicker input').datepicker({
         changeMonth: true,

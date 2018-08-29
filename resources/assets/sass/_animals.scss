@@ -35,7 +35,8 @@
     padding: 0 4rem;
     display: flex;
     flex-flow: row wrap;
-    width: 100%;
+    min-width: calc(100% - 130px);
+    overflow: hidden;
   }
   .more-button {
     position: absolute;
@@ -311,6 +312,8 @@ $width: 100px;
     padding: 3vw 0 3vw 3vw;
     .pet-info {
       padding: 0 4vw;
+      width: calc(97% - 160px);
+      min-width: auto;
     }
   }
 }
@@ -323,6 +326,7 @@ $width: 100px;
     }
     .pet-info {
       padding: 0 0 0 2rem;
+      width: calc(97% - 120px);
     }
     .more-button {
       right: -1rem;
@@ -336,10 +340,6 @@ $width: 100px;
     width: 50%;
     padding-right: 1rem;
     margin-bottom: 1rem;
-    .content {
-      white-space: normal;
-      word-break: break-word;
-    }
   }
 }
 @media (max-width: 510px) {

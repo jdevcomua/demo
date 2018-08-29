@@ -44,14 +44,17 @@
 
 
                                 <div class="form-group">
-                                    <label class="col-lg-3 control-label" for="images">Зображення</label>
-                                    <div class="col-lg-8 control-label">
-                                        <input type="file" id="images" name="images[]" multiple required>
+                                    <label class="col-lg-3 control-label">Зображення</label>
+                                    <div class="col-lg-8 control-label text-left">
+                                        <button type="button">
+                                            <label for="images" class="mn">Оберіть файли</label>
+                                        </button>
+                                        <span class="file-count pl5"></span>
+                                        <input type="file" id="images" name="images[]"
+                                               multiple class="custom-file-input">
+                                        <span class="help-block mt5">Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg та не більше ніж 10Mb</span>
                                     </div>
                                 </div>
-                                    <small id="passwordHelpBlock" class="form-text text-left text-muted">
-                                        Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg та не більше ніж 10Mb
-                                    </small>
 
 
                                 <div class="form-group select">
@@ -144,17 +147,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-lg-3 control-label" for="documents">Документи</label>
-                                    <div class="col-lg-8 control-label">
-                                        <input type="file" id="documents" name="documents[]" multiple>
+                                    <label class="col-lg-3 control-label">Документи</label>
+                                    <div class="col-lg-8 control-label text-left">
+                                        <button type="button">
+                                            <label for="documents" class="mn">Оберіть файли</label>
+                                        </button>
+                                        <span class="file-count pl5"></span>
+                                        <input type="file" id="documents" name="documents[]"
+                                               multiple class="custom-file-input">
+                                        <span class="help-block mt5">Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 10Mb</span>
                                     </div>
                                 </div>
-                                    <small id="passwordHelpBlock" class="form-text text-muted">
-                                        Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf
-                                        <br>
-                                        та не більше ніж 10Mb
-                                    </small>
-
                             </div>
                             <div class="panel-footer text-right">
                                 <button type="submit" class="btn btn-default ph25">Зберегти</button>

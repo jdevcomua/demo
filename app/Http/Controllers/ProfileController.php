@@ -48,7 +48,7 @@ class ProfileController extends Controller
 
         return redirect()
             ->back()
-            ->with('success_phone', 'Данні оновлено успішно!');
+            ->with('success_phone', 'Дані оновлено успішно!');
 
     }
 
@@ -79,7 +79,7 @@ class ProfileController extends Controller
 
         return redirect()
             ->back()
-            ->with('success_email', 'Данні оновлено успішно!');
+            ->with('success_email', 'Дані оновлено успішно!');
 
     }
 
