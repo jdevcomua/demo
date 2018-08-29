@@ -44,8 +44,6 @@
                                     <th>Адреса</th>
                                     <th>Створено</th>
                                 </tr>
-                                </thead>
-                                <tfoot class="search">
                                 <tr>
                                     <th></th>
                                     <th></th>
@@ -60,7 +58,7 @@
                                     <th></th>
                                     <th></th>
                                 </tr>
-                                </tfoot>
+                                </thead>
                                 <tbody>
                                 </tbody>
                             </table>
@@ -110,6 +108,7 @@
                     {
                         "data": "processed",
                         defaultContent: '',
+                        orderable: false,
                         render: function ( data, type, row ) {
                             if (data) {
                                 return "<i class=\"fa fa-check pr10\" aria-hidden=\"true\"></i>";
@@ -134,16 +133,6 @@
                     { "data": "address" },
                     { "data": "created_at" },
                 ],
-            });
-
-            jQuery(document).on('click','.ban', function(e) {
-                e.preventDefault();
-                if (confirm('Ви впевнені що хочете заблокувати користувача?')) {
-                    var id = jQuery(this).attr('data-id');
-                    var form = jQuery('#remove');
-                    $(form).attr('action', "{{route('admin.administrating.users.ban')}}/"+id);
-                    $(form).submit();
-                }
             });
         });
     </script>

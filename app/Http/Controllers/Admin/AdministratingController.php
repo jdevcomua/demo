@@ -137,6 +137,7 @@ class AdministratingController extends Controller
 
         return response('', 400);
     }
+
     public function confirmAnimalsRequest($id)
     {
         $animalRequest = AnimalsRequest::findOrFail($id);
