@@ -91,6 +91,7 @@ class AjaxController extends Controller
             if ($animal) {
                 $isset = AnimalsRequest::where('animal_id', '=', $animal->id)
                     ->where('user_id', '=', \Auth::id())
+                    ->where('processed', '=', 0)
                     ->count();
                 if ($isset) {
                     return response()->json([
