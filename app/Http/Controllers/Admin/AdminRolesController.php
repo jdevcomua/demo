@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\DataTables;
 use App\Models\Permission;
 use App\Models\Role;
+use Cache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -80,6 +81,7 @@ class AdminRolesController extends Controller
         $role->display_name = $data['display_name'];
         $role->save();
         $role->permissions()->attach($data['permission']);
+        Cache::flush();
 
         return redirect()
             ->back()
@@ -96,6 +98,7 @@ class AdminRolesController extends Controller
         $role_permissions = $role->permissions
             ->pluck('name', 'id')
             ->toArray();
+        Cache::flush();
 
         return view('admin.roles.edit', [
             'permissions' => Permission::get(),
@@ -139,6 +142,7 @@ class AdminRolesController extends Controller
         $role->save();
         $role->permissions()->detach();
         $role->permissions()->attach($data['permission']);
+        Cache::flush();
 
         return redirect()
             ->route('admin.roles.index');
@@ -160,6 +164,7 @@ class AdminRolesController extends Controller
         }
 
         $role->delete();
+        Cache::flush();
 
         return redirect()
             ->back()

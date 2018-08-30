@@ -17,8 +17,13 @@ class NewRequestsShare
      */
     public function handle($request, Closure $next)
     {
-        if (AnimalsRequest::where('processed', 0)->count()) {
-            View::share('hasNewRequests', 1);
+        $route = $request->route();
+        if ($route) {
+            if (strpos($route->getName(), '.data') === false) { // Ignoring data routes
+                if (AnimalsRequest::where('processed', 0)->count()) {
+                    View::share('hasNewRequests', 1);
+                }
+            }
         }
 
         return $next($request);

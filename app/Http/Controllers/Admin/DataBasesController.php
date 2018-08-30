@@ -14,6 +14,7 @@ use App\Models\UserEmail;
 use App\Models\UserPhone;
 use App\Services\FilesService;
 use App\User;
+use Cache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
@@ -148,6 +149,8 @@ class DataBasesController extends Controller
             }
         }
 
+        Cache::flush();
+
         return redirect()
             ->back()
             ->with('success_user', 'Користувач був успішно змінений!');
@@ -242,6 +245,7 @@ class DataBasesController extends Controller
 
         $user = User::findOrFail($id);
         $user->roles()->sync($data['roles']);
+        Cache::flush();
 
         return redirect()
             ->back()
@@ -255,6 +259,8 @@ class DataBasesController extends Controller
             $animal->delete();
         }
         $user->delete();
+        Cache::flush();
+
         return redirect()
             ->back()
             ->with('success_user', 'Користувач успішно видалений!');

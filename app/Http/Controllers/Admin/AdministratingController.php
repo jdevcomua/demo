@@ -8,6 +8,7 @@ use App\Mail\AnimalRequestWasDeclined;
 use App\Models\Animal;
 use App\Models\AnimalsRequest;
 use App\User;
+use Cache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -49,6 +50,8 @@ class AdministratingController extends Controller
         $user = User::findOrFail($id);
         $user->banned = true;
         $user->save();
+        Cache::flush();
+
         return redirect()
             ->back()
             ->with('success_user', 'Користувач успішно заблокований!');
@@ -86,6 +89,8 @@ class AdministratingController extends Controller
         $user = User::findOrFail($id);
         $user->banned = false;
         $user->save();
+        Cache::flush();
+
         return redirect()
             ->back()
             ->with('success_user', 'Користувач успішно розблокований!');
