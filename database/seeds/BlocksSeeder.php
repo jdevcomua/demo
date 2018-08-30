@@ -46,6 +46,16 @@ class BlocksSeeder extends Seeder
                                 Обід 13:00-14:00 год.
                             </p>'
             ],
+            [
+                'title' => 'email.request-accepted',
+                'subject' => 'Ваш запит на тваринку було схвалено!',
+                'body' => 'Ваш запит на тваринку було схвалено!'
+            ],
+            [
+                'title' => 'email.request-cancelled',
+                'subject' => 'Ваш запит на тваринку було відхилено!',
+                'body' => 'Ваш запит на тваринку було відхилено!'
+            ],
         ]);
     }
 }

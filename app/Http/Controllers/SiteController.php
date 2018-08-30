@@ -22,28 +22,5 @@ class SiteController extends Controller
             'questions' => Faq::all()
         ]);
     }
-    
-    public function test()
-    {
-        $block = \App\Models\Block::where('title', 'email.request-accepted')->first();
-        if (!$block) {
-            $block = new \App\Models\Block();
-            $block->title = 'email.request-accepted';
-            $block->subject = 'Ваш запит на тваринку було схвалено!';
-            $block->body = 'Ваш запит на тваринку було схвалено!';
-            $block->save();
-        }
-
-        $block = \App\Models\Block::where('title', 'email.request-cancelled')->first();
-        if (!$block) {
-            $block = new \App\Models\Block();
-            $block->title = 'email.request-cancelled';
-            $block->subject = 'Ваш запит на тваринку було відхилено!';
-            $block->body = 'Ваш запит на тваринку було відхилено!';
-            $block->save();
-        }
-
-        return redirect('/');
-    }
 
 }
