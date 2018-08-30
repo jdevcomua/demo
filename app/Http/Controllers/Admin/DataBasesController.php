@@ -557,16 +557,20 @@ class DataBasesController extends Controller
 
         $validator = Validator::make($data, [
             'images' => 'nullable|array',
-            'images.*' => 'nullable|file',
+            'images.*' => 'nullable|image|max:2048',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:10240',
+        ], [
+            'images.*.max' => 'Фото повинні бути не більше 2Mb',
+            'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
+            'documents.*.max' => 'Документи повинні бути не більше 10Mb',
+            'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
         ]);
 
         if ($validator->fails()) {
-            dd($validator->errors());
             return redirect()
                 ->back()
-                ->withErrors($validator, 'animal')
+                ->withErrors($validator, 'animal_files')
                 ->withInput();
         }
 
@@ -576,7 +580,7 @@ class DataBasesController extends Controller
 
         return redirect()
             ->route('admin.db.animals.edit', $animal->id)
-            ->with('success_animal', 'Файли додано успішно !');
+            ->with('success_animal_files', 'Файли додано успішно !');
     }
 
     public function animalRemoveFile($id)

@@ -24,7 +24,7 @@
                             @csrf
                             @method('PUT')
                             <div class="panel-body">
-                                @if($errors->user)
+                                @if($errors->animal)
                                     @foreach($errors->animal->all() as $error)
                                         <div class="alert alert-danger alert-dismissable">
                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -250,11 +250,29 @@
                                 <span class="glyphicon glyphicon-tasks"></span>Файли тварини</div>
                         </div>
                         <div class="panel-body pn">
-                            <small id="passwordHelpBlock" class="form-text text-muted">
+                            @if($errors->animal_files)
+                                @foreach($errors->animal_files->all() as $error)
+                                    <div class="alert alert-danger alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-remove pr10"></i>
+                                        {{ $error }}
+                                    </div>
+                                @endforeach
+                            @endif
+
+                            @if (\Session::has('success_animal_files'))
+                                <div class="alert alert-success alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-check pr10"></i>
+                                    {{ \Session::get('success_animal_files') }}
+                                </div>
+                            @endif
+                            <span class="help-block mt10 ph10">
+                                Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg та не більше ніж 2Mb
+                            </span>
+                            <span class="help-block mt10 ph10">
                                 Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 10Mb
-                                <br>
-                                Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg та не більше ніж 10Mb
-                            </small>
+                            </span>
                             <form role="form" enctype="multipart/form-data" id="upload-form"
                                   action="{{ route('admin.db.animals.upload-file', $animal->id) }}" method="post">
                                 @csrf

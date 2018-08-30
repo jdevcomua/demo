@@ -392,6 +392,7 @@ $width: 100px;
 }
 
 .new-pet-photos {
+  overflow: hidden;
   label.photo-item {
     float: left;
     display: flex;

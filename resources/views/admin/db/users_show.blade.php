@@ -116,7 +116,7 @@
                                     <label for="birthday" class="col-lg-3 control-label">Дата народження</label>
                                     <div class="col-lg-8 ">
                                         <p class="form-control custom-field">
-                                            {{ $user->birthday->format('d/m/Y') }}
+                                            {{ $user->birthday ? $user->birthday->format('d/m/Y') : '' }}
                                         </p>
                                     </div>
                                 </div>

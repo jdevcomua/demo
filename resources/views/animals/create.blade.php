@@ -56,10 +56,10 @@
                         <span class="add-btn"></span>
                     </label>
                 </div>
-                <small id="passwordHelpBlock" class="form-text text-muted">
+                <small class="form-text text-muted">
                     Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg
                     <br>
-                    та не більше ніж 10Mb
+                    та не більше ніж 2Mb
                 </small>
             </div>
         </div>
@@ -158,7 +158,7 @@
                     <input type='file' id="manual-upload" multiple />
                     <div class="files-list"></div>
                 </div>
-                <small id="passwordHelpBlock" class="form-text text-muted">
+                <small class="form-text text-muted">
                     Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf
                     <br>
                     та не більше ніж 10Mb
