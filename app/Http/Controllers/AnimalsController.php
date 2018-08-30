@@ -291,18 +291,45 @@ class AnimalsController extends Controller
 
     public function findAnimalRequest(Request $request)
     {
+        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
+            'birthday', 'street', 'building', 'apartment']);
+
+        if (array_key_exists('birthday', $data)) {
+            $data['birthday'] = str_replace('/', '-', $data['birthday']);
+            $data['birthday'] = Carbon::createFromTimestamp(strtotime($data['birthday']));
+        }
+
+        $validator = Validator::make($data, [
+            'nickname' => 'required|string|max:256',
+            'species' => 'required|integer|exists:species,id',
+            'gender' => 'required|integer|in:0,1',
+            'breed' => 'required|integer|exists:breeds,id',
+            'color' => 'required|integer|exists:colors,id',
+            'fur' => 'required|integer|exists:furs,id',
+            'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
+            'street' => 'required|string|max:256',
+            'building' => 'required|string|max:256',
+            'apartment' => 'required|string|max:256',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back(400);
+        }
+
+        $data['species_id'] = $data['species'];
+        $data['breed_id'] = $data['breed'];
+        $data['color_id'] = $data['color'];
+        $data['fur_id'] = $data['fur'];
+        unset($data['species']);
+        unset($data['breed']);
+        unset($data['color']);
+        unset($data['fur']);
+
         $animalRequest = new AnimalsRequest();
         $animalRequest->user_id = \Auth::id();
-        $animalRequest->breed_id = $request->get('breed');
-        $animalRequest->color_id = $request->get('color');
-        $animalRequest->fur_id = $request->get('fur');
-        $animalRequest->species_id = $request->get('species');
-        $animalRequest->street = $request->get('street');
-        $animalRequest->building = $request->get('building');
-        $animalRequest->apartment = $request->get('apartment');
-        $animalRequest->nickname = $request->get('nickname');
-        $animalRequest->birthday = Carbon::createFromFormat('d/m/Y',$request->get('birthday'));
+        $animalRequest->fill($data);
         $animalRequest->save();
+
         return redirect()->back();
     }
 }

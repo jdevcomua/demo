@@ -94,7 +94,7 @@
                             <p>Після ретельного пошуку ми надішлемо вам лист на пошту з результатами</p>
                         </div>
                         <div class="col-md-12">
-                            <form action="{{route('animals.search-request')}}" method="POST">
+                            <form class="search-request" action="{{route('animals.search-request')}}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
@@ -112,6 +112,22 @@
                                         <label class="btn radio-item big-radio">
                                             <span class="label label-cat"></span>
                                             <input type="radio" name="species" value="2" autocomplete="off">Кіт
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="validation-error alert alert-danger hidden"></div>
+                                    <label>Стать  <span class="required-field">*</span></label>
+                                    <div class="btn-group-toggle" data-toggle="buttons">
+                                        <label class="btn radio-item big-radio active">
+                                            <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
+                                            <input type="radio" name="gender"
+                                                   value="{{ \App\Models\Animal::GENDER_MALE }}" autocomplete="off" checked>Самець
+                                        </label>
+                                        <label class="btn radio-item big-radio">
+                                            <span class="label"><i class="fa fa-venus" aria-hidden="true"></i></span>
+                                            <input type="radio" name="gender"
+                                                   value="{{ \App\Models\Animal::GENDER_FEMALE }}" autocomplete="off">Самка
                                         </label>
                                     </div>
                                 </div>

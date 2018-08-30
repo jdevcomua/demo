@@ -652,3 +652,17 @@ $width: 100px;
     }
   }
 }
+
+
+.search-request {
+  .btn-group-toggle {
+    justify-content: center;
+  }
+  label.btn.radio-item.big-radio {
+    align-items: center;
+    flex-flow: column;
+  }
+  .btn-group-toggle .big-radio .label {
+    margin-right: 0;
+  }
+}
