@@ -71,22 +71,26 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email" class="col-lg-3 control-label">Email</label>
+                                    <label for="phone" class="col-lg-3 control-label">Email</label>
+                                    <div class="col-lg-8">
+                                        @forelse($user->emailsSystem as $email)
+                                            <p class="form-control custom-field">
+                                                {{ $email->email }}
+                                            </p>
+                                        @empty
+                                            <p class="form-control custom-field"></p>
+                                        @endforelse
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone" class="col-lg-3 control-label">Додатковий email</label>
                                     <div class="col-lg-8">
                                         @permission('edit-user')
-                                            @forelse($user->emails as $email)
-                                                <input class="form-control custom-field" name="emails[]" value="{{ $email->email }}">
-                                            @empty
-                                                <input class="form-control custom-field" name="emails[]">
-                                            @endforelse
+                                            <input class="form-control custom-field" name="email"
+                                                   value="{{ old('email') ?? $user->additionalEmail }}">
                                         @else
-                                            @forelse($user->emails as $email)
-                                                <p class="form-control custom-field">
-                                                    {{ $email->email }}
-                                                </p>
-                                            @empty
-                                                <p class="form-control custom-field"></p>
-                                            @endforelse
+                                            <p class="form-control custom-field">{{ $user->additionalEmail }}</p>
                                         @endpermission
                                     </div>
                                 </div>
@@ -94,20 +98,24 @@
                                 <div class="form-group">
                                     <label for="phone" class="col-lg-3 control-label">Телефон</label>
                                     <div class="col-lg-8">
+                                        @forelse($user->phonesSystem as $phone)
+                                            <p class="form-control custom-field">
+                                                {{ $phone->phone }}
+                                            </p>
+                                        @empty
+                                            <p class="form-control custom-field"></p>
+                                        @endforelse
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone" class="col-lg-3 control-label">Додатковий телефон</label>
+                                    <div class="col-lg-8">
                                         @permission('edit-user')
-                                            @forelse($user->phones as $phone)
-                                                <input class="form-control custom-field" name="phones[]" value="{{ $phone->phone }}">
-                                            @empty
-                                                <input class="form-control custom-field" name="phones[]" value="">
-                                            @endforelse
+                                            <input class="form-control custom-field" name="phone"
+                                                   value="{{ old('phone') ?? $user->additionalPhone }}">
                                         @else
-                                            @forelse($user->phones as $phone)
-                                                <p class="form-control custom-field">
-                                                    {{ $phone->phone }}
-                                                </p>
-                                            @empty
-                                                <p class="form-control custom-field"></p>
-                                            @endforelse
+                                            <p class="form-control custom-field">{{ $user->additionalPhone }}</p>
                                         @endpermission
                                     </div>
                                 </div>
@@ -134,13 +142,9 @@
                                 <div class="form-group">
                                     <label for="passport" class="col-lg-3 control-label">Паспорт</label>
                                     <div class="col-lg-8">
-                                        @permission('edit-user')
-                                            <input type="text" class="form-control custom-field" name="passport" value="{{$user->passport}}">
-                                        @else
-                                            <p class="form-control custom-field">
-                                                {{ $user->passport}}
-                                            </p>
-                                        @endpermission
+                                        <p class="form-control custom-field">
+                                            {{ $user->passport}}
+                                        </p>
                                     </div>
                                 </div>
                                 @endpermission

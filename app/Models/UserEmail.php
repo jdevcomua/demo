@@ -26,6 +26,7 @@ class UserEmail extends Model
 {
     const TYPE_PRIMARY = 'PRIMARY';
     const TYPE_ADDITIONAL = 'ADDITIONAL';
+    const TYPE_MANUAL = 'MANUAL';
 
     protected $fillable = [
         'type', 'email',

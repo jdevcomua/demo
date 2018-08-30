@@ -53,6 +53,15 @@
                 <div class="block-sub-title"></div>
             </div>
             <div class="cols-block-content form">
+                @if($errors->profile)
+                    @foreach($errors->profile->all() as $error)
+                        <div class="alert alert-danger">{{ $error }}</div>
+                    @endforeach
+                @endif
+                @if (\Session::has('success_profile'))
+                    <div class="alert alert-success">{{ \Session::get('success_profile') }}</div>
+                @endif
+
                 <div class="form-group">
                     <label for="last_name">Прізвище</label>
                     <input type="text" class="form-control" id="last_name"
@@ -88,28 +97,34 @@
                         </label>
                     </div>
                 </div>
-                @if(count($auth->phones))
+                @if(count($auth->phonesSystem))
                     <div class="form-group">
                         <label for="phone">Телефон</label>
-                        @foreach($auth->phones as $phone)
+                        @foreach($auth->phonesSystem as $phone)
                             <input type="text" class="form-control mb-4" id="phone"
                                    value="{{ $phone->phone }}" readonly>
                         @endforeach
                     </div>
-
                 @endif
-                <a href="" class="btn btn-block btn-default" data-toggle="modal" data-target="#modalPhone">+ Додати ще номер телефону</a>
-                @if(count($auth->emails))
+                <div class="form-group">
+                    <label for="phone">Додатковий телефон</label>
+                    <input type="text" class="form-control mb-4" id="phone"
+                           value="{{ old('phone') ?? $auth->additionalPhone }}" name="phone">
+                </div>
+                @if(count($auth->emailsSystem))
                     <div class="form-group">
                         <label for="email">Пошта</label>
-                        @foreach($auth->emails as $email)
+                        @foreach($auth->emailsSystem as $email)
                             <input type="email" class="form-control mb-4" id="email"
                                    value="{{ $email->email }}" readonly>
                         @endforeach
                     </div>
                 @endif
-                <a href="" class="btn btn-block btn-default" data-toggle="modal" data-target="#modalEmail">+ Додати ще Email</a>
-
+                <div class="form-group">
+                    <label for="email">Додаткова пошта</label>
+                    <input type="email" class="form-control mb-4" id="email"
+                           value="{{ old('email') ?? $auth->additionalEmail }}" name="email">
+                </div>
             </div>
         </div>
         @if($auth->registrationAddress)
@@ -194,69 +209,17 @@
                 </div>
             </div>
         @endif
-        @if(false)
-            <div class="cols-block footer">
-                <div class="cols-block-header">
-                    <div class="block-title"></div>
-                    <div class="block-sub-title"></div>
-                </div>
-                <div class="cols-block-content form">
-                    <div class="form-buttons">
-                        <input class="btn btn-primary" type="submit" value="Зберегти">
-                        <a class="btn btn-cancel" href="#">Скасувати</a>
-                    </div>
+        <div class="cols-block footer">
+            <div class="cols-block-header">
+                <div class="block-title"></div>
+                <div class="block-sub-title"></div>
+            </div>
+            <div class="cols-block-content form">
+                <div class="form-buttons">
+                    <input class="btn btn-primary" type="submit" value="Зберегти">
+                    <a class="btn btn-cancel" href="" onclick="window.location.reload()">Скасувати</a>
                 </div>
             </div>
-        @endif
+        </div>
     </form>
-
-    <div class="modal fade" id="modalPhone" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title mb-3">Додати номер телефону</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="{{route('profile.phone.add')}}" method="post">
-
-                    <div class="modal-body">
-                        @csrf
-                        <div class="form-group">
-                            <label for="min" class="control-label">
-                                Номер телефону
-                            </label>
-
-                            <input type="text" name="phone" class="form-control">
-                        </div>
-                        <button type="submit" class="ml-auto btn btn-primary">+ Додати</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="modalEmail" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title mb-3">Додати Email</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="{{route('profile.email.add')}}" method="post">
-
-                    <div class="modal-body">
-                        @csrf
-                        <div class="form-group">
-                            <label for="min" class="control-label">
-                                Email
-                            </label>
-
-                            <input type="email" name="email" class="form-control">
-                        </div>
-                        <button type="submit" class="ml-auto btn btn-primary">+ Додати</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 @endsection

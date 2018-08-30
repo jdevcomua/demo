@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserEmail;
 use App\Models\UserPhone;
+use App\Rules\Phone;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -16,71 +17,57 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        dd($request);
-    }
-
-    public function addPhone(Request $request)
-    {
         $user = \Auth::user();
-
-        $data = $request->only('phone');
+        $data = $request->only(['phone', 'email']);
 
         $validator = \Validator::make($data,[
-            'phone' => 'required|min:6|max:20'
+            'phone' => [
+                'nullable',
+                'min:6',
+                'max:20',
+                new Phone
+            ],
+            'email' => 'nullable|email'
         ],[
-            'phone.required' => 'Номер телефону є обов\'язковим полем!',
             'phone.min' => 'Номер телефону має бути більше ніж :min символів',
             'phone.max' => 'Номер телефону має бути менше :max символів',
+            'email.email' => 'Поштова адреса введена некоректно',
         ]);
 
         if ($validator->fails()) {
             return redirect()
                 ->back()
-                ->withErrors($validator, 'phone')
+                ->withErrors($validator, 'profile')
                 ->withInput();
         }
 
-        $user->phones()->create([
-            'user_id' => $user->id,
-            'phone' => $data['phone'],
-            'type' => UserPhone::TYPE_ADDITIONAL
-        ]);
+        $phone = $user->phonesAdditional()->first();
+        $email = $user->emailsAdditional()->first();
 
-        return redirect()
-            ->back()
-            ->with('success_phone', 'Дані оновлено успішно!');
+        $phoneData = [
+            'phone' => $data['phone'] ?? '',
+            'type' => UserPhone::TYPE_MANUAL
+        ];
+        $emailData = [
+            'email' => $data['email'] ?? '',
+            'type' => UserEmail::TYPE_MANUAL
+        ];
 
-    }
-
-    public function addEmail(Request $request)
-    {
-        $user = \Auth::user();
-
-        $data = $request->only('email');
-
-        $validator = \Validator::make($data,[
-            'email' => 'required'
-        ],[
-            'email.required' => 'Email є обов\'язковим полем!',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withErrors($validator, 'email')
-                ->withInput();
+        if ($phone) {
+            $phone->update($phoneData);
+        } else {
+            $user->phones()->create($phoneData);
         }
 
-        $user->emails()->create([
-            'user_id' => $user->id,
-            'email' => $data['email'],
-            'type' => UserEmail::TYPE_ADDITIONAL
-        ]);
+        if ($email) {
+            $email->update($emailData);
+        } else {
+            $user->emails()->create($emailData);
+        }
 
         return redirect()
             ->back()
-            ->with('success_email', 'Дані оновлено успішно!');
-
+            ->with('success_profile', 'Дані оновлено успішно!');
     }
 
 }

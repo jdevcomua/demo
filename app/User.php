@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Notification;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
+use App\Models\UserPhone;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
@@ -51,6 +52,8 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
+ * @property-read mixed $additional_mail
+ * @property-read mixed $additional_phone
  */
 class User extends Authenticatable
 {
@@ -117,6 +120,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\UserEmail');
     }
+    public function emailsSystem()
+    {
+        return $this->emails()->where('type', '<>', UserEmail::TYPE_MANUAL);
+    }
+    public function emailsAdditional()
+    {
+        return $this->emails()->where('type', '=', UserEmail::TYPE_MANUAL);
+    }
 
     public function getPrimaryEmailAttribute()
     {
@@ -128,6 +139,14 @@ class User extends Authenticatable
     public function phones()
     {
         return $this->hasMany('App\Models\UserPhone');
+    }
+    public function phonesSystem()
+    {
+        return $this->phones()->where('type', '<>', UserPhone::TYPE_MANUAL);
+    }
+    public function phonesAdditional()
+    {
+        return $this->phones()->where('type', '=', UserPhone::TYPE_MANUAL);
     }
 
     public function history()
@@ -158,5 +177,17 @@ class User extends Authenticatable
             return $text;
         }
         return false;
+    }
+
+    public function getAdditionalPhoneAttribute()
+    {
+        $phone = $this->phonesAdditional()->first();
+        return $phone ? $phone->phone : null ?? '';
+    }
+
+    public function getAdditionalEmailAttribute()
+    {
+        $email = $this->emailsAdditional()->first();
+        return $email ? $email->email : null ?? '';
     }
 }

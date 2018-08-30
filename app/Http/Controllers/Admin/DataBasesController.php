@@ -12,6 +12,7 @@ use App\Models\Species;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
 use App\Models\UserPhone;
+use App\Rules\Phone;
 use App\Services\FilesService;
 use App\User;
 use Cache;
@@ -82,20 +83,22 @@ class DataBasesController extends Controller
 
     public function userUpdate(Request $request, $id)
     {
-        $data = $request->only([
-            'emails',
-            'phones',
-            'passport'
-        ]);
-
+        /** @var User $user */
         $user = User::findOrFail($id);
+        $data = $request->only(['phone', 'email']);
 
-        $validator = Validator::make($data, [
-            'passport' => 'required|min:7|max:10',
-        ], [
-            'passport.required' => 'Паспорт є обов\'язковим полем',
-            'passport.min' => 'Паспорт має бути більше ніж :min символів',
-            'passport.max' => 'Паспорт має бути менше :max символів',
+        $validator = \Validator::make($data,[
+            'phone' => [
+                'nullable',
+                'min:6',
+                'max:20',
+                new Phone
+            ],
+            'email' => 'nullable|email'
+        ],[
+            'phone.min' => 'Номер телефону має бути більше ніж :min символів',
+            'phone.max' => 'Номер телефону має бути менше :max символів',
+            'email.email' => 'Поштова адреса введена некоректно',
         ]);
 
         if ($validator->fails()) {
@@ -105,55 +108,33 @@ class DataBasesController extends Controller
                 ->withInput();
         }
 
-        $user->passport = $data['passport'];
-        $user->save();
+        $phone = $user->phonesAdditional()->first();
+        $email = $user->emailsAdditional()->first();
 
-        $userExistingEmailsCount = $user->emails()->count();
-        $userExistingPhonesCount = $user->phones()->count();
+        $phoneData = [
+            'phone' => $data['phone'] ?? '',
+            'type' => UserPhone::TYPE_MANUAL
+        ];
+        $emailData = [
+            'email' => $data['email'] ?? '',
+            'type' => UserEmail::TYPE_MANUAL
+        ];
 
-        foreach ($data['emails'] as $email) {
-            $existing = $user->emails()->where('email', $email)->first();
-            if (!$existing) {
-                $user->emails()->create([
-                    'user_id' => $user->id,
-                    'email' => trim($email),
-                    'type' => UserEmail::TYPE_ADDITIONAL
-                ]);
-            }
+        if ($phone) {
+            $phone->update($phoneData);
+        } else {
+            $user->phones()->create($phoneData);
         }
 
-        foreach ($data['phones'] as $phone) {
-            $existing = $user->phones()->where('phone', $phone)->first();
-            if (!$existing) {
-                $user->phones()->create([
-                    'user_id' => $user->id,
-                    'phone' => trim($phone),
-                    'type' => UserPhone::TYPE_ADDITIONAL
-                ]);
-            }
+        if ($email) {
+            $email->update($emailData);
+        } else {
+            $user->emails()->create($emailData);
         }
-
-        if (!$userExistingEmailsCount) {
-            $temp = $user->emails()->first();
-            if ($temp) {
-                $temp->type = UserEmail::TYPE_PRIMARY;
-                $temp->save();
-            }
-        }
-
-        if (!$userExistingPhonesCount) {
-            $temp = $user->phones()->first();
-            if ($temp) {
-                $temp->type = UserPhone::TYPE_PRIMARY;
-                $temp->save();
-            }
-        }
-
-        Cache::flush();
 
         return redirect()
             ->back()
-            ->with('success_user', 'Користувач був успішно змінений!');
+            ->with('success_user', 'Дані оновлено успішно!');
     }
 
     public function userUpdateAddress(Request $request, $id)

@@ -3,6 +3,8 @@
 namespace App\Auth;
 
 use App\Models\Log;
+use App\Models\UserEmail;
+use App\Models\UserPhone;
 use App\User;
 
 class KyivIdUserResolver
@@ -106,8 +108,14 @@ class KyivIdUserResolver
         }
 
         $existing->addresses()->whereIn('id', array_keys($old_addresses))->delete();
-        $existing->emails()->whereIn('id', array_keys($old_emails))->delete();
-        $existing->phones()->whereIn('id', array_keys($old_phones))->delete();
+        $existing->emails()
+            ->whereIn('id', array_keys($old_emails))
+            ->where('type', '<>', UserEmail::TYPE_MANUAL)
+            ->delete();
+        $existing->phones()
+            ->whereIn('id', array_keys($old_phones))
+            ->where('type', '<>', UserPhone::TYPE_MANUAL)
+            ->delete();
 
         return $existing;
     }
