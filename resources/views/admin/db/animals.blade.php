@@ -123,6 +123,7 @@
 
             dataTableInit($('#datatable'), {
                 ajax: '{{ route('admin.db.animals.data', null, false) }}',
+                order: [[ 13, "desc" ]], // def. sort by created_at DESC
                 columns: [
                     { "data": "id"},
                     { "data": "badge" },
