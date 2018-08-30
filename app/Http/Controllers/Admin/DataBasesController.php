@@ -453,9 +453,9 @@ class DataBasesController extends Controller
             'badge' => 'nullable',
             'comment' => 'nullable|string|max:2000',
             'images' => 'nullable|array',
-            'images.*' => 'nullable|image',
+            'images.*' => 'nullable|image|max:2048',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:10240',
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
@@ -470,8 +470,10 @@ class DataBasesController extends Controller
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
-            'images.*.image' => 'Файли повинні бути в форматі зображення!',
-            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
+            'images.*.max' => 'Фото повинні бути не більше 2Mb',
+            'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
+            'documents.*.max' => 'Документи повинні бути не більше 10Mb',
+            'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
         ]);
 
         if ($validator->fails()) {

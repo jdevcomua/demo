@@ -52,7 +52,7 @@
                                         <span class="file-count pl5"></span>
                                         <input type="file" id="images" name="images[]"
                                                multiple class="custom-file-input">
-                                        <span class="help-block mt5">Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg та не більше ніж 10Mb</span>
+                                        <span class="help-block mt5">Фото повинно бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg та не більше ніж 2Mb</span>
                                     </div>
                                 </div>
 
@@ -60,7 +60,7 @@
                                 <div class="form-group select">
                                     <label for="user" class="col-lg-3 control-label">Власник</label>
                                     <div class="col-lg-8">
-                                        <select name="user" id="user" requiredй></select>
+                                        <select name="user" id="user" required></select>
                                     </div>
                                 </div>
 
