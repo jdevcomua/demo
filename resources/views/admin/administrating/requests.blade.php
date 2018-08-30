@@ -36,6 +36,7 @@
                                     <th># Тварини</th>
                                     <th>Кличка</th>
                                     <th>Вид</th>
+                                    <th>Стать</th>
                                     <th>Порода</th>
                                     <th>Масть</th>
                                     <th>Тип шерсті</th>
@@ -50,6 +51,13 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th class="select">
+                                        <select>
+                                            <option selected value>---</option>
+                                            <option value="0">Самка</option>
+                                            <option value="1">Самець</option>
+                                        </select>
+                                    </th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -103,6 +111,16 @@
                         }},
                     { "data": "nickname" },
                     { "data": "species_name" },
+                    {
+                        data: 'gender',
+                        render: function ( data, type, row ) {
+                            switch (data) {
+                                case 0: return 'Самка';
+                                case 1: return 'Самець';
+                                default: return '?';
+                            }
+                        }
+                    },
                     { "data": "breed_name" },
                     { "data": "color_name" },
                     { "data": "fur_name" },

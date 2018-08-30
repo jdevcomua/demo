@@ -57,6 +57,7 @@ class AnimalsRequest extends Model
         'color_id',
         'fur_id',
         'species_id',
+        'gender',
         'birthday',
         'street',
         'building',
