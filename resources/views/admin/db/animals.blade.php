@@ -40,12 +40,13 @@
                                     <th>Дії</th>
                                     <th>Кличка</th>
                                     <th>Вид</th>
+                                    <th>Стать</th>
+                                    <th>Власник</th>
+                                    <th>Коментар</th>
                                     <th>Порода</th>
                                     <th>Масть</th>
-                                    <th>Стать</th>
                                     <th>Дата народження</th>
                                     <th>Стерилізація</th>
-                                    <th>Власник</th>
                                     <th>Верифіковано</th>
                                     <th>Належність тварини</th>
                                     <th>Зареєстровано</th>
@@ -64,8 +65,6 @@
                                             @endforeach
                                         </select>
                                     </th>
-                                    <th></th>
-                                    <th></th>
                                     <th class="select">
                                         <select>
                                             <option selected value>---</option>
@@ -73,6 +72,9 @@
                                             <option value="1">Самець</option>
                                         </select>
                                     </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                     <th></th>
                                     <th class="select">
                                         <select>
@@ -123,7 +125,7 @@
 
             dataTableInit($('#datatable'), {
                 ajax: '{{ route('admin.db.animals.data', null, false) }}',
-                order: [[ 13, "desc" ]], // def. sort by created_at DESC
+                order: [[ 14, "desc" ]], // def. sort by created_at DESC
                 columns: [
                     { "data": "id"},
                     { "data": "badge" },
@@ -151,8 +153,6 @@
                     },
                     { "data": "nickname" },
                     { "data": "species_name"},
-                    { "data": "breeds_name" },
-                    { "data": "colors_name" },
                     {
                         data: 'gender',
                         render: function ( data, type, row ) {
@@ -163,6 +163,19 @@
                             }
                         }
                     },
+                    {
+                        data: 'owner_name',
+                        defaultContent: '',
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                var arr = data.split('||');
+                                return '<a href="{{ route('admin.db.users.show') }}/' + arr[1] + '">' + arr[0] + '</a>';
+                            }
+                        }
+                    },
+                    { "data": "comment" },
+                    { "data": "breeds_name" },
+                    { "data": "colors_name" },
                     {
                         data: 'birthday',
                         render: function ( data, type, row ) {
@@ -177,16 +190,6 @@
                                 case 0: return 'Не стерилізовано';
                                 case 1: return 'Стерилізовано';
                                 default: return '?';
-                            }
-                        }
-                    },
-                    {
-                        data: 'owner_name',
-                        defaultContent: '',
-                        render: function ( data, type, row ) {
-                            if (data) {
-                                var arr = data.split('||');
-                                return '<a href="{{ route('admin.db.users.show') }}/' + arr[1] + '">' + arr[0] + '</a>';
                             }
                         }
                     },
