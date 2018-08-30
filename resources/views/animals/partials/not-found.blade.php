@@ -4,7 +4,7 @@ function () {
     '</div>' +
     '<div class="modal-body">'+
         '<div class="d-flex flex-column justify-content-center text-center">'+
-            '<img src="" alt="">'+
+            '<img src="/img/cross.svg" alt="">'+
             '<h2>На жаль, тварина не знайдена</h2>'+
             '<p class="not-found">Щоб знайти вашу тварину в реєстрі, будь ласка, надішліть запит адміністраторам системи<br>'+
             '<span>або</span> <br>'+
