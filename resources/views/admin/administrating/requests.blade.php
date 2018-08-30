@@ -80,6 +80,7 @@
 
             dataTableInit($('#datatable'), {
                 ajax: '{{ route('admin.administrating.requests.data') }}',
+                order: [[ 11, "desc" ]], // def. sort by created_at DESC
                 columns: [
                     { "data": "id" },
                     { "data": "user" ,
