@@ -41,7 +41,7 @@
             <a href="{{ route('faq') }}" class="nav-item @if($curRoute == 'faq') active @endif">Часті запитання</a>
         </nav>
         <div class="socials">
-            <a href="https://www.facebook.com/%D0%A0%D0%B5%D1%94%D1%81%D1%82%D1%80-%D0%B4%D0%BE%D0%BC%D0%B0%D1%88%D0%BD%D1%96%D1%85-%D1%82%D0%B2%D0%B0%D1%80%D0%B8%D0%BD-%D0%BC-%D0%9A%D0%B8%D1%94%D0%B2%D0%B0-684137025285799/" class="socials-item socials-item-facebook"></a>
+            <a href="https://www.facebook.com/ReestrKyiv/" class="socials-item socials-item-facebook"></a>
             <a href="https://www.youtube.com/channel/UCOZgvQf3ZTn3sKos84geBzA" class="socials-item socials-item-youtube"></a>
             {{--<a href="#" class="socials-item socials-item-twitter"></a>--}}
         </div>
