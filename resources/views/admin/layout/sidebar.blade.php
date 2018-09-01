@@ -106,7 +106,7 @@
                 <a href="{{ route('admin.administrating.requests') }}">
                     <span class="fa fa-question-circle"></span>
                     <span class="sidebar-title">Запити</span>
-                    @if(isset ($hasNewRequests))
+                    @if($hasNewRequests)
                         <span class="sidebar-title-tray">
                             <span class="label label-xs bg-danger">New</span>
                         </span>

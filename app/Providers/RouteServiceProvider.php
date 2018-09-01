@@ -106,7 +106,6 @@ class RouteServiceProvider extends ServiceProvider
                 'auth',
                 'permission:admin-panel',
                 'not.banned',
-                'check.new.requests'
             ])
             ->namespace($this->namespace)
             ->group(base_path('routes/admin.php'));

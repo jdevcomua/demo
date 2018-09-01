@@ -166,7 +166,7 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         App\Providers\BlockServiceProvider::class,
         \App\Providers\LoggerServiceProvider::class,
-
+        \App\Providers\ViewComposerProvider::class,
 
     ],
 
