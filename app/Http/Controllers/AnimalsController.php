@@ -313,7 +313,7 @@ class AnimalsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back(400);
+            return redirect()->back();
         }
 
         $data['species_id'] = $data['species'];
