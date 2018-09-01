@@ -13,10 +13,10 @@ function () {
                 '</div>' +
                 '<div class="col-sm-6">' +
                     '<h4>Номер</h4>' +
-                    '<input type="text" name="badge" id="badge" class="invisible-input">' +
+                    '<input type="text" name="badge" id="badge" class="invisible-input" required>' +
                 '</div>' +
             '</div>' +
-            '<button type="button" class="pull-right btn search btn-primary">Пошук</button>' +
+            '<button type="submit" class="pull-right btn search btn-primary">Пошук</button>' +
         '</form>' +
     '</div>'
 }

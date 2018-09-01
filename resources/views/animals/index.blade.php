@@ -134,46 +134,46 @@
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="breed">Порода</label>
-                                    <select name="breed" id="breed" required required></select>
+                                    <select name="breed" id="breed" required></select>
                                 </div>
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="color">Масть</label>
-                                    <select name="color" id="color" required required></select>
+                                    <select name="color" id="color" required></select>
                                 </div>
                                 <div class="form-group select hidden">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="fur">Тип шерсті</label>
-                                    <select name="fur" id="fur" required required></select>
+                                    <select name="fur" id="fur" required></select>
                                 </div>
                                 <div class="form-group datepicker">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="birthday">Дата народження</label>
                                     <input type="text" class="form-control" id="birthday" name="birthday"
-                                           required required autocomplete="off" readonly="true" />
+                                           required autocomplete="off" readonly />
                                 </div>
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="street">Вулиця</label>
-                                    <input type="text" class="form-control" id="street" name="street" required="" >
+                                    <input type="text" class="form-control" id="street" name="street" required>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="validation-error alert alert-danger hidden"></div>
                                             <label for="building">Будинок</label>
-                                            <input type="text" class="form-control" id="building" name="building" required="" >
+                                            <input type="text" class="form-control" id="building" name="building" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="validation-error alert alert-danger hidden"></div>
                                             <label for="apartment">Приміщення</label>
-                                            <input type="text" class="form-control" id="apartment" name="apartment" required="" >
+                                            <input type="text" class="form-control" id="apartment" name="apartment" required>
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit"  class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Відправити</button>
+                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Відправити</button>
                             </form>
                         </div>
                     </div>

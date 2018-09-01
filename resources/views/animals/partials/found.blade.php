@@ -20,7 +20,9 @@ function (data) {
                     '<p class="black"> ' + data.animal.breed_text + '</p>'+
                 '</div>'+
             '</div>'+
-            '<button type="button" data-id="' + data.animal.id + '" class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Це моя тварина</button>'+
+            '<button type="button" data-id="' + data.animal.id + '"' +
+                     'class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;"' +
+                     'onclick="animalSearch.searchAnimalRequest(this)">Це моя тварина</button>'+
         '</div>'+
     '</div>'
 }
