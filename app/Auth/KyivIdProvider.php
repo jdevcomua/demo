@@ -47,9 +47,9 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
     {
         parent::__construct($request, $clientId, $clientSecret, $redirectUrl);
 
-        $this->host = env('KYIV_ID_HOST');
-        $this->hostApi = env('KYIV_ID_HOST_API');
-        $this->attemptUrl = env('KYIV_ID_ATTEMPT_URI');
+        $this->host = config('services.kyivID.host');
+        $this->hostApi = config('services.kyivID.host_api');
+        $this->attemptUrl = config('services.kyivID.attempt');
     }
 
 
@@ -91,8 +91,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 
     private function getLoginUrl()
     {
-        return env('KYIV_ID_HOST') .
-            env('KYIV_ID_FORCE_LOGIN_URI') .
+        return config('services.kyivID.host') .
+            config('services.kyivID.force_login') .
             '?callback=' .
             url('/') . $this->attemptUrl  .
             '&provider=nbubankid' .
@@ -102,8 +102,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 
     public static function getLogoutUrl()
     {
-        return env('KYIV_ID_HOST') .
-            env('KYIV_ID_LOGOUT_URI') .
+        return config('services.kyivID.host') .
+            config('services.kyivID.logout') .
             '?callback=' .
             url('/');
     }
@@ -195,22 +195,6 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
             ['apartment', 'street', 'building', 'district', 'city', 'state', 'country_code'],
             $sourceData
         ));
-    }
-
-    protected function decryptResponse($data) {
-        $rsa_enc = file_get_contents(resource_path('keys/rsa_key.pem.encrypted'));
-        $encrypter = new Encrypter(env('RSA_DECRYPT_KEY'), 'AES-256-CBC');
-        $rsa = $encrypter->decrypt($rsa_enc);
-        array_walk_recursive($data, function (&$entry, $key) use ($rsa) {
-            if (is_string($entry)) {
-                $decrypted = '';
-                $try = openssl_private_decrypt(base64_decode($entry), $decrypted, $rsa);
-                if ($try) {
-                    $entry = $decrypted;
-                }
-            }
-        });
-        return $data;
     }
 
     /**
