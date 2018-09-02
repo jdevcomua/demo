@@ -81,7 +81,8 @@ class AdminRolesController extends Controller
         $role->display_name = $data['display_name'];
         $role->save();
         $role->permissions()->attach($data['permission']);
-        Cache::flush();
+        Cache::tags(config('entrust.roles_table'))->flush();
+        Cache::tags(config('entrust.permission_role_table'))->flush();
 
         return redirect()
             ->back()
@@ -98,7 +99,6 @@ class AdminRolesController extends Controller
         $role_permissions = $role->permissions
             ->pluck('name', 'id')
             ->toArray();
-        Cache::flush();
 
         return view('admin.roles.edit', [
             'permissions' => Permission::get(),
@@ -142,7 +142,8 @@ class AdminRolesController extends Controller
         $role->save();
         $role->permissions()->detach();
         $role->permissions()->attach($data['permission']);
-        Cache::flush();
+        Cache::tags(config('entrust.roles_table'))->flush();
+        Cache::tags(config('entrust.permission_role_table'))->flush();
 
         return redirect()
             ->route('admin.roles.index');
@@ -164,7 +165,9 @@ class AdminRolesController extends Controller
         }
 
         $role->delete();
-        Cache::flush();
+        Cache::tags(config('entrust.roles_table'))->flush();
+        Cache::tags(config('entrust.role_user_table'))->flush();
+        Cache::tags(config('entrust.permission_role_table'))->flush();
 
         return redirect()
             ->back()

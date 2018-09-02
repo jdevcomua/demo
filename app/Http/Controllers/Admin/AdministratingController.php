@@ -50,7 +50,6 @@ class AdministratingController extends Controller
         $user = User::findOrFail($id);
         $user->banned = true;
         $user->save();
-        Cache::flush();
 
         return redirect()
             ->back()
@@ -89,7 +88,6 @@ class AdministratingController extends Controller
         $user = User::findOrFail($id);
         $user->banned = false;
         $user->save();
-        Cache::flush();
 
         return redirect()
             ->back()

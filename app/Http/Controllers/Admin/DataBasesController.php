@@ -226,7 +226,7 @@ class DataBasesController extends Controller
 
         $user = User::findOrFail($id);
         $user->roles()->sync($data['roles']);
-        Cache::flush();
+        Cache::tags(config('entrust.role_user_table'))->flush();
 
         return redirect()
             ->back()
@@ -240,7 +240,7 @@ class DataBasesController extends Controller
             $animal->delete();
         }
         $user->delete();
-        Cache::flush();
+        Cache::tags(config('entrust.role_user_table'))->flush();
 
         return redirect()
             ->back()

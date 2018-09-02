@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use Cache;
 
 class SiteController extends Controller
 {
@@ -18,8 +19,13 @@ class SiteController extends Controller
 
     public function faq()
     {
+        $faqs = Cache::tags('faq')
+            ->remember('faq', 1000, function()
+        {
+            return Faq::all();
+        });
         return view('faq', [
-            'questions' => Faq::all()
+            'questions' => $faqs
         ]);
     }
 

@@ -33,6 +33,8 @@ class ContentController extends Controller
     {
         $faq = Faq::find($id);
         $faq->delete();
+        \Cache::tags('faq')->flush();
+
         return redirect()
             ->back()
             ->with('success_faq', 'Питання було успішно видалено!');
@@ -58,6 +60,8 @@ class ContentController extends Controller
         }
 
         Faq::create($data);
+        \Cache::tags('faq')->flush();
+
 
         return redirect()
             ->back()
@@ -84,6 +88,8 @@ class ContentController extends Controller
 
             $blocks = new Collection();
             $blocks->merge($block, $block2);
+
+            \Cache::tags('blocks')->flush();
         }
 
         return view('admin.info.content_block', [
@@ -109,6 +115,7 @@ class ContentController extends Controller
         $block = Block::findOrFail($id);
         $block->body = $request->get('body');
         $block->save();
+        \Cache::tags('blocks')->flush();
 
         return redirect()
             ->back()
