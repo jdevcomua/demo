@@ -136,6 +136,7 @@
                                     <div class="col-lg-8">
                                         <input type="text" id="badge" name="badge" class="form-control"
                                                value="{{ old('badge') }}" required>
+                                        <span class="help-block mt5">Номер повинен бути від 5 до 8 символів та складатися тільки з кириличних літер або цифр</span>
                                     </div>
                                 </div>
                                 @endpermission

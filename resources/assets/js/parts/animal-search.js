@@ -69,3 +69,9 @@ animalSearch.searchAnimal = function () {
 
     return false;
 };
+
+$(document).on('keypress', '#badge', function (e) {
+    var char = String.fromCharCode(e.which);
+    return (char.replace(/[^\dа-яіїє]/gi, '').length === 1) &&
+        !($(this).val().length >= 8);
+});

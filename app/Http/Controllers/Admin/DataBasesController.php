@@ -12,6 +12,7 @@ use App\Models\Species;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
 use App\Models\UserPhone;
+use App\Rules\Badge;
 use App\Rules\Phone;
 use App\Services\FilesService;
 use App\User;
@@ -324,6 +325,10 @@ class DataBasesController extends Controller
             'comment' => 'nullable|string|max:2000',
             'images' => 'required|array',
             'images.*' => 'required|image|max:2048',
+            'badge' => [
+                'nullable',
+                new Badge()
+            ],
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
         ], [
@@ -445,7 +450,10 @@ class DataBasesController extends Controller
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
-            'badge' => 'nullable',
+            'badge' => [
+                'nullable',
+                new Badge()
+            ],
             'comment' => 'nullable|string|max:2000',
             'images' => 'nullable|array',
             'images.*' => 'nullable|image|max:2048',
