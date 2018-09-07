@@ -29,7 +29,7 @@ class AdministratingController extends Controller
             ->leftJoin('user_emails', 'user_emails.user_id', '=', 'users.id')
             ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
             ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
-            ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
+            ->join('roles', 'role_user.role_id', '=', 'roles.id')
             ->groupBy('users.id');
 
         $aliases = [

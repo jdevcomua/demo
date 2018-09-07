@@ -4,7 +4,7 @@
     <!-- Start: Topbar -->
     <header id="topbar">
         <div class="topbar-left">
-            <span>База користувачів</span>
+            <span>База запитів</span>
         </div>
     </header>
     <!-- End: Topbar -->
