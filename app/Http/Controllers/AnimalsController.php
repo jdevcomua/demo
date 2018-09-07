@@ -307,9 +307,9 @@ class AnimalsController extends Controller
             'color' => 'required|integer|exists:colors,id',
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
-            'street' => 'required|string|max:256',
-            'building' => 'required|string|max:256',
-            'apartment' => 'required|string|max:256',
+            'street' => 'nullable|string|max:256',
+            'building' => 'nullable|string|max:256',
+            'apartment' => 'nullable|string|max:256',
         ]);
 
         if ($validator->fails()) {

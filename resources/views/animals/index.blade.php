@@ -98,12 +98,12 @@
                                 @csrf
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
-                                    <label for="nickname">Кличка</label>
+                                    <label for="nickname">Кличка <span class="required-field">*</span></label>
                                     <input type="text" class="form-control" id="nickname" name="nickname" required="">
                                 </div>
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
-                                    <label>Вид</label>
+                                    <label>Вид <span class="required-field">*</span></label>
                                     <div class="btn-group-toggle" data-toggle="buttons">
                                         <label class="btn radio-item big-radio active">
                                             <span class="label label-dog"></span>
@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
-                                    <label>Стать  <span class="required-field">*</span></label>
+                                    <label>Стать <span class="required-field">*</span></label>
                                     <div class="btn-group-toggle" data-toggle="buttons">
                                         <label class="btn radio-item big-radio active">
                                             <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
@@ -133,43 +133,43 @@
                                 </div>
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
-                                    <label for="breed">Порода</label>
+                                    <label for="breed">Порода <span class="required-field">*</span></label>
                                     <select name="breed" id="breed" required></select>
                                 </div>
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
-                                    <label for="color">Масть</label>
+                                    <label for="color">Масть <span class="required-field">*</span></label>
                                     <select name="color" id="color" required></select>
                                 </div>
                                 <div class="form-group select hidden">
                                     <div class="validation-error alert alert-danger hidden"></div>
-                                    <label for="fur">Тип шерсті</label>
+                                    <label for="fur">Тип шерсті <span class="required-field">*</span></label>
                                     <select name="fur" id="fur" required></select>
                                 </div>
                                 <div class="form-group datepicker">
                                     <div class="validation-error alert alert-danger hidden"></div>
-                                    <label for="birthday">Дата народження</label>
+                                    <label for="birthday">Дата народження <span class="required-field">*</span></label>
                                     <input type="text" class="form-control" id="birthday" name="birthday"
-                                           required autocomplete="off" readonly />
+                                           required autocomplete="off" />
                                 </div>
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="street">Вулиця</label>
-                                    <input type="text" class="form-control" id="street" name="street" required>
+                                    <input type="text" class="form-control" id="street" name="street">
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="validation-error alert alert-danger hidden"></div>
                                             <label for="building">Будинок</label>
-                                            <input type="text" class="form-control" id="building" name="building" required>
+                                            <input type="text" class="form-control" id="building" name="building">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="validation-error alert alert-danger hidden"></div>
                                             <label for="apartment">Приміщення</label>
-                                            <input type="text" class="form-control" id="apartment" name="apartment" required>
+                                            <input type="text" class="form-control" id="apartment" name="apartment">
                                         </div>
                                     </div>
                                 </div>
