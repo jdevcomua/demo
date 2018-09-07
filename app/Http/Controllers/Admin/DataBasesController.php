@@ -323,9 +323,9 @@ class DataBasesController extends Controller
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
             'images' => 'required|array',
-            'images.*' => 'required|image',
+            'images.*' => 'required|image|max:2048',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
@@ -340,13 +340,15 @@ class DataBasesController extends Controller
             'birthday.after' => 'Тварини стільки не живуть!',
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
+            'images.*.max' => 'Фото повинні бути не більше 2Mb',
             'images.*.image' => 'Файли повинні бути в форматі зображення!',
+            'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
         ]);
         if ($validator->fails()) {
             return redirect()
                 ->back()
-                ->withErrors($validator, 'animal')
+                ->withErrors($this->filterValidatorErrors($validator), 'animal')
                 ->withInput();
         }
 
@@ -384,6 +386,18 @@ class DataBasesController extends Controller
         return redirect()
             ->route('admin.db.animals.index', $animal->id)
             ->with('success_animal', 'Тварину додано успішно !');
+    }
+
+    private function filterValidatorErrors(\Illuminate\Validation\Validator $data)
+    {
+        $messagesUniq = [];
+        $res = [];
+        foreach ($data->messages()->messages() as $k => $v) {
+            if (array_search($v, $messagesUniq) !== false) continue;
+            $res[$k] = $v;
+            $messagesUniq[] = $v;
+        }
+        return $res;
     }
 
     public function animalEdit($id)
@@ -436,7 +450,7 @@ class DataBasesController extends Controller
             'images' => 'nullable|array',
             'images.*' => 'nullable|image|max:2048',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:10240',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
@@ -453,14 +467,14 @@ class DataBasesController extends Controller
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
             'images.*.max' => 'Фото повинні бути не більше 2Mb',
             'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
-            'documents.*.max' => 'Документи повинні бути не більше 10Mb',
+            'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
         ]);
 
         if ($validator->fails()) {
             return redirect()
                 ->back()
-                ->withErrors($validator, 'animal')
+                ->withErrors($this->filterValidatorErrors($validator), 'animal')
                 ->withInput();
         }
 
@@ -542,11 +556,11 @@ class DataBasesController extends Controller
             'images' => 'nullable|array',
             'images.*' => 'nullable|image|max:2048',
             'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:10240',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
         ], [
             'images.*.max' => 'Фото повинні бути не більше 2Mb',
             'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
-            'documents.*.max' => 'Документи повинні бути не більше 10Mb',
+            'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
         ]);
 
