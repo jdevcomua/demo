@@ -18,6 +18,7 @@ class KyivIdUserResolver
     {
         if (!$user) return null;
         if (!$user->inn && !$user->passport) return null;
+        if (!$user->phones) return null;
 
         //Searching by external kievID
         $existUser = User::where('ext_id', '=', $user->ext_id)->first();
