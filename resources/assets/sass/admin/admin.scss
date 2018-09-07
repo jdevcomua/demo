@@ -7,6 +7,9 @@ table.datatable {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  tr.processed td {
+    background-color: #cde !important;
+  }
   thead th {
     padding-right: 18px;
     &.select {
