@@ -55,7 +55,7 @@ header {
       min-height: 32px;
       overflow: hidden;
       &.profile { background-image: url('/img/icon/person.svg'); }
-      &.logout { background-image: url('/img/icon/logout.png'); }
+      &.logout { background-image: url('/img/icon/off.svg'); }
     }
   }
   .nav {
@@ -92,12 +92,14 @@ header {
         display: block;
         background-repeat: no-repeat;
         background-position: 50%;
+        background-size: contain;
         cursor: pointer;
-        width: 28px;
+        width: 30px;
         height: 28px;
+        opacity: 0.7;
         margin: 0 9px;
-        &.socials-item-facebook { background-image: url('/img/icon/fb.png'); }
-        &.socials-item-youtube { background-image: url('/img/icon/youtube.png'); }
+        &.socials-item-facebook { background-image: url('/img/icon/fb.svg'); }
+        &.socials-item-youtube { background-image: url('/img/icon/yt.svg'); }
         &.socials-item-twitter { background-image: url('/img/icon/twitter.png'); }
       }
     }
