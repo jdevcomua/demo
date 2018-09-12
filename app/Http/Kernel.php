@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
 
         'not.banned' => \App\Http\Middleware\NotBanned::class,
+        'not.phone.missing' => \App\Http\Middleware\PhoneMissing::class,
     ];
 }

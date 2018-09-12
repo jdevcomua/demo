@@ -16,7 +16,7 @@ Route::get('auth/callback', 'AuthController@loginCallback');
 Route::post('logout', 'AuthController@logout')->name('logout');
 
 
-Route::group(['middleware' => 'not.banned'], function () {
+Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () {
 
     Route::group(['middleware' => 'auth'], function () {
 
@@ -49,5 +49,15 @@ Route::group(['middleware' => 'not.banned'], function () {
         Route::post('/animal/request', 'AjaxController@requestAnimal')
             ->name('animals.request');
     });
+
+});
+
+Route::group(['middleware' => [
+    'not.banned',
+    'auth'
+]], function () {
+
+    Route::get('/profile/phone-missing', 'ProfileController@phoneMissing')->name('profile.phone-missing');
+    Route::post('/profile/phone-missing/update', 'ProfileController@phoneMissingUpdate')->name('profile.phone-missing.update');
 
 });
