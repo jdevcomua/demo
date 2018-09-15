@@ -186,7 +186,7 @@ class KyivIdUserResolver
         if (array_key_exists('email', $email) && array_key_exists('type', $email)) {
             $res = $user->emails()->updateOrCreate([
                 'email' => $email['email'],
-                'type' => $email['type'],
+                'type' => $phone['type'] ?? UserEmail::TYPE_ADDITIONAL,
             ]);
         }
         return ($res) ? $res->id : 0;
@@ -202,7 +202,7 @@ class KyivIdUserResolver
         if (array_key_exists('phoneNumber', $phone) && array_key_exists('type', $phone)) {
             $res = $user->phones()->updateOrCreate([
                 'phone' => $phone['phoneNumber'],
-                'type' => $phone['type'],
+                'type' => $phone['type'] ?? UserPhone::TYPE_ADDITIONAL,
             ]);
         }
         return ($res) ? $res->id : 0;
