@@ -127,6 +127,7 @@ class AdministratingController extends Controller
             'breed_name' => 'breeds.name',
             'fur_name' => 'furs.name',
             'color_name' => 'colors.name',
+            'type' => '(`animals_requests`.`animal_id` IS NOT NULL)',
             'address' => 'CONCAT(
                  COALESCE(`animals_requests`.street, " "), ", " ,
                  COALESCE(`animals_requests`.building, " "), ", " ,

@@ -32,6 +32,7 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Тип</th>
                                     <th>Користувач</th>
                                     <th># Тварини</th>
                                     <th>Кличка</th>
@@ -47,6 +48,13 @@
                                 </tr>
                                 <tr>
                                     <th></th>
+                                    <th class="select">
+                                        <select>
+                                            <option selected value>---</option>
+                                            <option value="0">Запит на пошук</option>
+                                            <option value="1">Запит на підтвердження господаря</option>
+                                        </select>
+                                    </th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -96,6 +104,16 @@
                 },
                 columns: [
                     { "data": "id" },
+                    {
+                        data: 'type',
+                        render: function ( data, type, row ) {
+                            switch (data) {
+                                case 0: return 'Запит на пошук';
+                                case 1: return 'Запит на підтвердження господаря';
+                                default: return '?';
+                            }
+                        }
+                    },
                     { "data": "user" ,
                         render: function ( data, type, row ) {
                             if (data) {
