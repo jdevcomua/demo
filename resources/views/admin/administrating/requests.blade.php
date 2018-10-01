@@ -96,7 +96,7 @@
 
             dataTableInit($('#datatable'), {
                 ajax: '{{ route('admin.administrating.requests.data') }}',
-                order: [[ 12, "desc" ]], // def. sort by created_at DESC
+                order: [[ 13, "desc" ]], // def. sort by created_at DESC
                 createdRow: function( row, data, dataIndex) {
                     if(data.processed){
                         $(row).addClass('processed');
