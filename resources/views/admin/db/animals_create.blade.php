@@ -60,7 +60,7 @@
                                 <div class="form-group select">
                                     <label for="user" class="col-lg-3 control-label">Власник</label>
                                     <div class="col-lg-8">
-                                        <select name="user" id="user"></select>
+                                        <select name="user" id="user" data-value="{{ $user ? $user->id : '' }}"></select>
                                     </div>
                                 </div>
 

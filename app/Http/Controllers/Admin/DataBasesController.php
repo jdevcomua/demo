@@ -327,6 +327,7 @@ class DataBasesController extends Controller
             'images.*' => 'required|image|max:2048',
             'badge' => [
                 'nullable',
+                'unique:animals,badge',
                 new Badge()
             ],
             'documents' => 'nullable|array',
@@ -348,7 +349,8 @@ class DataBasesController extends Controller
             'images.*.max' => 'Фото повинні бути не більше 2Mb',
             'images.*.image' => 'Файли повинні бути в форматі зображення!',
             'documents.*.max' => 'Документи повинні бути не більше 2Mb',
-            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
+            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!',
+            'badge.unique' => 'Номер жетону вже використовується'
         ]);
         if ($validator->fails()) {
             return redirect()
@@ -452,6 +454,7 @@ class DataBasesController extends Controller
             'sterilized' => 'nullable|in:1',
             'badge' => [
                 'nullable',
+                'unique:animals,badge,' . $id,
                 new Badge()
             ],
             'comment' => 'nullable|string|max:2000',
@@ -477,6 +480,7 @@ class DataBasesController extends Controller
             'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
             'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
+            'badge.unique' => 'Номер жетону вже використовується'
         ]);
 
         if ($validator->fails()) {

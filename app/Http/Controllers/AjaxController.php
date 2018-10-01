@@ -102,6 +102,12 @@ class AjaxController extends Controller
                     $animalRequest->user_id = \Auth::id();
                     $animalRequest->animal_id = $animal->id;
                     $animalRequest->gender = $animal->gender;
+                    $animalRequest->nickname = $animal->nickname;
+                    $animalRequest->species_id = $animal->species_id;
+                    $animalRequest->breed_id = $animal->breed_id;
+                    $animalRequest->color_id = $animal->color_id;
+                    $animalRequest->fur_id = $animal->fur_id;
+                    $animalRequest->birthday = $animal->birthday;
                     $animalRequest->save();
                     return response()->json([
                         'message' => 'success'
