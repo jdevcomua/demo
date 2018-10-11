@@ -13,15 +13,18 @@ class NewAnimal extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+    public $blockName;
 
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param User $user
+     * @param string $blockName
      */
-    public function __construct(User $user)
+    public function __construct(User $user, string $blockName)
     {
         $this->user = $user;
+        $this->blockName = $blockName;
     }
 
     /**

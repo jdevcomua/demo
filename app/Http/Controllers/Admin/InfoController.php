@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
+use App\Http\Requests\NotificationTemplateRequest;
 use App\Models\Block;
 use App\Models\Breed;
 use App\Models\Color;
 use App\Models\Fur;
 use App\Models\Notification;
+use App\Models\NotificationTemplate;
 use App\Models\Species;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -462,7 +464,7 @@ class InfoController extends Controller
 
     public function notificationsData(Request $request)
     {
-        $model = new Notification();
+        $model = new NotificationTemplate();
 
         $response = DataTables::provide($request, $model);
 
@@ -471,10 +473,18 @@ class InfoController extends Controller
         return response('', 400);
     }
 
-    public function notificationsEdit ($id)
+    public function notificationsEdit($id)
     {
-        $email = Notification::findOrFail($id);
-        return view('admin.info.notifications_edit', compact('email'));
+        $notification = NotificationTemplate::findOrFail($id);
+        return view('admin.info.notifications_edit', [
+            'notification' => $notification
+        ]);
+    }
+
+    public function notificationsUpdate(Request $request, $id)
+    {
+//        $data = $request->validated();
+        dd($id, $request);
     }
 
     public function notificationsStore (Request $request, $id)

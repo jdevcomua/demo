@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\AnimalAdded;
 use App\Helpers\DataTables;
-use App\Mail\NewAnimal;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\Log;
@@ -380,7 +380,7 @@ class DataBasesController extends Controller
 
         if ($user) {
             $animal = $user->animals()->create($data);
-            \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
+            event(new AnimalAdded($user));
         } else {
             $animal = Animal::create($data);
         }

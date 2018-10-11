@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\NewAnimal;
+use App\Events\AnimalAdded;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\AnimalsRequest;
@@ -127,9 +127,7 @@ class AnimalsController extends Controller
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
-        if ($user->primaryEmail) {
-            \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
-        }
+        event(new AnimalAdded($user));
 
         \Session::flash('new-animal', ' ');
 

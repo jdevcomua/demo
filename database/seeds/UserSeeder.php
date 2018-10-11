@@ -22,20 +22,20 @@ class UserSeeder extends Seeder
                 'passport' => 'МР123456',
                 'gender' => \App\User::GENDER_MALE,
             ]]);
-//        DB::transaction(function () {
-//            for ($i = 2; $i < 1000; $i++)
-//                DB::table('users')->insert([[
-//                    'ext_id' => 123 + $i,
-//                    'first_name' => str_random(7),
-//                    'last_name' => str_random(7),
-//                    'middle_name' => str_random(7),
-//                    'birthday' => \Carbon\Carbon::now()->subYears(20 + rand(0, 20)),
-//                    'inn' => 1876543210 + $i,
-//                    'passport' => 'МР' . (123456 + $i),
-//                    'gender' => ($i % 2) ? \App\User::GENDER_MALE : \App\User::GENDER_FEMALE,
-//                ],
-//                ]);
-//        });
+        DB::transaction(function () {
+            for ($i = 2; $i < 1000; $i++)
+                DB::table('users')->insert([[
+                    'ext_id' => 123 + $i,
+                    'first_name' => str_random(7),
+                    'last_name' => str_random(7),
+                    'middle_name' => str_random(7),
+                    'birthday' => \Carbon\Carbon::now()->subYears(20 + rand(0, 20)),
+                    'inn' => 1876543210 + $i,
+                    'passport' => 'МР' . (123456 + $i),
+                    'gender' => ($i % 2) ? \App\User::GENDER_MALE : \App\User::GENDER_FEMALE,
+                ],
+                ]);
+        });
 //        DB::transaction(function () {
 //            for ($i = 1; $i < 1000; $i++)
 //                DB::table('user_addresses')->insert([[

@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AnimalRequestWasAcceped extends Mailable
+class AnimalRequestWasAccepted extends Mailable
 {
     use Queueable, SerializesModels;
 

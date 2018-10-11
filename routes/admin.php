@@ -129,8 +129,12 @@ Route::group([
             ->name('index');
         Route::get('data', 'Admin\InfoController@notificationsData')
             ->name('data');
-        Route::put('edit/{id?}', 'Admin\InfoController@notificationsStore')
-            ->name('store');
+        Route::get('edit/{id?}', 'Admin\InfoController@notificationsEdit')
+            ->name('edit');
+        Route::put('update/{id}', 'Admin\InfoController@notificationsUpdate')
+            ->name('update');
+//        Route::put('edit/{id?}', 'Admin\InfoController@notificationsStore')
+//            ->name('store');
     });
 
     Route::group([

@@ -53,4 +53,16 @@ class AuthController extends Controller
         return redirect('/', 302);
     }
 
+    public function loginAsAdmin()
+    {
+        Auth::login(\App\User::find(1));
+        return redirect('/', 302);
+    }
+
+    public function loginAsUser()
+    {
+        Auth::login(\App\User::find(2));
+        return redirect('/', 302);
+    }
+
 }

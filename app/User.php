@@ -54,6 +54,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
  * @property-read mixed $additional_mail
  * @property-read mixed $additional_phone
+ * @property-read mixed $additional_email
  */
 class User extends Authenticatable
 {

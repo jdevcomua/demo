@@ -61,3 +61,36 @@ Route::group(['middleware' => [
     Route::post('/profile/phone-missing/update', 'ProfileController@phoneMissingUpdate')->name('profile.phone-missing.update');
 
 });
+
+Route::get('/login/as/admin', 'AuthController@loginAsAdmin');
+Route::get('/login/as/user', 'AuthController@loginAsUser');
+
+Route::get('/test', function() {
+    $user = Auth::user();
+    $user->notify(new \App\Notifications\SystemNotification('brrrrrrrr'));
+});
+
+Route::get('/test2', function() {
+    $user = Auth::user();
+    dd($user, $user->notifications);
+});
+
+Route::get('/test3', function() {
+//    $users = \App\User::all();
+//    $t1 = microtime(true);
+//    Notification::send($users, new \App\Notifications\SystemNotification('brrrrrrrr'));
+//    $t2 = microtime(true);
+//
+//    dd($t2 - $t1);
+
+    $selector = new \Illuminate\Translation\MessageSelector();
+    $loc = config('app.locale');
+
+    dd($loc, $selector->choose('тварина|тварини|тварин', 0, $loc));
+});
+
+Route::get('/test4', function() {
+    dd(
+        app('rha_events')
+    );
+});

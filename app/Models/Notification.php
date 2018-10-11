@@ -28,6 +28,8 @@ class Notification extends Model
 
     const TYPE_NOT_VERIFIED = 'неверифіковані тварини';
 
+    protected $table = 'notifications_content';
+
     protected $fillable = [
         'id', 'min', 'max', 'type', 'text',
     ];
