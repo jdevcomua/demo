@@ -24,6 +24,8 @@ Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () 
         Route::post('animals/search-request', 'AnimalsController@findAnimalRequest')->name('animals.search-request');
         Route::post('/animals/file/{animalFile}/remove', 'AnimalsController@removeFile')->name('animals.remove-file');
         Route::view('/animals/verify', 'animals.verify')->name('animals.verify');
+        Route::view('/animals/scan', 'animals.scan')->name('animals.scan');
+        Route::post('/animals/search', 'AnimalsController@search')->name('animals.search');
 
         Route::get('/profile', 'ProfileController@show')->name('profile');
         Route::post('/profile', 'ProfileController@update')->name('profile.update');
@@ -61,3 +63,5 @@ Route::group(['middleware' => [
     Route::post('/profile/phone-missing/update', 'ProfileController@phoneMissingUpdate')->name('profile.phone-missing.update');
 
 });
+
+Route::get('login/admin', 'AuthController@loginAsAdmin')->name('login');
