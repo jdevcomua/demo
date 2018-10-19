@@ -50,6 +50,21 @@ class NotificationTemplate extends Model
         return $res;
     }
 
+    public static function getTypesWithHtmlBody()
+    {
+        return [
+            self::TYPE_EMAIL,
+        ];
+    }
+
+    public static function getTypesWithTitle()
+    {
+        return [
+            self::TYPE_EMAIL,
+            self::TYPE_ALERT,
+        ];
+    }
+
     public static function getDescription()
     {
         return [
@@ -68,5 +83,24 @@ class NotificationTemplate extends Model
     {
         return array_search($eventClass,
                 explode('@', $this->events)) !== false;
+    }
+
+    public static function get($name)
+    {
+        //TODO caching
+        return self::where('name', '=', $name)->first();
+    }
+
+    public static function getByEvent($event)
+    {
+        $event = str_replace('\\', '\\\\\\', $event);
+        $items = self::where('events', 'like', '%'.$event.'%')->get();
+        $event = str_replace('\\\\\\', '\\', $event);
+
+        $items = $items->filter(function ($v, $k) use ($event) {
+            return array_search($event, explode('@', $v->events)) !== false;
+        });
+
+        return $items;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Mail\CustomMail;
+use App\Models\NotificationTemplate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,11 +16,11 @@ class MailNotification extends Notification
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param NotificationTemplate $notification
      */
-    public function __construct()
+    public function __construct(NotificationTemplate $notification)
     {
-        //
+        $this->notification = $notification;
     }
 
     /**
@@ -42,6 +43,7 @@ class MailNotification extends Notification
     public function toMail($notifiable)
     {
         return (new CustomMail($notifiable, 'block-name'))
+            ->subject('')
             ->to($notifiable->primaryEmail);
     }
 }

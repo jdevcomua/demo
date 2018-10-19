@@ -8,7 +8,6 @@ use App\Models\Block;
 use App\Models\Breed;
 use App\Models\Color;
 use App\Models\Fur;
-use App\Models\Notification;
 use App\Models\NotificationTemplate;
 use App\Models\Species;
 use Illuminate\Http\Request;
@@ -481,43 +480,50 @@ class InfoController extends Controller
         ]);
     }
 
-    public function notificationsUpdate(Request $request, $id)
+    public function notificationsUpdate(NotificationTemplateRequest $request, $id)
     {
-//        $data = $request->validated();
-        dd($id, $request);
-    }
+        $data = $request->validated();
 
-    public function notificationsStore (Request $request, $id)
-    {
-        $notification = Notification::findOrFail($id);
+        $template = NotificationTemplate::findOrFail($id);
 
-        $data = $request->only(['min', 'max', 'text']);
-
-        $validator = Validator::make($data, [
-            'min' => 'required|integer|min:1',
-            'max' => 'required|integer|min:1',
-            'text' => 'required|string|min:1',
-        ],[
-            'min.required' => 'Мін є обов\'язковим полем',
-            'max.required' => 'Макс є обов\'язковим полем',
-            'text.required' => 'Текст є обов\'язковим полем',
-            'min.min' => 'Мін має буди мінімум 1',
-            'max.min' => 'Макс має буди мінімум 1',
-            'text.min' => 'Текст має буди мінімум 1 символ',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withErrors($validator, 'notification')
-                ->withInput();
-        }
-
-        $notification->update($data);
-        $notification->save();
+        $template->update($data);
 
         return redirect()
-            ->route('admin.info.notifications.index')
-            ->with('success_notifications', 'Нотифікацію було успішно змінено!');
+            ->back()
+            ->with('success_notification', 'Нотифікацію було успішно змінено!');
     }
+
+//    public function notificationsStore (Request $request, $id)
+//    {
+//        $notification = Notification::findOrFail($id);
+//
+//        $data = $request->only(['min', 'max', 'text']);
+//
+//        $validator = Validator::make($data, [
+//            'min' => 'required|integer|min:1',
+//            'max' => 'required|integer|min:1',
+//            'text' => 'required|string|min:1',
+//        ],[
+//            'min.required' => 'Мін є обов\'язковим полем',
+//            'max.required' => 'Макс є обов\'язковим полем',
+//            'text.required' => 'Текст є обов\'язковим полем',
+//            'min.min' => 'Мін має буди мінімум 1',
+//            'max.min' => 'Макс має буди мінімум 1',
+//            'text.min' => 'Текст має буди мінімум 1 символ',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return redirect()
+//                ->back()
+//                ->withErrors($validator, 'notification')
+//                ->withInput();
+//        }
+//
+//        $notification->update($data);
+//        $notification->save();
+//
+//        return redirect()
+//            ->route('admin.info.notifications.index')
+//            ->with('success_notifications', 'Нотифікацію було успішно змінено!');
+//    }
 }

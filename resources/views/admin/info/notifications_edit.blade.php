@@ -77,7 +77,7 @@
                                     @endif
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="subjectText" style="display: none">
                                     <label for="subject" class="control-label">
                                         Тема:
                                     </label>
@@ -85,27 +85,31 @@
                                            class="form-control" value="{{ old('subject') ?? $notification->subject }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="body" class="control-label">
+                                    <label class="control-label">
                                         Текст:
                                     </label>
-                                    <textarea name="body" class="summernote" style="display: none"
-                                              title="About page edit">{!! old('body') ?? $notification->body !!}</textarea>
+                                    <textarea name="body" id="bodyText" rows="3"
+                                              style="display: none">{!! old('body') ?? $notification->body !!}</textarea>
+                                    <textarea name="bodyHtml" class="summernote" style="display: none" id="bodyTextHtml"
+                                              title="About page edit">{!! old('bodyHtml') ?? $notification->body !!}</textarea>
                                 </div>
                             </div>
 
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="control-label mb15">
-                                        Події що викликають нотифікацію:
-                                    </label>
-                                    @foreach(app('rha_events') as $name => $class)
-                                        <div class="checkbox-custom mb5">
-                                            <input type="checkbox" @if($notification->hasEvent($class)) checked @endif
-                                                id="event{{ $loop->iteration }}" name="events[]" value="{{ $class }}">
-                                            <label for="event{{ $loop->iteration }}">{{ $name }}</label>
-                                        </div>
-                                    @endforeach
-                                </div>
+                                @if(!$notification->isSystem())
+                                    <div class="form-group">
+                                        <label class="control-label mb15">
+                                            Події що викликають нотифікацію:
+                                        </label>
+                                        @foreach(app('rha_events') as $name => $class)
+                                            <div class="checkbox-custom mb5">
+                                                <input type="checkbox" @if($notification->hasEvent($class)) checked @endif
+                                                    id="event{{ $loop->iteration }}" name="events[]" value="{{ $class }}">
+                                                <label for="event{{ $loop->iteration }}">{{ $name }}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
 
                                 <div class="form-group">
                                     <label class="control-label mb15">
@@ -121,7 +125,7 @@
                         <div class="panel-footer text-right">
                             <button type="submit" class="btn btn-success">Зберегти</button>
                             @if(!$notification->isSystem())
-                                <button class="btn btn-primary">Надіслати всім користувачам!</button>
+                                <button class="btn btn-primary ml20">Надіслати всім користувачам!</button>
                             @endif
                         </div>
                     </form>
@@ -135,13 +139,38 @@
     <script src="/js/admin/summernote.min.js"></script>
 
     <script type="text/javascript">
+        var notifyWithHtmlBody = @json(\App\Models\NotificationTemplate::getTypesWithHtmlBody());
+        var notifyWithTitle = @json(\App\Models\NotificationTemplate::getTypesWithTitle());
+
         jQuery(document).ready(function() {
+
             $('.summernote').summernote({
                 height: 255, //set editable area's height
                 focus: false, //set focus editable area after Initialize summernote
                 oninit: function() {},
                 onChange: function(contents, $editable) {},
             });
+
+            $('input[type=radio][name=type]').change(updateTextBoxes);
+            updateTextBoxes();
+
+            function updateTextBoxes() {
+                var elem = $('input[type=radio][name=type]:checked');
+
+                if (notifyWithHtmlBody.indexOf(parseInt(elem.val())) !== -1) {
+                    $('textarea#bodyText').hide();
+                    $('.note-editor').show();
+                } else {
+                    $('.note-editor').hide();
+                    $('textarea#bodyText').show();
+                }
+
+                if (notifyWithTitle.indexOf(parseInt(elem.val())) !== -1) {
+                    $('#subjectText').show();
+                } else {
+                    $('#subjectText').hide();
+                }
+            }
         });
     </script>
 @endsection

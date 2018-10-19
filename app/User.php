@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Models\Notification;
+use App\Models\NotificationTemplate;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
 use App\Models\UserPhone;
@@ -162,22 +162,13 @@ class User extends Authenticatable
 
     public function getNotification()
     {
-        $animals = $this->animals->where('verified', '=', 0);
-        $count = $animals->count();
-        if ($count) {
-            $notification = Notification::where('min', '>=', $count)
-                ->where('type', Notification::TYPE_NOT_VERIFIED)
-                ->first();
-            if (!$notification) {
-                $notification = Notification::orderByDesc('id')->first();
-            }
-            $text = str_replace('{кількість}', $count, $notification->text);
-            if ($count === 1) {
-                $text = str_replace('{ім\'я}',  '<b>' . $animals->first()->nickname . '</b>', $text);
-            }
-            return $text;
-        }
-        return false;
+        $template = NotificationTemplate::get('animal-verify')->body;
+
+        $animalsCount = $this->animals
+            ->where('verified', '=', 0)
+            ->count();
+
+        return str_replace('{count}', $animalsCount, $template);
     }
 
     public function getAdditionalPhoneAttribute()

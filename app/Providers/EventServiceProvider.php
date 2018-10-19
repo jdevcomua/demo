@@ -14,13 +14,13 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\AnimalRequestAccepted' => [
-            'App\Listeners\AnimalRequestAcceptedListener',
+            'App\Listeners\CommonEventListener',
         ],
         'App\Events\AnimalRequestDeclined' => [
-            'App\Listeners\AnimalRequestDeclinedListener',
+            'App\Listeners\CommonEventListener',
         ],
         'App\Events\AnimalAdded' => [
-            'App\Listeners\AnimalAddedListener',
+            'App\Listeners\CommonEventListener',
         ],
     ];
 
