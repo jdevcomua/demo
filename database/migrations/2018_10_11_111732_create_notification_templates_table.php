@@ -25,6 +25,12 @@ class CreateNotificationTemplatesTable extends Migration
             $table->text('events')->nullable();
             $table->timestamps();
         });
+
+        DB::table('notification_templates')->insert([
+            'type' => \App\Models\NotificationTemplate::TYPE_SYSTEM,
+            'name' => 'animal-verify',
+            'body' => 'Верифікуйте {user.animals_unverified.count} тваринки',
+        ]);
     }
 
     /**
