@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Models\Notification;
+use App\Models\NotificationTemplate;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
 use App\Models\UserPhone;
@@ -54,6 +54,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
  * @property-read mixed $additional_mail
  * @property-read mixed $additional_phone
+ * @property-read mixed $additional_email
  */
 class User extends Authenticatable
 {
@@ -86,6 +87,16 @@ class User extends Authenticatable
     public function animals()
     {
         return $this->hasMany('App\Models\Animal');
+    }
+
+    public function animalsVerified()
+    {
+        return $this->animals->where('verified', '=', true);
+    }
+
+    public function animalsUnverified()
+    {
+        return $this->animals->where('verified', '=', false);
     }
 
     public function getNameAttribute()
@@ -156,27 +167,13 @@ class User extends Authenticatable
 
     public function hasNotification()
     {
-        return $this->animals->where('verified', '=', 0)->count() > 0;
+        return $this->animalsUnverified()->count() > 0;
     }
 
     public function getNotification()
     {
-        $animals = $this->animals->where('verified', '=', 0);
-        $count = $animals->count();
-        if ($count) {
-            $notification = Notification::where('min', '>=', $count)
-                ->where('type', Notification::TYPE_NOT_VERIFIED)
-                ->first();
-            if (!$notification) {
-                $notification = Notification::orderByDesc('id')->first();
-            }
-            $text = str_replace('{кількість}', $count, $notification->text);
-            if ($count === 1) {
-                $text = str_replace('{ім\'я}',  '<b>' . $animals->first()->nickname . '</b>', $text);
-            }
-            return $text;
-        }
-        return false;
+        return NotificationTemplate::getByName('animal-verify')
+            ->fillTextPlaceholders($this);
     }
 
     public function getAdditionalPhoneAttribute()

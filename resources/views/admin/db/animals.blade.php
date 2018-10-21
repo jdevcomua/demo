@@ -138,11 +138,11 @@
                                 return "<a href=\"{{ route('admin.db.animals.edit') }}/"
                                     + data + "\">" +
                                     "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
-                                    "</a>" +
-                                    "<a href='#' class='delete' " +
-                                    "data-id=" + data + " >"
+                                    "</a>"
                                     @permission('delete-animal')
                                     +
+                                    "<a href='#' class='delete' " +
+                                    "data-id=" + data + " >" +
                                     "<i class=\"fa fa-trash pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>"
                                     @endpermission

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\AnimalRequestAccepted;
+use App\Events\AnimalRequestDeclined;
 use App\Helpers\DataTables;
-use App\Mail\AnimalRequestWasAcceped;
-use App\Mail\AnimalRequestWasDeclined;
 use App\Models\Animal;
 use App\Models\AnimalsRequest;
 use App\User;
@@ -154,9 +154,7 @@ class AdministratingController extends Controller
 
         $user = User::find($animalRequest->user_id);
 
-        if ($user->primaryEmail) {
-            \Mail::to($user->primaryEmail)->send(new AnimalRequestWasAcceped());
-        }
+        event(new AnimalRequestAccepted($user));
 
         return redirect()
             ->back()
@@ -182,9 +180,7 @@ class AdministratingController extends Controller
 
         $user = User::find($animalRequest->user_id);
 
-        if ($user->primaryEmail) {
-            \Mail::to($user->primaryEmail)->send(new AnimalRequestWasDeclined());
-        }
+        event(new AnimalRequestDeclined($user));
 
         return redirect()
             ->back()

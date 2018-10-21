@@ -36,12 +36,6 @@
                         <span class="sidebar-title">Довідники</span>
                     </a>
                 </li>
-                <li {!! (strpos($curRoute, '.info.emails') !== false) ? ' class="active" ' : '' !!}>
-                    <a href="{{route('admin.info.emails.index')}}#">
-                        <span class="fa fa-envelope"></span>
-                        <span class="sidebar-title">Повідомлення</span>
-                    </a>
-                </li>
                 <li {!! (strpos($curRoute, '.info.notifications') !== false) ? ' class="active" ' : '' !!}>
                     <a href="{{route('admin.info.notifications.index')}}">
                         <span class="fa fa-bell"></span>

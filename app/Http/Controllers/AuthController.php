@@ -8,6 +8,7 @@ use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Socialite;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AuthController extends Controller
 {
@@ -50,6 +51,22 @@ class AuthController extends Controller
 
         Auth::login($user);
 
+        return redirect('/', 302);
+    }
+
+    public function loginAsAdmin()
+    {
+        if (!config('app.debug')) throw new NotFoundHttpException();
+
+        Auth::login(\App\User::find(1));
+        return redirect('/', 302);
+    }
+
+    public function loginAsUser()
+    {
+        if (!config('app.debug')) throw new NotFoundHttpException();
+
+        Auth::login(\App\User::find(2));
         return redirect('/', 302);
     }
 

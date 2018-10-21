@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
+use App;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -13,8 +13,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
+        'App\Events\AnimalRequestAccepted' => [
+            'App\Listeners\CommonEventListener',
+        ],
+        'App\Events\AnimalRequestDeclined' => [
+            'App\Listeners\CommonEventListener',
+        ],
+        'App\Events\AnimalAdded' => [
+            'App\Listeners\CommonEventListener',
         ],
     ];
 
@@ -27,6 +33,15 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        $events = [];
+        foreach (array_keys($this->listen) as $event) {
+            if (!class_exists($event)) continue;
+
+            $events[$event::$display_name] = $event;
+        }
+
+        App::singleton('rha_events', function() use($events) {
+            return $events;
+        });
     }
 }
