@@ -430,7 +430,7 @@ class InfoController extends Controller
     {
         $data = $request->validated();
 
-        $model->create($data);
+        $model = $model->create($data);
 
         return redirect()
             ->route('admin.info.notifications.edit', ['id' => $model->id])
