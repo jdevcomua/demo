@@ -172,8 +172,12 @@ class User extends Authenticatable
 
     public function getNotification()
     {
-        return NotificationTemplate::getByName('animal-verify')
-            ->fillTextPlaceholders($this);
+        $notification = NotificationTemplate::getByName('animal-verify');
+        if ($notification->active) {
+            return $notification->fillTextPlaceholders($this);
+        } else {
+            return false;
+        }
     }
 
     public function getAdditionalPhoneAttribute()

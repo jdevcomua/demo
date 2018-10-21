@@ -14,10 +14,11 @@
     <div class="container-fluid">
         @include('layout.header')
 
-        @if(isset($auth) && $auth && $auth->hasNotification())
+        @if(isset($auth) && $auth && $auth->hasNotification() &&
+            $notificationBody = $auth->getNotification())
             <a href="{{ route('animals.verify') }}" class="notification">
                 <i class="fa fa-bell" aria-hidden="true"></i>
-                <div class="notification-content">{!! $auth->getNotification() !!}</div>
+                <div class="notification-content">{!! $notificationBody !!}</div>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </a>
         @endif
