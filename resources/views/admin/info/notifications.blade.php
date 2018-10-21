@@ -11,7 +11,11 @@
     <section id="content" class="animated fadeIn">
         <div class="row">
 
-            <div class="col-md-12">
+            <div class="col-md-3 col-sm-5 col-xs-6 mb25">
+                <a href="{{ route('admin.info.notifications.create') }}" class="btn btn-success btn-block">Cтворити нотифікацію</a>
+            </div>
+
+            <div class="col-xs-12">
                 <div class="panel panel-visible" id="spy5">
                     <div class="panel-heading">
                         <div class="panel-title">
@@ -36,18 +40,29 @@
                                 <th>Тип</th>
                                 <th>Назва</th>
                                 <th>Тема</th>
-                                <th>Текст</th>
                                 <th>Активна</th>
                                 <th>Подій</th>
                             </tr>
                             <tr>
                                 <th></th>
                                 <th class="no-search"></th>
+                                <th class="select">
+                                    <select>
+                                        <option selected value>---</option>
+                                        @foreach(\App\Models\NotificationTemplate::getTypes() as $k => $v)
+                                            <option value="{{ $k }}">{{ $v }}</option>
+                                        @endforeach
+                                    </select>
+                                </th>
                                 <th></th>
                                 <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="select">
+                                    <select>
+                                        <option selected value>---</option>
+                                        <option value="0">Ні</option>
+                                        <option value="1">Так</option>
+                                    </select>
+                                </th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -55,18 +70,22 @@
                             </tbody>
                         </table>
                     </div>
-                    {{--<div class="panel-footer">--}}
-                        {{--<p>Ви можете використовувати наспупні змінні: <b>{кількість}, {ім'я}</b></p>--}}
-                    {{--</div>--}}
                 </div>
             </div>
+
+            <form action="#" id="destroy" method="post" class="hidden">
+                @csrf
+                @method('delete')
+            </form>
         </div>
     </section>
 @endsection
 
 @section('scripts-end')
     <script type="text/javascript">
-        jQuery(document).ready(function() {
+        var canBeDeletedTypes = @json(array_keys(\App\Models\NotificationTemplate::getTypes(false)));
+
+        $(document).ready(function() {
             dataTableInit($('#datatable-notifications'), {
                 ajax: '{{ route('admin.info.notifications.data', null, false) }}',
                 columns: [
@@ -77,14 +96,17 @@
                         orderable: false,
                         render: function (data, type, row) {
                             if (data) {
-                                return "<a href=\"{{ route('admin.info.notifications.edit') }}/"
+                                let actions = "<a href=\"{{ route('admin.info.notifications.edit') }}/"
                                     + data + "\">" +
                                     "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
-                                    "</a>" +
-                                    "<a href='#' class='delete' " +
+                                    "</a>";
+                                if (canBeDeletedTypes.indexOf(row.type) !== -1) {
+                                    actions += "<a href='#' class='delete' " +
                                     "data-id=" + data + " >" +
                                     "<i class=\"fa fa-trash pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>";
+                                }
+                                return actions;
                             }
                         }
                     },
@@ -97,19 +119,27 @@
                     },
                     { "data": "name" },
                     { "data": "subject" },
-                    { "data": "body" },
-                    { "data": "active" },
                     {
-                        data: 'events',
-                        defaultContent: '0',
+                        data: 'active',
                         render: function ( data, type, row ) {
-                            if (data) {
-                                var arr = data.split('@');
-                                return arr.length;
+                            switch (data) {
+                                case 0: return 'Ні';
+                                case 1: return 'Так';
+                                default: return '?';
                             }
                         }
                     },
+                    { "data": "events" },
                 ],
+            });
+
+            $(document).on('click','.delete', function() {
+                if (confirm('Ви впевнені що хочете видалити нотифікацію?')) {
+                    var form = $('#destroy');
+                    var id = $(this).attr('data-id');
+                    $(form).attr('action', '{{route('admin.info.notifications.delete')}}/' + id);
+                    $(form).submit();
+                }
             });
         });
     </script>

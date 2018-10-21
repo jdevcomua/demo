@@ -106,21 +106,6 @@ Route::group([
             ->name('remove.fur');
     });
 
-
-    Route::group([
-        'prefix' => 'emails',
-        'as' => 'info.emails.'
-    ], function () {
-        Route::get('index', 'Admin\InfoController@emailsIndex')
-            ->name('index');
-        Route::get('data', 'Admin\InfoController@emailsData')
-            ->name('data');
-        Route::get('edit/{id?}', 'Admin\InfoController@emailsEdit')
-            ->name('edit');
-        Route::put('edit/{id}', 'Admin\InfoController@emailsStore')
-            ->name('store');
-    });
-
     Route::group([
         'prefix' => 'notifications',
         'as' => 'info.notifications.'
@@ -129,12 +114,16 @@ Route::group([
             ->name('index');
         Route::get('data', 'Admin\InfoController@notificationsData')
             ->name('data');
+        Route::get('create', 'Admin\InfoController@notificationsCreate')
+            ->name('create');
+        Route::post('store', 'Admin\InfoController@notificationsStore')
+            ->name('store');
         Route::get('edit/{id?}', 'Admin\InfoController@notificationsEdit')
             ->name('edit');
         Route::put('update/{id}', 'Admin\InfoController@notificationsUpdate')
             ->name('update');
-//        Route::put('edit/{id?}', 'Admin\InfoController@notificationsStore')
-//            ->name('store');
+        Route::delete('delete/{id?}', 'Admin\InfoController@notificationsDestroy')
+            ->name('delete');
     });
 
     Route::group([

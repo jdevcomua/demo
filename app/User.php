@@ -89,6 +89,16 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Animal');
     }
 
+    public function animalsVerified()
+    {
+        return $this->animals->where('verified', '=', true);
+    }
+
+    public function animalsUnverified()
+    {
+        return $this->animals->where('verified', '=', false);
+    }
+
     public function getNameAttribute()
     {
         return (($this->last_name) ? $this->last_name : '') . ' '
@@ -157,18 +167,13 @@ class User extends Authenticatable
 
     public function hasNotification()
     {
-        return $this->animals->where('verified', '=', 0)->count() > 0;
+        return $this->animalsUnverified()->count() > 0;
     }
 
     public function getNotification()
     {
-        $template = NotificationTemplate::get('animal-verify')->body;
-
-        $animalsCount = $this->animals
-            ->where('verified', '=', 0)
-            ->count();
-
-        return str_replace('{count}', $animalsCount, $template);
+        return NotificationTemplate::getByName('animal-verify')
+            ->fillTextPlaceholders($this);
     }
 
     public function getAdditionalPhoneAttribute()

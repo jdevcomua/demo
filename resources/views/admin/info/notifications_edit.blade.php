@@ -46,9 +46,15 @@
                                     <label for="name" class="control-label">
                                         Назва:
                                     </label>
-                                    <input type="text" id="name" name="name"
-                                           class="form-control" value="{{ old('name') ?? $notification->name }}"
-                                           required>
+                                    @if($notification->isSystem())
+                                        <input type="text" id="name"
+                                               class="form-control" value="{{ $notification->name }}"
+                                               readonly>
+                                    @else
+                                        <input type="text" id="name" name="name"
+                                               class="form-control" value="{{ old('name') ?? $notification->name }}"
+                                               required>
+                                    @endif
                                 </div>
 
                                 <div class="form-group">
@@ -89,9 +95,11 @@
                                         Текст:
                                     </label>
                                     <textarea name="body" id="bodyText" rows="3"
-                                              style="display: none">{!! old('body') ?? $notification->body !!}</textarea>
+                                              style="display: none">{{ old('body') ?? $notification->body }}</textarea>
                                     <textarea name="bodyHtml" class="summernote" style="display: none" id="bodyTextHtml"
                                               title="About page edit">{!! old('bodyHtml') ?? $notification->body !!}</textarea>
+
+                                    @include('admin.info._notification_placeholders')
                                 </div>
                             </div>
 
@@ -124,9 +132,10 @@
                         </div>
                         <div class="panel-footer text-right">
                             <button type="submit" class="btn btn-success">Зберегти</button>
-                            @if(!$notification->isSystem())
-                                <button class="btn btn-primary ml20">Надіслати всім користувачам!</button>
-                            @endif
+                            {{--@if(!$notification->isSystem())--}}
+                                {{--TODO this--}}
+                                {{--<button class="btn btn-primary ml20">Надіслати всім користувачам!</button>--}}
+                            {{--@endif--}}
                         </div>
                     </form>
                 </div>
@@ -142,7 +151,7 @@
         var notifyWithHtmlBody = @json(\App\Models\NotificationTemplate::getTypesWithHtmlBody());
         var notifyWithTitle = @json(\App\Models\NotificationTemplate::getTypesWithTitle());
 
-        jQuery(document).ready(function() {
+        $(document).ready(function() {
 
             $('.summernote').summernote({
                 height: 255, //set editable area's height
@@ -151,27 +160,33 @@
                 onChange: function(contents, $editable) {},
             });
 
-            $('input[type=radio][name=type]').change(updateTextBoxes);
-            updateTextBoxes();
+            $('input[type=radio][name=type]').change(function () {
+                updateTextBoxes(false);
+            });
+            updateTextBoxes(true);
 
-            function updateTextBoxes() {
+            function updateTextBoxes(first) {
+                const $subject = $('#subjectText');
+                const $textArea = $('textarea#bodyText');
+                const $textAreaHtml = $('.note-editor');
+
                 var elem = $('input[type=radio][name=type]:checked');
 
                 if (notifyWithHtmlBody.indexOf(parseInt(elem.val())) !== -1) {
-                    $('textarea#bodyText').hide();
-                    $('.note-editor').show();
+                    $textArea.hide();
+                    if (first) $textArea.text('');
+                    $textAreaHtml.show();
                 } else {
-                    $('.note-editor').hide();
-                    $('textarea#bodyText').show();
+                    $textAreaHtml.hide();
+                    $textArea.show();
                 }
 
                 if (notifyWithTitle.indexOf(parseInt(elem.val())) !== -1) {
-                    $('#subjectText').show();
+                    $subject.show();
                 } else {
-                    $('#subjectText').hide();
+                    $subject.hide();
                 }
             }
         });
     </script>
 @endsection
-

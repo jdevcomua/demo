@@ -33,6 +33,8 @@ class CommonEventListener
         $notifications = NotificationTemplate::getByEvent(get_class($event));
 
         foreach ($notifications as $notification) {
+            if (!$notification->active) continue;
+
             switch ($notification->type) {
                 case NotificationTemplate::TYPE_EMAIL:
                     $this->sendEmail($event->user, $notification);
@@ -50,9 +52,7 @@ class CommonEventListener
      */
     private function sendEmail(User $user, NotificationTemplate $notification)
     {
-        if ($user->primaryEmail) {
-            $user->notify(new MailNotification($notification));
-        }
+        $user->notify(new MailNotification($notification));
     }
 
     /**

@@ -10,6 +10,7 @@ class NotificationTemplateRequest extends FormRequest
 {
 
     protected $errorBag = 'notification';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -28,9 +29,19 @@ class NotificationTemplateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|alpha_dash|max:255|unique:notification_templates,name,' . $this->route('id'),
+            'name' => [
+                'required_if:type,'.implode(',',array_keys(NotificationTemplate::getTypes(false))),
+                'regex:/^[\w\d\-\_]+$/',
+                'max:255',
+                'unique:notification_templates,name,' . $this->route('id')
+            ],
             'type' => 'nullable|integer|in:'.implode(',',array_keys(NotificationTemplate::getTypes(false))),
-            'subject' => 'nullable|string|max:255',
+            'subject' => [
+                'nullable',
+                'required_if:type,'.implode(',',NotificationTemplate::getTypesWithTitle()),
+                'string',
+                'max:255',
+                ],
             'body' => 'required_unless:type,'.implode(',',NotificationTemplate::getTypesWithHtmlBody()),
             'bodyHtml' => 'required_if:type,'.implode(',',NotificationTemplate::getTypesWithHtmlBody()),
             'events' => 'nullable|array',
@@ -46,10 +57,13 @@ class NotificationTemplateRequest extends FormRequest
     {
         return [
             'name.required' => 'Назва є обов\'язковим полем',
-            'name.alpha_dash' => 'Назва повинна складатися тільки з кириличних літер, цифр, \'-\' та \'_\'',
+            'name.regex' => 'Назва повинна складатися тільки з кириличних літер, цифр, \'-\' та \'_\'',
             'name.max' => 'Назва має бути менше :max символів',
             'name.unique' => 'Така назва вже використовується',
+            'subject.required_if' => 'Тема є обов\'язковим полем',
             'subject.max' => 'Тема має бути менше :max символів',
+            'body.required_unless' => 'Текст є обов\'язковим полем',
+            'bodyHtml.required_if' => 'Текст є обов\'язковим полем',
         ];
     }
 

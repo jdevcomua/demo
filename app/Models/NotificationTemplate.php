@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -85,10 +86,18 @@ class NotificationTemplate extends Model
                 explode('@', $this->events)) !== false;
     }
 
-    public static function get($name)
+    /**
+     * @param string $name
+     * @return NotificationTemplate
+     * @throws \Exception
+     */
+    public static function getByName($name)
     {
         //TODO caching
-        return self::where('name', '=', $name)->first();
+        $template = self::where('name', '=', $name)->first();
+        if (!$template) throw new \Exception('Notification \''.$name.'\' not exist');
+
+        return $template;
     }
 
     public static function getByEvent($event)
@@ -103,4 +112,22 @@ class NotificationTemplate extends Model
 
         return $items;
     }
+
+    public function fillTextPlaceholders(User $user)
+    {
+        $placeholders = [
+            '{user.name}' => $user->name,
+            '{user.full_name}' => $user->full_name,
+            '{user.first_name}' => $user->first_name,
+            '{user.last_name}' => $user->last_name,
+            '{user.middle_name}' => $user->middle_name,
+            '{user.animals.count}' => $user->animals->count(),
+            '{user.animals_verified.count}' => $user->animalsVerified()->count(),
+            '{user.animals_unverified.count}' => $user->animalsUnverified()->count()
+        ];
+
+        return str_replace(array_keys($placeholders), array_values($placeholders), $this->body);
+    }
+
+
 }

@@ -400,62 +400,6 @@ class InfoController extends Controller
         return response('', 400);
     }
 
-    public function emailsIndex()
-    {
-        return view('admin.info.emails');
-    }
-
-    public function emailsData(Request $request)
-    {
-        $model = new Block();
-
-        $query = $model->newQuery()
-            ->where('title', 'like', 'email.%');
-
-        $response = DataTables::provide($request, $model, $query);
-
-        if ($response) return response()->json($response);
-
-        return response('', 400);
-    }
-
-    public function emailsEdit ($id)
-    {
-        $email = Block::findOrFail($id);
-        return view('admin.info.emails_edit', compact('email'));
-    }
-
-    public function emailsStore (Request $request, $id)
-    {
-        $email = Block::findOrFail($id);
-
-        $data = $request->only(['subject', 'body']);
-
-        $validator = Validator::make($data, [
-            'subject' => 'required|string|min:6',
-            'body' => 'required|string|min:6'
-        ],[
-            'subject.required' => 'Тема є обов\'язковим полем',
-            'body.required' => 'Текст є обов\'язковим полем',
-            'subject.min' => 'Тема має буди мінімум 6 символів',
-            'body.min' => 'Текст має буди мінімум 6 символів',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withErrors($validator, 'email')
-                ->withInput();
-        }
-
-        $email->update($data);
-        $email->save();
-
-        return redirect()
-            ->route('admin.info.emails.index')
-            ->with('success_emails', 'Повідомлення було успішно змінено!');
-    }
-
     public function notificationsIndex()
     {
         return view('admin.info.notifications');
@@ -464,12 +408,33 @@ class InfoController extends Controller
     public function notificationsData(Request $request)
     {
         $model = new NotificationTemplate();
+        $model->makeHidden(['body', 'events']);
 
-        $response = DataTables::provide($request, $model);
+        $aliases = [
+            'events' => 'IFNULL(LENGTH(events) - LENGTH(REPLACE(events, \'@\', \'\')) + 1, 0)',
+        ];
+
+        $response = DataTables::provide($request, $model, null, $aliases);
 
         if ($response) return response()->json($response);
 
         return response('', 400);
+    }
+
+    public function notificationsCreate()
+    {
+        return view('admin.info.notifications_create');
+    }
+
+    public function notificationsStore(NotificationTemplateRequest $request, NotificationTemplate $model)
+    {
+        $data = $request->validated();
+
+        $model->create($data);
+
+        return redirect()
+            ->route('admin.info.notifications.edit', ['id' => $model->id])
+            ->with('success_notification', 'Нотифікацію було успішно створено!');
     }
 
     public function notificationsEdit($id)
@@ -493,37 +458,19 @@ class InfoController extends Controller
             ->with('success_notification', 'Нотифікацію було успішно змінено!');
     }
 
-//    public function notificationsStore (Request $request, $id)
-//    {
-//        $notification = Notification::findOrFail($id);
-//
-//        $data = $request->only(['min', 'max', 'text']);
-//
-//        $validator = Validator::make($data, [
-//            'min' => 'required|integer|min:1',
-//            'max' => 'required|integer|min:1',
-//            'text' => 'required|string|min:1',
-//        ],[
-//            'min.required' => 'Мін є обов\'язковим полем',
-//            'max.required' => 'Макс є обов\'язковим полем',
-//            'text.required' => 'Текст є обов\'язковим полем',
-//            'min.min' => 'Мін має буди мінімум 1',
-//            'max.min' => 'Макс має буди мінімум 1',
-//            'text.min' => 'Текст має буди мінімум 1 символ',
-//        ]);
-//
-//        if ($validator->fails()) {
-//            return redirect()
-//                ->back()
-//                ->withErrors($validator, 'notification')
-//                ->withInput();
-//        }
-//
-//        $notification->update($data);
-//        $notification->save();
-//
-//        return redirect()
-//            ->route('admin.info.notifications.index')
-//            ->with('success_notifications', 'Нотифікацію було успішно змінено!');
-//    }
+    public function notificationsDestroy($id)
+    {
+        $template = NotificationTemplate::findOrFail($id);
+
+        if (array_search($template->type, NotificationTemplate::getTypes(false)) === false) {
+            return redirect()->back();
+        }
+
+        $template->delete();
+
+        return redirect()
+            ->route('admin.info.notifications.index')
+            ->with('success_notifications', 'Нотифікацію було успішно видалено!');
+    }
+
 }

@@ -44,7 +44,7 @@ class AlertNotification extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-//            'notification' => $this->notification
+            'notification' => $this->notification
         ];
     }
 }

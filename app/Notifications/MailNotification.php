@@ -7,11 +7,12 @@ use App\Models\NotificationTemplate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 
-class MailNotification extends Notification
+class MailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    private $notification;
 
     /**
      * Create a new notification instance.
@@ -42,8 +43,9 @@ class MailNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new CustomMail($notifiable, 'block-name'))
-            ->subject('')
+        $body = $this->notification->fillTextPlaceholders($notifiable);
+
+        return (new CustomMail($this->notification->subject, $body))
             ->to($notifiable->primaryEmail);
     }
 }
