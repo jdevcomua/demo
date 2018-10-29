@@ -62,12 +62,4 @@ class AuthController extends Controller
         return redirect('/', 302);
     }
 
-    public function loginAsUser()
-    {
-        if (!config('app.debug')) throw new NotFoundHttpException();
-
-        Auth::login(\App\User::find(2));
-        return redirect('/', 302);
-    }
-
 }

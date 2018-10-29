@@ -16,7 +16,7 @@ class AnimalAdded
 
     public $user;
 
-    public static $display_name = 'Animal added event';
+    public static $display_name = 'Додано нову тварину';
 
     /**
      * Create a new event instance.

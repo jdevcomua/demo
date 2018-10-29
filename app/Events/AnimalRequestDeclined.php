@@ -16,7 +16,7 @@ class AnimalRequestDeclined
 
     public $user;
 
-    public static $display_name = 'Animal request declined event';
+    public static $display_name = 'Запит на підтвердження господаря відхилено';
 
     /**
      * Create a new event instance.

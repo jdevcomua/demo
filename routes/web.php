@@ -65,4 +65,3 @@ Route::group(['middleware' => [
 });
 
 Route::get('/login/as/admin', 'AuthController@loginAsAdmin');
-Route::get('/login/as/user', 'AuthController@loginAsUser');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AnimalFormRequestSent;
 use App\Helpers\Date;
 use App\Events\AnimalAdded;
 use App\Models\Animal;
@@ -330,6 +331,8 @@ class AnimalsController extends Controller
         $animalRequest->user_id = \Auth::id();
         $animalRequest->fill($data);
         $animalRequest->save();
+
+        event(new AnimalFormRequestSent($request->user()));
 
         return redirect()->back();
     }

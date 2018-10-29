@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AnimalBadgeRequestSent;
 use App\Helpers\Date;
 use App\Models\Animal;
 use App\Models\AnimalsRequest;
@@ -109,6 +110,9 @@ class AjaxController extends Controller
                     $animalRequest->fur_id = $animal->fur_id;
                     $animalRequest->birthday = $animal->birthday;
                     $animalRequest->save();
+
+                    event(new AnimalBadgeRequestSent($request->user()));
+
                     return response()->json([
                         'message' => 'success'
                     ]);

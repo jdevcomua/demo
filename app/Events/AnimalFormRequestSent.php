@@ -2,21 +2,17 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class AnimalRequestAccepted
+class AnimalFormRequestSent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
 
-    public static $display_name = 'Запит на підтвердження господаря прийнято';
+    public static $display_name = 'Користувач надіслав форму для пошуку тварини';
 
     /**
      * Create a new event instance.
@@ -27,5 +23,4 @@ class AnimalRequestAccepted
     {
         $this->user = $user;
     }
-
 }
