@@ -116,7 +116,10 @@ $form.on('submit', function (e) {
 
         ajax.onload = function () {
             if (ajax.readyState === 4) {
-                var data = JSON.parse(ajax.responseText);
+                var data;
+                try {
+                    data = JSON.parse(ajax.responseText+'sad');
+                } catch (e) {}
                 if (ajax.status === 200) {
                     $form.removeClass('is-uploading');
                     if (data.url) {
@@ -126,7 +129,7 @@ $form.on('submit', function (e) {
                     $('body').removeClass('no-scroll');
                     $('.uploader-overlay').hide();
                     showNames();
-                    showValidationErrors(data.errors);
+                    if (ajax.status === 422) showValidationErrors(data.errors);
                 }
             }
 
