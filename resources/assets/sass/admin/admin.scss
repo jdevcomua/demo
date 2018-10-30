@@ -188,3 +188,19 @@ input.custom-file-input {
 .ui-datepicker {
   width: 25em;
 }
+
+.note-editor {
+    border: 1px solid #dddddd;
+}
+
+textarea#bodyText {
+  display: block;
+  width: 100%;
+  resize: vertical;
+  border: 1px solid #dddddd;
+  padding: 10px;
+  &:focus {
+    border-color: #75a5e4;
+    outline: 0;
+  }
+}

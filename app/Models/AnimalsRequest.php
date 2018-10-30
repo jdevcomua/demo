@@ -46,6 +46,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereUserId($value)
  * @mixin \Eloquent
+ * @property int $gender
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereAnimalId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereGender($value)
  */
 class AnimalsRequest extends Model
 {
@@ -73,6 +76,11 @@ class AnimalsRequest extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function animal()
+    {
+        return $this->belongsTo(Animal::class);
     }
 
     public function breed()

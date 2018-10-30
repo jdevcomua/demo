@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\NewAnimal;
+use App\Events\AnimalFormRequestSent;
+use App\Helpers\Date;
+use App\Events\AnimalAdded;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\AnimalsRequest;
@@ -127,9 +129,7 @@ class AnimalsController extends Controller
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
-        if ($user->primaryEmail) {
-            \Mail::to($user->primaryEmail)->send(new NewAnimal($user));
-        }
+        event(new AnimalAdded($user));
 
         \Session::flash('new-animal', ' ');
 
@@ -332,6 +332,23 @@ class AnimalsController extends Controller
         $animalRequest->fill($data);
         $animalRequest->save();
 
+        event(new AnimalFormRequestSent($request->user()));
+
         return redirect()->back();
+    }
+
+    public function search (Request $request)
+    {
+        $badge = $request->get('badge');
+        $animal = Animal::where('badge', $badge)
+//            ->whereNull('user_id')
+            ->first();
+        if (!$animal) {
+            return redirect()
+                ->back()
+                ->with('error', 'На жаль, тварина не знайдена');
+        }
+
+        return redirect()->route('animals.show', $animal->id);
     }
 }
