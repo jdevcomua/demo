@@ -47,7 +47,7 @@
 
     <form action="{{ route('profile.update') }}" method="POST">
         @csrf
-        <div class="cols-block">
+        <div class="cols-block pb-0">
             <div class="cols-block-header">
                 <div class="block-title">ОСНОВНІ ВІДОМОСТІ</div>
                 <div class="block-sub-title"></div>
