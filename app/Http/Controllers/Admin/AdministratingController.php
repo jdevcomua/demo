@@ -154,7 +154,7 @@ class AdministratingController extends Controller
 
         $user = User::find($animalRequest->user_id);
 
-        event(new AnimalRequestAccepted($user));
+        event(new AnimalRequestAccepted($user, [$animal]));
 
         return redirect()
             ->back()
@@ -172,7 +172,7 @@ class AdministratingController extends Controller
             ->with('success_request', 'Запит було оброблено успішно');
     }
 
-    public function cancelAnimalsRequest(Request $request, $id)
+    public function cancelAnimalsRequest($id)
     {
         $animalRequest = AnimalsRequest::findOrFail($id);
         $animalRequest->processed = 1;
@@ -180,7 +180,7 @@ class AdministratingController extends Controller
 
         $user = User::find($animalRequest->user_id);
 
-        event(new AnimalRequestDeclined($user));
+        event(new AnimalRequestDeclined($user, [$animalRequest->animal]));
 
         return redirect()
             ->back()

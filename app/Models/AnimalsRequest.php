@@ -78,6 +78,11 @@ class AnimalsRequest extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function animal()
+    {
+        return $this->belongsTo(Animal::class);
+    }
+
     public function breed()
     {
         return $this->belongsTo(Breed::class);

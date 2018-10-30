@@ -13,15 +13,18 @@ class AlertNotification extends Notification implements ShouldQueue
     use Queueable;
 
     private $notification;
+    private $payload;
 
     /**
      * Create a new notification instance.
      *
      * @param NotificationTemplate $notification
+     * @param array|null $payload
      */
-    public function __construct(NotificationTemplate $notification)
+    public function __construct(NotificationTemplate $notification, $payload)
     {
         $this->notification = $notification;
+        $this->payload = $payload;
     }
 
     /**
@@ -44,7 +47,8 @@ class AlertNotification extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'notification' => $this->notification
+            'notification' => $this->notification,
+            'payload' => $this->payload,
         ];
     }
 }

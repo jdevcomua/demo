@@ -14,11 +14,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\AnimalRequestAccepted' => [CommonEventListener::class],
-        'App\Events\AnimalRequestDeclined' => [CommonEventListener::class],
-        'App\Events\AnimalAdded' => [CommonEventListener::class],
-        'App\Events\AnimalBadgeRequestSent' => [CommonEventListener::class],
-        'App\Events\AnimalFormRequestSent' => [CommonEventListener::class],
+        'App\Events\AnimalRequestAccepted'  =>  [CommonEventListener::class],
+        'App\Events\AnimalRequestDeclined'  =>  [CommonEventListener::class],
+        'App\Events\AnimalAdded'            =>  [CommonEventListener::class],
+        'App\Events\AnimalBadgeRequestSent' =>  [CommonEventListener::class],
+        'App\Events\AnimalFormRequestSent'  =>  [CommonEventListener::class],
     ];
 
     /**

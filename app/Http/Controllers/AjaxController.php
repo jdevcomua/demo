@@ -86,7 +86,8 @@ class AjaxController extends Controller
         return response()->json(['animal' => $animal]);
     }
 
-    public function requestAnimal(Request $request) {
+    public function requestAnimal(Request $request)
+    {
         if ($request->has('animal_id')) {
             $animal = Animal::findOrFail($request->get('animal_id'));
             if ($animal) {
@@ -111,7 +112,7 @@ class AjaxController extends Controller
                     $animalRequest->birthday = $animal->birthday;
                     $animalRequest->save();
 
-                    event(new AnimalBadgeRequestSent($request->user()));
+                    event(new AnimalBadgeRequestSent($request->user(), [$animal]));
 
                     return response()->json([
                         'message' => 'success'

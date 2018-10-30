@@ -13,15 +13,18 @@ class MailNotification extends Notification implements ShouldQueue
     use Queueable;
 
     private $notification;
+    private $payload;
 
     /**
      * Create a new notification instance.
      *
      * @param NotificationTemplate $notification
+     * @param array|null $payload
      */
-    public function __construct(NotificationTemplate $notification)
+    public function __construct(NotificationTemplate $notification, $payload)
     {
         $this->notification = $notification;
+        $this->payload = $payload;
     }
 
     /**
@@ -43,7 +46,7 @@ class MailNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $body = $this->notification->fillTextPlaceholders($notifiable);
+        $body = $this->notification->fillTextPlaceholders($notifiable, $this->payload);
 
         return (new CustomMail($this->notification->subject, $body))
             ->to($notifiable->primaryEmail);

@@ -2,13 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\AnimalAdded;
+use App\Events\CommonEvent;
 use App\Models\NotificationTemplate;
 use App\Notifications\AlertNotification;
 use App\Notifications\MailNotification;
 use App\User;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CommonEventListener
 {
@@ -25,7 +23,7 @@ class CommonEventListener
     /**
      * Handle the event.
      *
-     * @param $event
+     * @param CommonEvent $event
      * @return void
      */
     public function handle($event)
@@ -37,10 +35,10 @@ class CommonEventListener
 
             switch ($notification->type) {
                 case NotificationTemplate::TYPE_EMAIL:
-                    $this->sendEmail($event->user, $notification);
+                    $this->sendEmail($event->user, $notification, $event->payload);
                     break;
                 case NotificationTemplate::TYPE_ALERT:
-                    $this->sendAlert($event->user, $notification);
+                    $this->sendAlert($event->user, $notification, $event->payload);
                     break;
             }
         }
@@ -49,18 +47,20 @@ class CommonEventListener
     /**
      * @param User $user
      * @param NotificationTemplate $notification
+     * @param array|null $payload
      */
-    private function sendEmail(User $user, NotificationTemplate $notification)
+    private function sendEmail(User $user, NotificationTemplate $notification, $payload)
     {
-        $user->notify(new MailNotification($notification));
+        $user->notify(new MailNotification($notification, $payload));
     }
 
     /**
      * @param User $user
      * @param NotificationTemplate $notification
+     * @param array|null $payload
      */
-    private function sendAlert(User $user, NotificationTemplate $notification)
+    private function sendAlert(User $user, NotificationTemplate $notification, $payload)
     {
-        $user->notify(new AlertNotification($notification));
+        $user->notify(new AlertNotification($notification, $payload));
     }
 }

@@ -95,7 +95,7 @@
                                         Стан нотифікації:
                                     </label>
                                     <div class="checkbox-custom checkbox-primarya mb5">
-                                        <input type="checkbox" id="active" name="active">
+                                        <input type="checkbox" id="active" name="active" checked>
                                         <label for="active">Активовано</label>
                                     </div>
                                 </div>

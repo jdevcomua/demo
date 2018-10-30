@@ -462,7 +462,7 @@ class InfoController extends Controller
     {
         $template = NotificationTemplate::findOrFail($id);
 
-        if (array_search($template->type, NotificationTemplate::getTypes(false)) === false) {
+        if (array_key_exists($template->type, NotificationTemplate::getTypes(false)) === false) {
             return redirect()->back();
         }
 
