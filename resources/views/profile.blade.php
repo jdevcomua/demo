@@ -127,6 +127,18 @@
                 </div>
             </div>
         </div>
+        <div class="cols-block footer">
+            <div class="cols-block-header">
+                <div class="block-title"></div>
+                <div class="block-sub-title"></div>
+            </div>
+            <div class="cols-block-content form">
+                <div class="form-buttons">
+                    <input class="btn btn-primary" type="submit" value="Зберегти">
+                    <a class="btn btn-cancel" href="" onclick="window.location.reload()">Скасувати</a>
+                </div>
+            </div>
+        </div>
         @if($auth->registrationAddress)
             <div class="cols-block">
                 <div class="cols-block-header">
@@ -209,17 +221,5 @@
                 </div>
             </div>
         @endif
-        <div class="cols-block footer">
-            <div class="cols-block-header">
-                <div class="block-title"></div>
-                <div class="block-sub-title"></div>
-            </div>
-            <div class="cols-block-content form">
-                <div class="form-buttons">
-                    <input class="btn btn-primary" type="submit" value="Зберегти">
-                    <a class="btn btn-cancel" href="" onclick="window.location.reload()">Скасувати</a>
-                </div>
-            </div>
-        </div>
     </form>
 @endsection
