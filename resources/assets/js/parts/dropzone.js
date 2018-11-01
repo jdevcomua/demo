@@ -118,7 +118,7 @@ $form.on('submit', function (e) {
             if (ajax.readyState === 4) {
                 var data;
                 try {
-                    data = JSON.parse(ajax.responseText+'sad');
+                    data = JSON.parse(ajax.responseText);
                 } catch (e) {}
                 if (ajax.status === 200) {
                     $form.removeClass('is-uploading');

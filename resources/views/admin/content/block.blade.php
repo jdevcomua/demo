@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="panel-body pn">
-                        <form action="{{route('admin.info.content.block.update', $block->id)}}" method="post">
+                        <form action="{{route('admin.content.block.update', $block->id)}}" method="post">
                             @csrf
                             <input type="hidden" name="_method" value="put">
                             <textarea name="body" class="summernote" style="display: none"

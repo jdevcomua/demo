@@ -22,6 +22,7 @@ require('selectize');
 require('./parts/admin/selectize');
 require('./parts/admin/datepicker');
 require('./parts/admin/datatable');
+require('./parts/admin/popup');
 
 
 $.ajaxSetup({

@@ -43,6 +43,7 @@
     <script src="/js/admin/jquery.dataTables.js"></script>
     <script src="/js/admin/dataTables.tableTools.min.js"></script>
     <script src="/js/admin/dataTables.bootstrap.js"></script>
+    <script src="/js/admin/jquery.magnific-popup.min.js"></script>
     @yield('scripts-end')
 </body>
 </html>

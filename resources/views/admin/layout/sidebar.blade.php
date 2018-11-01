@@ -51,11 +51,11 @@
                     </a>
                     <ul class="nav sub-nav">
                         <li{!! (strpos($curRoute, '.content.faq') !== false) ? ' class="active" ' : '' !!}>
-                            <a href="{{route('admin.info.content.faq.index')}}">
+                            <a href="{{route('admin.content.faq.index')}}">
                                 <span class="fa fa-question-circle"></span>Часті питання</a>
                         </li>
                         <li{!! (strpos($curRoute, '.content.block') !== false) ? ' class="active" ' : '' !!}>
-                            <a href="{{route('admin.info.content.block.index')}}">
+                            <a href="{{route('admin.content.block.index')}}">
                                 <span class="fa fa-info-circle"></span>Блоки
                             </a>
                         </li>

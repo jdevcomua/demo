@@ -63,8 +63,6 @@ Route::group([
         ->name('upload-file');
     Route::post('/file/{id}/remove', 'Admin\DataBasesController@animalRemoveFile')
         ->name('remove-file');
-
-
 });
 
 Route::group([
@@ -128,21 +126,32 @@ Route::group([
 
     Route::group([
         'prefix' => 'content',
-        'as' => 'info.content.'
+        'as' => 'content.'
     ], function () {
-        Route::get('faq', 'Admin\ContentController@faqIndex')
-            ->name('faq.index');
-        Route::get('faq/data', 'Admin\ContentController@faqData')
-            ->name('faq.data');
-        Route::post('faq', 'Admin\ContentController@faqStore')
-            ->name('faq.store');
-        Route::delete('faq/delete/{id?}', 'Admin\ContentController@faqDelete')
-            ->name('faq.delete');
 
-        Route::get('block', 'Admin\ContentController@blockIndex')
-            ->name('block.index');
-        Route::put('block/{id}/update', 'Admin\ContentController@blockUpdate')
-            ->name('block.update');
+        Route::group([
+            'prefix' => 'faq',
+            'as' => 'faq.',
+            'namespace' => 'Admin\Content'
+        ], function () {
+            Route::get('/', 'FaqController@index')->name('index');
+            Route::get('data', 'FaqController@data')->name('data');
+            Route::post('/', 'FaqController@store')->name('store');
+            Route::get('/{id}', 'FaqController@show')->name('show');
+            Route::put('/{id}', 'FaqController@update')->name('update');
+            Route::delete('/{id?}', 'FaqController@destroy')->name('delete');
+            Route::get('/move-up/{id?}', 'FaqController@moveUp')->name('move-up');
+            Route::get('/move-down/{id?}', 'FaqController@moveDown')->name('move-down');
+        });
+
+        Route::group([
+            'prefix' => 'block',
+            'as' => 'block.',
+            'namespace' => 'Admin\Content'
+        ], function () {
+            Route::get('/', 'BlockController@index')->name('index');
+            Route::put('{id}/update', 'BlockController@update')->name('update');
+        });
     });
 
 });

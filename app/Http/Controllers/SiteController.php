@@ -22,7 +22,7 @@ class SiteController extends Controller
         $faqs = Cache::tags('faq')
             ->remember('faq', 1000, function()
         {
-            return Faq::all();
+            return Faq::all()->sortBy('order');
         });
         return view('faq', [
             'questions' => $faqs
