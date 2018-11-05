@@ -38,6 +38,7 @@
     },
     "dependencies": {
         "bootstrap-datepicker": "^1.8.0",
-        "selectize": "^0.12.6"
+        "selectize": "^0.12.6",
+        "sass-loader": "^7.1.0"
     }
 }
