@@ -191,7 +191,7 @@
                 '{{ route('admin.content.faq.update', 'XXX') }}',
                 function (response) {
                     $('#edit-question').val(response.data.question);
-                    $('#edit-answer').text(response.data.answer);
+                    $('#edit-answer').val(response.data.answer);
                 },
                 function () {
                     dTable.ajax.reload();

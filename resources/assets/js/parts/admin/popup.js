@@ -15,7 +15,7 @@ popupEdit.init = function (urlGet, urlPut, beforeOpen, afterClose) {
 
     $('#modal-form-edit').submit(function (e) {
         e.preventDefault();
-        const data = _.object($("#modal-form-edit").serializeArray()
+        const data = _.fromPairs($("#modal-form-edit").serializeArray()
                 .map(function(v) {
                     return [v.name, v.value];
                 })
