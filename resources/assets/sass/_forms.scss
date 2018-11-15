@@ -59,13 +59,53 @@
       background-color: #0966af;
     }
   }
+  &.btn-dgrey {
+    background-color: #9b9b9b;
+    border-color: #9b9b9b;
+    color: #fff;
+    &:hover {
+      background-color: #868686;
+    }
+  }
+  &.btn-red {
+    background-color: #d0021b;
+    border-color: #d0021b;
+    color: #fff;
+    &:hover {
+      background-color: #ba0319;
+      border-color: #ba0319;
+    }
+  }
   &.btn-cancel:hover {
     color: #000;
+  }
+  &.btn-tbig {
+    font-size: 1.7rem;
+    padding: 0.9rem 5.1rem;
+  }
+  &.btn-i {
+    background-repeat: no-repeat;
+    background-size: 1.9rem;
+    padding-left: 7.5rem;
+    padding-right: 3rem;
+    background-position: 2.8rem 50%;
+    min-width: 18rem;
+    &.i-warn {
+      background-image: url('/img/icon/warn.png');
+    }
+    &.i-change {
+      background-image: url('/img/icon/change.png');
+    }
   }
 }
 .btn.focus, .btn:focus, textarea:focus {
   box-shadow: none;
   outline: none;
+}
+@media (max-width: 1000px) {
+  .btn.btn-tbig {
+    font-size: 1.4rem;
+  }
 }
 @media (max-width: 650px) {
   .btn {

@@ -81,5 +81,18 @@
                 @endforelse
             </div>
         </div>
+        <hr class="divider">
+        <div class="animal-actions">
+            <div class="animal-action">
+                <div class="action-title">Розшук</div>
+                <div class="action-description">Якщо ви втратили вашого улюбленця тисніть кнопку <i>Розшук</i> для того щоб швидше знайти його!</div>
+                <button class="btn btn-red btn-i i-warn btn-tbig">Розшук</button>
+            </div>
+            <div class="animal-action">
+                <div class="action-title">Зміна власника</div>
+                <div class="action-description">Якщо власник тварини змінився тисніть кнопку <i>Змінити власника</i> для того щоб повідомити про це нас</div>
+                <button class="btn btn-dgrey btn-i i-change btn-tbig">Змінити власника</button>
+            </div>
+        </div>
     </div>
 @endsection

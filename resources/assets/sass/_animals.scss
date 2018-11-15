@@ -669,3 +669,40 @@ $width: 100px;
 .cam-video {
   max-width: 100%;
 }
+
+
+.animal-actions {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  .animal-action {
+    width: 50%;
+    .action-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 1.2rem;
+    }
+    .action-description {
+      font-size: 14px;
+      line-height: 1.43;
+      color: #999999;
+      height: 7.5rem;
+      width: 23.7rem;
+    }
+  }
+}
+@media (max-width: 760px) {
+  .animal-actions .animal-action {
+    width: 100%;
+    margin-bottom: 4rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .action-description {
+      height: auto;
+      margin-bottom: 2rem;
+      width: 70%;
+    }
+  }
+}

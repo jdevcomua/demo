@@ -75,7 +75,7 @@
                 <hr>
                 <span>або</span>
             </div>
-            <a href="" class="btn btn-block btn-grey" id="animal-search" data-toggle="modal" data-target="#searchModal">Мою тварину вже <br> зареєстровано</a>
+            <a href="#" class="btn btn-block btn-grey" id="animal-search" data-toggle="modal" data-target="#searchModal">Мою тварину вже <br> зареєстровано</a>
             @if(false)
             <div class="line">
                 <hr>
