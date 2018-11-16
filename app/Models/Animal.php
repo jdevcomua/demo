@@ -153,4 +153,9 @@ class Animal extends Model
     {
         return LostAnimals::where(['found' => LostAnimals::FOUND_NO])->first();
     }
+
+    public function isLost(): bool
+    {
+        return !(bool)LostAnimals::where(['animal_id' => $this->id])->first()->found;
+    }
 }

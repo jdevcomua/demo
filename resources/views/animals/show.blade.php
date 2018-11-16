@@ -33,7 +33,9 @@
             </div>
             <div class="pet-info-block">
                 <span class="title">Статус</span>
-                @if($animal->verified)
+                @if($animal->isLost())
+                    <span class="content red">Загублено</span>
+                @elseif($animal->verified)
                     <span class="content green">Верифіковано</span>
                 @else
                     <span class="content red">Не верифіковано</span>
@@ -81,7 +83,6 @@
                 @endforelse
             </div>
         </div>
-        @if($animal->verified)
         <hr class="divider">
         <div class="animal-actions">
             @if($animal->lostRecord() === null || $animal->lostRecord()->found)
@@ -100,16 +101,63 @@
             <div class="animal-action">
                 <div class="action-title">Зміна власника</div>
                 <div class="action-description">Якщо власник тварини змінився тисніть кнопку <i>Змінити власника</i> для того щоб повідомити про це нас</div>
-                <button class="btn btn-dgrey btn-i i-change btn-tbig">Змінити власника</button>
+                <button class="btn btn-dgrey btn-i i-change btn-tbig" id="changeOwnerButton">Змінити власника</button>
             </div>
         </div>
-        @endif
     </div>
 
     <form id="lostAnimalSearch" action="{{route('animals.lost')}}" method="post">
         @csrf
         <input type="hidden" name="animal_id" value="{{$animal->id}}">
     </form>
+
+    <div class="modal fade" id="requestChangeOwner" tabindex="-2" role="dialog" aria-labelledby="requestChangeOwnerLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>ЗАПИТ НА ЗМІНУ ВЛАСНИКА</h3>
+                            <p>Після обробки вашого запиту ми надішлемо вам лист на пошту з результатами</p>
+                        </div>
+                        <div class="col-md-12">
+                            <form class="search-request" action="{{route('animals.change-owner')}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="animal_id" value="{{$animal->id}}">
+                                <div class="form-group">
+                                    <div class="validation-error alert alert-danger hidden"></div>
+                                    <label for="full_name">ПІБ нового власника <span class="required-field">*</span></label>
+                                    <input type="text" class="form-control" id="full_name" name="full_name" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="validation-error alert alert-danger hidden"></div>
+                                            <label for="passport">Номер паспорту нового власника <span class="required-field">*</span></label>
+                                            <input type="text" class="form-control" id="passport" name="passport" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="validation-error alert alert-danger hidden"></div>
+                                            <label for="contact_phone">Контактний номер телефону <span class="required-field">*</span></label>
+                                            <input type="text" class="form-control" id="contact_phone" name="contact_phone" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Відправити</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts-end')
@@ -117,6 +165,10 @@
         $('.lost_animal-btn').on('click', function () {
             var form = $('#lostAnimalSearch');
             form.submit();
+        });
+
+        $('#changeOwnerButton').on('click', function () {
+            $('#requestChangeOwner').modal('show');
         });
     </script>
 @endsection
