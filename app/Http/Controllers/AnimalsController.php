@@ -355,15 +355,21 @@ class AnimalsController extends Controller
 
     public function lost(Request $request)
     {
-        $animalId = $request->only(['animal_id']);
+        $animalId = $request->only(['animal_id'])['animal_id'];
 
         $lastRecordId = LostAnimals::where(['animal_id' => $animalId])->max('id');
 
-        $lastRecord = LostAnimals::find($lastRecordId);
+        if ($lastRecordId !== null) {
+            $lostAnimal = LostAnimals::find($lastRecordId);
+            $lostAnimal->found = ($lostAnimal->found === 1) ? 0 : 1;
 
-        $lastRecord->found = ($lastRecord->found === 1) ? 0 : 1;
+        } else {
+            $lostAnimal = new LostAnimals;
+            $lostAnimal->found = 0;
+            $lostAnimal->animal_id = $animalId;
+        }
 
-        $lastRecord->save();
+        $lostAnimal->save();
 
         return back();
     }

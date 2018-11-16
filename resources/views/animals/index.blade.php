@@ -32,7 +32,9 @@
                         </div>
                         <div class="pet-info-block">
                             <span class="title">Статус</span>
-                            @if($pet->verified)
+                            @if($pet->isLost())
+                                <span class="content red">Загублено</span>
+                            @elseif($pet->verified)
                                 <span class="content green">Верифіковано</span>
                             @else
                                 <span class="content red">Не верифіковано</span>

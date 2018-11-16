@@ -156,6 +156,6 @@ class Animal extends Model
 
     public function isLost(): bool
     {
-        return !(bool)LostAnimals::where(['animal_id' => $this->id])->first()->found;
+        return ($this->lostRecord()) ?  !(bool)LostAnimals::where(['animal_id' => $this->id])->first()->found : false;
     }
 }
