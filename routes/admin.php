@@ -63,6 +63,10 @@ Route::group([
         ->name('upload-file');
     Route::post('/file/{id}/remove', 'Admin\DataBasesController@animalRemoveFile')
         ->name('remove-file');
+    Route::get('lost/data/', 'Admin\DataBasesController@lostAnimalsData')
+        ->name('lost.data');
+    Route::get('lost', 'Admin\DataBasesController@lostAnimals')
+        ->name('lost.index');
 });
 
 Route::group([

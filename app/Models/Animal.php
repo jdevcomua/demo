@@ -148,4 +148,9 @@ class Animal extends Model
     public function userThatRequest () {
         return $this->belongsTo(User::class, 'request_user_id');
     }
+
+    public function lostRecord(): ?LostAnimals
+    {
+        return LostAnimals::where(['found' => LostAnimals::FOUND_NO])->first();
+    }
 }

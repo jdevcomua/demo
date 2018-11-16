@@ -7,6 +7,7 @@ use App\Helpers\DataTables;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\Log;
+use App\Models\LostAnimals;
 use App\Models\Role;
 use App\Models\Species;
 use App\Models\UserAddress;
@@ -609,5 +610,29 @@ class DataBasesController extends Controller
             'species' => Species::get(),
             'user' => $user
         ]);
+    }
+
+    public function lostAnimals()
+    {
+        return view('admin.db.animals_lost');
+    }
+
+    public function lostAnimalsData(Request $request)
+    {
+        $model = new LostAnimals();
+
+        $query = $model->newQuery()
+            ->leftJoin('animals', 'animals.id', '=', 'lost_animals.animal_id')
+            ->groupBy('id');
+
+        $aliases = [
+            'nickname' => '`animals`.nickname',
+        ];
+
+        $response = DataTables::provide($request, $model, $query, $aliases);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
     }
 }

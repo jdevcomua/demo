@@ -9,6 +9,7 @@ use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\AnimalsRequest;
 use App\Models\Log;
+use App\Models\LostAnimals;
 use App\Services\FilesService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -350,5 +351,20 @@ class AnimalsController extends Controller
         }
 
         return redirect()->route('animals.show', $animal->id);
+    }
+
+    public function lost(Request $request)
+    {
+        $animalId = $request->only(['animal_id']);
+
+        $lastRecordId = LostAnimals::where(['animal_id' => $animalId])->max('id');
+
+        $lastRecord = LostAnimals::find($lastRecordId);
+
+        $lastRecord->found = ($lastRecord->found === 1) ? 0 : 1;
+
+        $lastRecord->save();
+
+        return back();
     }
 }

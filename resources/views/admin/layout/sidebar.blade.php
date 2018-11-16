@@ -96,16 +96,31 @@
                     </li>
                 @endpermission
             @endpermission
-            <li{!! (strpos($curRoute, 'admin.administrating.requests') !== false) ? ' class="active" ' : '' !!}>
-                <a href="{{ route('admin.administrating.requests') }}">
-                    <span class="fa fa-question-circle"></span>
+            <li{!! (strpos($curRoute, '.animals.') || strpos($curRoute, '.administrating.')) ? ' class="active" ' : '' !!}>
+                <a class="accordion-toggle {!! (strpos($curRoute, '.animals.') || strpos($curRoute, '.administrating.'))
+                            ? 'menu-open' : '' !!}" href="#">
+                    <span class="fa fa-file-text"></span>
                     <span class="sidebar-title">Запити</span>
-                    @if($hasNewRequests)
-                        <span class="sidebar-title-tray">
+                    <span class="caret"></span>
+                </a>
+                <ul class="nav sub-nav">
+                    <li{!! (strpos($curRoute, 'admin.administrating.requests') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{ route('admin.administrating.requests') }}">
+                            <span class="fa fa-question-circle"></span>
+                            <span class="sidebar-title">Запити на власництво</span>
+                            @if($hasNewRequests)
+                                <span class="sidebar-title-tray">
                             <span class="label label-xs bg-danger">New</span>
                         </span>
-                    @endif
-                </a>
+                            @endif
+                        </a>
+                    </li>
+                    <li{!! (strpos($curRoute, 'admin.db.animals.lost.index') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.db.animals.lost.index')}}">
+                            <span class="fa fa-info-circle"></span>Загублені тварини
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>

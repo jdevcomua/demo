@@ -81,18 +81,42 @@
                 @endforelse
             </div>
         </div>
+        @if($animal->verified)
         <hr class="divider">
         <div class="animal-actions">
+            @if($animal->lostRecord() === null || $animal->lostRecord()->found)
             <div class="animal-action">
                 <div class="action-title">Розшук</div>
                 <div class="action-description">Якщо ви втратили вашого улюбленця тисніть кнопку <i>Розшук</i> для того щоб швидше знайти його!</div>
-                <button class="btn btn-red btn-i i-warn btn-tbig">Розшук</button>
+                <button class="btn btn-red btn-i i-warn btn-tbig lost_animal-btn" >Розшук</button>
             </div>
+            @else
+                <div class="animal-action">
+                    <div class="action-title">Тварину знайдено</div>
+                    <div class="action-description">Якщо ви знайшли вашого улюбленця тисніть кнопку <i>Тварину знайдено</i>!</div>
+                    <button class="btn btn-primary btn-i i-ok btn-tbig lost_animal-btn" >Тварину знайдено</button>
+                </div>
+            @endif
             <div class="animal-action">
                 <div class="action-title">Зміна власника</div>
                 <div class="action-description">Якщо власник тварини змінився тисніть кнопку <i>Змінити власника</i> для того щоб повідомити про це нас</div>
                 <button class="btn btn-dgrey btn-i i-change btn-tbig">Змінити власника</button>
             </div>
         </div>
+        @endif
     </div>
+
+    <form id="lostAnimalSearch" action="{{route('animals.lost')}}" method="post">
+        @csrf
+        <input type="hidden" name="animal_id" value="{{$animal->id}}">
+    </form>
+@endsection
+
+@section('scripts-end')
+    <script>
+        $('.lost_animal-btn').on('click', function () {
+            var form = $('#lostAnimalSearch');
+            form.submit();
+        });
+    </script>
 @endsection
