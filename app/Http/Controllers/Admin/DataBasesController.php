@@ -7,7 +7,6 @@ use App\Helpers\DataTables;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\Log;
-use App\Models\LostAnimals;
 use App\Models\Role;
 use App\Models\Species;
 use App\Models\UserAddress;
