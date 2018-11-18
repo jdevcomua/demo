@@ -59,7 +59,7 @@
         jQuery(document).ready(function() {
 
             dataTableInit($('#datatable'), {
-                ajax: '{{ route('admin.db.animals.lost.data', null, false) }}',
+                ajax: '{{ route('admin.administrating.requests.lost.data', null, false) }}',
                 columns: [
                     { "data": "id"},
                     {

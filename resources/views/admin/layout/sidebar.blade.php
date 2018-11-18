@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li{!! (strpos($curRoute, '.content.') !== false) ? ' class="active" ' : '' !!}>
-                <a class="accordion-toggle {!! (strpos($curRoute, '.content.') !== false)
+                    <a class="accordion-toggle {!! (strpos($curRoute, '.content.') !== false)
                             ? 'menu-open' : '' !!}" href="#">
                         <span class="fa fa-file-text"></span>
                         <span class="sidebar-title">Контент</span>
@@ -96,27 +96,26 @@
                     </li>
                 @endpermission
             @endpermission
-            <li{!! (strpos($curRoute, '.animals.') || strpos($curRoute, '.administrating.')) ? ' class="active" ' : '' !!}>
-                <a class="accordion-toggle {!! (strpos($curRoute, '.animals.') || strpos($curRoute, '.administrating.'))
+            <li{!! (strpos($curRoute, 'administrating.requests') !== false) ? ' class="active" ' : '' !!}>
+                <a class="accordion-toggle {!! (strpos($curRoute, 'administrating.requests'))
                             ? 'menu-open' : '' !!}" href="#">
                     <span class="fa fa-file-text"></span>
                     <span class="sidebar-title">Запити</span>
                     <span class="caret"></span>
                 </a>
                 <ul class="nav sub-nav">
-                    <li{!! (strpos($curRoute, 'admin.administrating.requests') !== false) ? ' class="active" ' : '' !!}>
-                        <a href="{{ route('admin.administrating.requests') }}">
-                            <span class="fa fa-question-circle"></span>
-                            <span class="sidebar-title">Запити на власництво</span>
+                    <li{!! (strpos($curRoute, 'requests.own') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{ route('admin.administrating.requests.own.index') }}">
+                            <span class="fa fa-question-circle"></span>Запити на власництво
                             @if($hasNewRequests)
                                 <span class="sidebar-title-tray">
-                            <span class="label label-xs bg-danger">New</span>
-                        </span>
+                                    <span class="label label-xs bg-danger">!</span>
+                                </span>
                             @endif
                         </a>
                     </li>
-                    <li{!! (strpos($curRoute, 'admin.db.animals.lost.index') !== false) ? ' class="active" ' : '' !!}>
-                        <a href="{{route('admin.db.animals.lost.index')}}">
+                    <li{!! (strpos($curRoute, 'requests.lost') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.administrating.requests.lost.index')}}">
                             <span class="fa fa-info-circle"></span>Загублені тварини
                         </a>
                     </li>

@@ -95,7 +95,7 @@
         jQuery(document).ready(function() {
 
             dataTableInit($('#datatable'), {
-                ajax: '{{ route('admin.administrating.requests.data') }}',
+                ajax: '{{ route('admin.administrating.requests.own.data') }}',
                 order: [[ 13, "desc" ]], // def. sort by created_at DESC
                 createdRow: function( row, data, dataIndex) {
                     if(data.processed){
@@ -155,16 +155,16 @@
                             if (data) {
                                 return "<i class=\"fa fa-check pr10\" aria-hidden=\"true\"></i>";
                             } else if(row.animal_id) {
-                                return "<a href=\"{{ route('admin.administrating.requests.accept') }}/"
+                                return "<a href=\"{{ route('admin.administrating.requests.own.accept') }}/"
                                     + row.id + "\" data-toggle='tooltip' title=\"Прийняти!\">" +
                                     "<i class=\"fa fa-check pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>" +
-                                    "<a href=\"{{ route('admin.administrating.requests.decline') }}/"
+                                    "<a href=\"{{ route('admin.administrating.requests.own.decline') }}/"
                                     + row.id + "\" data-toggle='tooltip' title=\"Відмінити!\">" +
                                     "<i class=\"fa fa-ban pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>";
                             } else if(!row.animal_id) {
-                                return "<a href=\"{{ route('admin.administrating.requests.proceed') }}/"
+                                return "<a href=\"{{ route('admin.administrating.requests.own.proceed') }}/"
                                     + row.id + "\" data-toggle='tooltip' title=\"Опрацьовано!\">" +
                                     "<i class=\"fa fa-check pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>"

@@ -63,10 +63,6 @@ Route::group([
         ->name('upload-file');
     Route::post('/file/{id}/remove', 'Admin\DataBasesController@animalRemoveFile')
         ->name('remove-file');
-    Route::get('lost/data/', 'Admin\DataBasesController@lostAnimalsData')
-        ->name('lost.data');
-    Route::get('lost', 'Admin\DataBasesController@lostAnimals')
-        ->name('lost.index');
 });
 
 Route::group([
@@ -190,16 +186,39 @@ Route::group([
             ->name('banned.data');
 
     });
-    Route::get('requests', 'Admin\AdministratingController@animalsRequests')
-        ->name('requests');
-    Route::get('requests/data', 'Admin\AdministratingController@animalsRequestsData')
-        ->name('requests.data');
-    Route::get('requests/accept/{id?}', 'Admin\AdministratingController@confirmAnimalsRequest')
-        ->name('requests.accept');
-    Route::get('requests/decline/{id?}', 'Admin\AdministratingController@cancelAnimalsRequest')
-        ->name('requests.decline');
-    Route::get('requests/proceed/{id?}', 'Admin\AdministratingController@proceedAnimalsRequest')
-        ->name('requests.proceed');
+
+    Route::group([
+        'prefix' => 'requests',
+        'as' => 'requests.'
+    ], function () {
+
+        Route::group([
+            'prefix' => 'own',
+            'as' => 'own.'
+        ], function () {
+            Route::get('/', 'Admin\Requests\OwnRequestsController@index')
+                ->name('index');
+            Route::get('/data', 'Admin\Requests\OwnRequestsController@data')
+                ->name('data');
+            Route::get('/accept/{id?}', 'Admin\Requests\OwnRequestsController@confirm')
+                ->name('accept');
+            Route::get('/decline/{id?}', 'Admin\Requests\OwnRequestsController@cancel')
+                ->name('decline');
+            Route::get('/proceed/{id?}', 'Admin\Requests\OwnRequestsController@proceed')
+                ->name('proceed');
+        });
+
+        Route::group([
+            'prefix' => 'lost',
+            'as' => 'lost.'
+        ], function () {
+            Route::get('/', 'Admin\Requests\LostRequestsController@index')
+                ->name('index');
+            Route::get('data', 'Admin\Requests\LostRequestsController@data')
+                ->name('data');
+        });
+
+    });
 
 });
 

@@ -218,3 +218,9 @@ textarea#bodyText {
 .popup-basic {
   max-width: 700px;
 }
+
+//Fix 'new' label on requests
+.sub-nav .sidebar-title-tray {
+    line-height: 35px;
+    top: 4px !important;
+}
