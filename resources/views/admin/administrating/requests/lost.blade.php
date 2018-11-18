@@ -63,11 +63,13 @@
                 columns: [
                     { "data": "id"},
                     {
-                        "data": "animal_id",
+                        "data": "id",
                         defaultContent: '',
                         orderable: false,
                         render: function ( data, type, row ) {
-                            return "<a href='/admin/animals/edit/" + data + "'>" + row['nickname'] + "</a>";
+                            return "<a href=\"{{ route('admin.db.animals.edit') }}/"
+                                + row.animal_id + "\">" + row.nickname +
+                                "</a>";
                         }
                     },
                     {

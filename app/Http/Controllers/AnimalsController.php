@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\AnimalFormRequestSent;
-use App\Helpers\Date;
 use App\Events\AnimalAdded;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\AnimalsRequest;
 use App\Models\Log;
-use App\Models\LostAnimals;
 use App\Services\FilesService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -353,24 +351,21 @@ class AnimalsController extends Controller
         return redirect()->route('animals.show', $animal->id);
     }
 
-    public function lost(Request $request)
+    /**
+     * @param Animal $animal
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function lost(Animal $animal)
     {
-        $animalId = $request->only(['animal_id'])['animal_id'];
+        $lost = $animal->lost;
 
-        $lastRecordId = LostAnimals::where(['animal_id' => $animalId])->max('id');
-
-        if ($lastRecordId !== null) {
-            $lostAnimal = LostAnimals::find($lastRecordId);
-            $lostAnimal->found = ($lostAnimal->found === 1) ? 0 : 1;
-
+        if ($lost) {
+            $lost->found = !$lost->found;
+            $lost->save();
         } else {
-            $lostAnimal = new LostAnimals;
-            $lostAnimal->found = 0;
-            $lostAnimal->animal_id = $animalId;
+            $animal->lost()->create();
         }
 
-        $lostAnimal->save();
-
-        return back();
+        return redirect()->back();
     }
 }

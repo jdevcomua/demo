@@ -15,27 +15,33 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $color_id
  * @property int $fur_id
  * @property int $gender
- * @property \Carbon\Carbon $birthday
+ * @property \Illuminate\Support\Carbon $birthday
  * @property int $sterilized
- * @property int $user_id
+ * @property int|null $user_id
  * @property int $verified
  * @property string|null $comment
  * @property string|null $number
- * @property string|null $badge
  * @property int|null $confirm_user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $badge
  * @property int|null $request_user_id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Models\Breed $breed
  * @property-read \App\Models\Color $color
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $documents
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $files
  * @property-read \App\Models\Fur $fur
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $images
+ * @property-read mixed $documents
+ * @property-read mixed $images
+ * @property-read mixed $verification
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
+ * @property-read \App\Models\LostAnimal $lost
  * @property-read \App\Models\Species $species
- * @property-read \App\User $user
- * @property-read \App\User|null $userThatConfirmed
+ * @property-read \App\User|null $user
  * @property-read \App\User|null $userThatRequest
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBadge($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBreedId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereColorId($value)
@@ -47,16 +53,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNickname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereRequestUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereSpeciesId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereSterilized($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereVerified($value)
  * @mixin \Eloquent
- * @property-read mixed $verification
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBadge($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereRequestUserId($value)
  */
 class Animal extends Model
 {
@@ -145,17 +148,13 @@ class Animal extends Model
         return $this->attributes['_verification'];
     }
 
-    public function userThatRequest () {
+    public function userThatRequest()
+    {
         return $this->belongsTo(User::class, 'request_user_id');
     }
 
-    public function lostRecord(): ?LostAnimals
+    public function lost()
     {
-        return LostAnimals::where(['found' => LostAnimals::FOUND_NO])->first();
-    }
-
-    public function isLost(): bool
-    {
-        return ($this->lostRecord()) ?  !(bool)LostAnimals::where(['animal_id' => $this->id])->first()->found : false;
+        return $this->hasOne(LostAnimal::class);
     }
 }

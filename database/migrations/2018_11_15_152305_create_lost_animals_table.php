@@ -16,7 +16,7 @@ class CreateLostAnimalsTable extends Migration
         Schema::create('lost_animals', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('animal_id');
-            $table->tinyInteger('found')->default(0);
+            $table->boolean('found')->default(false);
             $table->timestamps();
 
             $table->foreign('animal_id')

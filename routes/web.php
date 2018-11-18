@@ -27,7 +27,7 @@ Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () 
         Route::view('/animals/scan', 'animals.scan')->name('animals.scan');
         Route::post('/animals/search', 'AnimalsController@search')->name('animals.search');
 
-        Route::post('/animals/lost', 'AnimalsController@lost')->name('animals.lost');
+        Route::post('{animal}/lost', 'AnimalsController@lost')->name('animals.lost');
 
         Route::post('/animals/change-owner', 'AnimalsController@changeOwner')->name('animals.change-owner');
 

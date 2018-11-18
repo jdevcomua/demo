@@ -33,7 +33,7 @@
             </div>
             <div class="pet-info-block">
                 <span class="title">Статус</span>
-                @if($animal->isLost())
+                @if($animal->lost && !$animal->lost->found)
                     <span class="content red">Загублено</span>
                 @elseif($animal->verified)
                     <span class="content green">Верифіковано</span>
@@ -85,17 +85,17 @@
         </div>
         <hr class="divider">
         <div class="animal-actions">
-            @if($animal->lostRecord() === null || $animal->lostRecord()->found)
-            <div class="animal-action">
-                <div class="action-title">Розшук</div>
-                <div class="action-description">Якщо ви втратили вашого улюбленця тисніть кнопку <i>Розшук</i> для того щоб швидше знайти його!</div>
-                <button class="btn btn-red btn-i i-warn btn-tbig lost_animal-btn" >Розшук</button>
-            </div>
-            @else
+            @if($animal->lost && !$animal->lost->found)
                 <div class="animal-action">
                     <div class="action-title">Тварину знайдено</div>
                     <div class="action-description">Якщо ви знайшли вашого улюбленця тисніть кнопку <i>Тварину знайдено</i>!</div>
                     <button class="btn btn-primary btn-i i-ok btn-tbig lost_animal-btn" >Тварину знайдено</button>
+                </div>
+            @else
+                <div class="animal-action">
+                    <div class="action-title">Розшук</div>
+                    <div class="action-description">Якщо ви втратили вашого улюбленця тисніть кнопку <i>Розшук</i> для того щоб швидше знайти його!</div>
+                    <button class="btn btn-red btn-i i-warn btn-tbig lost_animal-btn" >Розшук</button>
                 </div>
             @endif
             <div class="animal-action">
@@ -106,9 +106,8 @@
         </div>
     </div>
 
-    <form id="lostAnimalSearch" action="{{route('animals.lost')}}" method="post">
+    <form id="lostAnimalSearch" action="{{route('animals.lost', $animal->id)}}" method="post">
         @csrf
-        <input type="hidden" name="animal_id" value="{{$animal->id}}">
     </form>
 
     <div class="modal fade" id="requestChangeOwner" tabindex="-2" role="dialog" aria-labelledby="requestChangeOwnerLabel" aria-hidden="true">
