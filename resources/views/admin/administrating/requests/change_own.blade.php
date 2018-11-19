@@ -4,7 +4,7 @@
     <!-- Start: Topbar -->
     <header id="topbar">
         <div class="topbar-left">
-            <span>Загублені тварини</span>
+            <span>Зміна власника</span>
         </div>
     </header>
     <!-- End: Topbar -->
@@ -17,29 +17,34 @@
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <span class="glyphicon glyphicon-tasks"></span>Загублені тварини</div>
+                                <span class="glyphicon glyphicon-tasks"></span>Список запитів на зміну власника</div>
                         </div>
                         <div class="panel-body pn">
+                            @if (\Session::has('success_user'))
+                                <div class="alert alert-success alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-check pr10"></i>
+                                    {{ \Session::get('success_user') }}
+                                </div>
+                            @endif
                             <table class="table table-striped table-hover display datatable responsive nowrap"
                                    id="datatable" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Тварина</th>
-                                    <th>Тварину знайдено</th>
+                                    <th>ПІБ нового власника</th>
+                                    <th># Паспорта</th>
+                                    <th>Контактний номер тел.</th>
                                     <th>Дії</th>
                                     <th>Створено</th>
                                 </tr>
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th class="select">
-                                        <select>
-                                            <option selected value>---</option>
-                                            <option value="1">Так</option>
-                                            <option value="0">Ні</option>
-                                        </select>
-                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                     <th class="no-search"></th>
                                     <th></th>
                                 </tr>
@@ -53,6 +58,9 @@
 
             </div>
 
+        <form action="#" method="post" class="hidden" id="remove">
+            @csrf
+        </form>
     </section>
 @endsection
 
@@ -61,32 +69,27 @@
         jQuery(document).ready(function() {
 
             dataTableInit($('#datatable'), {
-                ajax: '{{ route('admin.administrating.requests.lost.data', null, false) }}',
+                ajax: '{{ route('admin.administrating.requests.change-own.data') }}',
+                order: [[ 6, "desc" ]], // def. sort by created_at DESC
                 createdRow: function( row, data, dataIndex) {
                     if(data.processed){
                         $(row).addClass('processed');
                     }
                 },
                 columns: [
-                    { "data": "id"},
-                    {
-                        "data": "id",
-                        defaultContent: '',
-                        orderable: false,
+                    { "data": "id" },
+                    { "data": "nickname",
                         render: function ( data, type, row ) {
-                            return "<a href=\"{{ route('admin.db.animals.edit') }}/"
-                                + row.animal_id + "\">" + row.nickname +
-                                "</a>";
-                        }
-                    },
-                    {
-                        "data": "found",
-                        defaultContent: '',
-                        orderable: false,
-                        render: function ( data, type, row ) {
-                            return data ? 'Так' : 'Ні';
-                        }
-                    },
+                            if (data) {
+                                return "<a href=\"{{ route('admin.db.animals.edit') }}/"
+                                    + row.animal_id + "\">" + data +
+                                    "</a>";
+                            }
+                            return '';
+                        }},
+                    { "data": "full_name" },
+                    { "data": "passport" },
+                    { "data": "contact_phone" },
                     {
                         "data": "processed",
                         defaultContent: '',
@@ -95,7 +98,7 @@
                             if (data) {
                                 return "<i class=\"fa fa-check pr10\" aria-hidden=\"true\"></i>";
                             } else  {
-                                return "<a href=\"{{ route('admin.administrating.requests.lost.proceed') }}/"
+                                return "<a href=\"{{ route('admin.administrating.requests.change-own.proceed') }}/"
                                     + row.id + "\" data-toggle='tooltip' title=\"Опрацьовано!\">" +
                                     "<i class=\"fa fa-check pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>"
@@ -105,7 +108,6 @@
                     { "data": "created_at" },
                 ],
             });
-
         });
     </script>
 @endsection

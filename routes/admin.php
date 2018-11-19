@@ -216,6 +216,20 @@ Route::group([
                 ->name('index');
             Route::get('data', 'Admin\Requests\LostRequestsController@data')
                 ->name('data');
+            Route::get('/proceed/{id?}', 'Admin\Requests\LostRequestsController@proceed')
+                ->name('proceed');
+        });
+
+        Route::group([
+            'prefix' => 'change-own',
+            'as' => 'change-own.'
+        ], function () {
+            Route::get('/', 'Admin\Requests\ChangeOwnRequestsController@index')
+                ->name('index');
+            Route::get('data', 'Admin\Requests\ChangeOwnRequestsController@data')
+                ->name('data');
+            Route::get('/proceed/{id?}', 'Admin\Requests\ChangeOwnRequestsController@proceed')
+                ->name('proceed');
         });
 
     });

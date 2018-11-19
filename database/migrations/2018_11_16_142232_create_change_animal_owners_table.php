@@ -15,17 +15,12 @@ class CreateChangeAnimalOwnersTable extends Migration
     {
         Schema::create('change_animal_owners', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('animals_requests_id');
+            $table->boolean('processed')->default(0);
             $table->unsignedInteger('animal_id');
             $table->string('passport', 15);
             $table->string('full_name', 256);
             $table->string('contact_phone', 20);
             $table->timestamps();
-
-            $table->foreign('animals_requests_id')
-                ->references('id')
-                ->on('animals_requests')
-                ->onDelete('cascade');
 
             $table->foreign('animal_id')
                 ->references('id')

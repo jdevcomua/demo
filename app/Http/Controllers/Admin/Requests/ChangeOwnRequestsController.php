@@ -3,28 +3,29 @@
 namespace App\Http\Controllers\Admin\Requests;
 
 use App\Helpers\DataTables;
-use App\Models\LostAnimal;
+use App\Models\ChangeAnimalOwner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class LostRequestsController extends Controller
+class ChangeOwnRequestsController extends Controller
 {
 
     public function index()
     {
-        return view('admin.administrating.requests.lost');
+        return view('admin.administrating.requests.change_own');
     }
+
 
     public function data(Request $request)
     {
-        $model = new LostAnimal();
+        $model = new ChangeAnimalOwner();
 
         $query = $model->newQuery()
-            ->leftJoin('animals', 'animals.id', '=', 'lost_animals.animal_id')
-            ->groupBy('id');
+            ->leftJoin('animals', 'change_animal_owners.animal_id', '=', 'animals.id')
+            ->groupBy('change_animal_owners.id');
 
         $aliases = [
-            'nickname' => '`animals`.nickname',
+            'nickname' => 'animals.nickname'
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);
@@ -36,7 +37,7 @@ class LostRequestsController extends Controller
 
     public function proceed($id)
     {
-        $animalRequest = LostAnimal::findOrFail($id);
+        $animalRequest = ChangeAnimalOwner::findOrFail($id);
         $animalRequest->processed = 1;
         $animalRequest->save();
 

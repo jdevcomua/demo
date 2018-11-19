@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
 class LostAnimal extends Model
 {
 
-    protected $fillable = ['id', 'found', 'created_at', 'animal_id'];
+    protected $fillable = ['id', 'found', 'created_at', 'animal_id', 'processed'];
 
     protected $casts = [
         'found' => 'boolean',

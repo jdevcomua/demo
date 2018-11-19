@@ -157,4 +157,9 @@ class Animal extends Model
     {
         return $this->hasOne(LostAnimal::class);
     }
+
+    public function changeOwner()
+    {
+        return $this->hasOne(ChangeAnimalOwner::class);
+    }
 }

@@ -102,12 +102,17 @@
                     <span class="fa fa-file-text"></span>
                     <span class="sidebar-title">Запити</span>
                     <span class="caret"></span>
+                    @if($hasNewRequestsLost || $hasNewRequestsOwn || $hasNewRequestsChangeOwn)
+                        <span class="sidebar-title-tray">
+                                    <span class="label label-xs bg-danger">!</span>
+                                </span>
+                    @endif
                 </a>
                 <ul class="nav sub-nav">
                     <li{!! (strpos($curRoute, 'requests.own') !== false) ? ' class="active" ' : '' !!}>
                         <a href="{{ route('admin.administrating.requests.own.index') }}">
                             <span class="fa fa-question-circle"></span>Запити на власництво
-                            @if($hasNewRequests)
+                            @if($hasNewRequestsOwn)
                                 <span class="sidebar-title-tray">
                                     <span class="label label-xs bg-danger">!</span>
                                 </span>
@@ -117,6 +122,22 @@
                     <li{!! (strpos($curRoute, 'requests.lost') !== false) ? ' class="active" ' : '' !!}>
                         <a href="{{route('admin.administrating.requests.lost.index')}}">
                             <span class="fa fa-info-circle"></span>Загублені тварини
+                            @if($hasNewRequestsLost)
+                                <span class="sidebar-title-tray">
+                                    <span class="label label-xs bg-danger">!</span>
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+
+                    <li{!! (strpos($curRoute, 'requests.change-own') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.administrating.requests.change-own.index')}}">
+                            <span class="fa fa-info-circle"></span>Зміна власника
+                            @if($hasNewRequestsChangeOwn)
+                                <span class="sidebar-title-tray">
+                                    <span class="label label-xs bg-danger">!</span>
+                                </span>
+                            @endif
                         </a>
                     </li>
                 </ul>

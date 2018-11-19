@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\AnimalsRequest;
+use App\Models\ChangeAnimalOwner;
+use App\Models\LostAnimal;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use View;
@@ -23,7 +25,9 @@ class ViewComposerProvider extends ServiceProvider
 
         View::composer('admin.layout.app', function ($view) use ($request) {
             $view->with([
-                'hasNewRequests' => $this->hasNewRequests($request)
+                'hasNewRequestsOwn' => $this->hasNewRequestsOwn($request),
+                'hasNewRequestsLost' => $this->hasNewRequestsLost($request),
+                'hasNewRequestsChangeOwn' => $this->hasNewRequestsChangeOwn($request),
             ]);
         });
     }
@@ -41,12 +45,27 @@ class ViewComposerProvider extends ServiceProvider
     /**
      * @param Request $request
      */
-    private function hasNewRequests(Request $request)
+    private function hasNewRequestsOwn(Request $request)
+    {
+         return $this->hasNewRequestsCommon($request, AnimalsRequest::class);
+    }
+
+    private function hasNewRequestsLost(Request $request)
+    {
+        return $this->hasNewRequestsCommon($request, LostAnimal::class);
+    }
+
+    private function hasNewRequestsChangeOwn(Request $request)
+    {
+        return $this->hasNewRequestsCommon($request, ChangeAnimalOwner::class);
+    }
+
+    private function hasNewRequestsCommon(Request $request, $modelClassName)
     {
         $route = $request->getRequestUri();
         if ($route) {
             if (strpos($route, '/data') === false) { // Ignoring data routes
-                return (AnimalsRequest::where('processed', 0)->count() == true);
+                return ($modelClassName::where('processed', 0)->count() == true);
             }
         }
         return false;

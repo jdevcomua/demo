@@ -7,6 +7,7 @@ use App\Events\AnimalAdded;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\AnimalsRequest;
+use App\Models\ChangeAnimalOwner;
 use App\Models\Log;
 use App\Services\FilesService;
 use Carbon\Carbon;
@@ -367,5 +368,19 @@ class AnimalsController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function changeOwner(Request $request)
+    {
+        $request->validate([
+            'full_name' => 'required',
+            'passport' => 'required',
+            'contact_phone' => 'required'
+        ]);
+
+        ChangeAnimalOwner::create($request->all());
+
+        return back()
+            ->with('success_request', 'Запит було створено успішно');
     }
 }
