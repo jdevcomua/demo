@@ -244,6 +244,28 @@
                         </form>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="panel panel-visible" id="spy5">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <span class="glyphicon glyphicon-tasks"></span>Тварину загублено</div>
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label">Статус:</label>
+                                    <div class="col-xs-8">
+                                        @if(!$animal->lost->found)
+                                            <label class="control-label text-danger">Так</label>
+                                        @else
+                                            <label class="control-label text-success">Ні</label>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
