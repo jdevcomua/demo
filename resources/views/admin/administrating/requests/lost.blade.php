@@ -70,12 +70,12 @@
                 columns: [
                     { "data": "id"},
                     {
-                        "data": "id",
+                        "data": "nickname",
                         defaultContent: '',
                         orderable: false,
                         render: function ( data, type, row ) {
                             return "<a href=\"{{ route('admin.db.animals.edit') }}/"
-                                + row.animal_id + "\">" + row.nickname +
+                                + row.animal_id + "\">" + data +
                                 "</a>";
                         }
                     },
