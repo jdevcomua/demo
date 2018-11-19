@@ -255,7 +255,7 @@
                                 <div class="form-group">
                                     <label class="col-xs-3 control-label">Статус:</label>
                                     <div class="col-xs-8">
-                                        @if(!$animal->lost->found)
+                                        @if(isset($animal->lost) && !$animal->lost->found)
                                             <label class="control-label text-danger">Так</label>
                                         @else
                                             <label class="control-label text-success">Ні</label>
