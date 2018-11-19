@@ -358,7 +358,95 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xs-12 col-md-6 pn">
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy5">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Список усіх причин смерті</div>
+                            </div>
+                            <div class="panel-body pn">
+                                @if($errors->cause_of_deaths_rem)
+                                    @foreach($errors->cause_of_deaths_rem->all() as $error)
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-remove pr10"></i>
+                                            {{ $error }}
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                                @if (\Session::has('success_cause_of_deaths_rem'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_cause_of_deaths_rem') }}
+                                    </div>
+                                @endif
+                                <table class="table table-striped table-hover display datatable responsive nowrap"
+                                       id="datatable-cause-of-deaths" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Дії</th>
+                                        <th>Причина смерті</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th class="no-search"></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy5">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Додавання нової причини смерті</div>
+                            </div>
+                            <form class="form-horizontal" role="form"
+                                  action="{{ route('admin.info.directories.store.cause-of-death') }}" method="post">
+                                @csrf
+                                <div class="panel-body">
+                                    @if($errors->cause_of_deaths)
+                                        @foreach($errors->cause_of_deaths->all() as $error)
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <i class="fa fa-remove pr10"></i>
+                                                {{ $error }}
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                    @if (\Session::has('success_cause_of_deaths'))
+                                        <div class="alert alert-success alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-check pr10"></i>
+                                            {{ \Session::get('success_cause_of_deaths') }}
+                                        </div>
+                                    @endif
+                                    <div class="form-group">
+                                        <label for="fur-name" class="col-lg-3 control-label">Причина смерті:</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="fur-name" name="d_name"
+                                                   class="form-control" value="{{ old('d_name') }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-right">
+                                    <button type="submit" class="btn btn-default ph25">Додати</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
         <div class="modal fade" id="modalFur" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -481,6 +569,32 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modalCauseOfDeath" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Змінити причину смерті</h4>
+                    </div>
+                    <form action="{{ route('admin.info.directories.update.cause-of-death') }}" class="form-horizontal" id="change-causeOfDeath" method="post">
+                        <div class="modal-body">
+                            @csrf
+                            <input type="hidden" name="id" id="causeOfDeathId">
+                            <div class="form-group">
+                                <label for="causeOfDeath-name" class="col-lg-3 control-label">Причина смерті:</label>
+                                <div class="col-lg-8">
+                                    <input type="text" id="causeOfDeath-name-modal" name="name"
+                                           class="form-control" value="{{ old('d_name') }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning pull-right">Змінити</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </section>
 @endsection
 
@@ -568,6 +682,31 @@
                 ],
             });
 
+            dataTableInit($('#datatable-cause-of-deaths'), {
+                ajax: '{{ route('admin.info.directories.data.cause-of-death', null, false) }}',
+                columns: [
+                    { "data": "id", 'width': '10%' },
+                    {
+                        "data": "id",
+                        defaultContent: '',
+                        orderable: false,
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                return "<a href=\"\" data-id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-pencil update-causeOfDeath pr10\" aria-hidden=\"true\" data-toggle='modal'" +
+                                    " data-target=\"#modalCauseOfDeath\"></i>" +
+                                    "</a>" +
+                                    "<a href=\"{{ route('admin.info.directories.remove.cause-of-death') }}?id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
+                                    "</a>";
+                            }
+                        }
+                    },
+                    { "data": "name" },
+                ],
+            });
         });
         $(document).on('click', '.fa-trash', function(e) {
             if (!confirm('Ви впевнені що хочете видалити запис?')) {
@@ -586,6 +725,15 @@
                 }
                 $('#fur-name-modal').val(text);
         });
+
+        $(document).on('click', '.fa-pencil.update-causeOfDeath', function(e) {
+            e.preventDefault();
+            var text = $(this).parents('td').next().text();
+            var id = $(this).parent().attr('data-id');
+            $('#causeOfDeathId').val(id);
+            $('#causeOfDeath-name-modal').val(text);
+        });
+
         $(document).on('click', '.fa-pencil.update-color', function(e) {
                 e.preventDefault();
                 var text = $(this).parents('td').next().next().text();

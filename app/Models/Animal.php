@@ -162,4 +162,9 @@ class Animal extends Model
     {
         return $this->hasOne(ChangeAnimalOwner::class);
     }
+
+    public function causeOfDeath()
+    {
+        return $this->belongsTo('App\Models\CauseOfDeath');
+    }
 }

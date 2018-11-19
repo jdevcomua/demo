@@ -6,6 +6,7 @@ use App\Helpers\DataTables;
 use App\Http\Requests\NotificationTemplateRequest;
 use App\Models\Block;
 use App\Models\Breed;
+use App\Models\CauseOfDeath;
 use App\Models\Color;
 use App\Models\Fur;
 use App\Models\NotificationTemplate;
@@ -20,12 +21,13 @@ class InfoController extends Controller
     private $breedModel;
     private $colorModel;
     private $furModel;
+    private $causeOfDeathModel;
 
-    public function __construct(Breed $breedModel, Color $colorModel, Fur $furModel)
+    public function __construct(Breed $breedModel, Color $colorModel, Fur $furModel, CauseOfDeath $causeOfDeathModel)
     {
         $this->breedModel = $breedModel;
         $this->colorModel = $colorModel;
-        $this->furModel = $furModel;
+        $this->causeOfDeathModel = $causeOfDeathModel;
     }
 
     public function directoryIndex()
@@ -396,6 +398,113 @@ class InfoController extends Controller
             return redirect()
                 ->back()
                 ->with('success_fur_rem', 'Тип шерсті видалено успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryDataCauseOfDeath(Request $request)
+    {
+        $model = new CauseOfDeath;
+
+        $query = $model->newQuery();
+
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryStoreCauseOfDeath(Request $request)
+    {
+        if($request->has(['d_name'])) {
+            $data = $request->only(['d_name']);
+
+            $validator = Validator::make($data, [
+                'd_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('cause_of_deaths', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('d_name'));
+                    })
+                ],
+            ], [
+                'd_name.required' => 'Причина смерті є обов\'язковим полем',
+                'd_name.unique' => 'Причина смерті має бути унікальним',
+                'd_name.max' => 'Причина смерті має бути менше :max символів',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator, 'cause_of_deaths')
+                    ->withInput();
+            }
+
+            $color = new CauseOfDeath;
+            $color->name = $data['d_name'];
+            $color->save();
+
+            return redirect()
+                ->back()
+                ->with('success_cause_of_deaths', 'Причину смерті додано успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryUpdateCauseOfDeath(Request $request)
+    {
+        $causeOfDeath = CauseOfDeath::findOrFail($request->get('id'));
+        $validator = Validator::make($request->all(), [
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('cause_of_deaths')->where(function ($query) use($causeOfDeath, $request) {
+                    return $query->where('name', $request->get('name'));
+                })
+            ],
+        ], [
+            'name.required' => 'Причина смерті є обов\'язковим полем',
+            'name.unique' => 'Причина смерті має бути унікальним',
+            'name.max' => 'Причина смерті має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'cause_of_deaths_rem')
+                ->withInput();
+        }
+        $causeOfDeath->name = $request->get('name');
+        $causeOfDeath->save();
+
+        return redirect()
+            ->back()
+            ->with('success_cause_of_deaths_rem', 'Причину смерті змінено успішно !');
+    }
+
+    public function directoryRemoveCauseOfDeath(Request $request)
+    {
+        if ($request->has('id')) {
+            $causeOfDeath = $this->causeOfDeathModel
+                ->where('id', '=', $request->get('id'))
+                ->firstOrFail();
+
+            $count = $causeOfDeath->animals()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити причину смерті. Кількість тварин що її мають: ' . $count,
+                    ], 'cause_of_deaths_rem');
+            }
+
+            $causeOfDeath->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_cause_of_deaths_rem', 'Причину смерті видалено успішно !');
         }
         return response('', 400);
     }

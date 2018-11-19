@@ -102,6 +102,15 @@ Route::group([
             ->name('update.fur');
         Route::get('remove/fur', 'Admin\InfoController@directoryRemoveFur')
             ->name('remove.fur');
+
+        Route::get('data/cause-of-death', 'Admin\InfoController@directoryDataCauseOfDeath')
+            ->name('data.cause-of-death');
+        Route::post('store/cause-of-death', 'Admin\InfoController@directoryStoreCauseOfDeath')
+            ->name('store.cause-of-death');
+        Route::post('update/cause-of-death', 'Admin\InfoController@directoryUpdateCauseOfDeath')
+            ->name('update.cause-of-death');
+        Route::get('remove/cause-of-death', 'Admin\InfoController@directoryRemoveCauseOfDeath')
+            ->name('remove.cause-of-death');
     });
 
     Route::group([
