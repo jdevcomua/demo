@@ -31,7 +31,7 @@ class ArchiveAnimal extends FormRequest
     {
         $rules = [
             'archive_type' => 'required',
-            'date' => 'required|date|before:tomorrow',
+            'date' => 'required|date_format:d/m/Y|before:tomorrow',
             ];
 
         if ($this['archive_type'] === 'death') {
@@ -48,7 +48,7 @@ class ArchiveAnimal extends FormRequest
             'cause_of_death.required' => 'Причина смерті є обов\'язковим полем',
             'date.required' => 'Дата є обов\'язковим полем',
             'date.before' => 'Дата не може бути у майбутньому!',
-            'date.date' => 'Дата повинна бути корректною',
+            'date.date_format' => 'Дата повинна бути корректною',
         ];
     }
 
