@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\AnimalAdded;
 use App\Helpers\DataTables;
+use App\Http\Requests\ArchiveAnimal;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
+use App\Models\CauseOfDeath;
+use App\Models\DeathArchiveRecord;
 use App\Models\Log;
+use App\Models\MovedOutArchiveRecord;
 use App\Models\Role;
 use App\Models\Species;
 use App\Models\UserAddress;
@@ -255,11 +259,27 @@ class DataBasesController extends Controller
         ]);
     }
 
+    public function animalArchiveIndex()
+    {
+        return view('admin.db.animals_archive', [
+            'species' => Species::get()
+        ]);
+    }
+
+    public function animalArchive(ArchiveAnimal $request, Animal $animal)
+    {
+        $request->validate($request->rules());
+
+        $request->persist($animal);
+        return back();
+    }
+
     public function animalData(Request $request, $id = null)
     {
         $model = new Animal();
 
         $query = $model->newQuery()
+            ->whereNull('archived_type')
             ->join('species', 'species.id', '=', 'animals.species_id')
             ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
             ->join('colors', 'colors.id', '=', 'animals.color_id')
@@ -281,6 +301,35 @@ class DataBasesController extends Controller
 
         return response('', 400);
     }
+
+    public function animalArchiveData(Request $request, $id = null)
+    {
+        $model = new Animal();
+
+        $query = $model->newQuery()
+            ->where('archived_type', '!=', 'NULL')
+            ->join('species', 'species.id', '=', 'animals.species_id')
+            ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
+            ->join('colors', 'colors.id', '=', 'animals.color_id')
+            ->leftJoin('users as users1', 'users1.id', '=', 'animals.user_id');
+
+        if ($id) $query->where('users1.id', '=', $id);
+
+        $aliases = [
+            'species_name' => 'species.name',
+            'breeds_name' => 'breeds.name',
+            'colors_name' => 'colors.name',
+            'owner_name' => 'CONCAT(`users1`.last_name, \' \', `users1`.first_name, \'||\', `users1`.id)',
+            'owner_type' => 'if (animals.user_id IS NULL, 0, 1)',
+        ];
+
+        $response = DataTables::provide($request, $model, $query, $aliases);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
 
     public function animalCreate($id = null)
     {
@@ -425,7 +474,8 @@ class DataBasesController extends Controller
         return view('admin.db.animals_edit', [
             'animal' => $animal,
             'species' => Species::get(),
-            'users' => json_encode($users)
+            'users' => json_encode($users),
+            'causesOfDeath' => CauseOfDeath::all()
         ]);
     }
 

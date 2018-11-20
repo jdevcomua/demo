@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddArchivedColumnToAnimalsTable extends Migration
+class AddColumnsPolymorphicToAnimalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,9 @@ class AddArchivedColumnToAnimalsTable extends Migration
     public function up()
     {
         Schema::table('animals', function (Blueprint $table) {
-            $table->boolean('archived')->default(false);
+            $table->unsignedInteger('archived_id')->nullable();
+            $table->string('archived_type')->nullable();
+            $table->timestamp('archived_at')->nullable();
         });
     }
 
@@ -26,7 +28,9 @@ class AddArchivedColumnToAnimalsTable extends Migration
     public function down()
     {
         Schema::table('animals', function (Blueprint $table) {
-            $table->removeColumn('archived');
+            $table->dropColumn('archived_id');
+            $table->dropColumn('archived_type');
+            $table->dropColumn('archived_at');
         });
     }
 }

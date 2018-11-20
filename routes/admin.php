@@ -63,6 +63,24 @@ Route::group([
         ->name('upload-file');
     Route::post('/file/{id}/remove', 'Admin\DataBasesController@animalRemoveFile')
         ->name('remove-file');
+
+    Route::post('archive/{animal}', 'Admin\DataBasesController@animalArchive')
+        ->name('archive');
+});
+
+Route::group([
+    'prefix' => 'archive',
+    'as' => 'db.archive.'
+], function () {
+    Route::group([
+        'prefix' => 'animals',
+        'as' => 'animals.'
+    ], function () {
+        Route::get('index', 'Admin\DataBasesController@animalArchiveIndex')
+            ->name('index');
+        Route::get('data/{id?}', 'Admin\DataBasesController@animalArchiveData')
+            ->name('data');
+    });
 });
 
 Route::group([

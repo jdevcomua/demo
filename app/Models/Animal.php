@@ -70,6 +70,7 @@ class Animal extends Model
     protected $fillable = [
         'id', 'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id', 'user_id',
         'birthday', 'sterilized', 'comment', 'verified', 'number', 'badge', 'request_user_id',
+        'archived_type', 'archived_at',
 
         //generated attributes, don't fill them
         '_verification',
@@ -163,8 +164,8 @@ class Animal extends Model
         return $this->hasOne(ChangeAnimalOwner::class);
     }
 
-    public function causeOfDeath()
+    public function archivable()
     {
-        return $this->belongsTo('App\Models\CauseOfDeath');
+        return $this->morphTo('archived', 'archived_type', 'archived_id');
     }
 }

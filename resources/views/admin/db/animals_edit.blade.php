@@ -10,7 +10,15 @@
     <!-- End: Topbar -->
 
     <section id="content" class="animated fadeIn">
-
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="fa fa-remove pr10"></i>
+                    {{ $error }}
+                </div>
+            @endforeach
+        @endif
             <div class="row">
 
                 <div class="col-md-6">
@@ -266,6 +274,56 @@
                         </form>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="panel panel-visible" id="spy5">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <span class="glyphicon glyphicon-tasks"></span>Тварину архівовано</div>
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label">Статус:</label>
+                                    <div class="col-xs-8">
+                                        @if($animal->archived_type)
+                                            <label class="control-label">Так</label>
+                                        @else
+                                            <label class="control-label">Ні</label>
+                                        @endif
+                                    </div>
+                                </div>
+                                @if($animal->archived_type)
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">Причина архівації:</label>
+                                        <div class="col-xs-8">
+                                            <label class="control-label">{{$animal->archived_type}}</label>
+                                        </div>
+                                    </div>
+                                    @if($animal->archived_type === 'Смерть')
+                                        <div class="form-group">
+                                            <label class="col-xs-3 control-label">Причина смерті:</label>
+                                            <div class="col-xs-8">
+                                                <label class="control-label">{{$animal->archivable->cause_of_death}}</label>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">Дата {{$animal->archived_type === 'Смерть' ? 'смерті': 'виїзду'}}:</label>
+                                        <div class="col-xs-8">
+                                            <label class="control-label">{{$animal->archived_type === 'Смерть' ? $animal->archivable->died_at : $animal->archivable->moved_out_at}}</label>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                            @if(!$animal->archived_type)
+                                <div class="panel-footer text-right">
+                                    <a id="archiveButton" href="#"
+                                       class="btn btn-danger ph25">Архівувати</a>
+                                </div>
+                            @endif
+                        </form>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
@@ -359,7 +417,62 @@
                 </div>
 
             </div>
+        <div class="modal fade" id="archiveAnimal" tabindex="-2" role="dialog" aria-labelledby="requestChangeOwnerLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12" style="margin-bottom: 25px;">
+                                <h3>Архівування тварини</h3>
+                            </div>
+                            <div class="col-md-12">
+                                <form id="archive_form" action="{{route('admin.db.animals.archive', $animal->id)}}"
+                                      method="POST">
+                                    @csrf
+                                    <div class="row">
 
+                                        <div class="form-group select">
+                                            <label for="archive_type" class="col-lg-3 control-label">Причина
+                                                архівації</label>
+                                            <div class="col-lg-9">
+                                                <select name="archive_type" id="archive_type" required>
+                                                    <option value="death">Смерть</option>
+                                                    <option value="moved_out">Виїзд</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group select" id="causeOfDeathBlock">
+                                            <label for="archive_type" class="col-lg-3 control-label">Причина
+                                                смерті</label>
+                                            <div class="col-lg-9">
+                                                <select name="cause_of_death" id="cause_of_death" required>
+                                                    @foreach($causesOfDeath as $causeOfDeath)
+                                                        <option value="{{$causeOfDeath->id}}">{{$causeOfDeath->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group datepicker">
+                                            <label for="created_at" class="col-lg-3 control-label">Дата</label>
+                                            <div class="col-lg-9">
+                                                <input type="text" id="date" name="date" class="form-control" autocomplete="off" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <button type="submit" class="ml-auto mt-6 btn confirm btn-primary">Архівувати</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 @endsection
 
@@ -417,5 +530,34 @@
         document.getElementById("documents").onchange = function() {
             document.getElementById("upload-form").submit();
         };
+
+        $('#archiveButton').on('click', function (e) {
+            e.preventDefault();
+            $('#archiveAnimal').modal('show');
+        });
+
+        $('#archive_type').selectize();
+        $('#cause_of_death').selectize();
+
+        $('#archive_type').on('change', function (e) {
+            var valueSelected = this.value;
+
+            if (valueSelected !== 'death') {
+                $('#causeOfDeathBlock').hide();
+            } else {
+                $('#causeOfDeathBlock').show();
+            }
+        });
+
+
+        $('#archive_form').submit(function (e) {
+            e.preventDefault();
+            var causeOfDeathSelect = $('#cause_of_death');
+
+            if ($('#causeOfDeathBlock').css('display') === 'none') {
+                causeOfDeathSelect.remove();
+            }
+            $(this).unbind('submit').submit();
+        });
     </script>
 @endsection

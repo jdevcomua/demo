@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCauseOfDeathIdToAnimalsTable extends Migration
+class CreateMovedOutArchiveRecordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddCauseOfDeathIdToAnimalsTable extends Migration
      */
     public function up()
     {
-        Schema::table('animals', function (Blueprint $table) {
-            $table->unsignedInteger('cause_of_death_id')->nullable();
+        Schema::create('moved_out_archive_records', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamp('moved_out_at');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddCauseOfDeathIdToAnimalsTable extends Migration
      */
     public function down()
     {
-        Schema::table('animals', function (Blueprint $table) {
-            $table->removeColumn('cause_of_death_id');
-        });
+        Schema::dropIfExists('moved_out_archive_records');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Auth\KyivIdProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +15,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Relation::morphMap([
+            'Смерть' => 'App\Models\DeathArchiveRecord',
+            'Виїзд' => 'App\Models\MovedOutArchiveRecord',
+        ]);
+
         $this->bootKievIDSocialite();
 
         if(config('app.env') === 'production') {

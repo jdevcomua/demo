@@ -19,14 +19,12 @@
                     <span class="sidebar-title">Користувачі</span>
                 </a>
             </li>
-            @if(false)
-            <li>
-                <a href="#">
+            <li {!! (strpos($curRoute, '.db.archive.animals') !== false) ? ' class="active" ' : '' !!}>
+                <a href="{{route('admin.db.archive.animals.index')}}">
                     <span class="fa fa-archive"></span>
                     <span class="sidebar-title">Архів тварин</span>
                 </a>
             </li>
-            @endif
 
             @permission('edit-content')
                 <li class="sidebar-label pt20">Інформація</li>
