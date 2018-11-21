@@ -10,7 +10,10 @@ use App\Models\CauseOfDeath;
 use App\Models\Color;
 use App\Models\Fur;
 use App\Models\NotificationTemplate;
+use App\Models\Organization;
+use App\Models\OrganizationsFile;
 use App\Models\Species;
+use App\Services\FilesService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
@@ -22,12 +25,15 @@ class InfoController extends Controller
     private $colorModel;
     private $furModel;
     private $causeOfDeathModel;
+    private $filesService;
 
-    public function __construct(Breed $breedModel, Color $colorModel, Fur $furModel, CauseOfDeath $causeOfDeathModel)
+
+    public function __construct(Breed $breedModel, Color $colorModel, Fur $furModel, CauseOfDeath $causeOfDeathModel, FilesService $filesService)
     {
         $this->breedModel = $breedModel;
         $this->colorModel = $colorModel;
         $this->causeOfDeathModel = $causeOfDeathModel;
+        $this->filesService = $filesService;
     }
 
     public function directoryIndex()
@@ -509,6 +515,174 @@ class InfoController extends Controller
         return response('', 400);
     }
 
+    public function directoryDataOrganization(Request $request)
+    {
+        $model = new Organization;
+
+        $query = $model->newQuery();
+
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryEditOrganization(Organization $organization)
+    {
+        return view('admin.info.organization_edit', compact('organization'));
+    }
+
+    public function directoryUpdateOrganization(Request $request, Organization $organization)
+    {
+        $rules = [
+            'name' => 'required|string|max:256',
+            'chief_full_name' => 'required|string|max:256',
+            'contact_info' => 'required|string',
+            'address' => 'required|string',
+            'requisites' => 'required|string',
+        ];
+
+        $messages = [
+            'name.required' => 'Назва є обов\'язковим полем',
+            'name.max' => 'Назва має бути менше :max символів',
+            'chief_full_name.required' => 'ПІБ представника є обов\'язковим полем',
+            'chief_full_name.max' => 'ПІБ представника має бути менше :max символів',
+            'address.required' => 'Адреса є обов\'язковим полем',
+            'requisites.required' => 'Реквізити є обов\'язковим полем',
+            'contact_info.required' => 'Контактні дані є обов\'язковим полем',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($this->filterValidatorErrors($validator), 'organization')
+                ->withInput();
+        }
+
+        $organization->update($request->all());
+        $organization->save();
+
+
+
+        return back()->with('success_organization', 'Організацію оновлено успішно!');
+    }
+
+    public function directoryCreateOrganization()
+    {
+        return view('admin.info.organization_create');
+    }
+
+    public function directoryStoreOrganization(Request $request)
+    {
+        $request_data = $request->except('documents');
+        $documents = $request->only('documents');
+
+        $rules = [
+            'name' => 'required|string|max:256',
+            'chief_full_name' => 'required|string|max:256',
+            'contact_info' => 'required|string',
+            'address' => 'required|string',
+            'requisites' => 'required|string',
+        ];
+
+        $messages = [
+            'name.required' => 'Назва є обов\'язковим полем',
+            'name.max' => 'Назва має бути менше :max символів',
+            'chief_full_name.required' => 'ПІБ представника є обов\'язковим полем',
+            'chief_full_name.max' => 'ПІБ представника має бути менше :max символів',
+            'address.required' => 'Адреса є обов\'язковим полем',
+            'requisites.required' => 'Реквізити є обов\'язковим полем',
+            'contact_info.required' => 'Контактні дані є обов\'язковим полем',
+        ];
+
+        if ($documents) {
+            $rules['documents.*'] = 'file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048';
+            $messages['documents.*.max'] = 'Документи повинні бути не більше 2Mb';
+            $messages['documents.*.mimes'] = 'Документи повинні бути в форматі зображення або текстового документу!';
+        }
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($this->filterValidatorErrors($validator), 'organization')
+                ->withInput();
+        }
+
+        $organization = Organization::create($request_data);
+
+        if ($documents) {
+            $this->filesService->handleOrganizationFilesUpload($organization, $documents);
+
+        }
+
+        return redirect()->route('admin.info.directories.index')->with('success', 'Організацію успешно створено!');
+    }
+
+    public function directoryRemoveOrganization(Request $request)
+    {
+        if ($request->has('id')) {
+            $organization = Organization::find($request->id);
+
+            if ($organization->user) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити організацію так як вона закріплена за користувачем.',
+                    ], 'organization_rem');
+            }
+
+            $organization->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_organization_rem', 'Організацію видалено успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function organizationUploadFile(Request $request, $id)
+    {
+        $data = $request->only(['documents']);
+
+        $validator = Validator::make($data, [
+            'documents' => 'nullable|array',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
+        ], [
+            'documents.*.max' => 'Документи повинні бути не більше 2Mb',
+            'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'organization_files')
+                ->withInput();
+        }
+
+        $organization = Organization::findOrFail($id);
+
+        $this->filesService->handleOrganizationFilesUpload($organization, $data);
+
+        return back()
+            ->with('success_organization_files', 'Файли додано успішно !');
+    }
+
+    public function organizationRemoveFile($id)
+    {
+        $file = OrganizationsFile::findOrFail($id);
+        $file->delete();
+        return response()->json([
+            'status' => 'ok'
+        ]);
+    }
+
+
     public function notificationsIndex()
     {
         return view('admin.info.notifications');
@@ -580,6 +754,18 @@ class InfoController extends Controller
         return redirect()
             ->route('admin.info.notifications.index')
             ->with('success_notifications', 'Нотифікацію було успішно видалено!');
+    }
+
+    private function filterValidatorErrors(\Illuminate\Validation\Validator $data)
+    {
+        $messagesUniq = [];
+        $res = [];
+        foreach ($data->messages()->messages() as $k => $v) {
+            if (array_search($v, $messagesUniq) !== false) continue;
+            $res[$k] = $v;
+            $messagesUniq[] = $v;
+        }
+        return $res;
     }
 
 }

@@ -129,6 +129,24 @@ Route::group([
             ->name('update.cause-of-death');
         Route::get('remove/cause-of-death', 'Admin\InfoController@directoryRemoveCauseOfDeath')
             ->name('remove.cause-of-death');
+
+        Route::get('data/organization', 'Admin\InfoController@directoryDataOrganization')
+            ->name('data.organization');
+        Route::post('store/organization', 'Admin\InfoController@directoryStoreOrganization')
+            ->name('store.organization');
+        Route::get('edit/organization/{organization}', 'Admin\InfoController@directoryEditOrganization')
+            ->name('edit.organization');
+        Route::get('create/organization', 'Admin\InfoController@directoryCreateOrganization')
+            ->name('create.organization');
+        Route::post('update/organization/{organization}', 'Admin\InfoController@directoryUpdateOrganization')
+            ->name('update.organization');
+        Route::get('remove/organization', 'Admin\InfoController@directoryRemoveOrganization')
+            ->name('remove.organization');
+        Route::post('organization/{id}/upload-file', 'Admin\InfoController@organizationUploadFile')
+            ->name('organization.upload-file');
+        Route::post('organization/file/{id}/remove', 'Admin\InfoController@organizationRemoveFile')
+            ->name('organization.remove-file');
+
     });
 
     Route::group([

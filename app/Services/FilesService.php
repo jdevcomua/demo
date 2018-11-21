@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AnimalsFile;
+use App\Models\OrganizationsFile;
 
 class FilesService
 {
@@ -34,6 +35,13 @@ class FilesService
                 $this->storeAnimalFile($animal, $document, null, AnimalsFile::FILE_TYPE_DOCUMENT);
             }
         }
+    }
+
+    public function handleOrganizationFilesUpload($organization, $data)
+    {
+            foreach ($data['documents'] as $document) {
+                $this->storeOrganizationFile($organization, $document);
+            }
     }
 
     /**
@@ -77,6 +85,21 @@ class FilesService
         }
 
         $animal->files()->create($data);
+    }
+
+    private function storeOrganizationFile($organization, $file)
+    {
+        $fileName = self::sanitaze_name($file->getClientOriginalName());
+
+        $data = [
+            'organization_id' => $organization->id,
+            'name' => $fileName
+        ];
+
+            $data['path'] = $file->store('organizations/' . $organization->id
+                . OrganizationsFile::FILE_DOCUMENT_FOLDER);
+
+        $organization->files()->create($data);
     }
 
     private function sanitaze_name($name)

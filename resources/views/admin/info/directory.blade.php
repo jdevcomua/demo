@@ -445,6 +445,62 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-xs-12 col-md-12 pn">
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy5">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Список усіх закладів та установ</div>
+                            </div>
+                            <div class="panel-body pn">
+                                @if($errors->organization_rem)
+                                    @foreach($errors->organization_rem->all() as $error)
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-remove pr10"></i>
+                                            {{ $error }}
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                                @if (\Session::has('success_organization_rem'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_organization_rem') }}
+                                    </div>
+                                @endif
+                                <table class="table table-striped table-hover display datatable responsive nowrap"
+                                       id="datatable-organizations" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Дії</th>
+                                        <th>Назва</th>
+                                        <th>ПІБ представника</th>
+                                        <th>Адреса</th>
+                                        <th>Контактні дані</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th class="no-search"></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="panel-footer text-right">
+                                <a href="{{route('admin.info.directories.create.organization')}}" class="btn btn-default ph25">Додати</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -705,6 +761,30 @@
                         }
                     },
                     { "data": "name" },
+                ],
+            });
+            dataTableInit($('#datatable-organizations'), {
+                ajax: '{{ route('admin.info.directories.data.organization', null, false) }}',
+                columns: [
+                    { "data": "id", 'width': '10%' },
+                    {
+                        "data": "id",
+                        defaultContent: '',
+                        orderable: false,
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                var content = "<a href=\"{{ route('admin.info.directories.edit.organization', '') }}" + "/" + data + "\"><i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"> </i></a>";
+                                content += "<a href=\"{{ route('admin.info.directories.remove.organization') }}?id=" + data + "\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                console.log(content);
+                                return content;
+
+                            }
+                        }
+                    },
+                    { "data": "name" },
+                    { "data": "chief_full_name" },
+                    { "data": "address" },
+                    { "data": "contact_info" },
                 ],
             });
         });

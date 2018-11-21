@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\NotificationTemplate;
+use App\Models\Organization;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
 use App\Models\UserPhone;
@@ -190,5 +191,10 @@ class User extends Authenticatable
     {
         $email = $this->emailsAdditional()->first();
         return $email ? $email->email : null ?? '';
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
     }
 }
