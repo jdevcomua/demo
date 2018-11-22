@@ -199,21 +199,30 @@
                                                     <a href="{{route('admin.info.directories.edit.organization', $user->organization->id)}}">{{$user->organization->name}}</a>
                                                 </p>
                                             @else
-                                            <select name="organization_id" id="organizations_select" >
+                                                @if(\Auth::user()->can(['edit-organizations']))
+                                                <select name="organization_id" id="organizations_select" >
                                                 @foreach($organizations as $organization)
                                                 <option value="{{$organization->id}}">{{$organization->name}}</option>
                                                 @endforeach
-                                            </select>
+                                                </select>
+                                                    @else
+                                                    <p class="form-control custom-field">
+                                                        Не закріплено за користувачем
+                                                    </p>
+                                                    @endif
                                             @endif
 
-                                            <div class="col-sm-12 pn mt15">
+                                                @permission('edit-organizations')
+                                                <div class="col-sm-12 pn mt15">
                                                 @if(!$user->organization)
                                                     <button type="submit" class="btn btn-primary btn-block">Закріпити за користувачем</button>
                                                 @else
                                                     <button type="submit" class="btn btn-danger btn-block">Відкріпити</button>
 
                                                 @endif
-                                            </div>
+                                                </div>
+                                                @endpermission
+
                                         </div>
                                     </div>
                                     </form>

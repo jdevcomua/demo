@@ -84,6 +84,11 @@ class RolesPermissionsSeeder extends Seeder
         $viewSyslog->display_name     = 'Перегляд системного журналу';
         $viewSyslog->save();
 
+        $editOrganizations = new Permission();
+        $editOrganizations->name          = 'edit-organizations';
+        $editOrganizations->display_name  = 'Управління закладами та установами';
+        $editOrganizations->save();
+
 
         $admin->attachPermissions([
             $adminPanel,
@@ -96,7 +101,8 @@ class RolesPermissionsSeeder extends Seeder
             $editUser,
             $deleteUser,
             $viewSyslog,
-            $privateData
+            $privateData,
+            $editOrganizations
         ]);
 
         $contentAdmin->attachPermissions([

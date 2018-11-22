@@ -495,9 +495,11 @@
                                     </tbody>
                                 </table>
                             </div>
+                            @permission('edit-organizations')
                             <div class="panel-footer text-right">
                                 <a href="{{route('admin.info.directories.create.organization')}}" class="btn btn-default ph25">Додати</a>
                             </div>
+                            @endpermission
                         </div>
                     </div>
                 </div>
@@ -773,8 +775,14 @@
                         orderable: false,
                         render: function ( data, type, row ) {
                             if (data) {
-                                var content = "<a href=\"{{ route('admin.info.directories.edit.organization', '') }}" + "/" + data + "\"><i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"> </i></a>";
+                                var editShowIcon = 'fa-eye';
+                                @permission('edit-organizations')
+                                editShowIcon = 'fa-pencil';
+                                @endpermission
+                                var content = "<a href=\"{{ route('admin.info.directories.edit.organization', '') }}" + "/" + data + "\"><i class=\"fa " + editShowIcon +  " pr10\" aria-hidden=\"true\"> </i></a>";
+                                @permission('edit-organizations')
                                 content += "<a href=\"{{ route('admin.info.directories.remove.organization') }}?id=" + data + "\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a>";
+                                @endpermission
                                 console.log(content);
                                 return content;
 

@@ -26,9 +26,11 @@ Route::group([
         ->name('update.address')
         ->middleware('permission:edit-user');
     Route::put('attach/organization', 'Admin\DataBasesController@userAttachOrganization')
-        ->name('attach.organization');
+        ->name('attach.organization')
+        ->middleware('permission:edit-organizations');
     Route::put('detach/organization', 'Admin\DataBasesController@userDetachOrganization')
-        ->name('detach.organization');
+        ->name('detach.organization')
+        ->middleware('permission:edit-organizations');
     Route::put('roles/update/{id?}', 'Admin\DataBasesController@userUpdateRoles')
         ->name('update.roles')
         ->middleware('permission:change-roles');
@@ -136,15 +138,20 @@ Route::group([
         Route::get('data/organization', 'Admin\InfoController@directoryDataOrganization')
             ->name('data.organization');
         Route::post('store/organization', 'Admin\InfoController@directoryStoreOrganization')
-            ->name('store.organization');
+            ->name('store.organization')
+            ->middleware('permission:edit-organizations');
         Route::get('edit/organization/{organization}', 'Admin\InfoController@directoryEditOrganization')
             ->name('edit.organization');
         Route::get('create/organization', 'Admin\InfoController@directoryCreateOrganization')
-            ->name('create.organization');
+            ->name('create.organization')
+            ->middleware('permission:edit-organizations');
         Route::post('update/organization/{organization}', 'Admin\InfoController@directoryUpdateOrganization')
-            ->name('update.organization');
+            ->name('update.organization')
+            ->middleware('permission:edit-organizations');
+
         Route::get('remove/organization', 'Admin\InfoController@directoryRemoveOrganization')
-            ->name('remove.organization');
+            ->name('remove.organization')
+            ->middleware('permission:edit-organizations');
         Route::post('organization/{id}/upload-file', 'Admin\InfoController@organizationUploadFile')
             ->name('organization.upload-file');
         Route::post('organization/file/{id}/remove', 'Admin\InfoController@organizationRemoveFile')

@@ -531,7 +531,9 @@ class InfoController extends Controller
 
     public function directoryEditOrganization(Organization $organization)
     {
-        return view('admin.info.organization_edit', compact('organization'));
+        $inputsDisabled = \Auth::user()->can(['edit-organizations']) ? '' : 'disabled';
+
+        return view('admin.info.organization_edit', compact('organization', 'inputsDisabled'));
     }
 
     public function directoryUpdateOrganization(Request $request, Organization $organization)

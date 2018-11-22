@@ -45,14 +45,14 @@
                                 <label for="nickname" class="col-lg-3 control-label">Назва <span class="required-field">*</span></label>
                                 <div class="col-lg-8">
                                     <input type="text" id="name" name="name" class="form-control"
-                                           value="{{ $organization->name }}" required>
+                                           value="{{ $organization->name }}" required {{$inputsDisabled}}>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="nickname" class="col-lg-3 control-label">Адреса <span class="required-field">*</span></label>
                                 <div class="col-lg-8">
-                                    <textarea name="address" class="form-control" id="address" cols="20" rows="2" required>{{ $organization->address }}</textarea>
+                                    <textarea name="address" class="form-control" id="address" cols="20" rows="2" required {{$inputsDisabled}}>{{ $organization->address }}</textarea>
                                 </div>
                             </div>
 
@@ -60,27 +60,29 @@
                                 <label for="nickname" class="col-lg-3 control-label">ПІБ представника <span class="required-field">*</span></label>
                                 <div class="col-lg-8">
                                     <input type="text" id="chief_full_name" name="chief_full_name" class="form-control"
-                                           value="{{ $organization->chief_full_name }}" required>
+                                           value="{{ $organization->chief_full_name }}" required {{$inputsDisabled}}>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="nickname" class="col-lg-3 control-label">Контактні дані <span class="required-field">*</span></label>
                                 <div class="col-lg-8">
-                                    <textarea name="contact_info" class="form-control" id="contact_info" cols="20" rows="5" required>{{ $organization->contact_info }}</textarea>
+                                    <textarea name="contact_info" class="form-control" id="contact_info" cols="20" rows="5" required {{$inputsDisabled}}>{{ $organization->contact_info }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="nickname" class="col-lg-3 control-label">Реквізити <span class="required-field">*</span></label>
                                 <div class="col-lg-8">
-                                    <textarea name="requisites" class="form-control" id="requisites" cols="20" rows="5" required>{{ $organization->requisites }}</textarea>
+                                    <textarea name="requisites" class="form-control" id="requisites" cols="20" rows="5" required {{$inputsDisabled}}>{{ $organization->requisites }}</textarea>
                                 </div>
                             </div>
                         </div>
+                        @permission('edit-organizations')
                         <div class="panel-footer text-right">
                             <button type="submit" class="btn btn-default ph25">Зберегти</button>
                         </div>
+                        @endpermission
                     </form>
                 </div>
             </div>
@@ -121,12 +123,16 @@
                                             <div class="file-preview" style="background-image: url('/{{$document->isImage() ? $document->path : 'img/file.png'}}');"></div>
                                             <div class="file-name">{{ $document->filename }}.{{ $document->fileextension }}</div>
                                         </a>
+                                        @permission('edit-organizations')
                                         <div class="file-delete"
                                              data-rem="{{ route('admin.info.directories.organization.remove-file', $document->id) }}">
-                                            <i class="fa fa-times" aria-hidden="true"></i></div>
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </div>
+                                        @endpermission
                                     </div>
                                 @endforeach
 
+                                @permission('edit-organizations')
                                 <label for="documents" class="upload file-item doc">
                                         <span class="icon">
                                             <i class="fa fa-plus" aria-hidden="true"></i>
@@ -136,6 +142,7 @@
                                     <input type="file" id="documents" name="documents[]" multiple
                                            style="display: none;"/>
                                 </label>
+                                    @endpermission
 
 
 
