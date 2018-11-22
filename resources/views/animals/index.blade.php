@@ -1,13 +1,12 @@
 @extends('layout.app')
 
 @section('title', 'Мої тварини')
-
 @section('content')
     @if(count($pets))
         <div class="pets-list-header">СПИСОК МОЇХ ТВАРИН</div>
         <div class="pets-list">
             @foreach($pets as $pet)
-                <div class="pets-list-item">
+                <div class="pets-list-item {{$pet->archivable ? 'archived-pet' : ''}}">
                     @if(count($pet->images))
                         <div class="pet-photo" style="background-image: url('{{ $pet->images[0]->path }}')"></div>
                     @else
@@ -32,7 +31,9 @@
                         </div>
                         <div class="pet-info-block">
                             <span class="title">Статус</span>
-                            @if($pet->lost && !$pet->lost->found)
+                            @if($pet->archivable)
+                                <span class="content red">Архів</span>
+                            @elseif($pet->lost && !$pet->lost->found)
                                 <span class="content red">Загублено</span>
                             @elseif($pet->verified)
                                 <span class="content green">Верифіковано</span>
@@ -41,25 +42,30 @@
                             @endif
                         </div>
                     </div>
-                    <div class="dropdown more-button dropleft">
-                        <div class="more-icon" data-toggle="dropdown"></div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item"
-                               href="{{ route('animals.show', ['id' => $pet->id]) }}">Переглянути картку</a>
-                            @if(!$pet->verified)
-                                <a class="dropdown-item"
-                                   href="{{ route('animals.edit', ['id' => $pet->id]) }}">Редагувати інформацію</a>
-                                <a class="dropdown-item"
-                                   href="{{ route('animals.destroy', ['id' => $pet->id]) }}" onclick="event.preventDefault();
-                                   document.getElementById('delete-form-{{ $pet->id }}').submit();">Видалити</a>
-                                <form id="delete-form-{{ $pet->id }}" action="{{ route('animals.destroy', ['id' => $pet->id]) }}"
-                                      method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            @endif
-                        </div>
-                    </div>
+                        @if(!$pet->archivable)
+                            <div class="dropdown more-button dropleft">
+                                <div class="more-icon" data-toggle="dropdown"></div>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item"
+                                       href="{{ route('animals.show', ['id' => $pet->id]) }}">Переглянути картку</a>
+                                    @if(!$pet->verified)
+                                        <a class="dropdown-item"
+                                           href="{{ route('animals.edit', ['id' => $pet->id]) }}">Редагувати
+                                            інформацію</a>
+                                        <a class="dropdown-item"
+                                           href="{{ route('animals.destroy', ['id' => $pet->id]) }}"
+                                           onclick="event.preventDefault();
+                                                   document.getElementById('delete-form-{{ $pet->id }}').submit();">Видалити</a>
+                                        <form id="delete-form-{{ $pet->id }}"
+                                              action="{{ route('animals.destroy', ['id' => $pet->id]) }}"
+                                              method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
 
                 </div>
             @endforeach

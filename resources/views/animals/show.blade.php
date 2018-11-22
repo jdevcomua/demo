@@ -103,6 +103,13 @@
                 <div class="action-description">Якщо власник тварини змінився тисніть кнопку <i>Змінити власника</i> для того щоб повідомити про це нас</div>
                 <button class="btn btn-dgrey btn-i i-change btn-tbig" id="changeOwnerButton">Змінити власника</button>
             </div>
+                <div class="animal-action">
+                    <button class="btn btn-primary" id="animal_death-btn" >Повідомити про смерть</button>
+                </div>
+                <div class="animal-action">
+                    <button class="btn btn-primary" id="moved_animal-btn">Тварина
+                        вивезена з м. Київ</button>
+                </div>
         </div>
     </div>
 
@@ -157,17 +164,99 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="informAnimalDeath" tabindex="-2" role="dialog" aria-labelledby="informAnimalDeathLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Нам дуже шкода…</h3>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <form class="search-request" action="{{route('animals.inform-death')}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="animal_id" value="{{$animal->id}}">
+
+                                <div class="form-group select" id="causeOfDeathBlock">
+                                    <label for="archive_type" class="control-label">Оберіть причину смерті</label>
+                                        <select name="cause_of_death" id="cause_of_death" required>
+                                            @foreach($causesOfDeath as $causeOfDeath)
+                                                <option value="{{$causeOfDeath->id}}">{{$causeOfDeath->name}}</option>
+                                            @endforeach
+                                        </select>
+                                </div>
+
+                                        <div class="form-group datepicker">
+                                            <label for="created_at" class="control-label">Дата смерті</label>
+                                                <input type="text" id="date_death" name="date" class="form-control no-cursor readonly" autocomplete="off" required>
+                                        </div>
+                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Повідомити</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="informAnimalMoved" tabindex="-2" role="dialog" aria-labelledby="informAnimalMovedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Тварина вивезена з м.Київ</h3>
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <form class="search-request" action="{{route('animals.inform-moved')}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="animal_id" value="{{$animal->id}}">
+
+                                <div class="form-group datepicker">
+                                    <label for="created_at" class="control-label">Дата вивезення</label>
+                                    <input type="text" id="date_move" name="date" class="form-control no-cursor readonly" required autocomplete="off" >
+                                </div>
+                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Повідомити</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts-end')
     <script>
+            $(".readonly").on('keydown paste', function(e){
+                e.preventDefault();
+            });
+
         $('.lost_animal-btn').on('click', function () {
             var form = $('#lostAnimalSearch');
             form.submit();
         });
 
-        $('#changeOwnerButton').on('click', function () {
-            $('#requestChangeOwner').modal('show');
+        $('#animal_death-btn').on('click', function () {
+            $('#informAnimalDeath').modal('show');
         });
+
+        $('#moved_animal-btn').on('click', function () {
+            $('#informAnimalMoved').modal('show');
+        });
+
+        $('#cause_of_death').selectize();
+
     </script>
 @endsection

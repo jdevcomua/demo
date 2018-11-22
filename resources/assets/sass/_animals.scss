@@ -13,6 +13,9 @@
   letter-spacing: 1px;
   margin: 0 1rem;
 }
+.archived-pet {
+  background-color: rgba(154, 154, 154, 0.33);
+}
 .pets-list-item {
   display: flex;
   padding: 3rem;
@@ -690,7 +693,11 @@ $width: 100px;
       height: 7.5rem;
       width: 23.7rem;
     }
+
   }
+ & .animal-action:nth-child(n+3) {
+   margin-top: 50px;
+ }
 }
 @media (max-width: 760px) {
   .animal-actions .animal-action {

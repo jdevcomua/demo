@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Events\AnimalFormRequestSent;
 use App\Events\AnimalAdded;
+use App\Http\Requests\InformAnimalDeath;
+use App\Http\Requests\InformAnimalMovedOut;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\AnimalsRequest;
+use App\Models\CauseOfDeath;
 use App\Models\ChangeAnimalOwner;
+use App\Models\DeathArchiveRecord;
 use App\Models\Log;
+use App\Models\MovedOutArchiveRecord;
 use App\Services\FilesService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -32,7 +39,10 @@ class AnimalsController extends Controller
     public function index()
     {
         $user = \Auth::user();
+
         $pets = $user->animals->load(['species', 'color', 'breed', 'files']);
+
+        $pets = $pets->sortBy('archivable');
 
         return view('animals.index', [
             'pets' => $pets
@@ -149,9 +159,11 @@ class AnimalsController extends Controller
     {
         $animal->load(['species', 'color', 'files']);
         $animal->imagesArray = $animal->images->pluck('path', 'num')->toArray();
+        $causesOfDeath = CauseOfDeath::all();
 
         return view('animals.show', [
-            'animal' => $animal
+            'animal' => $animal,
+            'causesOfDeath' => $causesOfDeath
         ]);
     }
 
@@ -383,4 +395,50 @@ class AnimalsController extends Controller
         return back()
             ->with('success_request', 'Запит було створено успішно');
     }
+
+    public function informDeath(InformAnimalDeath $request)
+    {
+        $request->validate($request->rules());
+
+        $requestData = $request->all();
+        $animal = Animal::find($requestData['animal_id']);
+
+        $requestData['date'] = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
+
+        $animal->archived_at = now();
+
+
+        $archiveRecord = new DeathArchiveRecord;
+        $archiveRecord->died_at = $requestData['date'];
+        $archiveRecord->cause_of_death_id = $requestData['cause_of_death'];
+
+        $archiveRecord->save();
+
+        $archiveRecord->archived()->save($animal);
+
+        return redirect()->route('animals.index');
+    }
+
+    public function informMoved(InformAnimalMovedOut $request)
+    {
+        $request->validate($request->rules());
+        $requestData = $request->all();
+
+        $animal = Animal::find($requestData['animal_id']);
+
+        $requestData['date'] = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
+
+        $archiveRecord = new MovedOutArchiveRecord;
+        $archiveRecord->moved_out_at = $requestData['date'];
+
+
+        $animal->archived_at = now();
+
+        $archiveRecord->save();
+
+        $archiveRecord->archived()->save($animal);
+
+        return redirect()->route('animals.index');
+    }
+
 }
