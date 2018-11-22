@@ -11,6 +11,7 @@ use App\Models\CauseOfDeath;
 use App\Models\DeathArchiveRecord;
 use App\Models\Log;
 use App\Models\MovedOutArchiveRecord;
+use App\Models\Organization;
 use App\Models\Role;
 use App\Models\Species;
 use App\Models\UserAddress;
@@ -82,8 +83,11 @@ class DataBasesController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
+
+        $organizations = Organization::all();
+
         $user->load('animals', 'roles', 'emails', 'phones', 'addresses');
-        return view('admin.db.users_show', compact('user', 'roles'));
+        return view('admin.db.users_show', compact('user', 'roles', 'organizations'));
     }
 
     public function userUpdate(Request $request, $id)
@@ -140,6 +144,31 @@ class DataBasesController extends Controller
         return redirect()
             ->back()
             ->with('success_user', 'Дані оновлено успішно!');
+    }
+
+    public function userAttachOrganization(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $organization = Organization::find($request->organization_id);
+
+        $user->organization()->associate($organization);
+
+        $user->save();
+
+        return back()->with('success_user', 'Організація була закріплена успішно!');
+    }
+
+    public function userDetachOrganization(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $organization = Organization::find($request->organization_id);
+
+        $user->organization()->dissociate($organization);
+
+        $user->save();
+
+
+        return back()->with('success_user', 'Організація була відкріплена успішно!');
     }
 
     public function userUpdateAddress(Request $request, $id)

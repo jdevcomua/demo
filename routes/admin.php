@@ -25,7 +25,10 @@ Route::group([
     Route::put('update/{id}/address', 'Admin\DataBasesController@userUpdateAddress')
         ->name('update.address')
         ->middleware('permission:edit-user');
-
+    Route::put('attach/organization', 'Admin\DataBasesController@userAttachOrganization')
+        ->name('attach.organization');
+    Route::put('detach/organization', 'Admin\DataBasesController@userDetachOrganization')
+        ->name('detach.organization');
     Route::put('roles/update/{id?}', 'Admin\DataBasesController@userUpdateRoles')
         ->name('update.roles')
         ->middleware('permission:change-roles');
