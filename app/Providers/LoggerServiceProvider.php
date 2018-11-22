@@ -16,6 +16,7 @@ class LoggerServiceProvider extends ServiceProvider
         Relation::morphMap([
             'Тварина' => 'App\Models\Animal',
             'Користувач' => 'App\User',
+            'Організація' => 'App\Models\Organization'
         ]);
 
         $this->app->singleton('rha_logger', function ($app) {

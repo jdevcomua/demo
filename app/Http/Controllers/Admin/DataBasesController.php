@@ -151,9 +151,23 @@ class DataBasesController extends Controller
         $user = User::find($request->user_id);
         $organization = Organization::find($request->organization_id);
 
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_EDIT,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($user);
+        $oldUser = clone $user;
+
         $user->organization()->associate($organization);
 
         $user->save();
+        $user->load('organization');
+
+
+        \RhaLogger::addChanges($user, $oldUser, true, ($user != null));
+
 
         return back()->with('success_user', 'Організація була закріплена успішно!');
     }
@@ -163,9 +177,22 @@ class DataBasesController extends Controller
         $user = User::find($request->user_id);
         $organization = Organization::find($request->organization_id);
 
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_EDIT,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($user);
+        $oldUser = clone $user;
+
         $user->organization()->dissociate($organization);
 
         $user->save();
+        $user->load('organization');
+
+
+        \RhaLogger::addChanges($user, $oldUser, true, ($user != null));
 
 
         return back()->with('success_user', 'Організація була відкріплена успішно!');

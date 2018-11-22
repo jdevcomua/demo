@@ -15,6 +15,11 @@ class Organization extends Model
         return $this->hasMany(OrganizationsFile::class);
     }
 
+    public function history()
+    {
+        return $this->morphMany('App\Models\Log', 'object');
+    }
+
     public function user()
     {
         return $this->hasOne(User::class);

@@ -9,6 +9,10 @@ class Logger
 
     private $logModel;
 
+    private static $idsObjectTypesMap = [
+        'organization_id' => 'Організація'
+    ];
+
     public function __construct(Log $logModel)
     {
         $this->logModel = $logModel;
@@ -87,12 +91,21 @@ class Logger
     {
         if ($data) {
             $data = json_decode($data, true);
+
         } else return '';
         if (is_array($data)) {
             $res = '';
             foreach ($data as $k => $v) {
+                $label = !empty(self::$idsObjectTypesMap[$k]) ? self::$idsObjectTypesMap[$k] : $k;
                 $res .= '<span>';
-                $res .= '<b>' . $k . '</b>: ';
+                $res .= '<b>' . $label . '</b>: ';
+
+                if (!empty(self::$idsObjectTypesMap[$k])) {
+                    $v['old'] = $v['old'] !== null ? "<a href=\"" . route('admin.object') .
+                       "/" . self::$idsObjectTypesMap[$k] . "/" . $v['old'] . "\">" . self::$idsObjectTypesMap[$k] . " #" . $v['old'] . "</a>" : null;
+                    $v['new'] = $v['new'] !== null ? "<a href=\"" . route('admin.object') .
+                        "/" . self::$idsObjectTypesMap[$k] . "/" . $v['new'] . "\">" . self::$idsObjectTypesMap[$k] . " #" . $v['new'] . "</a>" : null;
+                }
                 if ($v['old'] !== null) $res .= '<c-r>' . $v['old'] . '</c-r> ⟶ ';
                 $res .= '<c-g>' . $v['new'] . '</c-g>';
                 $res .= '</span>';

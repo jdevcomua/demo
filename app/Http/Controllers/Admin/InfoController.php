@@ -9,6 +9,7 @@ use App\Models\Breed;
 use App\Models\CauseOfDeath;
 use App\Models\Color;
 use App\Models\Fur;
+use App\Models\Log;
 use App\Models\NotificationTemplate;
 use App\Models\Organization;
 use App\Models\OrganizationsFile;
@@ -565,8 +566,16 @@ class InfoController extends Controller
                 ->withInput();
         }
 
-        $organization->update($request->all());
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_EDIT,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($organization);
+        $oldOrganization = clone $organization;
+        $organization->fill($request->all());
         $organization->save();
+        \RhaLogger::addChanges($organization, $oldOrganization, true, ($organization != null));
 
 
 
@@ -616,12 +625,20 @@ class InfoController extends Controller
                 ->withInput();
         }
 
+        \RhaLogger::start(['data' => $request_data]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_CREATE,
+            'user_id' => \Auth::id(),
+        ]);
+
         $organization = Organization::create($request_data);
 
         if ($documents) {
             $this->filesService->handleOrganizationFilesUpload($organization, $documents);
-
         }
+
+        \RhaLogger::addChanges($organization, new Organization(), true, ($organization != null));
+        if ($organization) \RhaLogger::object($organization);
 
         return redirect()->route('admin.info.directories.index')->with('success', 'Організацію успешно створено!');
     }
@@ -639,7 +656,14 @@ class InfoController extends Controller
                     ], 'organization_rem');
             }
 
+            \RhaLogger::start();
+            \RhaLogger::update([
+                'action' => Log::ACTION_DELETE,
+                'user_id' => \Auth::id(),
+            ]);
+            \RhaLogger::object($organization);
             $organization->delete();
+            \RhaLogger::end(true);
 
             return redirect()
                 ->back()
