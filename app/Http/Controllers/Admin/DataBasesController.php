@@ -56,6 +56,7 @@ class DataBasesController extends Controller
             ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
             ->leftJoin('user_addresses', 'user_addresses.user_id', '=', 'users.id')
             ->leftJoin('animals', 'animals.user_id', '=', 'users.id')
+            ->leftJoin('organizations', 'users.organization_id', '=', 'organizations.id')
             ->groupBy('users.id');
 
         //COALESCE для того, чтоб не обваливалось при пустых значениях
@@ -71,6 +72,7 @@ class DataBasesController extends Controller
                     COALESCE(`user_addresses`.apartment, " ")
                        ) SEPARATOR "|")',
             'animals' => 'COUNT(DISTINCT `animals`.id)',
+            'organization_name' => 'organizations.name'
         ];
         $response = DataTables::provide($request, $model, $query, $aliases);
 

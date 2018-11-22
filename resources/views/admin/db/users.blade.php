@@ -45,6 +45,7 @@
                                     @endpermission
                                     <th>Адреси</th>
                                     <th>Тварини</th>
+                                    <th>Організація</th>
                                     <th>Зареєстровано</th>
                                     <th>Оновлено</th>
                                 </tr>
@@ -62,6 +63,7 @@
                                     @permission('private-data')
                                     <th></th>
                                     @endpermission
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -148,6 +150,11 @@
                         data: 'animals',
                         render: function ( data, type, row ) {
                             return '<a href="{{ route('admin.db.users.animals') }}/' + row.id + '">' + data + '</a>';
+                        }
+                    },
+                    {data: 'organization_name',
+                        render: function ( data, type, row ) {
+                            return (data) ? '<a href="{{ route('admin.info.directories.edit.organization', '') }}/' + row.organization_id + '">' + data + '</a>' : 'Не закріплено';
                         }
                     },
                     { data: "created_at",

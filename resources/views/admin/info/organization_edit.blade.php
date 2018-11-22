@@ -111,7 +111,7 @@
                             </div>
                         @endif
                         <span class="help-block mt10 ph10">
-                                Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 10Mb
+                                Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 2Mb
                             </span>
                         <form role="form" enctype="multipart/form-data" id="upload-form"
                               action="{{ route('admin.info.directories.organization.upload-file', $organization->id) }}" method="post">
