@@ -34,6 +34,9 @@
                                     <th>Дії</th>
                                     <th>Дата архівації</th>
                                     <th>Причина архівації</th>
+                                    <th>Причина смерті</th>
+                                    <th>Дата смерті</th>
+                                    <th>Дата виїзду</th>
                                     <th>Номер жетону</th>
                                     <th>Кличка</th>
                                     <th>Вид</th>
@@ -60,6 +63,16 @@
                                             <option value="Виїзд">Виїзд</option>
                                         </select>
                                     </th>
+                                    <th class="select">
+                                        <select>
+                                            <option selected value>---</option>
+                                            @foreach($causes_of_deaths_array as $k => $v)
+                                                <option value="{{$k}}">{{$v}}</option>
+                                            @endforeach
+                                        </select>
+                                    </th>
+                                    <th></th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th class="select">
@@ -126,6 +139,8 @@
 
 @section('scripts-end')
     <script type="text/javascript">
+        causes_of_death = {!! json_encode($causes_of_deaths_array) !!};
+
         jQuery(document).ready(function() {
 
             dataTableInit($('#datatable'), {
@@ -157,6 +172,33 @@
                     },
                     { "data": "archived_at"},
                     { "data": "archived_type"},
+                    {
+                        "data": "death",
+                        defaultContent: '-',
+                        render: function ( data, type, row ) {
+                            if(row['archived_type'] === 'Смерть') {
+                                return causes_of_death[data];
+                            }
+                        }
+                    },
+                    {
+                        "data": "death_date",
+                        defaultContent: '-',
+                        render: function ( data, type, row ) {
+                            if(row['archived_type'] === 'Смерть') {
+                                return data;
+                            }
+                        }
+                    },
+                    {
+                        "data": "moved_out_date",
+                        defaultContent: '-',
+                        render: function ( data, type, row ) {
+                            if(row['archived_type'] === 'Виїзд') {
+                                return data;
+                            }
+                        }
+                    },
                     { "data": "badge" },
                     { "data": "nickname" },
                     { "data": "species_name"},

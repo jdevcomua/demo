@@ -319,8 +319,17 @@ class DataBasesController extends Controller
 
     public function animalArchiveIndex()
     {
+        $causes_of_deaths = CauseOfDeath::all('id', 'name');
+        $causes_of_deaths_array = [];
+
+        foreach ($causes_of_deaths as $causes_of_death) {
+            $causes_of_deaths_array[$causes_of_death->id] = $causes_of_death->name;
+        }
+
+
         return view('admin.db.animals_archive', [
-            'species' => Species::get()
+            'species' => Species::get(),
+            'causes_of_deaths_array' => $causes_of_deaths_array
         ]);
     }
 
@@ -366,6 +375,8 @@ class DataBasesController extends Controller
 
         $query = $model->newQuery()
             ->where('archived_type', '!=', 'NULL')
+            ->leftJoin('death_archive_records', 'death_archive_records.id', '=', 'animals.archived_id')
+            ->leftJoin('moved_out_archive_records', 'moved_out_archive_records.id', '=', 'animals.archived_id')
             ->join('species', 'species.id', '=', 'animals.species_id')
             ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
             ->join('colors', 'colors.id', '=', 'animals.color_id')
@@ -379,6 +390,10 @@ class DataBasesController extends Controller
             'colors_name' => 'colors.name',
             'owner_name' => 'CONCAT(`users1`.last_name, \' \', `users1`.first_name, \'||\', `users1`.id)',
             'owner_type' => 'if (animals.user_id IS NULL, 0, 1)',
+            'death' => 'death_archive_records.cause_of_death_id',
+            'death_date' => 'death_archive_records.died_at',
+            'moved_out_date' => 'moved_out_archive_records.moved_out_at'
+
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);
