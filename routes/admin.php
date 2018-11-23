@@ -61,6 +61,8 @@ Route::group([
     Route::delete('remove/{id?}', 'Admin\DataBasesController@animalRemove')
         ->name('remove')
         ->middleware('permission:delete-animal');
+    Route::post('archive/{id}/animal', 'Admin\DataBasesController@animalArchive')
+        ->name('archive');
     Route::get('verify/{id}', 'Admin\DataBasesController@animalVerify')
         ->name('verify')
         ->middleware('permission:verify-animal');
@@ -69,8 +71,6 @@ Route::group([
     Route::post('/file/{id}/remove', 'Admin\DataBasesController@animalRemoveFile')
         ->name('remove-file');
 
-    Route::post('archive/{animal}', 'Admin\DataBasesController@animalArchive')
-        ->name('archive');
 });
 
 Route::group([

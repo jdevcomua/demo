@@ -333,8 +333,10 @@ class DataBasesController extends Controller
         ]);
     }
 
-    public function animalArchive(ArchiveAnimal $request, Animal $animal)
+    public function animalArchive(ArchiveAnimal $request, $id)
     {
+        $animal = Animal::find($id);
+
         $request->validate($request->rules());
 
         $request->persist($animal);
