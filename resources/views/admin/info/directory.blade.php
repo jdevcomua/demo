@@ -481,10 +481,12 @@
                                         <th>ПІБ представника</th>
                                         <th>Адреса</th>
                                         <th>Контактні дані</th>
+                                        <th>Реквізити</th>
                                     </tr>
                                     <tr>
                                         <th></th>
                                         <th class="no-search"></th>
+                                        <th></th>
                                         <th></th>
                                         <th></th>
                                         <th></th>
@@ -793,6 +795,7 @@
                     { "data": "chief_full_name" },
                     { "data": "address" },
                     { "data": "contact_info" },
+                    { "data": "requisites" },
                 ],
             });
         });
