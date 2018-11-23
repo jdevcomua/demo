@@ -193,10 +193,11 @@
                                 </div>
 
                                         <div class="form-group datepicker">
+                                            <div class="validation-error alert alert-danger hidden"></div>
                                             <label for="created_at" class="control-label">Дата смерті</label>
                                                 <input type="text" id="date_death" name="date" class="form-control no-cursor readonly" autocomplete="off" required>
                                         </div>
-                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Повідомити</button>
+                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax" style="width: 350px;">Повідомити</button>
                             </form>
                         </div>
                     </div>
@@ -224,10 +225,11 @@
                                 <input type="hidden" name="animal_id" value="{{$animal->id}}">
 
                                 <div class="form-group datepicker">
+                                    <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="created_at" class="control-label">Дата вивезення</label>
                                     <input type="text" id="date_move" name="date" class="form-control no-cursor readonly" required autocomplete="off" >
                                 </div>
-                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Повідомити</button>
+                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax" style="width: 350px;">Повідомити</button>
                             </form>
                         </div>
                     </div>
@@ -248,6 +250,10 @@
             form.submit();
         });
 
+        $('#changeOwnerButton').on('click', function () {
+            $('#requestChangeOwner').modal('show');
+        });
+
         $('#animal_death-btn').on('click', function () {
             $('#informAnimalDeath').modal('show');
         });
@@ -257,6 +263,41 @@
         });
 
         $('#cause_of_death').selectize();
+
+        $('.submit-ajax').click(function (e) {
+            e.preventDefault();
+            var form = $(this).closest('form');
+            var inputs = form.find('[name]');
+            var ajaxData = {};
+
+            inputs.each(function () {
+                var name = $(this).attr('name');
+                ajaxData[name] = $(this).val();
+            });
+
+
+            jQuery.ajax({
+                url: form.attr('action'),
+                method: 'post',
+                data: ajaxData,
+                success: function(data){
+                    window.location = data;
+                },
+                error: function (errors) {
+                    fillErrors(form, errors);
+                }
+            });
+        });
+
+        function fillErrors(form, errors) {
+            errors = errors['responseJSON']['errors'];
+
+            for (var key in errors) {
+                if (errors.hasOwnProperty(key)) {
+                    form.find('[name="' + key + '"]').siblings('.validation-error').empty().append("<p>" + errors[key][0] + "</p>").removeClass('hidden');
+                }
+            }
+        }
 
     </script>
 @endsection

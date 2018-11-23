@@ -416,7 +416,7 @@ class AnimalsController extends Controller
 
         $archiveRecord->archived()->save($animal);
 
-        return redirect()->route('animals.index');
+        return route('animals.index');
     }
 
     public function informMoved(InformAnimalMovedOut $request)
@@ -438,7 +438,7 @@ class AnimalsController extends Controller
 
         $archiveRecord->archived()->save($animal);
 
-        return redirect()->route('animals.index');
+        return route('animals.index');
     }
 
 }
