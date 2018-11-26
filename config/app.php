@@ -164,6 +164,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         Zizaco\Entrust\EntrustServiceProvider::class,
+        Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
         App\Providers\BlockServiceProvider::class,
         \App\Providers\LoggerServiceProvider::class,
         \App\Providers\ViewComposerProvider::class,

@@ -50,6 +50,17 @@
   color: #999;
   letter-spacing: 0.7px;
   border-radius: 0.9rem;
+
+  &.btn-found {
+    background: transparent;
+    border: 2px solid #014479;
+    padding: 0.5rem 1.1rem;
+    color: #014479;
+    max-width: 60%;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
   &.btn-big {
     font-size: 1.7rem;
     padding: 1.3rem 6rem;

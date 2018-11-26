@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 /**
  * App\Models\LostAnimal
@@ -24,11 +25,24 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LostAnimal extends Model
 {
+    use Sortable;
 
     protected $fillable = ['id', 'found', 'created_at', 'animal_id', 'processed'];
 
     protected $casts = [
         'found' => 'boolean',
     ];
+
+    public $sortable = ['created_at'];
+
+    public function animal()
+    {
+        return $this->belongsTo(Animal::class);
+    }
+
+    public function getLostAtAttribute()
+    {
+        return $this->created_at;
+    }
 
 }

@@ -41,6 +41,17 @@ body {
   }
 }
 
+.fa-sort-dropdown {
+  &-desc, &-asc {
+    background: no-repeat url('/img/icon/dropdown.svg') 100% center;
+    width: 1rem;
+    height: 0.7rem;
+  }
+  &-desc {
+    transform: scaleY(-1);
+  }
+}
+
 img.logo {
   width: 51px;
   height: 70px;

@@ -39,6 +39,8 @@
             @endauth
             <a href="{{ route('about') }}" class="nav-item @if($curRoute == 'about') active @endif">Про проект</a>
             <a href="{{ route('faq') }}" class="nav-item @if($curRoute == 'faq') active @endif">Часті запитання</a>
+            <a href="{{ route('lost-animals.index') }}" class="nav-item @if($curRoute == 'lost-animals.index') active @endif">Загублені/знайдені</a>
+
         </nav>
         <div class="socials">
             <a href="https://www.facebook.com/ReestrKyiv/" rel="noopener noreferrer" target="_blank"

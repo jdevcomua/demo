@@ -13,6 +13,7 @@
         "laravel/tinker": "^1.0",
         "predis/predis": "^1.1",
         "zizaco/entrust": "5.2.x-dev",
+        "kyslik/column-sortable": "5.7.*",
         "ext-json": "*"
     },
     "require-dev": {

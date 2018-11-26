@@ -19,7 +19,8 @@ Route::post('logout', 'AuthController@logout')->name('logout');
 Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () {
 
     Route::group(['middleware' => 'auth'], function () {
-
+        Route::resource('lost-animals', 'AnimalsLostController');
+        Route::get('lost-animals/found', 'AnimalsLostController@foundIndex')->name('lost-animals.found');
         Route::resource('animals', 'AnimalsController');
         Route::post('animals/search-request', 'AnimalsController@findAnimalRequest')->name('animals.search-request');
         Route::post('/animals/file/{animalFile}/remove', 'AnimalsController@removeFile')->name('animals.remove-file');

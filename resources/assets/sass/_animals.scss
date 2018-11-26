@@ -6,12 +6,40 @@
   font-style: normal;
 }
 
+.pets-lost-nav {
+  text-transform: uppercase;
+  & a {
+    color: #999;
+  }
+  & a.active {
+    color: #333;
+  }
+  & a:hover {
+    text-decoration: none;
+    color: #333;
+  }
+}
 
 .pets-list-header {
   font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: 1px;
   margin: 0 1rem;
+}
+
+.pets-list-sort {
+  margin: 1rem;
+  color: #999;
+  font-size: 1rem;
+  &-item {
+    padding-right: 1.5%;
+    & a {
+      color: inherit;
+    }
+    &.active {
+      text-decoration: underline;
+    }
+  }
 }
 .archived-pet {
   background-color: rgba(154, 154, 154, 0.33);
@@ -22,10 +50,10 @@
   border-bottom: 1px solid #ddd;
   position: relative;
   .pet-photo {
+    position: relative;
     flex-shrink: 0;
     width: 160px;
     height: 160px;
-    overflow: hidden;
     border-radius: 1rem;
     background-color: #ddd;
     display: flex;
@@ -698,6 +726,31 @@ $width: 100px;
  & .animal-action:nth-child(n+3) {
    margin-top: 50px;
  }
+}
+
+.animal-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 9.5rem;
+  text-align: center;
+  background-image: linear-gradient(#1f425d, #3a7098);
+  padding: 0.6rem 1.2rem;
+  position: absolute;
+  bottom: -1.3rem;
+  border-radius: 0.6rem;
+
+  &-icon {
+    height: 1.7rem;
+    width: 1.7rem;
+    display: inline-block;
+    background: url('/img/icon/paw.png') no-repeat;
+    background-size: contain;
+  }
+  &-number {
+    font-weight: 500;
+    color: #fff;
+  }
 }
 @media (max-width: 760px) {
   .animal-actions .animal-action {
