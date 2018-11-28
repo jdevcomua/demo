@@ -88,17 +88,17 @@
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="breed">Порода <span class="required-field">*</span></label>
-                    <select name="breed" id="breed" required data-value="{{ $pet->breed_id }}"></select>
+                    <select name="breed" class="breed" required data-value="{{ $pet->breed_id }}"></select>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="color">Масть <span class="required-field">*</span></label>
-                    <select name="color" id="color" required data-value="{{ $pet->color_id }}"></select>
+                    <select name="color" class="color" required data-value="{{ $pet->color_id }}"></select>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="fur">Тип шерсті <span class="required-field">*</span></label>
-                    <select name="fur" id="fur" required data-value="{{ $pet->fur_id }}"></select>
+                    <select name="fur" class="fur" required data-value="{{ $pet->fur_id }}"></select>
                 </div>
                 <div class="form-group datepicker">
                     <div class="validation-error alert alert-danger hidden"></div>
