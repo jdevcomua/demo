@@ -197,4 +197,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Organization::class);
     }
+    public function getContactInfoAttribute()
+    {
+
+        $contactInfo = [
+            'contact_name' => $this->first_name,
+            'contact_phone' => $this->phones[0]->phone,
+            'contact_email' => $this->primary_email->email
+        ];
+
+        return json_encode($contactInfo);
+
+    }
 }

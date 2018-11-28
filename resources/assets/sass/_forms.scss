@@ -59,6 +59,13 @@
     max-width: 60%;
     font-size: 1.1rem;
     font-weight: 600;
+    &.btn-found-white {
+      border: 2px solid #fff;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      margin-left: 3rem;
+    }
+
   }
 
   &.btn-big {

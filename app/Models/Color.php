@@ -37,6 +37,11 @@ class Color extends Model
         return $this->hasMany('App\Models\Animal');
     }
 
+    public function foundAnimals()
+    {
+        return $this->hasMany('App\Models\FoundAnimal');
+    }
+
     public function species()
     {
         return $this->belongsTo('App\Models\Species');
