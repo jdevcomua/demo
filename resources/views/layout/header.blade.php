@@ -39,7 +39,7 @@
             @endauth
             <a href="{{ route('about') }}" class="nav-item @if($curRoute == 'about') active @endif">Про проект</a>
             <a href="{{ route('faq') }}" class="nav-item @if($curRoute == 'faq') active @endif">Часті запитання</a>
-            <a href="{{ route('lost-animals.index') }}" class="nav-item @if($curRoute == 'lost-animals.index') active @endif">Загублені/знайдені</a>
+            <a href="{{ route('lost-animals.index') }}" class="nav-item @if(strpos($curRoute, 'lost-animals.') !== false) active @endif">Загублені/знайдені</a>
             <a href="#" class="nav-item btn btn-found btn-found-white" id="i-found-animal">Знайшов тварину</a>
 
         </nav>
@@ -64,12 +64,17 @@
                         <div class="col-md-12">
                             <h3>Знайшов тварину</h3>
                             <p>Будь ласка, заповніть інформацію про тварину щоб ми швидше могли знайти власника<br>
-                            <a href="#" style="text-decoration: underline; color: inherit">Знайшов жетон</a>
+                            <a href="#" style="text-decoration: underline; color: inherit" id="found-badge-btn">Знайшов жетон</a>
                             </p>
                         </div>
                         <div class="col-md-12">
                             <form class="search-request" id="form-modal" enctype="multipart/form-data" action="{{route('lost-animals.i-found-animal')}}" method="POST">
                                 @csrf
+                                <div class="form-group" style="display: none">
+                                    <div class="validation-error alert alert-danger hidden"></div>
+                                    <label for="badge">Номер жетону</label>
+                                    <input type="text" class="form-control" id="badge" name="badge">
+                                </div>
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label>Вид </label>

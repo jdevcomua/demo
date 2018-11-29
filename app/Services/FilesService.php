@@ -122,7 +122,7 @@ class FilesService
         $data['path'] = $file->store('found_animals/' . $foundAnimal->id
             . FoundAnimalsFile::FILE_IMAGE_FOLDER);
 
-        $foundAnimal->files()->create($data);
+        $foundAnimal->images()->create($data);
     }
 
     private function sanitaze_name($name)

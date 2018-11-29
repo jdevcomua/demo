@@ -34,3 +34,7 @@ $('#i-found-animal').on('click', function (e) {
     e.preventDefault();
     $('#foundAnimalModal').modal('show');
 });
+
+$('#found-badge-btn').on('click', function () {
+    $('#form-modal #badge').parent().toggle();
+});
