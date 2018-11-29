@@ -48,9 +48,15 @@
                     <div class="dropdown more-button dropleft">
                         <div class="more-icon" data-toggle="dropdown"></div>
                         <div class="dropdown-menu">
+                            @if($lostAnimal->animal->user_id === \Auth::id())
                             <a class="dropdown-item"
                                href="{{ route('animals.show', ['id' => $lostAnimal->animal->id]) }}">Переглянути
                                 картку</a>
+                            @else
+                                <a class="dropdown-item"
+                                   href="{{ route('lost-animals.lost.show', ['id' => $lostAnimal->id]) }}">Переглянути
+                                    картку</a>
+                            @endif
                             @if(!$lostAnimal->animal->verified)
                                 @if($lostAnimal->animal->user_id === \Auth::id())
                                     <a class="dropdown-item"

@@ -140,6 +140,17 @@ class AnimalsLostController extends Controller
         return view('lost-animals.show', compact('animal'));
     }
 
+    public function lostShow($id)
+    {
+        $animal = LostAnimal::find($id)->animal;
+        $animal->load(['species', 'color', 'files']);
+        $animal->imagesArray = $animal->images->pluck('path', 'num')->toArray();
+
+        return view('lost-animals.lost_show', [
+            'animal' => $animal,
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
