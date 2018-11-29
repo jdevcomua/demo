@@ -31,7 +31,7 @@ class AnimalsLostController extends Controller
 
     public function foundIndex(FoundAnimal $foundAnimal)
     {
-        $foundAnimals = $foundAnimal->sortable(['created_at' => 'desc'])->paginate();
+        $foundAnimals = $foundAnimal->sortable(['created_at' => 'desc'])->where(['approved' => 1])->paginate();
 
         return view('lost-animals.found', compact('foundAnimals'));
     }

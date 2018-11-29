@@ -100,7 +100,7 @@
                     <span class="fa fa-file-text"></span>
                     <span class="sidebar-title">Запити</span>
                     <span class="caret"></span>
-                    @if($hasNewRequestsLost || $hasNewRequestsOwn || $hasNewRequestsChangeOwn)
+                    @if($hasNewRequestsLost || $hasNewRequestsOwn || $hasNewRequestsChangeOwn || $hasNewRequestsFound)
                         <span class="sidebar-title-tray">
                                     <span class="label label-xs bg-danger">!</span>
                                 </span>
@@ -121,6 +121,16 @@
                         <a href="{{route('admin.administrating.requests.lost.index')}}">
                             <span class="fa fa-info-circle"></span>Загублені тварини
                             @if($hasNewRequestsLost)
+                                <span class="sidebar-title-tray">
+                                    <span class="label label-xs bg-danger">!</span>
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+                    <li{!! (strpos($curRoute, 'requests.found') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.administrating.requests.found.index')}}">
+                            <span class="fa fa-info-circle"></span>Знайдені тварини
+                            @if($hasNewRequestsFound)
                                 <span class="sidebar-title-tray">
                                     <span class="label label-xs bg-danger">!</span>
                                 </span>

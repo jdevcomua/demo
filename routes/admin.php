@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 Route::redirect('/', '/admin/animals/index', 302)
     ->name('index');
@@ -273,6 +273,24 @@ Route::group([
                 ->name('data');
             Route::get('/proceed/{id?}', 'Admin\Requests\LostRequestsController@proceed')
                 ->name('proceed');
+        });
+
+        Route::group([
+            'prefix' => 'found',
+            'as' => 'found.'
+        ], function () {
+            Route::get('/', 'Admin\Requests\LostRequestsController@foundIndex')
+                ->name('index');
+            Route::get('data', 'Admin\Requests\LostRequestsController@foundData')
+                ->name('data');
+            Route::get('/proceed/{id?}', 'Admin\Requests\LostRequestsController@foundProceed')
+                ->name('proceed');
+            Route::get('/approve/{id?}', 'Admin\Requests\LostRequestsController@foundApprove')
+                ->name('approve');
+            Route::get('/disapprove/{id?}', 'Admin\Requests\LostRequestsController@foundDisapprove')
+                ->name('disapprove');
+            Route::get('/show/{id}', 'Admin\Requests\LostRequestsController@foundShow')
+                ->name('show');
         });
 
         Route::group([

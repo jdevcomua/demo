@@ -12,7 +12,7 @@ class FoundAnimal extends Model
     protected $fillable = [
         'id', 'species_id', 'breed_id',
         'color_id', 'badge', 'found_address', 'contact_name',
-        'contact_phone', 'contact_email'
+        'contact_phone', 'contact_email', 'processed', 'approved'
     ];
 
     public function breed()

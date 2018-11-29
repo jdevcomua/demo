@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\AnimalsRequest;
 use App\Models\ChangeAnimalOwner;
+use App\Models\FoundAnimal;
 use App\Models\LostAnimal;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +28,7 @@ class ViewComposerProvider extends ServiceProvider
             $view->with([
                 'hasNewRequestsOwn' => $this->hasNewRequestsOwn($request),
                 'hasNewRequestsLost' => $this->hasNewRequestsLost($request),
+                'hasNewRequestsFound' => $this->hasNewRequestsFound($request),
                 'hasNewRequestsChangeOwn' => $this->hasNewRequestsChangeOwn($request),
             ]);
         });
@@ -53,6 +55,11 @@ class ViewComposerProvider extends ServiceProvider
     private function hasNewRequestsLost(Request $request)
     {
         return $this->hasNewRequestsCommon($request, LostAnimal::class);
+    }
+
+    private function hasNewRequestsFound(Request $request)
+    {
+        return $this->hasNewRequestsCommon($request, FoundAnimal::class);
     }
 
     private function hasNewRequestsChangeOwn(Request $request)
