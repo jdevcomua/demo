@@ -735,4 +735,54 @@ class DataBasesController extends Controller
             'user' => $user
         ]);
     }
+
+    public function addIdentifyingDevice(Request $request, $id)
+    {
+        $requestData = $request->all();
+
+
+        $rulesByTypes = [
+            'clip' => 'required',
+            'chip' => 'required|between:15,15',
+            'badge' => 'required|between:5,8',
+        ];
+
+
+        $rules = [
+            'device_type' => 'required'
+        ];
+
+        $messages = [
+            '*.required' => 'Номер та тип пристрою є обов\'язковим полем!',
+            '*.between' => 'Номер данного пристрою повинен складатися мінімум з :min символів та максимум з :max символів!',
+        ];
+
+        if(isset($rulesByTypes[$requestData['device_type']])) {
+            $rules['device_number'] = $rulesByTypes[$requestData['device_type']];
+        }
+
+        $validator = Validator::make($requestData, $rules, $messages);
+
+        $validator->validate();
+
+        $device_column = $requestData['device_type'];
+
+        $animal = Animal::findOrFail($id);
+        $animal->$device_column = $requestData['device_number'];
+        $animal->save();
+
+        return back()->with('success_identifying_device', 'Пристрій було додано успішно!');
+    }
+
+    public function removeIdentifyingDevice(Request $request, $id)
+    {
+        $requestData = $request->all();
+        $device_column = $requestData['device_type'];
+
+        $animal = Animal::findOrFail($id);
+        $animal->$device_column = null;
+        $animal->save();
+
+        return back()->with('success_identifying_device', 'Пристрій було видалено успішно!');
+    }
 }

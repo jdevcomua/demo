@@ -67,10 +67,16 @@ class Animal extends Model
     const GENDER_FEMALE = 0;
     const GENDER_MALE = 1;
 
+    private $identifying_devices = [
+        'chip' => 'Чіп',
+        'clip' => 'Кліпса',
+        'badge' => 'Жетон з QR-кодом'
+    ];
+
     protected $fillable = [
         'id', 'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id', 'user_id',
         'birthday', 'sterilized', 'comment', 'verified', 'number', 'badge', 'request_user_id',
-        'archived_type', 'archived_at',
+        'archived_type', 'archived_at', 'clip', 'chip',
 
         //generated attributes, don't fill them
         '_verification',
@@ -167,5 +173,23 @@ class Animal extends Model
     public function archivable()
     {
         return $this->morphTo('archived', 'archived_type', 'archived_id');
+    }
+
+    public function identifyingDevicesArray(): array
+    {
+        return $this->identifying_devices;
+    }
+
+    public function getIdentifyingDevicesCountAttribute(): int
+    {
+        $count = 0;
+
+        foreach ($this->identifying_devices as $k => $v) {
+            if ($this->$k !== null) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 }

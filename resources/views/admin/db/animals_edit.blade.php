@@ -324,6 +324,68 @@
                         </form>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="panel panel-visible" id="spy5">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <span class="glyphicon glyphicon-tasks"></span>Ідентифікуючі пристрої</div>
+                        </div>
+                        @if($errors->identifying_device)
+                            @foreach($errors->identifying_device->all() as $error)
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-remove pr10"></i>
+                                    {{ $error }}
+                                </div>
+                            @endforeach
+                        @endif
+
+                        @if (\Session::has('success_identifying_device'))
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <i class="fa fa-check pr10"></i>
+                                {{ \Session::get('success_identifying_device') }}
+                            </div>
+                        @endif
+
+                        @if($animal->identifying_devices_count > 0)
+                            @foreach($animal->identifyingDevicesArray() as $k => $v)
+                                @if($animal->$k !== null)
+                                    <form class="form-horizontal" action="{{route('admin.db.animals.remove-identifying-device', $animal->id)}}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="device_type" value="{{$k}}">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label class="col-xs-3 control-label">{{$v}}:</label>
+                                                <div class="col-xs-6">
+                                                    <label class="control-label">{{$animal->$k}}</label>
+                                                </div>
+                                                <div class="text-right col-xs-3">
+                                                    <button type="submit" class="btn btn-default deleteDeviceBtn ph25 float-right">Видалити</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                @endif
+                            @endforeach
+                        @else
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label"></label>
+                                    <div class="col-xs-8">
+                                        <label class="control-label">Ідентифікуючі пристрої відсутні</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @if($animal->identifying_devices_count < count($animal->identifyingDevicesArray()))
+                            <div class="panel-footer text-right">
+                                <a id="deviceAddButton" href="#"
+                                   class="btn btn-success ph25 float-right">Додати</a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
@@ -473,6 +535,54 @@
                 </div>
             </div>
         </div>
+
+            <div class="modal fade" id="addIdentifyingDeviceModal" tabindex="-2" role="dialog" aria-labelledby="addIdentifyingDeviceModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-bottom: 25px;">
+                                    <h3>Додати новий ідентифікуючий пристрій</h3>
+                                </div>
+                                <div class="col-md-12">
+                                    <form id="identifyDeviceForm" action="{{route('admin.db.animals.add-identifying-device', $animal->id)}}" method="POST">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="form-group select">
+                                                <label for="archive_type" class="col-lg-3 control-label">Тип пристрою:</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <select name="device_type" id="device_type" required>
+                                                        @foreach($animal->identifyingDevicesArray() as $k => $v)
+                                                            @if($animal->$k === null)
+                                                                <option value="{{$k}}">{{$v}}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="created_at" class="col-lg-3 control-label">Номер пристрою:</label>
+                                                    <div class="col-lg-9">
+                                                        <div class="validation-error alert alert-danger hidden"></div>
+                                                        <input type="text" name="device_number" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax">Додати</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
 @endsection
 
@@ -559,5 +669,55 @@
             }
             $(this).unbind('submit').submit();
         });
+
+        $('#deviceAddButton').on('click', function () {
+            $('#addIdentifyingDeviceModal').modal('show');
+        });
+
+        $('#device_type').selectize({
+            maxItems: 1,
+            persist: false,
+            create: false,
+        });
+
+        $('.deleteDeviceBtn').on('click', function () {
+            return confirm("Ви впевнені що хочете видалити даний пристрій?");
+        });
+
+        $('.submit-ajax').click(function (e) {
+            e.preventDefault();
+            var form = $(this).closest('form');
+            var inputs = form.find('[name]');
+            var ajaxData = {};
+
+            inputs.each(function () {
+                var name = $(this).attr('name');
+                ajaxData[name] = $(this).val();
+            });
+
+
+            jQuery.ajax({
+                url: form.attr('action'),
+                method: 'post',
+                data: ajaxData,
+                success: function(data){
+                    window.location = data;
+                },
+                error: function (errors) {
+                    console.log(errors['responseJSON']['errors']);
+                    fillErrors(form, errors);
+                }
+            });
+        });
+
+        function fillErrors(form, errors) {
+            errors = errors['responseJSON']['errors'];
+
+            for (var key in errors) {
+                if (errors.hasOwnProperty(key)) {
+                    form.find('[name="' + key + '"]').siblings('.validation-error').empty().append("<p>" + errors[key][0] + "</p>").removeClass('hidden');
+                }
+            }
+        }
     </script>
 @endsection
