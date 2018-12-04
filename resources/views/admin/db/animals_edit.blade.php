@@ -386,6 +386,29 @@
                         @endif
                     </div>
                 </div>
+
+                @if(count($animal->chronicles))
+                    <div class="col-md-12">
+                        <div class="panel panel-visible" id="spy12">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Історія</div>
+                            </div>
+                            <div class="panel-body">
+                                    <div class="pet-chronicles-block">
+                                        @foreach($animal->chronicles->sortByDesc('created_at') as $chronicle)
+                                            <div class="pet-chronicles-block-item">
+                                                <span class="date">{{$chronicle->date}}</span>
+                                                <div class="content">{{$chronicle->text}}</div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+
                 <div class="col-md-12">
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
