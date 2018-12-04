@@ -51,7 +51,7 @@
             $('#badge-search').submit();
         }
 
-        const scanner = new QrScanner(video, result => setResult(camQrResult, result));
+        const scanner = new QrScanner(video, result => setResult(camQrResult, result.match(/\d+/)[0]));
         scanner.start();
 
     </script>
