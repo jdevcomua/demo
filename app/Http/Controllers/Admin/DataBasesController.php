@@ -6,6 +6,7 @@ use App\Events\AnimalAdded;
 use App\Helpers\DataTables;
 use App\Http\Requests\ArchiveAnimal;
 use App\Models\Animal;
+use App\Models\AnimalChronicle;
 use App\Models\AnimalsFile;
 use App\Models\CauseOfDeath;
 use App\Models\DeathArchiveRecord;
@@ -19,6 +20,7 @@ use App\Models\UserEmail;
 use App\Models\UserPhone;
 use App\Rules\Badge;
 use App\Rules\Phone;
+use App\Services\Animals\AnimalChronicleServiceInterface;
 use App\Services\FilesService;
 use App\User;
 use Cache;
@@ -736,9 +738,14 @@ class DataBasesController extends Controller
         ]);
     }
 
-    public function addIdentifyingDevice(Request $request, $id)
+    public function addIdentifyingDevice(Request $request, AnimalChronicleServiceInterface $chs,  $id)
     {
         $requestData = $request->all();
+        $chronicleTypesMap = [
+            'clip' => AnimalChronicle::TYPE_ADDED_CLIP,
+            'chip' => AnimalChronicle::TYPE_ADDED_CHIP,
+            'badge' => AnimalChronicle::TYPE_ADDED_BADGE,
+        ];
 
 
         $rulesByTypes = [
@@ -771,17 +778,27 @@ class DataBasesController extends Controller
         $animal->$device_column = $requestData['device_number'];
         $animal->save();
 
+        $chs->addAnimalChronicle($animal,$chronicleTypesMap[$device_column], [$device_column => $requestData['device_number']]);
+
         return back()->with('success_identifying_device', 'Пристрій було додано успішно!');
     }
 
-    public function removeIdentifyingDevice(Request $request, $id)
+    public function removeIdentifyingDevice(Request $request, AnimalChronicleServiceInterface $chs, $id)
     {
         $requestData = $request->all();
+        $chronicleTypesMap = [
+            'clip' => AnimalChronicle::TYPE_REMOVED_CLIP,
+            'chip' => AnimalChronicle::TYPE_REMOVED_CHIP,
+            'badge' => AnimalChronicle::TYPE_REMOVED_BADGE,
+        ];
+
         $device_column = $requestData['device_type'];
 
         $animal = Animal::findOrFail($id);
         $animal->$device_column = null;
         $animal->save();
+
+        $chs->addAnimalChronicle($animal, $chronicleTypesMap[$device_column]);
 
         return back()->with('success_identifying_device', 'Пристрій було видалено успішно!');
     }

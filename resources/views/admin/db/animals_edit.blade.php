@@ -700,8 +700,8 @@
                 url: form.attr('action'),
                 method: 'post',
                 data: ajaxData,
-                success: function(data){
-                    window.location = data;
+                success: function() {
+                    location.reload();
                 },
                 error: function (errors) {
                     console.log(errors['responseJSON']['errors']);

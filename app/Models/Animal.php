@@ -127,6 +127,11 @@ class Animal extends Model
         return $this->hasMany('App\Models\AnimalsFile');
     }
 
+    public function chronicles()
+    {
+        return $this->hasMany(AnimalChronicle::class);
+    }
+
     public function getImagesAttribute()
     {
         return $this->files

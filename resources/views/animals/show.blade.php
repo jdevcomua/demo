@@ -1,6 +1,7 @@
 @extends('layout.app')
 
 @section('title', $animal->nickname)
+{{--$animal->chronicles[1]->type->fields[0]->value--}}
 
 @section('content')
     <div class="page-title">
@@ -69,6 +70,18 @@
             <span class="title">Коментарі (Особливі прикмети)</span>
             <span class="content">{{ $animal->comment }}</span>
         </div>
+        @if(count($animal->chronicles))
+            <hr class="divider">
+            <div class="pet-chronicles-block">
+                <p class="title">Історія</p>
+                @foreach($animal->chronicles->sortByDesc('created_at') as $chronicle)
+                <div class="pet-chronicles-block-item">
+                    <span class="date">{{$chronicle->date}}</span>
+                    <div class="content">{{$chronicle->text}}</div>
+                </div>
+                @endforeach
+            </div>
+        @endif
         <hr class="divider">
         <div class="files-container">
             <div class="files-container-title">Файли</div>
