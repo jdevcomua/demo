@@ -14,7 +14,7 @@ class AnimalChroniclesSeeder extends Seeder
     public function run()
     {
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'badge_added';
+        $chronicleType->type = 'badge-added';
         $chronicleType->template_text = 'Жетон з QR-кодом додано. Номер жетону: {badge}.';
         $chronicleType->save();
 
@@ -24,7 +24,7 @@ class AnimalChroniclesSeeder extends Seeder
         $chronicleField->save();
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'clip_added';
+        $chronicleType->type = 'clip-added';
         $chronicleType->template_text = 'Кліпсу додано. Номер кліпси: {clip}.';
         $chronicleType->save();
 
@@ -34,7 +34,7 @@ class AnimalChroniclesSeeder extends Seeder
         $chronicleField->save();
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'chip_added';
+        $chronicleType->type = 'chip-added';
         $chronicleType->template_text = 'Чіп додано. Номер чіпу: {chip}.';
         $chronicleType->save();
 
@@ -45,17 +45,17 @@ class AnimalChroniclesSeeder extends Seeder
 
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'badge_removed';
+        $chronicleType->type = 'badge-removed';
         $chronicleType->template_text = 'Жетон з QR-кодом видалено.';
         $chronicleType->save();
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'clip_removed';
+        $chronicleType->type = 'clip-removed';
         $chronicleType->template_text = 'Кліпсу видалено.';
         $chronicleType->save();
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'chip_removed';
+        $chronicleType->type = 'chip-removed';
         $chronicleType->template_text = 'Чіп видалено.';
         $chronicleType->save();
 
