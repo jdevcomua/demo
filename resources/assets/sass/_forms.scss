@@ -81,6 +81,14 @@
       background-color: #0966af;
     }
   }
+  &.btn-light-blue {
+    background-color: #007eff;
+    border-color: #007eff;
+    color: #fff;
+    &:hover {
+      background-color: rgb(0, 109, 210);
+    }
+  }
   &.btn-dgrey {
     background-color: #9b9b9b;
     border-color: #9b9b9b;
@@ -120,6 +128,12 @@
     }
     &.i-change {
       background-image: url('/img/icon/change.png');
+    }
+    &.i-dead {
+      background-image: url('/img/icon/dead.svg');
+    }
+    &.i-plane {
+      background-image: url('/img/icon/plane.svg');
     }
   }
 }

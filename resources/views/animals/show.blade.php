@@ -117,11 +117,14 @@
                 <button class="btn btn-dgrey btn-i i-change btn-tbig" id="changeOwnerButton">Змінити власника</button>
             </div>
                 <div class="animal-action">
-                    <button class="btn btn-primary" id="animal_death-btn" >Повідомити про смерть</button>
+                    <div class="action-title">Тварина померла</div>
+                    <div class="action-description">Якщо  ваш улюбленець помер тисніть кнопку <i>Тварина померла</i> для того щоб повідомити про це!</div>
+                    <button class="btn btn-dgrey btn-i i-dead btn-tbig" id="animal_death-btn" >Тварина померла</button>
                 </div>
                 <div class="animal-action">
-                    <button class="btn btn-primary" id="moved_animal-btn">Тварина
-                        вивезена з м. Київ</button>
+                    <div class="action-title">Зміна країни</div>
+                    <div class="action-description">Якщо тварина змінила країну проживання тисніть кнопку <i>Тварина виїхала</i>  для того щоб повідомити про це!</div>
+                    <button class="btn btn-light-blue btn-i i-plane btn-tbig" id="moved_animal-btn">Тварина виїхала</button>
                 </div>
         </div>
     </div>
