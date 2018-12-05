@@ -20,7 +20,7 @@
         @endif
     </div>
         <div class="col-12">
-            <video muted="" autoplay="" playsinline="" class="cam-video" id="qr-video"></video>
+            <video muted="" autoplay="" playsinline="" class="cam-video" id="qr-video" style="max-height:80vh"></video>
         </div>
         <div class="col-12">
             <div class="buttons">
