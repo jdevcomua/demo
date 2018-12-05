@@ -727,7 +727,7 @@
                     location.reload();
                 },
                 error: function (errors) {
-                    console.log(errors['responseJSON']['errors']);
+                    $('.submit-ajax').removeAttr('disabled');
                     fillErrors(form, errors);
                 }
             });
