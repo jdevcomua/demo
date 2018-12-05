@@ -355,7 +355,7 @@ class AnimalsController extends Controller
         $animal = Animal::where('badge', $badge)
 //            ->whereNull('user_id')
             ->first();
-        if (Auth::user()->can('admin-panel')) {
+        if (\Auth::user()->can('admin-panel')) {
             return redirect()->route('admin.db.animals.edit', $animal->id);
         }
 
