@@ -351,6 +351,17 @@ class AnimalsController extends Controller
 
     public function search (Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'badge' => 'required|min:5|max:8',
+        ], [
+            'badge.required' => 'Номер жетону є обов\'язковим полем',
+            'badge.min' => 'Номер жетону повинен бути не менше :min символів',
+            'badge.max' => 'Номер жетону повинен бути не біольше :max символів',
+        ]);
+
+        $validator->validate();
+
+
         $badge = $request->get('badge');
         $animal = Animal::where('badge', $badge)
 //            ->whereNull('user_id')

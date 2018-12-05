@@ -4,10 +4,12 @@
 
 @section('content')
     <div class="success-page">
-        @if(Session::has('error'))
+        @if($errors->any())
+            @foreach ($errors->all() as $error)
             <div class="alert alert-danger" role="alert">
-                {{Session::get('error')}}
+                {{$error}}
             </div>
+            @endforeach
         @endif
     </div>
     <div class="row">

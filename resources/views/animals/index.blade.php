@@ -84,12 +84,10 @@
                 <span>або</span>
             </div>
             <a href="#" class="btn btn-block btn-grey" id="animal-search" data-toggle="modal" data-target="#searchModal">Мою тварину вже <br> зареєстровано</a>
-            @if(false)
             <div class="line">
                 <hr>
             </div>
             <a href="{{ route('animals.scan') }}" class="add-new-pet btn btn-block btn-warning">Сканувати код</a>
-            @endif
         </div>
     </div>
 
