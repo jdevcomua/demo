@@ -731,6 +731,7 @@
                     fillErrors(form, errors);
                 }
             });
+            $(this).attr('disabled', '');
         });
 
         function fillErrors(form, errors) {
