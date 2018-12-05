@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\AnimalChronicle;
 use App\Models\AnimalChronicleField;
 use App\Models\AnimalChronicleType;
 use Illuminate\Database\Seeder;
@@ -15,48 +14,48 @@ class AnimalChroniclesSeeder extends Seeder
     public function run()
     {
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = AnimalChronicle::TYPE_ADDED_BADGE;
-        $chronicleType->template_text = 'Жетон з QR-кодом додано. Номер жетону: {' . AnimalChronicle::FIELD_BADGE . '}.';
+        $chronicleType->type = 'badge_added';
+        $chronicleType->template_text = 'Жетон з QR-кодом додано. Номер жетону: {badge}.';
         $chronicleType->save();
 
         $chronicleField = new AnimalChronicleField;
         $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = AnimalChronicle::FIELD_BADGE;
+        $chronicleField->field_name = 'badge';
         $chronicleField->save();
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = AnimalChronicle::TYPE_ADDED_CLIP;
-        $chronicleType->template_text = 'Кліпсу додано. Номер кліпси: {' . AnimalChronicle::FIELD_CLIP . '}.';
+        $chronicleType->type = 'clip_added';
+        $chronicleType->template_text = 'Кліпсу додано. Номер кліпси: {clip}.';
         $chronicleType->save();
 
         $chronicleField = new AnimalChronicleField;
         $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = AnimalChronicle::FIELD_CLIP;
+        $chronicleField->field_name = 'clip';
         $chronicleField->save();
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = AnimalChronicle::TYPE_ADDED_CHIP;
-        $chronicleType->template_text = 'Чіп додано. Номер чіпу: {' . AnimalChronicle::FIELD_CHIP . '}.';
+        $chronicleType->type = 'chip_added';
+        $chronicleType->template_text = 'Чіп додано. Номер чіпу: {chip}.';
         $chronicleType->save();
 
         $chronicleField = new AnimalChronicleField;
         $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = AnimalChronicle::FIELD_CLIP;
+        $chronicleField->field_name = 'chip';
         $chronicleField->save();
 
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = AnimalChronicle::TYPE_REMOVED_BADGE;
+        $chronicleType->type = 'badge_removed';
         $chronicleType->template_text = 'Жетон з QR-кодом видалено.';
         $chronicleType->save();
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = AnimalChronicle::TYPE_REMOVED_CLIP;
+        $chronicleType->type = 'clip_removed';
         $chronicleType->template_text = 'Кліпсу видалено.';
         $chronicleType->save();
 
         $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = AnimalChronicle::TYPE_REMOVED_CHIP;
+        $chronicleType->type = 'chip_removed';
         $chronicleType->template_text = 'Чіп видалено.';
         $chronicleType->save();
 

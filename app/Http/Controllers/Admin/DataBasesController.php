@@ -742,9 +742,9 @@ class DataBasesController extends Controller
     {
         $requestData = $request->all();
         $chronicleTypesMap = [
-            'clip' => AnimalChronicle::TYPE_ADDED_CLIP,
-            'chip' => AnimalChronicle::TYPE_ADDED_CHIP,
-            'badge' => AnimalChronicle::TYPE_ADDED_BADGE,
+            'clip' => 'clip-added',
+            'chip' => 'chip-added',
+            'badge' => 'badge-added',
         ];
 
 
@@ -787,9 +787,9 @@ class DataBasesController extends Controller
     {
         $requestData = $request->all();
         $chronicleTypesMap = [
-            'clip' => AnimalChronicle::TYPE_REMOVED_CLIP,
-            'chip' => AnimalChronicle::TYPE_REMOVED_CHIP,
-            'badge' => AnimalChronicle::TYPE_REMOVED_BADGE,
+            'clip' => 'clip-removed',
+            'chip' => 'chip-removed',
+            'badge' => 'badge-removed',
         ];
 
         $device_column = $requestData['device_type'];

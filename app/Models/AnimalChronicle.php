@@ -7,17 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AnimalChronicle extends Model
 {
-    const FIELD_BADGE = 'badge';
-    const FIELD_CLIP = 'clip';
-    const FIELD_CHIP = 'chip';
-
-    const TYPE_ADDED_BADGE = 'badge-added';
-    const TYPE_ADDED_CLIP =  'clip-added';
-    const TYPE_ADDED_CHIP =  'chip-added';
-
-    const TYPE_REMOVED_BADGE =  'badge-removed';
-    const TYPE_REMOVED_CLIP =  'clip-removed';
-    const TYPE_REMOVED_CHIP =  'chip-removed';
 
     public function type()
     {
