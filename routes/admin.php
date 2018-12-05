@@ -56,6 +56,7 @@ Route::group([
         ->name('store');
     Route::get('edit/{id?}', 'Admin\DataBasesController@animalEdit')
         ->name('edit');
+    Route::view('scan', 'admin.db.animals_scan')->name('scan');
     Route::put('update/{id}', 'Admin\DataBasesController@animalUpdate')
         ->name('update');
     Route::delete('remove/{id?}', 'Admin\DataBasesController@animalRemove')
