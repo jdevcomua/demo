@@ -47,7 +47,6 @@ Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () 
     Route::group([
         'prefix' => '/ajax',
         'as' => 'ajax.',
-        'middleware' => ['guest'],
     ], function () {
         Route::get('/species/{species}/breeds', 'AjaxController@getBreeds')
             ->name('getBreeds');
