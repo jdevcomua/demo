@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App;
+use App\Listeners\AnimalAddedEventListener;
 use App\Listeners\CommonEventListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -16,7 +17,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\AnimalRequestAccepted'  =>  [CommonEventListener::class],
         'App\Events\AnimalRequestDeclined'  =>  [CommonEventListener::class],
-        'App\Events\AnimalAdded'            =>  [CommonEventListener::class],
+        'App\Events\AnimalAdded'            =>  [CommonEventListener::class, AnimalAddedEventListener::class],
         'App\Events\AnimalBadgeRequestSent' =>  [CommonEventListener::class],
         'App\Events\AnimalFormRequestSent'  =>  [CommonEventListener::class],
     ];

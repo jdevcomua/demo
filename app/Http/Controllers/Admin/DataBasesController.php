@@ -506,7 +506,7 @@ class DataBasesController extends Controller
 
         if ($user) {
             $animal = $user->animals()->create($data);
-            event(new AnimalAdded($user, [$animal]));
+            event(new AnimalAdded($user, $animal, [$animal]));
         } else {
             $animal = Animal::create($data);
         }

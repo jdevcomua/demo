@@ -139,7 +139,7 @@ class AnimalsController extends Controller
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
-        event(new AnimalAdded($user));
+        event(new AnimalAdded($user, $animal));
 
         \Session::flash('new-animal', ' ');
 

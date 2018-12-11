@@ -45,6 +45,7 @@ return [
         'host_api' => env('KYIV_ID_HOST_API'),
         'force_login' => env('KYIV_ID_FORCE_LOGIN_URI'),
         'logout' => env('KYIV_ID_LOGOUT_URI'),
+        'create_order_endpoint' => env('KYIV_ID_CREATE_ORDER'),
     ],
 
 ];
