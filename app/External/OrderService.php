@@ -17,10 +17,12 @@ class OrderService
 
     public function sendData()
     {
-        return Curl::to($this->endpoint)
-            ->withHeader('Authorization: ' . 'Bearer ' . \Session::get('kyiv_id_access_token'))
-            ->withHeader('Content-Type: ' . 'application/json')
-            ->withData($this->order->dataAsArray())->asJson()->post();
+        if (\Session::exists('kyiv_id_access_token')) {
+            Curl::to($this->endpoint)
+                ->withHeader('Authorization: ' . 'Bearer ' . \Session::get('kyiv_id_access_token'))
+                ->withHeader('Content-Type: ' . 'application/json')
+                ->withData($this->order->dataAsArray())->asJson()->post();
+        }
     }
 
 }
