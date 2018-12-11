@@ -34,6 +34,10 @@ $.ajaxSetup({
 $('input[required]').each(function () {
     $(this).attr('title', 'Заповніть це поле.');
 });
+
+$('select[required]').each(function () {
+    $(this).attr('title', 'Заповніть це поле.');
+});
 $('input.custom-file-input').change(function () {
     var count = this.files.length;
     var txt;

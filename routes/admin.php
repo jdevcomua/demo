@@ -214,6 +214,26 @@ Route::group([
         });
     });
 
+
+//    Route::resource('mailings', 'Admin\MailingController')->except('show');
+//    Route::get('mailings/data', 'Admin\DataController@mailingsData')->name('mailings.data');
+
+//    Route::resource('groups', 'Admin\GroupsController')->except('show');
+//    Route::get('groups/data', 'Admin\DataController@groupsData')->name('groups.data');
+
+    Route::resource('templates', 'Admin\EmailTemplatesController')->except('show');
+    Route::get('templates/data', 'Admin\EmailTemplatesController@templatesData')->name('templates.data');
+
+    Route::get('templates/fire', 'Admin\EmailTemplatesController@showFirings')->name('templates.show.fire');
+    Route::post('templates/fire', 'Admin\EmailTemplatesController@fireTemplate')->name('templates.fire');
+
+//    Route::resource('teams', 'Admin\TeamsController');
+//    Route::get('teams/data', 'Admin\DataController@teamsData')->name('teams.data');
+//    Route::delete('teams/detach/{team}', 'Admin\TeamMembersController@detach')->name('teams.detach');
+//    Route::post('teams/attach/{team}', 'Admin\TeamMembersController@attach')->name('teams.attach');
+//    Route::get('teams/{team}', 'Admin\TeamMembersController@teamMembersIndex')->name('teams.team');
+//    Route::get('teams/{team}/add-member', 'Admin\TeamMembersController@create')->name('teams.team-member.create');
+
 });
 
 

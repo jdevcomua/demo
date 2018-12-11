@@ -158,6 +158,13 @@ div#files-container {
     }
   }
 }
+.fire {
+  .selectize-control.multi .selectize-input > div {
+    background: #4a89dc;
+    color: white;
+    border: 1px solid #4a89ff;
+  }
+}
 
 
 .select-gen .selectize-input, .select .selectize-input {

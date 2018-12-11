@@ -59,6 +59,29 @@
                         </li>
                     </ul>
                 </li>
+                <li class="sidebar-label pt20">Mailing Settings</li>
+
+                <li >
+                    <a href="{{ route('admin.templates.index') }}">
+                        <span class="glyphicon glyphicon-envelope"></span>
+                        <span class="sidebar-title">{{ __('Email Templates') }}</span>
+                    </a>
+                </li>
+            @if(false)
+                <li >
+                    <a href="{{ route('admin.mailings.index') }}">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        <span class="sidebar-title">{{ __('Mailing configs') }}</span>
+                    </a>
+                </li>
+
+                <li >
+                    <a href="{{ route('admin.groups.index') }}">
+                        <span class="glyphicon glyphicon-list"></span>
+                        <span class="sidebar-title">{{ __('Mailing groups') }}</span>
+                    </a>
+                </li>
+            @endif
             @endpermission
 
             <li class="sidebar-label pt20">Адміністрування</li>
