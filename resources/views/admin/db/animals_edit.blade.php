@@ -317,7 +317,7 @@
                             </div>
                             @if(!$animal->archived_type)
                                 <div class="panel-footer text-right">
-                                    <a id="archiveButton" href="#"
+                                    <a id="archiveButton" href="javascript:void(0)"
                                        class="btn btn-danger ph25">Архівувати</a>
                                 </div>
                             @endif
@@ -380,10 +380,96 @@
                         @endif
                         @if($animal->identifying_devices_count < count($animal->identifyingDevicesArray()))
                             <div class="panel-footer text-right">
-                                <a id="deviceAddButton" href="#"
+                                <a id="deviceAddButton" href="javascript:void(0)"
                                    class="btn btn-success ph25 float-right">Додати</a>
                             </div>
                         @endif
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class="panel panel-visible" id="spy11">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <span class="glyphicon glyphicon-tasks"></span>Ветеринарні заходи</div>
+                        </div>
+                        <form class="form-horizontal">
+                            <div class="panel-body">
+                                @if (\Session::has('success_sterilization'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_sterilization') }}
+                                    </div>
+                                @endif
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label">Стерилізація:</label>
+                                    @if($animal->sterilization)
+                                        <div class="col-xs-8"><label class="control-label text-success">Проведено</label></div>
+                                        <label class="col-xs-3 control-label">Дата проведення:</label>
+                                        <div class="col-xs-8">
+                                            <label class="control-label">{{\App\Helpers\Date::getlocalizedDate($animal->sterilization->date)}}</label>
+                                        </div>
+
+                                        <label class="col-xs-3 control-label">Ким проведено:</label>
+                                        <div class="col-xs-8"><label class="control-label">{{$animal->sterilization->made_by}}</label></div>
+
+                                        <label class="col-xs-3 control-label">Відомості:</label>
+                                        <div class="col-xs-8"><label class="control-label">{{$animal->sterilization->description ?? 'Відсутні'}}</label></div>
+                                    @else
+                                    <div class="col-xs-8">
+                                            <label class="control-label text-danger">Не проведено</label>
+                                    </div>
+                                    @endif
+                                </div>
+
+                            @if(!$animal->sterilization)
+                                        <div class="col-xs-3"></div>
+                                        <div class="col-xs-8">
+                                            <a href="javascript:void(0)" class="btn btn-default ph25" id="addSterilizationBtn">Додати стерилізацію</a>
+                                        </div>
+                                    @endif
+                            </div>
+                        </form>
+
+                        <form class="form-horizontal">
+                            <div class="panel-body">
+                                @if (\Session::has('success_vaccination'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_vaccination') }}
+                                    </div>
+                                @endif
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label">Щеплення проти сказу:</label>
+                                    @if($animal->vaccination)
+                                        <div class="col-xs-8"><label class="control-label text-success">Проведено</label></div>
+                                        <label class="col-xs-3 control-label">Дата проведення:</label>
+                                        <div class="col-xs-8"><label class="control-label">{{\App\Helpers\Date::getlocalizedDate($animal->vaccination->date)}}</label></div>
+
+                                        <label class="col-xs-3 control-label">Ким проведено:</label>
+                                        <div class="col-xs-8"><label class="control-label">{{$animal->vaccination->made_by}}</label></div>
+
+                                        <label class="col-xs-3 control-label">Відомості:</label>
+                                        <div class="col-xs-8"><label class="control-label">{{$animal->vaccination->description ?? 'Відсутні'}}</label></div>
+                                    @else
+                                        <div class="col-xs-8">
+                                            <label class="control-label text-danger">Не проведено</label>
+                                        </div>
+                                    @endif
+                                </div>
+                                @if(!$animal->vaccination)
+                                    <div class="col-xs-3"></div>
+                                    <div class="col-xs-8">
+                                        <a href="javascript:void(0)" class="btn btn-default ph25" id="addVaccinationBtn">Додати щеплення</a>
+                                    </div>
+                                @endif
+                            </div>
+                        </form>
+
+
                     </div>
                 </div>
 
@@ -606,6 +692,102 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="addSterilizationModal" tabindex="-2" role="dialog" aria-labelledby="addSterilizationModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-bottom: 25px;">
+                                    <h3>Додати стерилізацію</h3>
+                                </div>
+                                <div class="col-md-12">
+                                    <form class="form-horizontal" id="addSterilizationForm" action="{{route('admin.db.animals.add-sterilization', $animal->id)}}" method="POST">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="form-group datepicker">
+                                                <label class="col-lg-3 control-label">Дата проведення</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" id="dateSterilization" name="date" class="form-control" autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label  class="col-lg-3 control-label">Ким проведено</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" name="made_by" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">Відомості</label>
+                                                <div class="col-lg-9">
+                                                    <input type="text" name="description" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax">Додати</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="addVaccinationModal" tabindex="-2" role="dialog" aria-labelledby="addVaccinationModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-bottom: 25px;">
+                                    <h3>Додати щеплення</h3>
+                                </div>
+                                <div class="col-md-12">
+                                    <form class="form-horizontal" id="addVaccinationForm" action="{{route('admin.db.animals.add-vaccination', $animal->id)}}" method="POST">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="form-group datepicker">
+                                                <label class="col-lg-3 control-label">Дата проведення</label>
+                                                <div class="col-lg-9">
+                                                    <input type="text" id="dateVaccination" name="date" class="form-control" autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label  class="col-lg-3 control-label">Ким проведено</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" name="made_by" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">Відомості</label>
+                                                <div class="col-lg-9">
+                                                    <input type="text" name="description" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax">Додати</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
 @endsection
 
@@ -697,6 +879,14 @@
             $('#addIdentifyingDeviceModal').modal('show');
         });
 
+        $('#addSterilizationBtn').on('click', function () {
+            $('#addSterilizationModal').modal('show');
+        });
+
+        $('#addVaccinationBtn').on('click', function () {
+            $('#addVaccinationModal').modal('show');
+        });
+
         $('#device_type').selectize({
             maxItems: 1,
             persist: false,
@@ -705,6 +895,10 @@
 
         $('.deleteDeviceBtn').on('click', function () {
             return confirm("Ви впевнені що хочете видалити даний пристрій?");
+        });
+
+        $('.validation-error').on('click', function () {
+            $(this).fadeOut();
         });
 
         $('.submit-ajax').click(function (e) {

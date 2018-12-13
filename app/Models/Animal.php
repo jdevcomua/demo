@@ -175,6 +175,16 @@ class Animal extends Model
         return $this->hasOne(ChangeAnimalOwner::class);
     }
 
+    public function sterilization()
+    {
+        return $this->hasOne(Sterilization::class);
+    }
+
+    public function vaccination()
+    {
+        return $this->hasOne(Vaccination::class);
+    }
+
     public function archivable()
     {
         return $this->morphTo('archived', 'archived_type', 'archived_id');

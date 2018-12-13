@@ -59,5 +59,25 @@ class AnimalChroniclesSeeder extends Seeder
         $chronicleType->template_text = 'Чіп видалено.';
         $chronicleType->save();
 
+        $chronicleType = new AnimalChronicleType;
+        $chronicleType->type = 'sterilization-added';
+        $chronicleType->template_text = 'Тварину було стерилізовано. Дата стерилізації: {date}.';
+        $chronicleType->save();
+
+        $chronicleField = new AnimalChronicleField;
+        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
+        $chronicleField->field_name = 'date';
+        $chronicleField->save();
+
+        $chronicleType = new AnimalChronicleType;
+        $chronicleType->type = 'vaccination-added';
+        $chronicleType->template_text = 'Проведено щеплення від сказу. Дата проведення: {date}.';
+        $chronicleType->save();
+
+        $chronicleField = new AnimalChronicleField;
+        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
+        $chronicleField->field_name = 'date';
+        $chronicleField->save();
+
     }
 }

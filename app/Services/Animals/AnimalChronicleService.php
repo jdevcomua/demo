@@ -17,6 +17,7 @@ class AnimalChronicleService implements AnimalChronicleServiceInterface
         $chronicle->type = $chronicle_type;
         $chronicle->save();
 
+        //TODO: validation for that field value exist for certain chronicle type in a new animal chronicle entry
         if ($field_values !== null) {
             $chronicle->fields = $field_values;
         }

@@ -71,6 +71,10 @@ Route::group([
         ->name('add-identifying-device');
     Route::post('removeIdevice/{id}', 'Admin\DataBasesController@removeIdentifyingDevice')
         ->name('remove-identifying-device');
+    Route::post('add-sterilization/{id}', 'Admin\DataBasesController@addSterilization')
+        ->name('add-sterilization');
+    Route::post('add-vaccination/{id}', 'Admin\DataBasesController@addVaccination')
+        ->name('add-vaccination');
     Route::post('{id}/upload-file', 'Admin\DataBasesController@animalUploadFile')
         ->name('upload-file');
     Route::post('/file/{id}/remove', 'Admin\DataBasesController@animalRemoveFile')

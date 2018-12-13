@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Events\AnimalAdded;
 use App\Helpers\DataTables;
 use App\Http\Requests\ArchiveAnimal;
+use App\Http\Requests\SterilizationVaccinationRequest;
 use App\Models\Animal;
 use App\Models\AnimalChronicle;
 use App\Models\AnimalsFile;
@@ -15,9 +16,11 @@ use App\Models\MovedOutArchiveRecord;
 use App\Models\Organization;
 use App\Models\Role;
 use App\Models\Species;
+use App\Models\Sterilization;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
 use App\Models\UserPhone;
+use App\Models\Vaccination;
 use App\Rules\Badge;
 use App\Rules\Phone;
 use App\Services\Animals\AnimalChronicleServiceInterface;
@@ -801,5 +804,55 @@ class DataBasesController extends Controller
         $chs->addAnimalChronicle($animal, $chronicleTypesMap[$device_column]);
 
         return back()->with('success_identifying_device', 'Пристрій було видалено успішно!');
+    }
+
+    public function addSterilization(SterilizationVaccinationRequest $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
+    {
+        $requestData = $request->all();
+        $animal = Animal::find($id);
+
+
+        $sterilization = new Sterilization;
+        $sterilization->date = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
+        $sterilization->made_by = $requestData['made_by'];
+        $sterilization->description = $requestData['description'];
+
+        $sterilization->animal()->associate($animal);
+
+        $sterilization->save();
+
+        $animalChronicleService->addAnimalChronicle($animal, 'sterilization-added', [
+            'date' => \App\Helpers\Date::getlocalizedDate($sterilization->date),
+        ]);
+
+
+        return back()->with('success_sterilization', 'Стерилізацію додано успішно!');
+    }
+
+    public function addVaccination(SterilizationVaccinationRequest $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
+    {
+        $requestData = $request->all();
+
+        $request->validate();
+
+        $animal = Animal::find($id);
+
+
+        $vaccination = new Vaccination;
+        $vaccination->date = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
+        $vaccination->made_by = $requestData['made_by'];
+        $vaccination->description = $requestData['description'];
+
+        $vaccination->animal()->associate($animal);
+
+        $vaccination->save();
+
+        $animalChronicleService->addAnimalChronicle($animal, 'vaccination-added', [
+            'date' => \App\Helpers\Date::getlocalizedDate($vaccination->date),
+        ]);
+
+
+
+        return back()->with('success_vaccination', 'Щеплення було додано успішно!');
     }
 }
