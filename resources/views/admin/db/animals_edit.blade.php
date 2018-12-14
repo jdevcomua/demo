@@ -615,12 +615,11 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                        <h4 class="modal-title">Архівування тварини</h4>
+
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-12" style="margin-bottom: 25px;">
-                                <h3>Архівування тварини</h3>
-                            </div>
                             <div class="col-md-12">
                                 <form id="archive_form" action="{{route('admin.db.animals.archive', $animal->id)}}"
                                       method="POST">
@@ -672,12 +671,11 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
+                            <h4 class="modal-title">Додати новий ідентифікуючий пристрій</h4>
+
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-12" style="margin-bottom: 25px;">
-                                    <h3>Додати новий ідентифікуючий пристрій</h3>
-                                </div>
                                 <div class="col-md-12">
                                     <form id="identifyDeviceForm" action="{{route('admin.db.animals.add-identifying-device', $animal->id)}}" method="POST">
                                         @csrf
@@ -720,12 +718,11 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
+                            <h4 class="modal-title">Додати стерилізацію</h4>
+
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-12" style="margin-bottom: 25px;">
-                                    <h3>Додати стерилізацію</h3>
-                                </div>
                                 <div class="col-md-12">
                                     <form class="form-horizontal" id="addSterilizationForm" action="{{route('admin.db.animals.add-sterilization', $animal->id)}}" method="POST">
                                         @csrf
@@ -769,12 +766,11 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
+                            <h4 class="modal-title">Додати щеплення</h4>
+
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-12" style="margin-bottom: 25px;">
-                                    <h3>Додати щеплення</h3>
-                                </div>
                                 <div class="col-md-12">
                                     <form class="form-horizontal" id="addVaccinationForm" action="{{route('admin.db.animals.add-vaccination', $animal->id)}}" method="POST">
                                         @csrf
