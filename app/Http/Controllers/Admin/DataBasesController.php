@@ -9,6 +9,7 @@ use App\Http\Requests\SterilizationVaccinationRequest;
 use App\Models\Animal;
 use App\Models\AnimalChronicle;
 use App\Models\AnimalsFile;
+use App\Models\AnimalVeterinaryMeasure;
 use App\Models\CauseOfDeath;
 use App\Models\DeathArchiveRecord;
 use App\Models\Log;
@@ -21,6 +22,7 @@ use App\Models\UserAddress;
 use App\Models\UserEmail;
 use App\Models\UserPhone;
 use App\Models\Vaccination;
+use App\Models\VeterinaryMeasure;
 use App\Rules\Badge;
 use App\Rules\Phone;
 use App\Services\Animals\AnimalChronicleServiceInterface;
@@ -555,7 +557,8 @@ class DataBasesController extends Controller
             'animal' => $animal,
             'species' => Species::get(),
             'users' => json_encode($users),
-            'causesOfDeath' => CauseOfDeath::all()
+            'causesOfDeath' => CauseOfDeath::all(),
+            'veterinaryMeasures' => VeterinaryMeasure::all()
         ]);
     }
 
@@ -854,5 +857,52 @@ class DataBasesController extends Controller
 
 
         return back()->with('success_vaccination', 'Щеплення було додано успішно!');
+    }
+
+    public function addVeterinaryMeasure(Request $request, $id)
+    {
+        $animal = Animal::findOrFail($id);
+
+        $request_data = $request->all();
+
+        $rules = [
+            'date' => 'required|date_format:d/m/Y|before:tomorrow',
+            'veterinary_measure' => 'required',
+            'made_by' => 'required|string',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
+        ];
+
+        $messages = [
+            'date.required' => 'Дата проведення є обов\'язковим полем!',
+            'date.before' => 'Дата проведення не може бути у майбутньому!',
+            'date.date_format' => 'Дата проведення повинна бути корректною!',
+            'made_by.required' => 'Поле \'Ким проведено\' є обов\'язковим! ',
+            'made_by.string' => 'Поле \'Ким проведено\' має бути строкою! ',
+            'veterinary_measure.required' => 'Захід є обов\'язковим полем!',
+            'documents.*.max' => 'Файли повинні бути не більше 2mb!',
+            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
+        ];
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        $validator->validate();
+
+        $veterinarymeasure = VeterinaryMeasure::findOrfail($request_data['veterinary_measure']);
+
+
+        $animalVeterinaryMeasure = new AnimalVeterinaryMeasure;
+        $animalVeterinaryMeasure->date = Carbon::createFromFormat('d/m/Y', $request_data['date'])->toDateString();
+        $animalVeterinaryMeasure->made_by = $request_data['made_by'];
+        $animalVeterinaryMeasure->description = $request_data['description'];
+        $animalVeterinaryMeasure->animal()->associate($animal);
+        $animalVeterinaryMeasure->veterinaryMeasure()->associate($veterinarymeasure);
+        $animalVeterinaryMeasure->save();
+
+        if ($request_data['documents']) {
+            $this->filesService->handleVeterinaryMeasureFilesUpload($animalVeterinaryMeasure, $request_data);
+        }
+
+
+        return back()->with('success_veterinary_measures', 'Ветеринарний захід успішно додано!');
     }
 }

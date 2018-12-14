@@ -394,6 +394,22 @@
                             <div class="panel-title">
                                 <span class="glyphicon glyphicon-tasks"></span>Ветеринарні заходи</div>
                         </div>
+                        @if($errors->veterinary_measures)
+                            @foreach($errors->veterinary_measures->all() as $error)
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-remove pr10"></i>
+                                    {{ $error }}
+                                </div>
+                            @endforeach
+                        @endif
+                        @if (\Session::has('success_veterinary_measures'))
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <i class="fa fa-check pr10"></i>
+                                {{ \Session::get('success_veterinary_measures') }}
+                            </div>
+                        @endif
                         <form class="form-horizontal">
                             <div class="panel-body">
                                 @if (\Session::has('success_sterilization'))
@@ -468,8 +484,12 @@
                                 @endif
                             </div>
                         </form>
-
-
+                        <form class="form-horizontal">
+                            <div class="panel-body">
+                                <h3 class="text-center">Інші ветеринарні заходи</h3>
+                                <a href="javascript:void(0)" class="btn btn-default ph25" id="addVeterinaryMeasureBtn">Додати</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -788,6 +808,78 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="addVeterinaryMeasureModal" tabindex="-2" role="dialog" aria-labelledby="addVeterinaryMeasureLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">Додати ветеринарний захід</h4>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <form enctype="multipart/form-data" class="form-horizontal" id="addVeterinaryMeasureForm" action="{{route('admin.db.animals.add-veterinary-measure', $animal->id)}}" method="POST">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="form-group datepicker">
+                                                <label class="col-lg-3 control-label">Дата проведення</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" id="dateOfMeasure" name="date" class="form-control" autocomplete="off" value="{{\Carbon\Carbon::now()->format('d/m/Y')}}" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group select">
+                                                <label for="veterinary_measure" class="col-lg-3 control-label">Захід:</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <select name="veterinary_measure" id="veterinary_measure" required>
+                                                        @foreach($veterinaryMeasures as $veterinaryMeasure)
+                                                            <option value="{{$veterinaryMeasure->id}}">{{$veterinaryMeasure->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label  class="col-lg-3 control-label">Ким проведено</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" name="made_by" class="form-control" value="{{\Auth::user()->full_name}}" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">Відомості</label>
+                                                <div class="col-lg-9">
+                                                    <input type="text" name="description" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">Файли</label>
+                                                <div class="col-lg-8 control-label text-left">
+                                                    <button type="button">
+                                                        <label for="files" class="mn">Оберіть файли</label>
+                                                    </button>
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <span class="file-count pl5"></span>
+                                                    <input type="file" id="files" name="documents[]"
+                                                           multiple class="custom-file-input">
+                                                    <span class="help-block mt5">Файли повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 2Mb</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="ml-auto mt-6 btn confirm btn-primary">Додати захід</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
 @endsection
 
@@ -853,6 +945,7 @@
 
         $('#archive_type').selectize();
         $('#cause_of_death').selectize();
+        $('#veterinary_measure').selectize();
 
         $('#archive_type').on('change', function (e) {
             var valueSelected = this.value;
@@ -886,6 +979,12 @@
         $('#addVaccinationBtn').on('click', function () {
             $('#addVaccinationModal').modal('show');
         });
+
+        $('#addVeterinaryMeasureBtn').on('click', function () {
+            $('#addVeterinaryMeasureModal').modal('show');
+        });
+
+
 
         $('#device_type').selectize({
             maxItems: 1,

@@ -14,6 +14,7 @@ use App\Models\NotificationTemplate;
 use App\Models\Organization;
 use App\Models\OrganizationsFile;
 use App\Models\Species;
+use App\Models\VeterinaryMeasure;
 use App\Services\FilesService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -512,6 +513,113 @@ class InfoController extends Controller
             return redirect()
                 ->back()
                 ->with('success_cause_of_deaths_rem', 'Причину смерті видалено успішно !');
+        }
+        return response('', 400);
+    }
+
+
+    public function directoryDataVeterinary(Request $request)
+    {
+        $model = new VeterinaryMeasure;
+
+        $query = $model->newQuery();
+
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryStoreVeterinary(Request $request)
+    {
+        if($request->has(['v_name'])) {
+            $data = $request->only(['v_name']);
+
+            $validator = Validator::make($data, [
+                'v_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('veterinary_measures', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('v_name'));
+                    })
+                ],
+            ], [
+                'v_name.required' => 'Ветеринарний захід є обов\'язковим полем',
+                'v_name.unique' => 'Ветеринарний захід має бути унікальним',
+                'v_name.max' => 'Ветеринарний захід має бути менше :max символів',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator, 'veterinary')
+                    ->withErrors($validator, 'veterinary')
+                    ->withInput();
+            }
+
+            $veterinary = new VeterinaryMeasure;
+            $veterinary->name = $data['v_name'];
+            $veterinary->save();
+
+            return redirect()
+                ->back()
+                ->with('success_veterinary', 'Ветеринарний захід додано успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryUpdateVeterinary(Request $request)
+    {
+        $veterinary = VeterinaryMeasure::findOrFail($request->get('id'));
+        $validator = Validator::make($request->all(), [
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('veterinary_measures')->where(function ($query) use($veterinary, $request) {
+                    return $query->where('name', $request->get('name'));
+                })
+            ],
+        ], [
+            'name.required' => 'Причина смерті є обов\'язковим полем',
+            'name.unique' => 'Причина смерті має бути унікальним',
+            'name.max' => 'Причина смерті має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'cause_of_deaths_rem')
+                ->withInput();
+        }
+        $veterinary->name = $request->get('name');
+        $veterinary->save();
+
+        return redirect()
+            ->back()
+            ->with('success_veterinary_rem', 'Ветеринарний захід змінено успішно !');
+    }
+
+    public function directoryRemoveVeterinary(Request $request)
+    {
+        if ($request->has('id')) {
+            $veterinary = VeterinaryMeasure::findOrFail($request->get('id'));
+
+            $count = $veterinary->animalVeterinaryMeasures()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити ветеринарний захід. Кількість тварин що її мають: ' . $count,
+                    ], 'veterinary_rem');
+            }
+
+            $veterinary->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_veterinary_rem', 'Ветеринарний захід видалено успішно !');
         }
         return response('', 400);
     }

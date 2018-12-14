@@ -185,6 +185,11 @@ class Animal extends Model
         return $this->hasOne(Vaccination::class);
     }
 
+    public function animalVeterinaryMeasure()
+    {
+        return $this->hasMany(AnimalVeterinaryMeasure::class);
+    }
+
     public function archivable()
     {
         return $this->morphTo('archived', 'archived_type', 'archived_id');

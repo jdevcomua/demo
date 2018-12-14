@@ -79,7 +79,8 @@ Route::group([
         ->name('upload-file');
     Route::post('/file/{id}/remove', 'Admin\DataBasesController@animalRemoveFile')
         ->name('remove-file');
-
+    Route::post('add-veterinary-measure/{id}', 'Admin\DataBasesController@addVeterinaryMeasure')
+        ->name('add-veterinary-measure');
 });
 
 Route::group([
@@ -165,6 +166,15 @@ Route::group([
             ->name('organization.upload-file');
         Route::post('organization/file/{id}/remove', 'Admin\InfoController@organizationRemoveFile')
             ->name('organization.remove-file');
+
+        Route::get('data/veterinary', 'Admin\InfoController@directoryDataVeterinary')
+            ->name('data.veterinary');
+        Route::post('store/veterinary', 'Admin\InfoController@directoryStoreVeterinary')
+            ->name('store.veterinary');
+        Route::post('update/veterinary', 'Admin\InfoController@directoryUpdateVeterinary')
+            ->name('update.veterinary');
+        Route::get('remove/veterinary', 'Admin\InfoController@directoryRemoveVeterinary')
+            ->name('remove.veterinary');
 
     });
 

@@ -45,6 +45,13 @@ class FilesService
             }
     }
 
+    public function handleVeterinaryMeasureFilesUpload($animalVeterinaryMeasure, $data)
+    {
+        foreach ($data['documents'] as $document) {
+            $this->storeVeterinaryMeasureFile($animalVeterinaryMeasure, $document);
+        }
+    }
+
     public function handleFoundAnimalFilesUpload($foundAnimal, $data)
     {
         foreach ($data['documents'] as $document) {
@@ -108,6 +115,21 @@ class FilesService
                 . OrganizationsFile::FILE_DOCUMENT_FOLDER);
 
         $organization->files()->create($data);
+    }
+
+    private function storeVeterinaryMeasureFile($animalVeterinaryMeasure, $file)
+    {
+        $fileName = self::sanitaze_name($file->getClientOriginalName());
+
+        $data = [
+            'animal_veterinary_measure_id' => $animalVeterinaryMeasure->id,
+            'name' => $fileName
+        ];
+
+        $data['path'] = $file->store('veterinary_measures/' . $animalVeterinaryMeasure->id
+            . OrganizationsFile::FILE_DOCUMENT_FOLDER);
+
+        $animalVeterinaryMeasure->files()->create($data);
     }
 
     private function storeFoundAnimalFile($foundAnimal, $file)
