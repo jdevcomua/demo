@@ -534,6 +534,182 @@
                     </div>
                 </div>
 
+                <div class="col-xs-12 col-md-6 pn">
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy56">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Список усіх видів правопорушень</div>
+                            </div>
+                            <div class="panel-body pn">
+                                @if($errors->offense_rem)
+                                    @foreach($errors->offense_rem->all() as $error)
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-remove pr10"></i>
+                                            {{ $error }}
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                                @if (\Session::has('success_offense_rem'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_offense_rem') }}
+                                    </div>
+                                @endif
+                                <table class="table table-striped table-hover display datatable responsive nowrap"
+                                       id="datatable-offense" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Дії</th>
+                                        <th>Вид правопорушення</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th class="no-search"></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy56">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Додавання виду правопорушення</div>
+                            </div>
+                            <form class="form-horizontal" role="form"
+                                  action="{{ route('admin.info.directories.store.offense') }}" method="post">
+                                @csrf
+                                <div class="panel-body">
+                                    @if($errors->offense)
+                                        @foreach($errors->offense->all() as $error)
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <i class="fa fa-remove pr10"></i>
+                                                {{ $error }}
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                    @if (\Session::has('success_offense'))
+                                        <div class="alert alert-success alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-check pr10"></i>
+                                            {{ \Session::get('success_offense') }}
+                                        </div>
+                                    @endif
+                                    <div class="form-group">
+                                        <label for="offense-name" class="col-lg-3 control-label">Назва:</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="offense-name" name="of_name"
+                                                   class="form-control" value="{{ old('of_name') }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-right">
+                                    <button type="submit" class="btn btn-default ph25">Додати</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6 pn">
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy58">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Список усіх належностей правопорушень</div>
+                            </div>
+                            <div class="panel-body pn">
+                                @if($errors->offense_affiliation_rem)
+                                    @foreach($errors->offense_affiliation_rem->all() as $error)
+                                        <div class="alert alert-danger alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-remove pr10"></i>
+                                            {{ $error }}
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                                @if (\Session::has('success_offense_affiliation_rem'))
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <i class="fa fa-check pr10"></i>
+                                        {{ \Session::get('success_offense_affiliation_rem') }}
+                                    </div>
+                                @endif
+                                <table class="table table-striped table-hover display datatable responsive nowrap"
+                                       id="datatable-offense-affiliation" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Дії</th>
+                                        <th>Належність правопорушення</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th class="no-search"></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="panel panel-visible" id="spy56">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span class="glyphicon glyphicon-tasks"></span>Додавання нової належності правопорушення</div>
+                            </div>
+                            <form class="form-horizontal" role="form"
+                                  action="{{ route('admin.info.directories.store.offense-affiliation') }}" method="post">
+                                @csrf
+                                <div class="panel-body">
+                                    @if($errors->offense_affiliation)
+                                        @foreach($errors->offense_affiliation->all() as $error)
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                <i class="fa fa-remove pr10"></i>
+                                                {{ $error }}
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                    @if (\Session::has('success_offense_affiliation'))
+                                        <div class="alert alert-success alert-dismissable">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                            <i class="fa fa-check pr10"></i>
+                                            {{ \Session::get('success_offense_affiliation') }}
+                                        </div>
+                                    @endif
+                                    <div class="form-group">
+                                        <label for="offense_affiliation-name" class="col-lg-3 control-label">Назва:</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="offense_affiliation-name" name="of_a_name"
+                                                   class="form-control" value="{{ old('of_a_name') }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-right">
+                                    <button type="submit" class="btn btn-default ph25">Додати</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-xs-12 col-md-12 pn">
                     <div class="col-xs-12">
                         <div class="panel panel-visible" id="spy5">
@@ -770,6 +946,60 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="modalOffense" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Змінити вид правопорушення</h4>
+                    </div>
+                    <form action="{{ route('admin.info.directories.update.offense') }}" class="form-horizontal" id="change-offense" method="post">
+                        <div class="modal-body">
+                            @csrf
+                            <input type="hidden" name="id" id="offenseId">
+                            <div class="form-group">
+                                <label for="offense-name" class="col-lg-3 control-label">Ветеринарний захід:</label>
+                                <div class="col-lg-8">
+                                    <input type="text" id="offense-name-modal" name="name"
+                                           class="form-control" value="{{ old('of_name') }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning pull-right">Змінити</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalOffenseAffiliation" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Змінити ветеринарний захід</h4>
+                    </div>
+                    <form action="{{ route('admin.info.directories.update.offense-affiliation') }}" class="form-horizontal" id="change-offense-affiliation" method="post">
+                        <div class="modal-body">
+                            @csrf
+                            <input type="hidden" name="id" id="offenseAffiliationId">
+                            <div class="form-group">
+                                <label for="veterinary-name" class="col-lg-3 control-label">Ветеринарний захід:</label>
+                                <div class="col-lg-8">
+                                    <input type="text" id="offense-affiliation-name-modal" name="name"
+                                           class="form-control" value="{{ old('of_a_name') }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning pull-right">Змінити</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </section>
 @endsection
 
@@ -909,6 +1139,58 @@
                 ],
             });
 
+            dataTableInit($('#datatable-offense-affiliation'), {
+                ajax: '{{ route('admin.info.directories.data.offense-affiliation', null, false) }}',
+                columns: [
+                    { "data": "id", 'width': '10%' },
+                    {
+                        "data": "id",
+                        defaultContent: '',
+                        orderable: false,
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                return "<a href=\"\" data-id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-pencil update-offense-affiliation pr10\" aria-hidden=\"true\" data-toggle='modal'" +
+                                    " data-target=\"#modalOffenseAffiliation\"></i>" +
+                                    "</a>" +
+                                    "<a href=\"{{ route('admin.info.directories.remove.offense-affiliation') }}?id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
+                                    "</a>";
+                            }
+                        }
+                    },
+                    { "data": "name" },
+                ],
+            });
+
+            dataTableInit($('#datatable-offense'), {
+                ajax: '{{ route('admin.info.directories.data.offense', null, false) }}',
+                columns: [
+                    { "data": "id", 'width': '10%' },
+                    {
+                        "data": "id",
+                        defaultContent: '',
+                        orderable: false,
+                        render: function ( data, type, row ) {
+                            if (data) {
+                                return "<a href=\"\" data-id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-pencil update-offense pr10\" aria-hidden=\"true\" data-toggle='modal'" +
+                                    " data-target=\"#modalOffense\"></i>" +
+                                    "</a>" +
+                                    "<a href=\"{{ route('admin.info.directories.remove.offense') }}?id="
+                                    + data + "\">" +
+                                    "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
+                                    "</a>";
+                            }
+                        }
+                    },
+                    { "data": "name" },
+                ],
+            });
+
 
             dataTableInit($('#datatable-organizations'), {
                 ajax: '{{ route('admin.info.directories.data.organization', null, false) }}',
@@ -974,6 +1256,22 @@
             var id = $(this).parent().attr('data-id');
             $('#veterinaryId').val(id);
             $('#veterinary-name-modal').val(text);
+        });
+
+        $(document).on('click', '.fa-pencil.update-offense', function(e) {
+            e.preventDefault();
+            var text = $(this).parents('td').next().text();
+            var id = $(this).parent().attr('data-id');
+            $('#offenseId').val(id);
+            $('#offense-name-modal').val(text);
+        });
+
+        $(document).on('click', '.fa-pencil.update-offense-affiliation', function(e) {
+            e.preventDefault();
+            var text = $(this).parents('td').next().text();
+            var id = $(this).parent().attr('data-id');
+            $('#offenseAffiliationId').val(id);
+            $('#offense-affiliation-name-modal').val(text);
         });
 
         $(document).on('click', '.fa-pencil.update-color', function(e) {

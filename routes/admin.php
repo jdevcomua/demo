@@ -178,6 +178,24 @@ Route::group([
         Route::get('remove/veterinary', 'Admin\InfoController@directoryRemoveVeterinary')
             ->name('remove.veterinary');
 
+        Route::get('data/offense-affiliation', 'Admin\InfoController@directoryDataOffenseAffiliation')
+            ->name('data.offense-affiliation');
+        Route::post('store/offense-affiliation', 'Admin\InfoController@directoryStoreOffenseAffiliation')
+            ->name('store.offense-affiliation');
+        Route::post('update/offense-affiliation', 'Admin\InfoController@directoryUpdateOffenseAffiliation')
+            ->name('update.offense-affiliation');
+        Route::get('remove/offense-affiliation', 'Admin\InfoController@directoryRemoveOffenseAffiliation')
+            ->name('remove.offense-affiliation');
+
+        Route::get('data/offense', 'Admin\InfoController@directoryDataOffense')
+            ->name('data.offense');
+        Route::post('store/offense', 'Admin\InfoController@directoryStoreOffense')
+            ->name('store.offense');
+        Route::post('update/offense', 'Admin\InfoController@directoryUpdateOffense')
+            ->name('update.offense');
+        Route::get('remove/offense', 'Admin\InfoController@directoryRemoveOffense')
+            ->name('remove.offense');
+
     });
 
     Route::group([

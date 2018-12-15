@@ -11,6 +11,8 @@ use App\Models\Color;
 use App\Models\Fur;
 use App\Models\Log;
 use App\Models\NotificationTemplate;
+use App\Models\Offense;
+use App\Models\OffenseAffiliation;
 use App\Models\Organization;
 use App\Models\OrganizationsFile;
 use App\Models\Species;
@@ -814,6 +816,218 @@ class InfoController extends Controller
         return response()->json([
             'status' => 'ok'
         ]);
+    }
+
+    public function directoryDataOffenseAffiliation(Request $request)
+    {
+        $model = new OffenseAffiliation;
+
+        $query = $model->newQuery();
+
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryStoreOffenseAffiliation(Request $request)
+    {
+        if($request->has(['of_a_name'])) {
+            $data = $request->only(['of_a_name']);
+
+            $validator = Validator::make($data, [
+                'of_a_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('offense_affiliations', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('of_a_name'));
+                    })
+                ],
+            ], [
+                'of_a_name.required' => 'Належність правопорушення є обов\'язковим полем',
+                'of_a_name.unique' => 'Належність правопорушення має бути унікальним',
+                'of_a_name.max' => 'Належність правопорушення має бути менше :max символів',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator, 'offense_affiliation')
+                    ->withErrors($validator, 'offense_affiliation')
+                    ->withInput();
+            }
+
+            $offenseAffiliation = new OffenseAffiliation;
+            $offenseAffiliation->name = $data['of_a_name'];
+            $offenseAffiliation->save();
+
+            return redirect()
+                ->back()
+                ->with('success_offense_affiliation', 'Належність правопорушення додано успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryUpdateOffenseAffiliation(Request $request)
+    {
+        $offenseAffiliation = OffenseAffiliation::findOrFail($request->get('id'));
+        $validator = Validator::make($request->all(), [
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('offense_affiliations')->where(function ($query) use($offenseAffiliation, $request) {
+                    return $query->where('name', $request->get('name'));
+                })
+            ],
+        ], [
+            'name.required' => 'Належність правопорушення є обов\'язковим полем',
+            'name.unique' => 'Належність правопорушення має бути унікальним',
+            'name.max' => 'Належність правопорушення має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'offense_affiliation_rem')
+                ->withInput();
+        }
+        $offenseAffiliation->name = $request->get('name');
+        $offenseAffiliation->save();
+
+        return redirect()
+            ->back()
+            ->with('success_offense_affiliation_rem', 'Належність правопорушення змінено успішно !');
+    }
+
+    public function directoryRemoveOffenseAffiliation(Request $request)
+    {
+        if ($request->has('id')) {
+            $offenseAffiliation = OffenseAffiliation::findOrFail($request->get('id'));
+
+            $count = $offenseAffiliation->animalOffenses()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити належність правопорушення. Кількість тварин що її мають: ' . $count,
+                    ], 'offense_affiliation_rem');
+            }
+
+            $offenseAffiliation->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_offense_affiliation_rem', 'Належність правопорушення видалено успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryDataOffense(Request $request)
+    {
+        $model = new Offense;
+
+        $query = $model->newQuery();
+
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryStoreOffense(Request $request)
+    {
+        if($request->has(['of_name'])) {
+            $data = $request->only(['of_name']);
+
+            $validator = Validator::make($data, [
+                'of_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('offenses', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('of_name'));
+                    })
+                ],
+            ], [
+                'of_name.required' => 'Вид правопорушення є обов\'язковим полем',
+                'of_name.unique' => 'Вид правопорушення має бути унікальним',
+                'of_name.max' => 'Вид правопорушення має бути менше :max символів',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator, 'offense')
+                    ->withErrors($validator, 'offense')
+                    ->withInput();
+            }
+
+            $offense = new Offense;
+            $offense->name = $data['of_name'];
+            $offense->save();
+
+            return redirect()
+                ->back()
+                ->with('success_offense', 'Вид правопорушення додано успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryUpdateOffense(Request $request)
+    {
+        $offense = Offense::findOrFail($request->get('id'));
+        $validator = Validator::make($request->all(), [
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('offenses')->where(function ($query) use($offense, $request) {
+                    return $query->where('name', $request->get('name'));
+                })
+            ],
+        ], [
+            'name.required' => 'Вид правопорушення є обов\'язковим полем',
+            'name.unique' => 'Вид правопорушення має бути унікальним',
+            'name.max' => 'Вид правопорушення має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'offense_rem')
+                ->withInput();
+        }
+        $offense->name = $request->get('name');
+        $offense->save();
+
+        return redirect()
+            ->back()
+            ->with('success_offense_rem', 'Вид правопорушення змінено успішно !');
+    }
+
+    public function directoryRemoveOffense(Request $request)
+    {
+        if ($request->has('id')) {
+            $offense = Offense::findOrFail($request->get('id'));
+
+            $count = $offense->animalOffenses()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити вид правопорушення. Кількість тварин що її мають: ' . $count,
+                    ], 'veterinary_rem');
+            }
+
+            $offense->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_offense_rem', 'Вид правопорушення видалено успішно !');
+        }
+        return response('', 400);
     }
 
 

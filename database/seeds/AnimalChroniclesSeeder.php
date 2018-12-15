@@ -93,5 +93,25 @@ class AnimalChroniclesSeeder extends Seeder
         $chronicleField->animal_chronicle_type_id = $chronicleType->id;
         $chronicleField->field_name = 'date';
         $chronicleField->save();
+
+        $chronicleType = new AnimalChronicleType;
+        $chronicleType->type = 'animal-offense-added';
+        $chronicleType->template_text = '{offense_affiliation}. Вид правопорушення: {offense}. Дата: {date}.';
+        $chronicleType->save();
+
+        $chronicleField = new AnimalChronicleField;
+        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
+        $chronicleField->field_name = 'date';
+        $chronicleField->save();
+
+        $chronicleField = new AnimalChronicleField;
+        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
+        $chronicleField->field_name = 'offense_affiliation';
+        $chronicleField->save();
+
+        $chronicleField = new AnimalChronicleField;
+        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
+        $chronicleField->field_name = 'offense';
+        $chronicleField->save();
     }
 }
