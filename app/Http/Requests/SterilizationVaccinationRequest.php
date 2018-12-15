@@ -25,7 +25,8 @@ class SterilizationVaccinationRequest extends FormRequest
     {
         $rules = [
             'date' => 'required|date_format:d/m/Y|before:tomorrow',
-            'made_by' => 'required|string'
+            'made_by' => 'required|string',
+            'description' => 'nullable|max:256'
         ];
 
         return $rules;
@@ -39,6 +40,7 @@ class SterilizationVaccinationRequest extends FormRequest
             'date.date_format' => 'Дата проведення повинна бути корректною!',
             'made_by.required' => 'Поле \'Ким проведено\' є обов\'язковим! ',
             'made_by.string' => 'Поле \'Ким проведено\' має бути строкою! ',
+            'description' => 'Поле \'Відомості\' має бути не більше ніж :max символів!'
         ];
     }
 }

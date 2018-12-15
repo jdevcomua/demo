@@ -79,5 +79,19 @@ class AnimalChroniclesSeeder extends Seeder
         $chronicleField->field_name = 'date';
         $chronicleField->save();
 
+        $chronicleType = new AnimalChronicleType;
+        $chronicleType->type = 'veterinary-measure-added';
+        $chronicleType->template_text = 'Проведено ветеринарний захід: {veterinary_measure}. Дата проведення: {date}.';
+        $chronicleType->save();
+
+        $chronicleField = new AnimalChronicleField;
+        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
+        $chronicleField->field_name = 'veterinary_measure';
+        $chronicleField->save();
+
+        $chronicleField = new AnimalChronicleField;
+        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
+        $chronicleField->field_name = 'date';
+        $chronicleField->save();
     }
 }

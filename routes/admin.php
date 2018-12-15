@@ -81,6 +81,8 @@ Route::group([
         ->name('remove-file');
     Route::post('add-veterinary-measure/{id}', 'Admin\DataBasesController@addVeterinaryMeasure')
         ->name('add-veterinary-measure');
+    Route::get('veterinary-measure/{id?}', 'Admin\DataBasesController@animalVeterinaryMeasure')
+        ->name('show-veterinary-measure');
 });
 
 Route::group([

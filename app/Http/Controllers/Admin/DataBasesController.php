@@ -812,6 +812,9 @@ class DataBasesController extends Controller
     public function addSterilization(SterilizationVaccinationRequest $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
     {
         $requestData = $request->all();
+
+        $request->validate($request->rules());
+
         $animal = Animal::find($id);
 
 
@@ -836,7 +839,7 @@ class DataBasesController extends Controller
     {
         $requestData = $request->all();
 
-        $request->validate();
+        $request->validate($request->rules());
 
         $animal = Animal::find($id);
 
@@ -859,7 +862,7 @@ class DataBasesController extends Controller
         return back()->with('success_vaccination', 'Щеплення було додано успішно!');
     }
 
-    public function addVeterinaryMeasure(Request $request, $id)
+    public function addVeterinaryMeasure(Request $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
     {
         $animal = Animal::findOrFail($id);
 
@@ -898,11 +901,22 @@ class DataBasesController extends Controller
         $animalVeterinaryMeasure->veterinaryMeasure()->associate($veterinarymeasure);
         $animalVeterinaryMeasure->save();
 
-        if ($request_data['documents']) {
+        if (isset($request_data['documents'])) {
             $this->filesService->handleVeterinaryMeasureFilesUpload($animalVeterinaryMeasure, $request_data);
         }
 
+        $animalChronicleService->addAnimalChronicle($animal, 'veterinary-measure-added', [
+            'veterinary_measure' => $veterinarymeasure->name,
+            'date' => \App\Helpers\Date::getlocalizedDate($animalVeterinaryMeasure->date)
+        ]);
 
         return back()->with('success_veterinary_measures', 'Ветеринарний захід успішно додано!');
+    }
+
+    public function animalVeterinaryMeasure($id)
+    {
+        $animal_vet_measure = AnimalVeterinaryMeasure::findOrFail($id);
+
+        return view('admin.db.animal_vet_measure_show', compact('animal_vet_measure'));
     }
 }

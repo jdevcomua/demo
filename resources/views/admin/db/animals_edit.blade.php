@@ -487,6 +487,25 @@
                         <form class="form-horizontal">
                             <div class="panel-body">
                                 <h3 class="text-center">Інші ветеринарні заходи</h3>
+
+                                @if(count($animal->animalVeterinaryMeasure))
+                                    @foreach($animal->animalVeterinaryMeasure as $veterinary_measure)
+                                    <div class="form-group">
+                                        <label class="col-xs-3 control-label">Ветеринарний захід:</label>
+                                            <div class="col-xs-8">
+                                                <label class="control-label">
+                                                    <a href="{{route('admin.db.animals.show-veterinary-measure', $veterinary_measure->id)}}">
+                                                        {{$veterinary_measure->veterinaryMeasure->name}}
+                                                    </a>
+                                                </label>
+                                            </div>
+                                            <label class="col-xs-3 control-label">Дата проведення:</label>
+                                            <div class="col-xs-8"><label class="control-label">{{\App\Helpers\Date::getlocalizedDate($veterinary_measure->date)}}</label></div>
+                                    </div>
+                                        <hr>
+                                    @endforeach
+                                @endif
+
                                 <a href="javascript:void(0)" class="btn btn-default ph25" id="addVeterinaryMeasureBtn">Додати</a>
                             </div>
                         </form>
