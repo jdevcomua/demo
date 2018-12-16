@@ -757,7 +757,7 @@
                                                 <label  class="col-lg-3 control-label">Ким проведено</label>
                                                 <div class="col-lg-9">
                                                     <div class="validation-error alert alert-danger hidden"></div>
-                                                    <input type="text" name="made_by" class="form-control" required>
+                                                    <input type="text" name="made_by" class="form-control" value="{{\Auth::user()->full_name}}" {{!\Auth::user()->hasRole('admin') ? 'readonly' : ''}} required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -804,7 +804,7 @@
                                                 <label  class="col-lg-3 control-label">Ким проведено</label>
                                                 <div class="col-lg-9">
                                                     <div class="validation-error alert alert-danger hidden"></div>
-                                                    <input type="text" name="made_by" class="form-control" required>
+                                                    <input type="text" name="made_by" class="form-control" value="{{\Auth::user()->full_name}}" {{!\Auth::user()->hasRole('admin') ? 'readonly' : ''}} required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -863,7 +863,7 @@
                                                 <label  class="col-lg-3 control-label">Ким проведено</label>
                                                 <div class="col-lg-9">
                                                     <div class="validation-error alert alert-danger hidden"></div>
-                                                    <input type="text" name="made_by" class="form-control" value="{{\Auth::user()->full_name}}" required>
+                                                    <input type="text" name="made_by" class="form-control" value="{{\Auth::user()->full_name}}" {{!\Auth::user()->hasRole('admin') ? 'readonly' : ''}} required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
