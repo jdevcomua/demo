@@ -17,6 +17,7 @@ class CreateAnimalOffensesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('offense_id');
             $table->unsignedInteger('offense_affiliation_id');
+            $table->unsignedInteger('animal_id');
             $table->date('date');
             $table->date('protocol_date');
             $table->string('protocol_number');
@@ -33,6 +34,11 @@ class CreateAnimalOffensesTable extends Migration
             $table->foreign('offense_affiliation_id')
                 ->references('id')
                 ->on('offense_affiliations')
+                ->onDelete('cascade');
+
+            $table->foreign('animal_id')
+                ->references('id')
+                ->on('animals')
                 ->onDelete('cascade');
         });
     }

@@ -190,6 +190,11 @@ class Animal extends Model
         return $this->hasMany(AnimalVeterinaryMeasure::class);
     }
 
+    public function animalOffenses()
+    {
+        return $this->hasMany(AnimalOffense::class);
+    }
+
     public function archivable()
     {
         return $this->morphTo('archived', 'archived_type', 'archived_id');

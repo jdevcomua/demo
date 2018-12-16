@@ -512,6 +512,44 @@
                     </div>
                 </div>
 
+                <div class="col-md-12">
+                    <div class="panel panel-visible" id="spy11">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <span class="glyphicon glyphicon-tasks"></span>Правопорушення</div>
+                        </div>
+                        @if (\Session::has('success_offense'))
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <i class="fa fa-check pr10"></i>
+                                {{ \Session::get('success_offense') }}
+                            </div>
+                        @endif
+                        <form class="form-horizontal">
+                            <div class="panel-body">
+                                @if(count($animal->animalOffenses))
+                                    @foreach($animal->animalOffenses as $animalOffense)
+                                        <div class="form-group">
+                                            <label class="col-xs-3 control-label">Вид правопорушення:</label>
+                                            <div class="col-xs-8">
+                                                <label class="control-label">
+                                                    <a href="{{route('admin.db.animals.offense', $animalOffense->id)}}">
+                                                        {{$animalOffense->offense->name}}
+                                                    </a>
+                                                </label>
+                                            </div>
+                                            <label class="col-xs-3 control-label">Дата правопорушення:</label>
+                                            <div class="col-xs-8"><label class="control-label">{{\App\Helpers\Date::getlocalizedDate($animalOffense->date)}}</label></div>
+                                        </div>
+                                        <hr>
+                                    @endforeach
+                                @endif
+
+                                <a href="javascript:void(0)" class="btn btn-default ph25" id="addOffenseBtn">Додати</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 @if(count($animal->chronicles))
                     <div class="col-md-12">
                         <div class="panel panel-visible" id="spy12">
@@ -750,7 +788,7 @@
                                                 <label class="col-lg-3 control-label">Дата проведення</label>
                                                 <div class="col-lg-9">
                                                     <div class="validation-error alert alert-danger hidden"></div>
-                                                    <input type="text" id="dateSterilization" name="date" class="form-control" autocomplete="off" required>
+                                                    <input type="text" id="dateSterilization" name="date" class="form-control" value="{{\Carbon\Carbon::now()->format('d/m/Y')}}" autocomplete="off" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -797,7 +835,7 @@
                                             <div class="form-group datepicker">
                                                 <label class="col-lg-3 control-label">Дата проведення</label>
                                                 <div class="col-lg-9">
-                                                    <input type="text" id="dateVaccination" name="date" class="form-control" autocomplete="off" required>
+                                                    <input type="text" id="dateVaccination" name="date" class="form-control" value="{{\Carbon\Carbon::now()->format('d/m/Y')}}" autocomplete="off" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -895,6 +933,111 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="addOffenseModal" tabindex="-2" role="dialog" aria-labelledby="addOffenseModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">Додати Правопорушення</h4>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <form enctype="multipart/form-data" class="form-horizontal" id="addOffenseForm" action="{{route('admin.db.animals.add-offense', $animal->id)}}" method="POST">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="form-group datepicker">
+                                                <label class="col-lg-3 control-label">Дата правопорушення</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" id="dateOfOffense" name="date" class="form-control" autocomplete="off" value="{{\Carbon\Carbon::now()->format('d/m/Y')}}" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group select">
+                                                <label for="offense" class="col-lg-3 control-label">Вид правопорушення:</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <select name="offense" id="offense" required>
+                                                        @foreach($offenses as $offense)
+                                                            <option value="{{$offense->id}}">{{$offense->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">Відомості</label>
+                                                <div class="col-lg-9">
+                                                    <input type="text" name="description" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="bite" class="col-lg-3 control-label"></label>
+                                                <div class="col-lg-8">
+                                                    <div class="checkbox-custom pt10">
+                                                        <input type="checkbox" id="bite" value="1" name="bite">
+                                                        <label for="bite">Наявність укусу</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group select">
+                                                <label for="offense_affiliation" class="col-lg-3 control-label">Належність правопорушення:</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <select name="offense_affiliation" id="offense_affiliation" required>
+                                                        @foreach($offenseAffiliations as $offenseAffiliation)
+                                                            <option value="{{$offenseAffiliation->id}}">{{$offenseAffiliation->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group datepicker">
+                                                <label class="col-lg-3 control-label">Дата протоколу</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" id="dateOfProtocol" name="protocol_date" class="form-control" autocomplete="off" value="{{\Carbon\Carbon::now()->format('d/m/Y')}}" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">Номер протоколу</label>
+                                                <div class="col-lg-9">
+                                                    <input type="text" name="protocol_number" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label  class="col-lg-3 control-label">Ким зафіксовано</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" name="made_by" class="form-control" value="{{\Auth::user()->full_name}}" {{!\Auth::user()->hasRole('admin') ? 'readonly' : ''}} required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label">Файли</label>
+                                                <div class="col-lg-8 control-label text-left">
+                                                    <button type="button">
+                                                        <label for="files-offense" class="mn">Оберіть файли</label>
+                                                    </button>
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <span class="file-count pl5"></span>
+                                                    <input type="file" id="files-offense" name="documents[]"
+                                                           multiple class="custom-file-input">
+                                                    <span class="help-block mt5">Файли повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 2Mb</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="ml-auto mt-6 btn confirm btn-primary">Додати</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
 @endsection
 
@@ -961,6 +1104,8 @@
         $('#archive_type').selectize();
         $('#cause_of_death').selectize();
         $('#veterinary_measure').selectize();
+        $('#offense').selectize();
+        $('#offense_affiliation').selectize();
 
         $('#archive_type').on('change', function (e) {
             var valueSelected = this.value;
@@ -997,6 +1142,9 @@
 
         $('#addVeterinaryMeasureBtn').on('click', function () {
             $('#addVeterinaryMeasureModal').modal('show');
+        });
+        $('#addOffenseBtn').on('click', function () {
+            $('#addOffenseModal').modal('show');
         });
 
 

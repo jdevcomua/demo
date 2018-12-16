@@ -83,6 +83,10 @@ Route::group([
         ->name('add-veterinary-measure');
     Route::get('veterinary-measure/{id?}', 'Admin\DataBasesController@animalVeterinaryMeasure')
         ->name('show-veterinary-measure');
+    Route::post('add-offense/{id}', 'Admin\DataBasesController@addAnimalOffense')
+        ->name('add-offense');
+    Route::get('offense/{id?}', 'Admin\DataBasesController@animalOffense')
+        ->name('offense');
 });
 
 Route::group([

@@ -8,12 +8,15 @@ use App\Http\Requests\ArchiveAnimal;
 use App\Http\Requests\SterilizationVaccinationRequest;
 use App\Models\Animal;
 use App\Models\AnimalChronicle;
+use App\Models\AnimalOffense;
 use App\Models\AnimalsFile;
 use App\Models\AnimalVeterinaryMeasure;
 use App\Models\CauseOfDeath;
 use App\Models\DeathArchiveRecord;
 use App\Models\Log;
 use App\Models\MovedOutArchiveRecord;
+use App\Models\Offense;
+use App\Models\OffenseAffiliation;
 use App\Models\Organization;
 use App\Models\Role;
 use App\Models\Species;
@@ -558,7 +561,9 @@ class DataBasesController extends Controller
             'species' => Species::get(),
             'users' => json_encode($users),
             'causesOfDeath' => CauseOfDeath::all(),
-            'veterinaryMeasures' => VeterinaryMeasure::all()
+            'veterinaryMeasures' => VeterinaryMeasure::all(),
+            'offenses' => Offense::all(),
+            'offenseAffiliations' => OffenseAffiliation::all()
         ]);
     }
 
@@ -918,5 +923,83 @@ class DataBasesController extends Controller
         $animal_vet_measure = AnimalVeterinaryMeasure::findOrFail($id);
 
         return view('admin.db.animal_vet_measure_show', compact('animal_vet_measure'));
+    }
+
+    public function addAnimalOffense(Request $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
+    {
+        $animal = Animal::findOrFail($id);
+
+        $request_data = $request->all();
+
+        if (!isset($request_data['bite'])) {
+            $request_data['bite'] = 0;
+        }
+
+
+        $rules = [
+            'date' => 'required|date_format:d/m/Y|before:tomorrow',
+            'protocol_date' => 'required|date_format:d/m/Y|before:tomorrow',
+            'protocol_number' => 'required|max:20',
+            'offense' => 'required',
+            'offense_affiliation' => 'required',
+            'made_by' => 'required|string',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
+        ];
+
+        $messages = [
+            'date.required' => 'Дата правопорушення є обов\'язковим полем!',
+            'date.before' => 'Дата правопорушення не може бути у майбутньому!',
+            'date.date_format' => 'Дата правопорушення повинна бути корректною!',
+            'protocol_date.required' => 'Дата протоколу є обов\'язковим полем!',
+            'protocol_date.before' => 'Дата протоколу не може бути у майбутньому!',
+            'protocol_date.date_format' => 'Дата протоколу повинна бути корректною!',
+            'protocol_number.required' => 'Номер протоколу є обов\'язковим полем!',
+            'protocol_number.max' => 'Номер протоколу повинен містити не більше ніж :max символів!',
+            'made_by.required' => 'Поле \'Ким зафіксовано\' є обов\'язковим! ',
+            'made_by.string' => 'Поле \'Ким зафіксовано\' має бути строкою! ',
+            'offense.required' => 'Вид правопорушення є обов\'язковим полем!',
+            'offense_affiliation.required' => 'Належність правопорушення є обов\'язковим полем!',
+            'documents.*.max' => 'Файли повинні бути не більше 2mb!',
+            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
+        ];
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        $validator->validate();
+
+        $offense = Offense::findOrfail($request_data['offense']);
+        $offenseAffiliation = OffenseAffiliation::findOrfail($request_data['offense_affiliation']);
+
+
+        $animalOffense = new AnimalOffense;
+        $animalOffense->date = Carbon::createFromFormat('d/m/Y', $request_data['date'])->toDateString();
+        $animalOffense->protocol_date = Carbon::createFromFormat('d/m/Y', $request_data['protocol_date'])->toDateString();
+        $animalOffense->protocol_number = $request_data['protocol_number'];
+        $animalOffense->made_by = $request_data['made_by'];
+        $animalOffense->description = $request_data['description'];
+        $animalOffense->bite = $request_data['bite'];
+        $animalOffense->animal()->associate($animal);
+        $animalOffense->offense()->associate($offense);
+        $animalOffense->offenseAffiliation()->associate($offenseAffiliation);
+        $animalOffense->save();
+
+        if (isset($request_data['documents'])) {
+            $this->filesService->handleAnimalOffenseFilesUpload($animalOffense, $request_data);
+        }
+
+        $animalChronicleService->addAnimalChronicle($animal, 'animal-offense-added', [
+            'offense_affiliation' => $offenseAffiliation->name,
+            'date' => \App\Helpers\Date::getlocalizedDate($animalOffense->date),
+            'offense' => $offense->name
+        ]);
+
+        return back()->with('success_offense', 'Правопорушення успішно додано!');
+    }
+
+    public function animalOffense($id)
+    {
+        $animalOffense = AnimalOffense::findOrFail($id);
+
+        return view('admin.db.animal_offense_show', compact('animalOffense'));
     }
 }

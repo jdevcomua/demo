@@ -52,6 +52,13 @@ class FilesService
         }
     }
 
+    public function handleAnimalOffenseFilesUpload($animalOffense, $data)
+    {
+        foreach ($data['documents'] as $document) {
+            $this->storeAnimalOffenseFile($animalOffense, $document);
+        }
+    }
+
     public function handleFoundAnimalFilesUpload($foundAnimal, $data)
     {
         foreach ($data['documents'] as $document) {
@@ -130,6 +137,21 @@ class FilesService
             . OrganizationsFile::FILE_DOCUMENT_FOLDER);
 
         $animalVeterinaryMeasure->files()->create($data);
+    }
+
+    private function storeAnimalOffenseFile($animalOffense, $file)
+    {
+        $fileName = self::sanitaze_name($file->getClientOriginalName());
+
+        $data = [
+            'animal_offense_id' => $animalOffense->id,
+            'name' => $fileName
+        ];
+
+        $data['path'] = $file->store('animal_offenses/' . $animalOffense->id
+            . OrganizationsFile::FILE_DOCUMENT_FOLDER);
+
+        $animalOffense->files()->create($data);
     }
 
     private function storeFoundAnimalFile($foundAnimal, $file)
