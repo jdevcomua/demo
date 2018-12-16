@@ -5,12 +5,11 @@
 @extends('layout.app')
 @section('title', 'Знайдені тварини')
 @section('content')
+    <nav class="pets-lost-nav">
+        <a class="pets-list-header @if($curRoute == 'lost-animals.index') active @endif" href="{{route('lost-animals.index')}}">Загублені тварини</a>
+        <a class="pets-list-header @if($curRoute == 'lost-animals.found') active @endif" href="{{route('lost-animals.found')}}">Знайдені тварини</a>
+    </nav>
     @if(count($foundAnimals))
-
-        <nav class="pets-lost-nav">
-            <a class="pets-list-header @if($curRoute == 'lost-animals.index') active @endif" href="{{route('lost-animals.index')}}">Загублені тварини</a>
-            <a class="pets-list-header @if($curRoute == 'lost-animals.found') active @endif" href="{{route('lost-animals.found')}}">Знайдені тварини</a>
-        </nav>
         <div class="pets-list-sort">Сортувати за <span class="pets-list-sort-item active">@sortablelink('created_at', 'датою')</span></div>
         <div class="pets-list">
             @foreach($foundAnimals as $foundAnimal)
@@ -57,7 +56,7 @@
             @endforeach
         </div>
     @else
-        @include('animals._no_animals')
+        @include('lost-animals._no_animals')
     @endif
     <div class="modal fade" id="contactModal" tabindex="-2" role="dialog" aria-labelledby="contactLabel" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
