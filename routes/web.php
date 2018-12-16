@@ -1,5 +1,26 @@
 <?php
 
+use Illuminate\Http\Request;
+
+Route::get('/b', function (Request $request) {
+    $badgeNumber = $request->get('n');
+    if (!$badgeNumber) {
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+    }
+
+    $animal = \App\Models\Animal::where('badge', $badgeNumber)->first();
+
+    if (!$animal) {
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+    }
+
+    if (\Auth::user() && \Auth::user()->can('admin-panel')) {
+        return redirect()->route('admin.db.animals.edit', $animal->id);
+    } else {
+        return view('animals.show_contacts_owner', compact('animal'));
+    }
+});
+
 Route::get('/', 'SiteController')->name('index');
 
 Route::view('/about', 'about')->name('about');
