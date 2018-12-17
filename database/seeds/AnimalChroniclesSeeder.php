@@ -114,6 +114,7 @@ class AnimalChroniclesSeeder extends Seeder
         $chronicleField->field_name = 'offense';
         $chronicleField->save();
 
+        $chronicleType = new AnimalChronicleType;
         $chronicleType->type = 'verification-added';
         $chronicleType->template_text = 'Тварину верифіковано.';
         $chronicleType->save();
