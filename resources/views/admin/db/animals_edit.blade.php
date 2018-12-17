@@ -261,7 +261,7 @@
                         <form class="form-horizontal">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="col-xs-3 control-label">Статус:</label>
+                                    <label class="col-xs-4 control-label">Статус:</label>
                                     <div class="col-xs-8">
                                         @if(isset($animal->lost) && !$animal->lost->found)
                                             <label class="control-label text-danger">Так</label>
@@ -283,7 +283,7 @@
                         <form class="form-horizontal">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="col-xs-3 control-label">Статус:</label>
+                                    <label class="col-xs-4 control-label">Статус:</label>
                                     <div class="col-xs-8">
                                         @if($animal->archived_type)
                                             <label class="control-label">Так</label>
@@ -421,8 +421,8 @@
                                 @endif
 
                                 <div class="form-group">
-                                    <label class="col-xs-4 col-sm-3 control-label">Стерилізація:</label>
-                                    <div class="col-xs-8">
+                                    <label class="col-xs-5 col-sm-3 control-label">Стерилізація:</label>
+                                    <div class="col-xs-7">
                                         @if($animal->sterilization)
                                             <label class="control-label text-success">Проведено</label>
                                         @else
@@ -432,21 +432,21 @@
                                 </div>
                                 @if($animal->sterilization)
                                     <div class="form-group">
-                                        <label class="col-xs-4 col-sm-3 control-label">Дата проведення:</label>
-                                        <div class="col-xs-8">
-                                            <label class="control-label">{{ \App\Helpers\Date::getlocalizedDate($animal->sterilization->date) }}</label>
+                                        <label class="col-sm-3 control-label">Дата проведення:</label>
+                                        <div class="col-sm-8">
+                                            <label>{{ \App\Helpers\Date::getlocalizedDate($animal->sterilization->date) }}</label>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-xs-4 col-sm-3 control-label">Ким проведено:</label>
-                                        <div class="col-xs-8">
-                                            <label class="control-label">{{ $animal->sterilization->made_by }}</label>
+                                        <label class="col-sm-3 control-label">Ким проведено:</label>
+                                        <div class="col-sm-8">
+                                            <label>{{ $animal->sterilization->made_by }}</label>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-xs-4 col-sm-3 control-label">Відомості:</label>
-                                        <div class="col-xs-8">
-                                            <label class="control-label">{{ $animal->sterilization->description ?? 'Відсутні' }}</label>
+                                        <label class="col-sm-3 control-label">Відомості:</label>
+                                        <div class="col-sm-8">
+                                            <label>{{ $animal->sterilization->description ?? 'Відсутні' }}</label>
                                         </div>
                                     </div>
                                 @else
@@ -468,8 +468,8 @@
                                 @endif
 
                                 <div class="form-group">
-                                    <label class="col-xs-4 col-sm-3 control-label">Щеплення проти сказу:</label>
-                                    <div class="col-xs-8">
+                                    <label class="col-xs-5 col-sm-3 control-label">Щеплення проти сказу:</label>
+                                    <div class="col-xs-7">
                                         @if($animal->vaccination)
                                             <label class="control-label text-success">Проведено</label>
                                         @else
@@ -479,21 +479,21 @@
                                 </div>
                                 @if($animal->vaccination)
                                     <div class="form-group">
-                                        <label class="col-xs-4 col-sm-3 control-label">Дата проведення:</label>
-                                        <div class="col-xs-8">
-                                            <label class="control-label">{{ \App\Helpers\Date::getlocalizedDate($animal->vaccination->date) }}</label>
+                                        <label class="col-sm-3 control-label">Дата проведення:</label>
+                                        <div class="col-sm-8">
+                                            <label>{{ \App\Helpers\Date::getlocalizedDate($animal->vaccination->date) }}</label>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-xs-4 col-sm-3 control-label">Ким проведено:</label>
-                                        <div class="col-xs-8">
-                                            <label class="control-label">{{ $animal->vaccination->made_by }}</label>
+                                        <label class="col-sm-3 control-label">Ким проведено:</label>
+                                        <div class="col-sm-8">
+                                            <label>{{ $animal->vaccination->made_by }}</label>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-xs-4 col-sm-3 control-label">Відомості:</label>
-                                        <div class="col-xs-8">
-                                            <label class="control-label">{{ $animal->vaccination->description ?? 'Відсутні' }}</label>
+                                        <label class="col-sm-3 control-label">Відомості:</label>
+                                        <div class="col-sm-8">
+                                            <label>{{ $animal->vaccination->description ?? 'Відсутні' }}</label>
                                         </div>
                                     </div>
                                 @else
@@ -510,16 +510,18 @@
                                 @if(count($animal->animalVeterinaryMeasure))
                                     @foreach($animal->animalVeterinaryMeasure as $veterinary_measure)
                                         <div class="form-group">
-                                            <label class="col-xs-3 control-label">Ветеринарний захід:</label>
-                                            <div class="col-xs-8">
+                                            <label class="col-sm-3 control-label">Ветеринарний захід:</label>
+                                            <div class="col-sm-8">
                                                 <label class="control-label">
                                                     <a href="{{route('admin.db.animals.show-veterinary-measure', $veterinary_measure->id)}}">
                                                         {{$veterinary_measure->veterinaryMeasure->name}}
                                                     </a>
                                                 </label>
                                             </div>
-                                            <label class="col-xs-3 control-label">Дата проведення:</label>
-                                            <div class="col-xs-8">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Дата проведення:</label>
+                                            <div class="col-sm-8">
                                                 <label class="control-label">{{\App\Helpers\Date::getlocalizedDate($veterinary_measure->date)}}</label>
                                             </div>
                                         </div>
@@ -551,22 +553,26 @@
                                 @if(count($animal->animalOffenses))
                                     @foreach($animal->animalOffenses as $animalOffense)
                                         <div class="form-group">
-                                            <label class="col-xs-3 control-label">Вид правопорушення:</label>
-                                            <div class="col-xs-8">
+                                            <label class="col-sm-3 control-label">Вид правопорушення:</label>
+                                            <div class="col-sm-8">
                                                 <label class="control-label">
                                                     <a href="{{route('admin.db.animals.offense', $animalOffense->id)}}">
-                                                        {{$animalOffense->offense->name}}
+                                                        {{ $animalOffense->offense->name }}
                                                     </a>
                                                 </label>
                                             </div>
-                                            <label class="col-xs-3 control-label">Дата правопорушення:</label>
-                                            <div class="col-xs-8"><label class="control-label">{{\App\Helpers\Date::getlocalizedDate($animalOffense->date)}}</label></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Дата правопорушення:</label>
+                                            <div class="col-sm-8">
+                                                <label class="control-label">{{\App\Helpers\Date::getlocalizedDate($animalOffense->date)}}</label>
+                                            </div>
                                         </div>
                                         <hr>
                                     @endforeach
                                 @endif
 
-                                <a href="javascript:void(0)" class="btn btn-default ph25" id="addOffenseBtn">Додати</a>
+                                <a href="javascript:void(0)" class="btn btn-default ph25 center-block" id="addOffenseBtn">Додати</a>
                             </div>
                         </form>
                     </div>
@@ -1132,8 +1138,10 @@
             var valueSelected = this.value;
 
             if (valueSelected !== 'death') {
+                $('#cause_of_death').attr('required', false);
                 $('#causeOfDeathBlock').hide();
             } else {
+                $('#cause_of_death').attr('required', true);
                 $('#causeOfDeathBlock').show();
             }
         });
