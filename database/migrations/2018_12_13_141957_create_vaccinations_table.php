@@ -35,10 +35,6 @@ class CreateVaccinationsTable extends Migration
      */
     public function down()
     {
-        Schema::table('vaccinations', function (Blueprint $table) {
-            $table->dropForeign(['animal_id']);
-        });
-
         Schema::dropIfExists('vaccinations');
     }
 }
