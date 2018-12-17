@@ -8,6 +8,7 @@ use App\Models\Block;
 use App\Models\Breed;
 use App\Models\CauseOfDeath;
 use App\Models\Color;
+use App\Models\DeathArchiveRecord;
 use App\Models\Fur;
 use App\Models\Log;
 use App\Models\NotificationTemplate;
@@ -501,7 +502,7 @@ class InfoController extends Controller
                 ->where('id', '=', $request->get('id'))
                 ->firstOrFail();
 
-            $count = $causeOfDeath->animals()->count();
+            $count = DeathArchiveRecord::where('cause_of_death_id', '=', $causeOfDeath->id)->count();
             if ($count) {
                 return redirect()
                     ->back()
@@ -519,13 +520,11 @@ class InfoController extends Controller
         return response('', 400);
     }
 
-
     public function directoryDataVeterinary(Request $request)
     {
         $model = new VeterinaryMeasure;
 
         $query = $model->newQuery();
-
 
         $response = DataTables::provide($request, $model, $query);
 
