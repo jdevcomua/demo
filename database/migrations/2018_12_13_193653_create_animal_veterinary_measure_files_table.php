@@ -34,10 +34,6 @@ class CreateAnimalVeterinaryMeasureFilesTable extends Migration
      */
     public function down()
     {
-        Schema::table('animal_veterinary_measure_files', function (Blueprint $table) {
-            $table->dropForeign(['animal_veterinary_measure_id']);
-        });
-
         Schema::dropIfExists('animal_veterinary_measure_files');
     }
 }

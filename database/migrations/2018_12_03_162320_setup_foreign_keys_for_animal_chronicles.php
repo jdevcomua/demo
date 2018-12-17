@@ -56,11 +56,19 @@ class SetupForeignKeysForAnimalChronicles extends Migration
         });
 
         Schema::table('animal_chronicles', function (Blueprint $table) {
-            $table->dropForeign(['animal_id', 'animal_chronicle_type_id']);
+            $table->dropForeign(['animal_id']);
+        });
+
+        Schema::table('animal_chronicles', function (Blueprint $table) {
+            $table->dropForeign(['animal_chronicle_type_id']);
         });
 
         Schema::table('animal_chronicle_field_values', function (Blueprint $table) {
-            $table->dropForeign(['animal_chronicle_field_id', 'animal_chronicle_id']);
+            $table->dropForeign(['animal_chronicle_field_id']);
+        });
+
+        Schema::table('animal_chronicle_field_values', function (Blueprint $table) {
+            $table->dropForeign(['animal_chronicle_id']);
         });
     }
 }
