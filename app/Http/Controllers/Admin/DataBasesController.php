@@ -767,7 +767,7 @@ class DataBasesController extends Controller
 
 
         $rules = [
-            'device_type' => 'required'
+            'device_type' => 'required|in:' . implode(',', array_keys($rulesByTypes))
         ];
 
         $messages = [
@@ -802,6 +802,11 @@ class DataBasesController extends Controller
             'chip' => 'chip-removed',
             'badge' => 'badge-removed',
         ];
+
+        $validator = Validator::make($requestData, [
+            'device_type' => 'required|in:' . implode(',', array_keys($chronicleTypesMap))
+        ]);
+        $validator->validate();
 
         $device_column = $requestData['device_type'];
 

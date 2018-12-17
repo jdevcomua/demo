@@ -14,17 +14,6 @@ use App\Http\Controllers\Controller;
 class LostRequestsController extends Controller
 {
 
-    private $species;
-    private $colors;
-    private $breeds;
-
-    public function __construct()
-    {
-        $this->breeds = Breed::all();
-        $this->species = Species::all();
-        $this->colors = Color::all();
-    }
-
     public function index()
     {
         return view('admin.administrating.requests.lost');
@@ -63,9 +52,9 @@ class LostRequestsController extends Controller
     public function foundIndex()
     {
         return view('admin.administrating.requests.found', [
-            'species' => $this->species,
-            'breeds' => $this->breeds,
-            'colors' => $this->colors,
+            'species' => Species::all(),
+            'breeds' => Breed::all(),
+            'colors' => Color::all(),
         ]);
     }
 
