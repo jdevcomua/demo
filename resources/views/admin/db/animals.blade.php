@@ -16,7 +16,7 @@
                 <div class="col-md-2 col-sm-3 col-xs-6 mb25">
                     <a href="{{ route('admin.db.animals.scan') }}" class="btn btn-primary btn-block">Сканувати QR-код</a>
                 </div>
-                <div class="col-md-2 col-sm-3 col-xs-6 mb25">
+                <div class="col-md-2 col-sm-3 col-xs-6 mb25" style="padding-top: 0;">
                     <a href="{{ route('admin.db.animals.create') }}" class="btn btn-success btn-block">Додати тварину</a>
                 </div>
 
