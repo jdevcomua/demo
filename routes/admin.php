@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 Route::redirect('/', '/admin/animals/index', 302)
     ->name('index');

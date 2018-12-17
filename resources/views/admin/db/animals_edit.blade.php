@@ -208,7 +208,7 @@
                                 @endif
 
                                 <div class="form-group">
-                                    <label class="col-xs-3 control-label">Статус:</label>
+                                    <label class="col-xs-4 col-sm-3 control-label">Статус:</label>
                                     <div class="col-xs-8">
                                         @if($animal->verified)
                                             <label class="control-label text-success">Верифіковано</label>
@@ -219,7 +219,7 @@
                                 </div>
                                 @if($animal->verified)
                                         <div class="form-group">
-                                        <label class="col-xs-3 control-label">Ким:</label>
+                                        <label class="col-xs-4 col-sm-3 control-label">Ким:</label>
                                         <div class="col-xs-8">
                                             @if($animal->verification->user)
                                                 <a href="{{ route('admin.db.users.show', $animal->verification->user->id) }}">
@@ -231,7 +231,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-xs-3 control-label">Дата Верифікації:</label>
+                                        <label class="col-xs-4 col-sm-3 control-label">Дата Верифікації:</label>
                                         <div class="col-xs-8">
                                             <label class="control-label">{{ $animal->verification->updated_at->format('d-m-Y H:i') }}</label>
                                         </div>
@@ -356,12 +356,12 @@
                                         <input type="hidden" name="device_type" value="{{$k}}">
                                         <div class="panel-body">
                                             <div class="form-group">
-                                                <label class="col-xs-3 control-label">{{$v}}:</label>
+                                                <label class="col-sm-3 col-xs-5 control-label">{{$v}}:</label>
                                                 <div class="col-xs-6">
                                                     <label class="control-label">{{$animal->$k}}</label>
                                                 </div>
-                                                <div class="text-right col-xs-3">
-                                                    <button type="submit" class="btn btn-default deleteDeviceBtn ph25 float-right">Видалити</button>
+                                                <div class="col-sm-3 col-xs-12">
+                                                    <button type="submit" class="btn btn-default deleteDeviceBtn ph25">Видалити</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -419,33 +419,41 @@
                                         {{ \Session::get('success_sterilization') }}
                                     </div>
                                 @endif
+
                                 <div class="form-group">
-                                    <label class="col-xs-3 control-label">Стерилізація:</label>
-                                    @if($animal->sterilization)
-                                        <div class="col-xs-8"><label class="control-label text-success">Проведено</label></div>
-                                        <label class="col-xs-3 control-label">Дата проведення:</label>
-                                        <div class="col-xs-8">
-                                            <label class="control-label">{{\App\Helpers\Date::getlocalizedDate($animal->sterilization->date)}}</label>
-                                        </div>
-
-                                        <label class="col-xs-3 control-label">Ким проведено:</label>
-                                        <div class="col-xs-8"><label class="control-label">{{$animal->sterilization->made_by}}</label></div>
-
-                                        <label class="col-xs-3 control-label">Відомості:</label>
-                                        <div class="col-xs-8"><label class="control-label">{{$animal->sterilization->description ?? 'Відсутні'}}</label></div>
-                                    @else
+                                    <label class="col-xs-4 col-sm-3 control-label">Стерилізація:</label>
                                     <div class="col-xs-8">
+                                        @if($animal->sterilization)
+                                            <label class="control-label text-success">Проведено</label>
+                                        @else
                                             <label class="control-label text-danger">Не проведено</label>
+                                        @endif
                                     </div>
-                                    @endif
                                 </div>
-
-                            @if(!$animal->sterilization)
-                                        <div class="col-xs-3"></div>
+                                @if($animal->sterilization)
+                                    <div class="form-group">
+                                        <label class="col-xs-4 col-sm-3 control-label">Дата проведення:</label>
                                         <div class="col-xs-8">
-                                            <a href="javascript:void(0)" class="btn btn-default ph25" id="addSterilizationBtn">Додати стерилізацію</a>
+                                            <label class="control-label">{{ \App\Helpers\Date::getlocalizedDate($animal->sterilization->date) }}</label>
                                         </div>
-                                    @endif
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-4 col-sm-3 control-label">Ким проведено:</label>
+                                        <div class="col-xs-8">
+                                            <label class="control-label">{{ $animal->sterilization->made_by }}</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-4 col-sm-3 control-label">Відомості:</label>
+                                        <div class="col-xs-8">
+                                            <label class="control-label">{{ $animal->sterilization->description ?? 'Відсутні' }}</label>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="col-xs-8">
+                                        <a href="javascript:void(0)" class="btn btn-default ph25" id="addSterilizationBtn">Додати стерилізацію</a>
+                                    </div>
+                                @endif
                             </div>
                         </form>
 
@@ -458,26 +466,37 @@
                                         {{ \Session::get('success_vaccination') }}
                                     </div>
                                 @endif
+
                                 <div class="form-group">
-                                    <label class="col-xs-3 control-label">Щеплення проти сказу:</label>
-                                    @if($animal->vaccination)
-                                        <div class="col-xs-8"><label class="control-label text-success">Проведено</label></div>
-                                        <label class="col-xs-3 control-label">Дата проведення:</label>
-                                        <div class="col-xs-8"><label class="control-label">{{\App\Helpers\Date::getlocalizedDate($animal->vaccination->date)}}</label></div>
-
-                                        <label class="col-xs-3 control-label">Ким проведено:</label>
-                                        <div class="col-xs-8"><label class="control-label">{{$animal->vaccination->made_by}}</label></div>
-
-                                        <label class="col-xs-3 control-label">Відомості:</label>
-                                        <div class="col-xs-8"><label class="control-label">{{$animal->vaccination->description ?? 'Відсутні'}}</label></div>
-                                    @else
-                                        <div class="col-xs-8">
+                                    <label class="col-xs-4 col-sm-3 control-label">Щеплення проти сказу:</label>
+                                    <div class="col-xs-8">
+                                        @if($animal->vaccination)
+                                            <label class="control-label text-success">Проведено</label>
+                                        @else
                                             <label class="control-label text-danger">Не проведено</label>
-                                        </div>
-                                    @endif
+                                        @endif
+                                    </div>
                                 </div>
-                                @if(!$animal->vaccination)
-                                    <div class="col-xs-3"></div>
+                                @if($animal->vaccination)
+                                    <div class="form-group">
+                                        <label class="col-xs-4 col-sm-3 control-label">Дата проведення:</label>
+                                        <div class="col-xs-8">
+                                            <label class="control-label">{{ \App\Helpers\Date::getlocalizedDate($animal->vaccination->date) }}</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-4 col-sm-3 control-label">Ким проведено:</label>
+                                        <div class="col-xs-8">
+                                            <label class="control-label">{{ $animal->vaccination->made_by }}</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-4 col-sm-3 control-label">Відомості:</label>
+                                        <div class="col-xs-8">
+                                            <label class="control-label">{{ $animal->vaccination->description ?? 'Відсутні' }}</label>
+                                        </div>
+                                    </div>
+                                @else
                                     <div class="col-xs-8">
                                         <a href="javascript:void(0)" class="btn btn-default ph25" id="addVaccinationBtn">Додати щеплення</a>
                                     </div>
@@ -490,8 +509,8 @@
 
                                 @if(count($animal->animalVeterinaryMeasure))
                                     @foreach($animal->animalVeterinaryMeasure as $veterinary_measure)
-                                    <div class="form-group">
-                                        <label class="col-xs-3 control-label">Ветеринарний захід:</label>
+                                        <div class="form-group">
+                                            <label class="col-xs-3 control-label">Ветеринарний захід:</label>
                                             <div class="col-xs-8">
                                                 <label class="control-label">
                                                     <a href="{{route('admin.db.animals.show-veterinary-measure', $veterinary_measure->id)}}">
@@ -500,13 +519,15 @@
                                                 </label>
                                             </div>
                                             <label class="col-xs-3 control-label">Дата проведення:</label>
-                                            <div class="col-xs-8"><label class="control-label">{{\App\Helpers\Date::getlocalizedDate($veterinary_measure->date)}}</label></div>
-                                    </div>
+                                            <div class="col-xs-8">
+                                                <label class="control-label">{{\App\Helpers\Date::getlocalizedDate($veterinary_measure->date)}}</label>
+                                            </div>
+                                        </div>
                                         <hr>
                                     @endforeach
                                 @endif
 
-                                <a href="javascript:void(0)" class="btn btn-default ph25" id="addVeterinaryMeasureBtn">Додати</a>
+                                <a href="javascript:void(0)" class="btn btn-default ph25 center-block" id="addVeterinaryMeasureBtn">Додати</a>
                             </div>
                         </form>
                     </div>
