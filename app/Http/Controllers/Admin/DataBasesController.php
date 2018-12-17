@@ -673,7 +673,7 @@ class DataBasesController extends Controller
             ->with('success_animal', 'Тварину було успішно видалено!');
     }
 
-    public function animalVerify(Request $request, $id) {
+    public function animalVerify(Request $request, AnimalChronicleServiceInterface $animalChronicleService, $id) {
         if ($request->has('state')) {
             $animal = $this->animalModel
                 ->findOrFail($id);
@@ -690,6 +690,8 @@ class DataBasesController extends Controller
                 $animal->confirm_user_id = ($state === 1) ? \Auth::id() : null;
                 $animal->save();
                 \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
+
+                $animalChronicleService->addAnimalChronicle($animal, 'verification-added');
 
                 return redirect()->back();
             }
