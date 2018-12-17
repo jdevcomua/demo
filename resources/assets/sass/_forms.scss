@@ -137,6 +137,11 @@
     }
   }
 }
+@media (max-width: 950px) {
+  .btn.btn-found.btn-found-white {
+    margin-left: 0;
+  }
+}
 .btn.focus, .btn:focus, textarea:focus {
   box-shadow: none;
   outline: none;
