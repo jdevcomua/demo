@@ -51,8 +51,8 @@ class SendEmail implements ShouldQueue
     public function handle()
     {
         $message = (new CustomMail($this->subject, $this->text))
-            ->onQueue('redis')
-        ->delay(Carbon::now()->addSecond());
+            ->onQueue('default')
+            ->delay(Carbon::now()->addSecond());
 
         \Mail::to($this->user->primary_email)
             ->queue($message);

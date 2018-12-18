@@ -3,11 +3,10 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class CustomMail extends Mailable implements ShouldQueue
+class CustomMail extends Mailable
 {
     use Queueable, SerializesModels;
 
