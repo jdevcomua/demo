@@ -1138,10 +1138,10 @@
             var valueSelected = this.value;
 
             if (valueSelected !== 'death') {
-                $('#cause_of_death').attr('required', false);
+                $('#cause_of_death')[0].selectize.disable();
                 $('#causeOfDeathBlock').hide();
             } else {
-                $('#cause_of_death').attr('required', true);
+                $('#cause_of_death')[0].selectize.enable();
                 $('#causeOfDeathBlock').show();
             }
         });
