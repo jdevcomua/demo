@@ -148,17 +148,17 @@
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="breed">Порода <span class="required-field">*</span></label>
-                                    <select name="breed" id="breed" required></select>
+                                    <select name="breed" class="breed" required></select>
                                 </div>
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="color">Масть <span class="required-field">*</span></label>
-                                    <select name="color" id="color" required></select>
+                                    <select name="color" class="color" required></select>
                                 </div>
                                 <div class="form-group select hidden">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="fur">Тип шерсті <span class="required-field">*</span></label>
-                                    <select name="fur" id="fur" required></select>
+                                    <select name="fur" class="fur" required></select>
                                 </div>
                                 <div class="form-group datepicker">
                                     <div class="validation-error alert alert-danger hidden"></div>
