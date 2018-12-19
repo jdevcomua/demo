@@ -379,6 +379,10 @@ class AnimalsController extends Controller
 
         if ($lost) {
             $lost->found = !$lost->found;
+
+            // If animal lost again - reset processed
+            if (!$lost->found) $lost->processed = false;
+
             $lost->save();
         } else {
             $animal->lost()->create();
