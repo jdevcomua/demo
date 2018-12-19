@@ -61,7 +61,7 @@
                 </li>
                 <li class="sidebar-label pt20">Mailing Settings</li>
 
-                <li >
+                <li {!! (strpos($curRoute, '.templates') !== false) ? ' class="active" ' : '' !!}>
                     <a href="{{ route('admin.templates.index') }}">
                         <span class="glyphicon glyphicon-envelope"></span>
                         <span class="sidebar-title">{{ __('Email Templates') }}</span>

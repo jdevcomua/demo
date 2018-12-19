@@ -25,6 +25,13 @@
                         @csrf
                         @method('put')
                         <div class="panel-body">
+                            @if (\Session::has('success'))
+                                <div class="alert alert-success alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-check pr10"></i>
+                                    {{ \Session::get('success') }}
+                                </div>
+                            @endif
                             <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                                 <label for="subject">Назва:</label>
                                 <input type="text" name="name" class="form-control" id="subject" value="{{$template->name}}">

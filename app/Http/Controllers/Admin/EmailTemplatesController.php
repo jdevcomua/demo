@@ -12,7 +12,8 @@ use App\Http\Controllers\Controller;
 
 class EmailTemplatesController extends Controller
 {
-    public function index(Request $request)
+
+    public function index()
     {
         return view('admin.templates.index');
     }
@@ -49,8 +50,9 @@ class EmailTemplatesController extends Controller
     {
         EmailTemplate::create($request->validated());
 
-        return redirect()->route('admin.templates.index')
-            ->with('message', 'Шаблон повідомленння успішно створено');
+        return redirect()
+            ->route('admin.templates.index')
+            ->with('success', 'Шаблон повідомленння успішно створено');
     }
 
     /**
@@ -75,8 +77,9 @@ class EmailTemplatesController extends Controller
     {
         $template->update($request->validated());
 
-        return redirect()->route('admin.templates.index')
-            ->with('message', 'Шаблон повідомленння успішно оновлено');
+        return redirect()
+            ->back()
+            ->with('success', 'Шаблон повідомленння успішно оновлено');
     }
 
     /**
@@ -89,7 +92,10 @@ class EmailTemplatesController extends Controller
     public function destroy(EmailTemplate $template)
     {
         $template->delete();
-        return redirect()->route('admin.templates.index');
+
+        return redirect()
+            ->back()
+            ->with('success', 'Шаблон повідомленння було успішно видалено!');
     }
 
     public function showFirings()

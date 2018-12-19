@@ -8,14 +8,14 @@
     <section id="content" class="animated fadeIn">
         <div class="row">
 
-            <div class="col-md-2 col-sm-3 col-xs-6 mb25">
+            <div class="col-md-3 col-sm-4 col-xs-12 mb25">
                 <a href="{{ route('admin.templates.create') }}" class="btn btn-primary btn-block">Створити новий шаблон</a>
             </div>
-            <div class="col-md-2 col-sm-3 col-xs-6 mb25" style="padding-top: 0;">
+            <div class="col-md-2 col-sm-3 col-xs-12 mb25" style="padding-top: 0;">
                 <a href="{{ route('admin.templates.show.fire') }}" class="btn btn-success btn-block">Нова розсилка</a>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <div class="panel panel-visible" id="spy5">
                     <div class="panel-heading">
                         <div class="panel-title">
@@ -30,7 +30,10 @@
                             </div>
                         @endif
                         <table class="table table-striped table-hover display datatable responsive nowrap"
-                               id="datatable" cellspacing="0" width="100%">
+                               id="datatable" cellspacing="0" width="100%"
+                               data-act-edit-url="{{ route('admin.templates.edit', 'XXX') }}"
+                               data-act-destroy-url="{{ route('admin.templates.destroy', 'XXX') }}"
+                               data-act-destroy-msg="Ви впевнені що хочете видалити шаблон?">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -77,14 +80,12 @@
                         orderable: false,
                         render: function ( data, type, row ) {
                             if (data) {
-                                return "<a href=\"/admin/templates/"
-                                    + data + "/edit" + "\">" +
-                                    "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
-                                    "</a>"
-                                + "<a href='/admin/templates/' class='delete' data-id=" + data + ">" +
-                                "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>" +
-                                "</a>"
-                            ;
+                                return "<a href=\"#\" class='act-edit' data-id=" + data + " >" +
+                                            "<i class=\"fa fa-pencil pr10\" aria-hidden=\"true\"></i>" +
+                                        "</a>" +
+                                        "<a href=\"#\" class='act-destroy' data-id=" + data + " >" +
+                                            "<i class=\"fa fa-trash pr10\" aria-hidden=\"true\"></i>" +
+                                        "</a>";
                             }
                         }
                     },
@@ -102,15 +103,6 @@
                 ],
             });
 
-            jQuery(document).on('click','.delete', function(e) {
-                e.preventDefault();
-                if (confirm('Are you sure you wanna delete this role?')) {
-                    var id = jQuery(this).attr('data-id');
-                    var form = jQuery('#remove');
-                    $(form).attr('action', "{{route('admin.templates.destroy', '')}}"+id);
-                    $(form).submit();
-                }
-            });
             function escapeHtml(text) {
                 var map = {
                     '&': '&amp;',
