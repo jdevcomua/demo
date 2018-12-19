@@ -828,6 +828,7 @@
                                             <div class="form-group">
                                                 <label class="col-lg-3 control-label">Відомості</label>
                                                 <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
                                                     <input type="text" name="description" class="form-control">
                                                 </div>
                                             </div>
@@ -862,6 +863,7 @@
                                             <div class="form-group datepicker">
                                                 <label class="col-lg-3 control-label">Дата проведення</label>
                                                 <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
                                                     <input type="text" id="dateVaccination" name="date" class="form-control" value="{{\Carbon\Carbon::now()->format('d/m/Y')}}" autocomplete="off" required>
                                                 </div>
                                             </div>
@@ -875,6 +877,7 @@
                                             <div class="form-group">
                                                 <label class="col-lg-3 control-label">Відомості</label>
                                                 <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
                                                     <input type="text" name="description" class="form-control">
                                                 </div>
                                             </div>

@@ -823,53 +823,30 @@ class DataBasesController extends Controller
 
     public function addSterilization(SterilizationVaccinationRequest $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
     {
-        $requestData = $request->all();
+        $animal = Animal::findOrFail($id);
 
-        $request->validate($request->rules());
-
-        $animal = Animal::find($id);
-
-
-        $sterilization = new Sterilization;
-        $sterilization->date = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
-        $sterilization->made_by = $requestData['made_by'];
-        $sterilization->description = $requestData['description'];
-
+        $sterilization = new Sterilization($request->validated());
         $sterilization->animal()->associate($animal);
-
         $sterilization->save();
 
         $animalChronicleService->addAnimalChronicle($animal, 'sterilization-added', [
             'date' => \App\Helpers\Date::getlocalizedDate($sterilization->date),
         ]);
 
-
         return back()->with('success_sterilization', 'Стерилізацію додано успішно!');
     }
 
     public function addVaccination(SterilizationVaccinationRequest $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
     {
-        $requestData = $request->all();
+        $animal = Animal::findOrFail($id);
 
-        $request->validate($request->rules());
-
-        $animal = Animal::find($id);
-
-
-        $vaccination = new Vaccination;
-        $vaccination->date = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
-        $vaccination->made_by = $requestData['made_by'];
-        $vaccination->description = $requestData['description'];
-
+        $vaccination = new Vaccination($request->validated());
         $vaccination->animal()->associate($animal);
-
         $vaccination->save();
 
         $animalChronicleService->addAnimalChronicle($animal, 'vaccination-added', [
             'date' => \App\Helpers\Date::getlocalizedDate($vaccination->date),
         ]);
-
-
 
         return back()->with('success_vaccination', 'Щеплення було додано успішно!');
     }
