@@ -763,7 +763,7 @@ class DataBasesController extends Controller
 
         $rulesByTypes = [
             'clip' => 'required',
-            'chip' => 'required|between:15,15',
+            'chip' => 'required|size:15',
             'badge' => 'required|between:5,8',
         ];
 
@@ -774,7 +774,7 @@ class DataBasesController extends Controller
 
         $messages = [
             '*.required' => 'Номер та тип пристрою є обов\'язковим полем!',
-            '*.between' => 'Номер данного пристрою повинен складатися мінімум з :min символів та максимум з :max символів!',
+            '*.size' => 'Номер пристрою повинен складатися з :size символів!',
         ];
 
         if(isset($rulesByTypes[$requestData['device_type']])) {
