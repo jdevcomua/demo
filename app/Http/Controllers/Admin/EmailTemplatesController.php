@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\DataTables;
-use App\Jobs\SendEmail;
+use App\Http\Requests\EmailTemplateRequest;
 use App\Jobs\SendMassMails;
 use App\Models\EmailTemplate;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Rafwell\Simplegrid\Grid;
 
 class EmailTemplatesController extends Controller
 {
@@ -43,28 +42,15 @@ class EmailTemplatesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param EmailTemplateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmailTemplateRequest $request)
     {
+        EmailTemplate::create($request->validated());
 
-        $data = $request->only('name','subject', 'body');
-        $validator = \Validator::make($data,[
-            'name' => 'required|min:4',
-            'subject' => 'required|min:4',
-            'body' => 'required|min:4'
-        ]);
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors($validator->errors());
-        }
-
-        EmailTemplate::create($data);
-
-        return redirect()->route('admin.templates.index')->with('message', 'Your template has been created successfully');
+        return redirect()->route('admin.templates.index')
+            ->with('message', 'Шаблон повідомленння успішно створено');
     }
 
     /**
@@ -81,32 +67,24 @@ class EmailTemplatesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EmailTemplate  $template
+     * @param EmailTemplateRequest $request
+     * @param  \App\Models\EmailTemplate $template
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EmailTemplate $template)
+    public function update(EmailTemplateRequest $request, EmailTemplate $template)
     {
-        $data = $request->only('subject', 'body');
-        $validator = \Validator::make($data,[
-            'subject' => 'required|min:4',
-            'body' => 'required|min:4'
-        ]);
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors($validator->errors());
-        }
-        $template->update($data);
-        return redirect()->route('admin.templates.index')->with(['message' => 'Your template has been updated successfuly']);
+        $template->update($request->validated());
+
+        return redirect()->route('admin.templates.index')
+            ->with('message', 'Шаблон повідомленння успішно оновлено');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\EmailTemplate  $template
+     * @param  \App\Models\EmailTemplate $template
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(EmailTemplate $template)
     {
@@ -159,5 +137,4 @@ class EmailTemplatesController extends Controller
             ->back()
             ->with('success', 'Розсилку створено та поставлено в чергу');
     }
-
 }

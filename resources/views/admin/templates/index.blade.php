@@ -5,10 +5,15 @@
 
 
 @section('content')
-
     <section id="content" class="animated fadeIn">
-
         <div class="row">
+
+            <div class="col-md-2 col-sm-3 col-xs-6 mb25">
+                <a href="{{ route('admin.templates.create') }}" class="btn btn-primary btn-block">Створити новий шаблон</a>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-6 mb25" style="padding-top: 0;">
+                <a href="{{ route('admin.templates.show.fire') }}" class="btn btn-success btn-block">Нова розсилка</a>
+            </div>
 
             <div class="col-md-12">
                 <div class="panel panel-visible" id="spy5">
@@ -55,11 +60,6 @@
             @csrf
             @method('delete')
         </form>
-
-        <a class="btn btn-info ph25" href="{{route('admin.templates.create')}}">Ствоити новий шаблон</a>
-        <br>
-        <br>
-        <a class="btn btn-success ph25" href="{{route('admin.templates.show.fire')}}">Нова розсилка</a>
     </section>
 @endsection
 
