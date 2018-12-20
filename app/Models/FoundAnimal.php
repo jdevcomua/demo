@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Helpers\ProcessedCache;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
 class FoundAnimal extends Model
 {
-    use Sortable;
+    use Sortable, ProcessedCache;
 
     protected $fillable = [
         'id', 'species_id', 'breed_id',
@@ -45,6 +46,5 @@ class FoundAnimal extends Model
 
         return json_encode($contactInfo);
     }
-
 
 }

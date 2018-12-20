@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\ProcessedCache;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
@@ -30,7 +31,7 @@ use Kyslik\ColumnSortable\Sortable;
  */
 class LostAnimal extends Model
 {
-    use Sortable;
+    use Sortable, ProcessedCache;
 
     protected $fillable = ['id', 'found', 'created_at', 'animal_id', 'processed'];
 
