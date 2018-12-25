@@ -75,8 +75,9 @@ class Log extends Model
     ];
 
     public static $idsObjectTypesMap = [
-        'organization_id' => 'Організація',
-        'animal_id' => 'Тварина'
+        'organization_id' => ['morph_name' => 'Організація', 'name' => 'Організація'],
+        'animal_id' => ['morph_name' => 'Тварина', 'name' => 'Тварина'] ,
+        'new_owner' => ['morph_name' => 'Користувач', 'name' => 'Власник']
     ];
 
     /**

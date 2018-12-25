@@ -65,6 +65,9 @@ class Logger
             $changes = $oldModel->getDirty();
         }
 
+        $this->preprocessData($oldModel, $attr);
+        $this->preprocessData($oldModel, $changes);
+
         foreach ($attr as $k => $v) {
             if (array_key_exists($k, $changes) && $changes[$k] != $v) {
                 $attr[$k] = [
@@ -90,18 +93,18 @@ class Logger
 
         } else return '';
         if (is_array($data)) {
+
             $res = '';
             foreach ($data as $k => $v) {
-
-                $label = Log::$idsModelsToDisplay[$k]['name'] ??  Log::$idsObjectTypesMap[$k] ?? Log::$idsObjectTypesMap[$k] ?? $k;
+                $label = Log::$idsModelsToDisplay[$k]['name'] ?? Log::$idsObjectTypesMap[$k]['name'] ?? $k;
                 $res .= '<span>';
                 $res .= '<b>' . $label . '</b>: ';
 
                 if (!empty(Log::$idsObjectTypesMap[$k])) {
                     $v['old'] = $v['old'] !== null ? "<a href=\"" . route('admin.object') .
-                       "/" . Log::$idsObjectTypesMap[$k] . "/" . $v['old'] . "\">" . Log::$idsObjectTypesMap[$k] . " #" . $v['old'] . "</a>" : null;
+                       "/" . Log::$idsObjectTypesMap[$k]['morph_name'] . "/" . $v['old'] . "\">" . Log::$idsObjectTypesMap[$k]['morph_name'] . " #" . $v['old'] . "</a>" : null;
                     $v['new'] = $v['new'] !== null ? "<a href=\"" . route('admin.object') .
-                        "/" . Log::$idsObjectTypesMap[$k] . "/" . $v['new'] . "\">" . Log::$idsObjectTypesMap[$k] . " #" . $v['new'] . "</a>" : null;
+                        "/" . Log::$idsObjectTypesMap[$k]['morph_name'] . "/" . $v['new'] . "\">" . Log::$idsObjectTypesMap[$k]['morph_name'] . " #" . $v['new'] . "</a>" : null;
                 }
                 if (!empty(Log::$idsModelsToDisplay[$k])) {
                     $model = Log::$idsModelsToDisplay[$k]['model'];
@@ -147,6 +150,27 @@ class Logger
         $this->update([
             'payload' => json_encode($curr),
         ]);
+    }
+
+    private function replaceKey($array, $oldKey, $newKey): array
+    {
+
+        if ($array !== [] && isset($array[$oldKey])) {
+            $temp = $array[$oldKey];
+
+            unset($array[$oldKey]);
+            $array[$newKey] = $temp;
+        }
+        return $array;
+    }
+
+    private function preprocessData($model, &$data): void
+    {
+        $className = (new \ReflectionClass($model))->getShortName();
+
+        if ($className === 'Animal') {
+            $data = $this->replaceKey($data, 'user_id', 'new_owner');
+        }
     }
 
 }
