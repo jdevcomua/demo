@@ -10,7 +10,8 @@ class Logger
     private $logModel;
 
     private static $idsObjectTypesMap = [
-        'organization_id' => 'Організація'
+        'organization_id' => 'Організація',
+        'animal_id' => 'Тварина'
     ];
 
     public function __construct(Log $logModel)

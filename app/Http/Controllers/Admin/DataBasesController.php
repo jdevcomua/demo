@@ -847,9 +847,18 @@ class DataBasesController extends Controller
     {
         $animal = Animal::findOrFail($id);
 
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_STERILIZATION_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
         $sterilization = new Sterilization($request->validated());
         $sterilization->animal()->associate($animal);
         $sterilization->save();
+
+        \RhaLogger::addChanges($sterilization, new Sterilization(), true, ($sterilization != null));
 
         $animalChronicleService->addAnimalChronicle($animal, 'sterilization-added', [
             'date' => \App\Helpers\Date::getlocalizedDate($sterilization->date),
@@ -862,9 +871,18 @@ class DataBasesController extends Controller
     {
         $animal = Animal::findOrFail($id);
 
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_VACCINATION_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
         $vaccination = new Vaccination($request->validated());
         $vaccination->animal()->associate($animal);
         $vaccination->save();
+
+        \RhaLogger::addChanges($vaccination, new Vaccination(), true, ($vaccination != null));
 
         $animalChronicleService->addAnimalChronicle($animal, 'vaccination-added', [
             'date' => \App\Helpers\Date::getlocalizedDate($vaccination->date),

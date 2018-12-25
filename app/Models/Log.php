@@ -46,6 +46,8 @@ class Log extends Model
     const ACTION_VERIFY = 6;
     const ACTION_IDEVICE_ADDED = 7;
     const ACTION_IDEVICE_REMOVED = 8;
+    const ACTION_STERILIZATION_ADDED = 9;
+    const ACTION_VACCINATION_ADDED = 10;
 
     const STATUS_ERROR = 0;
     const STATUS_OK = 1;
@@ -59,6 +61,8 @@ class Log extends Model
         self::ACTION_VERIFY => 'Верифікація',
         self::ACTION_IDEVICE_ADDED => 'Ідентифікуючий пристрій додано',
         self::ACTION_IDEVICE_REMOVED => 'Ідентифікуючий пристрій видалено',
+        self::ACTION_STERILIZATION_ADDED => 'Стерилізацію додано',
+        self::ACTION_VACCINATION_ADDED => 'Вакцинацію додано',
     ];
 
     const STATUSES = [
