@@ -6,6 +6,7 @@
 <aside id="sidebar_left" class="nano nano-primary affix">
     <div class="sidebar-left-content nano-content">
         <ul class="nav sidebar-menu">
+            @permission('view-animals')
             <li class="sidebar-label pt20">Реєстри</li>
             <li{!! (strpos($curRoute, '.db.animals') !== false) ? ' class="active" ' : '' !!}>
                 <a href="{{ route('admin.db.animals.index') }}">
@@ -13,12 +14,17 @@
                     <span class="sidebar-title">Тварини</span>
                 </a>
             </li>
+            @endpermission
+
+            @permission('view-users')
             <li @if($curRoute == 'admin.db.users.index' || $curRoute == 'admin.db.users.show') class="active" @endif>
                 <a href="{{ route('admin.db.users.index') }}">
                     <span class="fa fa-users"></span>
                     <span class="sidebar-title">Користувачі</span>
                 </a>
             </li>
+            @endpermission
+
             <li {!! (strpos($curRoute, '.db.archive.animals') !== false) ? ' class="active" ' : '' !!}>
                 <a href="{{route('admin.db.archive.animals.index')}}">
                     <span class="fa fa-archive"></span>

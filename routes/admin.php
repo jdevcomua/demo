@@ -12,12 +12,15 @@ Route::group([
     'prefix' => 'users',
     'as' => 'db.users.'
 ], function () {
-    Route::get('index', 'Admin\DataBasesController@userIndex')
-        ->name('index');
-    Route::get('data', 'Admin\DataBasesController@userData')
-        ->name('data');
-    Route::get('show/{id?}', 'Admin\DataBasesController@userShow')
-        ->name('show');
+    Route::middleware(['permission:view-users'])->group(function () {
+        Route::get('index', 'Admin\DataBasesController@userIndex')
+            ->name('index');
+        Route::get('data', 'Admin\DataBasesController@userData')
+            ->name('data');
+        Route::get('show/{id?}', 'Admin\DataBasesController@userShow')
+            ->name('show');
+    });
+
     Route::put('update/{id}', 'Admin\DataBasesController@userUpdate')
         ->name('update')
         ->middleware('permission:edit-user');
@@ -46,19 +49,29 @@ Route::group([
     'prefix' => 'animals',
     'as' => 'db.animals.'
 ], function () {
-    Route::get('index', 'Admin\DataBasesController@animalIndex')
-        ->name('index');
-    Route::get('data/{id?}', 'Admin\DataBasesController@animalData')
-        ->name('data');
-    Route::get('create/{id?}', 'Admin\DataBasesController@animalCreate')
-        ->name('create');
-    Route::post('store', 'Admin\DataBasesController@animalStore')
-        ->name('store');
-    Route::get('edit/{id?}', 'Admin\DataBasesController@animalEdit')
-        ->name('edit');
+    Route::middleware(['permission:view-animals'])->group(function () {
+        Route::get('index', 'Admin\DataBasesController@animalIndex')
+            ->name('index');
+        Route::get('data/{id?}', 'Admin\DataBasesController@animalData')
+            ->name('data');
+        Route::get('edit/{id?}', 'Admin\DataBasesController@animalEdit')
+            ->name('edit');
+    });
+
+    Route::middleware(['permission:create-animals'])->group(function () {
+        Route::get('create/{id?}', 'Admin\DataBasesController@animalCreate')
+            ->name('create');
+        Route::post('store', 'Admin\DataBasesController@animalStore')
+            ->name('store');
+    });
+
     Route::view('scan', 'admin.db.animals_scan')->name('scan');
-    Route::put('update/{id}', 'Admin\DataBasesController@animalUpdate')
-        ->name('update');
+
+    Route::middleware(['permission:edit-animals'])->group(function () {
+        Route::put('update/{id}', 'Admin\DataBasesController@animalUpdate')
+            ->name('update');
+    });
+
     Route::delete('remove/{id?}', 'Admin\DataBasesController@animalRemove')
         ->name('remove')
         ->middleware('permission:delete-animal');
