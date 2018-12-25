@@ -962,6 +962,13 @@ class DataBasesController extends Controller
     {
         $animal = Animal::findOrFail($id);
 
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_OFFENSE_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
         $request_data = $request->all();
 
         if (!isset($request_data['bite'])) {
@@ -1019,6 +1026,8 @@ class DataBasesController extends Controller
         if (isset($request_data['documents'])) {
             $this->filesService->handleAnimalOffenseFilesUpload($animalOffense, $request_data);
         }
+
+        \RhaLogger::addChanges($animalOffense, new AnimalOffense(), true, ($animalOffense != null));
 
         $animalChronicleService->addAnimalChronicle($animal, 'animal-offense-added', [
             'offense_affiliation' => $offenseAffiliation->name,

@@ -49,6 +49,7 @@ class Log extends Model
     const ACTION_STERILIZATION_ADDED = 9;
     const ACTION_VACCINATION_ADDED = 10;
     const ACTION_VET_MEASURE_ADDED = 11;
+    const ACTION_OFFENSE_ADDED = 12;
 
     const STATUS_ERROR = 0;
     const STATUS_OK = 1;
@@ -65,11 +66,40 @@ class Log extends Model
         self::ACTION_STERILIZATION_ADDED => 'Стерилізацію додано',
         self::ACTION_VACCINATION_ADDED => 'Вакцинацію додано',
         self::ACTION_VET_MEASURE_ADDED => 'Ветеринарний захід додано',
+        self::ACTION_OFFENSE_ADDED => 'Правопорушення додано',
     ];
 
     const STATUSES = [
         self::STATUS_ERROR => 'Помилка',
         self::STATUS_OK => 'Ок',
+    ];
+
+    public static $idsObjectTypesMap = [
+        'organization_id' => 'Організація',
+        'animal_id' => 'Тварина'
+    ];
+
+    /**
+     * @var array
+     * key is id to replace with data to display
+     * key => array(name_of_model, name_of_column_from_the_model)
+     */
+    public static $idsModelsToDisplay = [
+        'veterinary_measure_id' => [
+            'name' => 'Ветеринарний захід',
+            'model' => 'VeterinaryMeasure',
+            'column_name' => 'name'
+        ],
+        'offense_id' => [
+            'name' => 'Правопорушення',
+            'model' => 'Offense',
+            'column_name' => 'name'
+        ],
+        'offense_affiliation_id' => [
+            'name' => 'Належність правопорушення',
+            'model' => 'OffenseAffiliation',
+            'column_name' => 'name'
+        ],
     ];
 
 

@@ -9,24 +9,6 @@ class Logger
 
     private $logModel;
 
-    private static $idsObjectTypesMap = [
-        'organization_id' => 'Організація',
-        'animal_id' => 'Тварина'
-    ];
-
-    /**
-     * @var array
-     * key is id to replace with data to display
-     * key => array(name_of_model, name_of_column_from_the_model)
-     */
-    private static $idsModelsToDisplay = [
-        'veterinary_measure_id' => [
-            'name' => 'Ветеринарний захід',
-            'model' => 'VeterinaryMeasure',
-            'column_name' => 'name'
-        ],
-    ];
-
     public function __construct(Log $logModel)
     {
         $this->logModel = $logModel;
@@ -111,19 +93,19 @@ class Logger
             $res = '';
             foreach ($data as $k => $v) {
 
-                $label = self::$idsModelsToDisplay[$k]['name'] ??  self::$idsObjectTypesMap[$k] ?? self::$idsObjectTypesMap[$k] ?? $k;
+                $label = Log::$idsModelsToDisplay[$k]['name'] ??  Log::$idsObjectTypesMap[$k] ?? Log::$idsObjectTypesMap[$k] ?? $k;
                 $res .= '<span>';
                 $res .= '<b>' . $label . '</b>: ';
 
-                if (!empty(self::$idsObjectTypesMap[$k])) {
+                if (!empty(Log::$idsObjectTypesMap[$k])) {
                     $v['old'] = $v['old'] !== null ? "<a href=\"" . route('admin.object') .
-                       "/" . self::$idsObjectTypesMap[$k] . "/" . $v['old'] . "\">" . self::$idsObjectTypesMap[$k] . " #" . $v['old'] . "</a>" : null;
+                       "/" . Log::$idsObjectTypesMap[$k] . "/" . $v['old'] . "\">" . Log::$idsObjectTypesMap[$k] . " #" . $v['old'] . "</a>" : null;
                     $v['new'] = $v['new'] !== null ? "<a href=\"" . route('admin.object') .
-                        "/" . self::$idsObjectTypesMap[$k] . "/" . $v['new'] . "\">" . self::$idsObjectTypesMap[$k] . " #" . $v['new'] . "</a>" : null;
+                        "/" . Log::$idsObjectTypesMap[$k] . "/" . $v['new'] . "\">" . Log::$idsObjectTypesMap[$k] . " #" . $v['new'] . "</a>" : null;
                 }
-                if (!empty(self::$idsModelsToDisplay[$k])) {
-                    $model = self::$idsModelsToDisplay[$k]['model'];
-                    $columnName = self::$idsModelsToDisplay[$k]['column_name'];
+                if (!empty(Log::$idsModelsToDisplay[$k])) {
+                    $model = Log::$idsModelsToDisplay[$k]['model'];
+                    $columnName = Log::$idsModelsToDisplay[$k]['column_name'];
 
                     $v['old'] = ($v['old'] !== null) ? static::getValueByModelName($model, $v['old'], $columnName) : null;
                     $v['new'] = ($v['new'] !== null) ? static::getValueByModelName($model, $v['new'], $columnName) : null;
