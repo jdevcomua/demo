@@ -895,6 +895,13 @@ class DataBasesController extends Controller
     {
         $animal = Animal::findOrFail($id);
 
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_VET_MEASURE_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
         $request_data = $request->all();
 
         $rules = [
@@ -933,6 +940,8 @@ class DataBasesController extends Controller
         if (isset($request_data['documents'])) {
             $this->filesService->handleVeterinaryMeasureFilesUpload($animalVeterinaryMeasure, $request_data);
         }
+
+        \RhaLogger::addChanges($animalVeterinaryMeasure, new AnimalVeterinaryMeasure(), true, ($animalVeterinaryMeasure != null));
 
         $animalChronicleService->addAnimalChronicle($animal, 'veterinary-measure-added', [
             'veterinary_measure' => $veterinarymeasure->name,

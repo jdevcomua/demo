@@ -14,6 +14,19 @@ class Logger
         'animal_id' => 'Тварина'
     ];
 
+    /**
+     * @var array
+     * key is id to replace with data to display
+     * key => array(name_of_model, name_of_column_from_the_model)
+     */
+    private static $idsModelsToDisplay = [
+        'veterinary_measure_id' => [
+            'name' => 'Ветеринарний захід',
+            'model' => 'VeterinaryMeasure',
+            'column_name' => 'name'
+        ],
+    ];
+
     public function __construct(Log $logModel)
     {
         $this->logModel = $logModel;
@@ -97,7 +110,8 @@ class Logger
         if (is_array($data)) {
             $res = '';
             foreach ($data as $k => $v) {
-                $label = !empty(self::$idsObjectTypesMap[$k]) ? self::$idsObjectTypesMap[$k] : $k;
+
+                $label = self::$idsModelsToDisplay[$k]['name'] ??  self::$idsObjectTypesMap[$k] ?? self::$idsObjectTypesMap[$k] ?? $k;
                 $res .= '<span>';
                 $res .= '<b>' . $label . '</b>: ';
 
@@ -107,6 +121,13 @@ class Logger
                     $v['new'] = $v['new'] !== null ? "<a href=\"" . route('admin.object') .
                         "/" . self::$idsObjectTypesMap[$k] . "/" . $v['new'] . "\">" . self::$idsObjectTypesMap[$k] . " #" . $v['new'] . "</a>" : null;
                 }
+                if (!empty(self::$idsModelsToDisplay[$k])) {
+                    $model = self::$idsModelsToDisplay[$k]['model'];
+                    $columnName = self::$idsModelsToDisplay[$k]['column_name'];
+
+                    $v['old'] = ($v['old'] !== null) ? static::getValueByModelName($model, $v['old'], $columnName) : null;
+                    $v['new'] = ($v['new'] !== null) ? static::getValueByModelName($model, $v['new'], $columnName) : null;
+                }
                 if ($v['old'] !== null) $res .= '<c-r>' . $v['old'] . '</c-r> ⟶ ';
                 $res .= '<c-g>' . $v['new'] . '</c-g>';
                 $res .= '</span>';
@@ -114,6 +135,13 @@ class Logger
             return $res;
         }
         return '';
+    }
+
+    private static function getValueByModelName($modelName, $id, $columnName)
+    {
+        $modelsPath = ($modelName !== 'User') ? '\App\Models\\' : '\App\\';
+        $modelClass = $modelsPath . $modelName;
+        return $modelClass::findOrFail($id)->$columnName;
     }
 
     /**

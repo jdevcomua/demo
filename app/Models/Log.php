@@ -48,6 +48,7 @@ class Log extends Model
     const ACTION_IDEVICE_REMOVED = 8;
     const ACTION_STERILIZATION_ADDED = 9;
     const ACTION_VACCINATION_ADDED = 10;
+    const ACTION_VET_MEASURE_ADDED = 11;
 
     const STATUS_ERROR = 0;
     const STATUS_OK = 1;
@@ -63,6 +64,7 @@ class Log extends Model
         self::ACTION_IDEVICE_REMOVED => 'Ідентифікуючий пристрій видалено',
         self::ACTION_STERILIZATION_ADDED => 'Стерилізацію додано',
         self::ACTION_VACCINATION_ADDED => 'Вакцинацію додано',
+        self::ACTION_VET_MEASURE_ADDED => 'Ветеринарний захід додано',
     ];
 
     const STATUSES = [
