@@ -788,8 +788,19 @@ class DataBasesController extends Controller
         $device_column = $requestData['device_type'];
 
         $animal = Animal::findOrFail($id);
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_IDEVICE_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $oldAnimal = clone $animal;
         $animal->$device_column = $requestData['device_number'];
         $animal->save();
+
+        \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
         $chs->addAnimalChronicle($animal,$chronicleTypesMap[$device_column], [$device_column => $requestData['device_number']]);
 
@@ -813,8 +824,19 @@ class DataBasesController extends Controller
         $device_column = $requestData['device_type'];
 
         $animal = Animal::findOrFail($id);
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_IDEVICE_REMOVED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $oldAnimal = clone $animal;
         $animal->$device_column = null;
         $animal->save();
+
+        \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
         $chs->addAnimalChronicle($animal, $chronicleTypesMap[$device_column]);
 

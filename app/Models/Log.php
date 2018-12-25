@@ -44,6 +44,8 @@ class Log extends Model
     const ACTION_REGISTER = 4;
     const ACTION_LOGIN = 5;
     const ACTION_VERIFY = 6;
+    const ACTION_IDEVICE_ADDED = 7;
+    const ACTION_IDEVICE_REMOVED = 8;
 
     const STATUS_ERROR = 0;
     const STATUS_OK = 1;
@@ -55,6 +57,8 @@ class Log extends Model
         self::ACTION_REGISTER => 'Реєстрація',
         self::ACTION_LOGIN => 'Авторизація',
         self::ACTION_VERIFY => 'Верифікація',
+        self::ACTION_IDEVICE_ADDED => 'Ідентифікуючий пристрій додано',
+        self::ACTION_IDEVICE_REMOVED => 'Ідентифікуючий пристрій видалено',
     ];
 
     const STATUSES = [
