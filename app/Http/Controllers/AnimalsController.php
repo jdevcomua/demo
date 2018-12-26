@@ -13,6 +13,7 @@ use App\Models\CauseOfDeath;
 use App\Models\ChangeAnimalOwner;
 use App\Models\DeathArchiveRecord;
 use App\Models\Log;
+use App\Models\LostAnimal;
 use App\Models\MovedOutArchiveRecord;
 use App\Services\FilesService;
 use Carbon\Carbon;
@@ -377,6 +378,8 @@ class AnimalsController extends Controller
     {
         $lost = $animal->lost;
 
+        $oldLost = ($lost !== null) ? clone $lost : new LostAnimal();
+
         if ($lost) {
             $lost->found = !$lost->found;
 
@@ -387,6 +390,19 @@ class AnimalsController extends Controller
         } else {
             $animal->lost()->create();
         }
+
+        $animal->load('lost');
+        $lost = $animal->lost;
+
+        \RhaLogger::start();
+        \RhaLogger::update([
+            'action' => $lost->found ? Log::ACTION_ANIMAL_FOUND : Log::ACTION_ANIMAL_LOST,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        \RhaLogger::addChanges($lost, $oldLost, true, ($lost != null));
+
 
         return redirect()->back();
     }

@@ -53,6 +53,8 @@ class Log extends Model
     const ACTION_ANIMAL_DEATH = 13;
     const ACTION_ANIMAL_MOVED = 14;
     const ACTION_ANIMAL_CHANGE_OWNER = 15;
+    const ACTION_ANIMAL_LOST = 16;
+    const ACTION_ANIMAL_FOUND = 17;
 
     const STATUS_ERROR = 0;
     const STATUS_OK = 1;
@@ -73,6 +75,8 @@ class Log extends Model
         self::ACTION_ANIMAL_DEATH => 'Фіксація смерті тварини',
         self::ACTION_ANIMAL_MOVED => 'Фіксація виїзду тварини',
         self::ACTION_ANIMAL_CHANGE_OWNER => 'Передача іншому власнику',
+        self::ACTION_ANIMAL_LOST => 'Тварину загублено',
+        self::ACTION_ANIMAL_FOUND => 'Тварину знайдено',
     ];
 
     const STATUSES = [
