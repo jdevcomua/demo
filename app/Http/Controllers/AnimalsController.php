@@ -393,13 +393,24 @@ class AnimalsController extends Controller
 
     public function changeOwner(Request $request)
     {
+        $requestData = $request->all();
+
+        \RhaLogger::start(['data' => $requestData]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_ANIMAL_CHANGE_OWNER,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object(Animal::findOrFail($requestData['animal_id']));
+
         $request->validate([
             'full_name' => 'required',
             'passport' => 'required',
             'contact_phone' => 'required'
         ]);
 
-        ChangeAnimalOwner::create($request->all());
+        $changeOnwer = ChangeAnimalOwner::create($request->all());
+
+        \RhaLogger::addChanges($changeOnwer, new ChangeAnimalOwner(), true, ($changeOnwer != null));
 
         return back()
             ->with('success_request', 'Запит було створено успішно');
@@ -411,6 +422,13 @@ class AnimalsController extends Controller
 
         $requestData = $request->all();
         $animal = Animal::find($requestData['animal_id']);
+
+        \RhaLogger::start(['data' => $requestData]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_ANIMAL_DEATH,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
 
         $requestData['date'] = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
 
@@ -425,6 +443,9 @@ class AnimalsController extends Controller
 
         $archiveRecord->archived()->save($animal);
 
+        \RhaLogger::addChanges($archiveRecord, new DeathArchiveRecord(), true, ($archiveRecord != null));
+
+
         return route('animals.index');
     }
 
@@ -434,6 +455,13 @@ class AnimalsController extends Controller
         $requestData = $request->all();
 
         $animal = Animal::find($requestData['animal_id']);
+
+        \RhaLogger::start(['data' => $requestData]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_ANIMAL_MOVED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
 
         $requestData['date'] = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
 
@@ -446,6 +474,8 @@ class AnimalsController extends Controller
         $archiveRecord->save();
 
         $archiveRecord->archived()->save($animal);
+
+        \RhaLogger::addChanges($archiveRecord, new MovedOutArchiveRecord(), true, ($archiveRecord != null));
 
         return route('animals.index');
     }
