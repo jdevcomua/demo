@@ -50,6 +50,8 @@ class Log extends Model
     const ACTION_VACCINATION_ADDED = 10;
     const ACTION_VET_MEASURE_ADDED = 11;
     const ACTION_OFFENSE_ADDED = 12;
+    const ACTION_ANIMAL_DEATH = 13;
+    const ACTION_ANIMAL_MOVED = 14;
 
     const STATUS_ERROR = 0;
     const STATUS_OK = 1;
@@ -67,6 +69,8 @@ class Log extends Model
         self::ACTION_VACCINATION_ADDED => 'Вакцинацію додано',
         self::ACTION_VET_MEASURE_ADDED => 'Ветеринарний захід додано',
         self::ACTION_OFFENSE_ADDED => 'Правопорушення додано',
+        self::ACTION_ANIMAL_DEATH => 'Фіксація смерті тварини',
+        self::ACTION_ANIMAL_MOVED => 'Фіксація виїзду тварини',
     ];
 
     const STATUSES = [
@@ -101,6 +105,11 @@ class Log extends Model
             'model' => 'OffenseAffiliation',
             'column_name' => 'name'
         ],
+        'cause_of_death_id' => [
+            'name' => 'Причина смерті',
+            'model' => 'CauseOfDeath',
+            'column_name' => 'name'
+        ]
     ];
 
 

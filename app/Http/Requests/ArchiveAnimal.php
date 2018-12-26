@@ -71,5 +71,9 @@ class ArchiveAnimal extends FormRequest
         $archiveRecord->save();
 
         $archiveRecord->archived()->save($animal);
+
+        $archiveRecordClass = get_class($archiveRecord);
+
+        \RhaLogger::addChanges($archiveRecord, new $archiveRecordClass(), true, ($archiveRecord != null));
     }
 }

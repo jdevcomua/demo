@@ -345,7 +345,15 @@ class DataBasesController extends Controller
 
     public function animalArchive(ArchiveAnimal $request, $id)
     {
+        $requestData = $request->all();
         $animal = Animal::find($id);
+
+        \RhaLogger::start(['data' => $requestData]);
+        \RhaLogger::update([
+            'action' => ($requestData['archive_type'] !== 'moved_out') ? Log::ACTION_ANIMAL_DEATH : Log::ACTION_ANIMAL_MOVED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
 
         $request->validate($request->rules());
 
