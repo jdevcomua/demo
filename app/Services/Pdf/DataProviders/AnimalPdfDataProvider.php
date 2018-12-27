@@ -206,6 +206,9 @@ class AnimalPdfDataProvider implements PdfDataProviderInterface
     private function address()
     {
         $address = $this->animal->user->living_address ?? $this->animal->user->registration_address;
+        if ($address === null) {
+            return '-';
+        }
         return $address->city . ', ' . $address->street . ', будинок ' . $address->building . $address->apartment;
     }
 
