@@ -247,10 +247,10 @@
                                 <div class="panel-footer text-right">
                                     @if($animal->verified)
                                         <a href="{{ route('admin.db.animals.verify', $animal->id) }}?state=0"
-                                           class="btn btn-danger ph25">Відмінити верифікацію</a>
+                                           class="btn btn-danger ph25 one-click">Відмінити верифікацію</a>
                                     @else
                                         <a href="{{ route('admin.db.animals.verify', $animal->id) }}?state=1"
-                                           class="btn btn-success ph25">Верифікувати</a>
+                                           class="btn btn-success ph25 one-click">Верифікувати</a>
                                     @endif
                                 </div>
                             @endpermission
@@ -1255,5 +1255,9 @@
                 }
             }
         }
+
+        $('.one-click').on('click', function(e) {
+            $(this).attr('disabled', '');
+        });
     </script>
 @endsection
