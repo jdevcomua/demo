@@ -699,7 +699,7 @@ class DataBasesController extends Controller
                 $animal->save();
                 \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
-                $animalChronicleService->addAnimalChronicle($animal, 'verification-added');
+                $animalChronicleService->addAnimalChronicle($animal, $state ? 'verification-added' : 'verification-removed');
 
                 return redirect()->back();
             }

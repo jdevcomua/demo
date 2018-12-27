@@ -118,5 +118,10 @@ class AnimalChroniclesSeeder extends Seeder
         $chronicleType->type = 'verification-added';
         $chronicleType->template_text = 'Тварину верифіковано.';
         $chronicleType->save();
+
+        $chronicleType = new AnimalChronicleType;
+        $chronicleType->type = 'verification-removed';
+        $chronicleType->template_text = 'Верифікацію відмінено.';
+        $chronicleType->save();
     }
 }
