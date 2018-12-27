@@ -3,9 +3,12 @@
 @section('content')
     <!-- Start: Topbar -->
     <header id="topbar">
-        <div class="topbar-left">
+        <div class="topbar-left clearfix">
             <span>Редагування тварини</span>
+            <a href="{{ route('admin.pdf.animal-info', $animal->id) }}" class="btn btn-success btn-block" style="width: 125px;float: right;">PDF для друку</a>
+
         </div>
+
     </header>
     <!-- End: Topbar -->
 

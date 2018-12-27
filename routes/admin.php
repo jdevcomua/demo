@@ -7,6 +7,12 @@ Route::redirect('/', '/admin/animals/index', 302)
 // since Entrust checking permissions every request
 // -> more DB requests -> slower app -> less req/sec
 
+Route::group([
+    'prefix' => 'pdf',
+    'as' => 'pdf.'
+], function () {
+    Route::get('animal-info/{id}', 'Admin\PdfController@animalInfo')->name('animal-info');
+});
 
 Route::group([
     'prefix' => 'users',

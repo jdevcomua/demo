@@ -16,4 +16,9 @@ class MovedOutArchiveRecord extends Model
         $carbonInstance = Carbon::parse($value);
         return $carbonInstance->format('d/m/Y');
     }
+
+    public function getCarbonDiedAtAttribute($value)
+    {
+        return Carbon::parse($value);
+    }
 }

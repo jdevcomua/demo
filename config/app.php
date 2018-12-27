@@ -165,6 +165,7 @@ return [
 
         Zizaco\Entrust\EntrustServiceProvider::class,
         Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         App\Providers\BlockServiceProvider::class,
         \App\Providers\LoggerServiceProvider::class,
         \App\Providers\ViewComposerProvider::class,
@@ -221,7 +222,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Block' => App\Facades\BlockFacade::class,
         'RhaLogger' => App\Facades\RhaLogger::class,
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

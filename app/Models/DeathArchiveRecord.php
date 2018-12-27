@@ -22,4 +22,9 @@ class DeathArchiveRecord extends Model
         return $carbonInstance->format('d/m/Y');
     }
 
+    public function getCarbonDiedAtAttribute($value)
+    {
+        return Carbon::parse($value);
+    }
+
 }
