@@ -689,7 +689,7 @@ class DataBasesController extends Controller
             if ($state === 0 || $state === 1) {
                 \RhaLogger::start();
                 \RhaLogger::update([
-                    'action' => Log::ACTION_VERIFY,
+                    'action' => $state ? Log::ACTION_VERIFY : Log::ACTION_VERIFY_CANCEL,
                     'user_id' => \Auth::id(),
                 ]);
                 \RhaLogger::object($animal);

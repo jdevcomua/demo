@@ -44,17 +44,19 @@ class Log extends Model
     const ACTION_REGISTER = 4;
     const ACTION_LOGIN = 5;
     const ACTION_VERIFY = 6;
-    const ACTION_IDEVICE_ADDED = 7;
-    const ACTION_IDEVICE_REMOVED = 8;
-    const ACTION_STERILIZATION_ADDED = 9;
-    const ACTION_VACCINATION_ADDED = 10;
-    const ACTION_VET_MEASURE_ADDED = 11;
-    const ACTION_OFFENSE_ADDED = 12;
-    const ACTION_ANIMAL_DEATH = 13;
-    const ACTION_ANIMAL_MOVED = 14;
-    const ACTION_ANIMAL_CHANGE_OWNER = 15;
-    const ACTION_ANIMAL_LOST = 16;
-    const ACTION_ANIMAL_FOUND = 17;
+    const ACTION_VERIFY_CANCEL = 7;
+    const ACTION_IDEVICE_ADDED = 8;
+    const ACTION_IDEVICE_REMOVED = 9;
+    const ACTION_STERILIZATION_ADDED = 10;
+    const ACTION_VACCINATION_ADDED = 11;
+    const ACTION_VET_MEASURE_ADDED = 12;
+    const ACTION_OFFENSE_ADDED = 13;
+    const ACTION_ANIMAL_DEATH = 14;
+    const ACTION_ANIMAL_MOVED = 15;
+    const ACTION_ANIMAL_CHANGE_OWNER = 16;
+    const ACTION_ANIMAL_LOST = 17;
+    const ACTION_ANIMAL_FOUND = 18;
+
 
     const STATUS_ERROR = 0;
     const STATUS_OK = 1;
@@ -66,6 +68,7 @@ class Log extends Model
         self::ACTION_REGISTER => 'Реєстрація',
         self::ACTION_LOGIN => 'Авторизація',
         self::ACTION_VERIFY => 'Верифікація',
+        self::ACTION_VERIFY_CANCEL => 'Відміна верифікації',
         self::ACTION_IDEVICE_ADDED => 'Ідентифікуючий пристрій додано',
         self::ACTION_IDEVICE_REMOVED => 'Ідентифікуючий пристрій видалено',
         self::ACTION_STERILIZATION_ADDED => 'Стерилізацію додано',
