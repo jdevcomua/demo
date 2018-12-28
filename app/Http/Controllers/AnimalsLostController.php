@@ -42,8 +42,8 @@ class AnimalsLostController extends Controller
 
         $rules = [
             'species' => 'required|integer|exists:species,id',
-            'breed' => 'required|integer|exists:breeds,id',
-            'color' => 'required|integer|exists:colors,id',
+            'breed' => 'nullable|exists:breeds,id',
+            'color' => 'nullable|exists:colors,id',
             'found_address' => 'required|string|max:2000',
             'contact_name' => 'required|string|max:2000',
             'contact_phone' => 'required|string|max:2000',
@@ -55,8 +55,6 @@ class AnimalsLostController extends Controller
 
         $messages = [
             'species.required' => 'Вид є обов\'язковим полем',
-            'breed.required' => 'Порода є обов\'язковим полем',
-            'color.required' => 'Масть є обов\'язковим полем',
             'found_address.required' => 'Адреса де знайшли тварину є обов\'язковим полем',
             'contact_name.required' => 'Ваше ім\'я є обов\'язковим полем',
             'contact_phone.required' => 'Ваш телефон є обов\'язковим полем',
@@ -94,8 +92,6 @@ class AnimalsLostController extends Controller
         $foundAnimal = FoundAnimal::create($dataToSave);
 
         $this->filesService->handleFoundAnimalFilesUpload($foundAnimal, $requestData);
-
-
 
         return response()->json([
             'status' => 'ok',

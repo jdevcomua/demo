@@ -94,12 +94,12 @@
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="breed">Порода </label>
-                                    <select name="breed" class="breed" required></select>
+                                    <select name="breed" class="breed"></select>
                                 </div>
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="color">Масть </label>
-                                    <select name="color" class="color" required></select>
+                                    <select name="color" class="color"></select>
                                 </div>
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>

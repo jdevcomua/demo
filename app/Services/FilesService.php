@@ -40,29 +40,37 @@ class FilesService
 
     public function handleOrganizationFilesUpload($organization, $data)
     {
+        if (array_key_exists('documents', $data)) {
             foreach ($data['documents'] as $document) {
                 $this->storeOrganizationFile($organization, $document);
             }
+        }
     }
 
     public function handleVeterinaryMeasureFilesUpload($animalVeterinaryMeasure, $data)
     {
-        foreach ($data['documents'] as $document) {
-            $this->storeVeterinaryMeasureFile($animalVeterinaryMeasure, $document);
+        if (array_key_exists('documents', $data)) {
+            foreach ($data['documents'] as $document) {
+                $this->storeVeterinaryMeasureFile($animalVeterinaryMeasure, $document);
+            }
         }
     }
 
     public function handleAnimalOffenseFilesUpload($animalOffense, $data)
     {
-        foreach ($data['documents'] as $document) {
-            $this->storeAnimalOffenseFile($animalOffense, $document);
+        if (array_key_exists('documents', $data)) {
+            foreach ($data['documents'] as $document) {
+                $this->storeAnimalOffenseFile($animalOffense, $document);
+            }
         }
     }
 
     public function handleFoundAnimalFilesUpload($foundAnimal, $data)
     {
-        foreach ($data['documents'] as $document) {
-            $this->storeFoundAnimalFile($foundAnimal, $document);
+        if (array_key_exists('documents', $data)) {
+            foreach ($data['documents'] as $document) {
+                $this->storeFoundAnimalFile($foundAnimal, $document);
+            }
         }
     }
 
