@@ -9,8 +9,10 @@ window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
+csrf_token = '';
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    csrf_token = token.content;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = csrf_token;
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
@@ -22,6 +24,8 @@ require('selectize');
 require('./parts/admin/selectize');
 require('./parts/admin/datepicker');
 require('./parts/admin/datatable');
+require('./parts/admin/popup');
+require('./parts/admin/actions');
 
 
 $.ajaxSetup({
@@ -31,6 +35,10 @@ $.ajaxSetup({
 });
 
 $('input[required]').each(function () {
+    $(this).attr('title', 'Заповніть це поле.');
+});
+
+$('select[required]').each(function () {
     $(this).attr('title', 'Заповніть це поле.');
 });
 $('input.custom-file-input').change(function () {

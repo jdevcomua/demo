@@ -53,6 +53,8 @@ dataTableInit = function (table, options) {
             searchInTable(dt, colIdx, this.value);
         });
     });
+
+    return dt;
 };
 
 function searchInTable(table, column, search) {

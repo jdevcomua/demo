@@ -1,3 +1,7 @@
+html {
+  margin-right: 0 !important;
+}
+
 .navbar .nav > li > a {
   line-height: 29px;
 }
@@ -154,6 +158,13 @@ div#files-container {
     }
   }
 }
+.fire {
+  .selectize-control.multi .selectize-input > div {
+    background: #4a89dc;
+    color: white;
+    border: 1px solid #4a89ff;
+  }
+}
 
 
 .select-gen .selectize-input, .select .selectize-input {
@@ -202,5 +213,49 @@ textarea#bodyText {
   &:focus {
     border-color: #75a5e4;
     outline: 0;
+  }
+}
+
+.mfp-close {
+  padding-top: 0 !important;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+.popup-basic {
+  max-width: 700px;
+}
+
+//Fix 'new' label on requests
+.sub-nav .sidebar-title-tray {
+    line-height: 35px;
+    top: 4px !important;
+}
+a.accordion-toggle > .sidebar-title-tray {
+  margin-right: 20px;
+}
+
+
+.pet-chronicles-block {
+  & .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  & .pet-chronicles-block-item {
+    &:not(:last-child) {
+      margin-bottom: 2rem;
+    }
+    & .date {
+      color: #999999;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    & .content {
+      font-size: 1.5rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: #333333;
+      margin-top: 0.4rem;
+    }
   }
 }

@@ -84,6 +84,30 @@ class RolesPermissionsSeeder extends Seeder
         $viewSyslog->display_name     = 'Перегляд системного журналу';
         $viewSyslog->save();
 
+        $editOrganizations = new Permission();
+        $editOrganizations->name          = 'edit-organizations';
+        $editOrganizations->display_name  = 'Управління закладами та установами';
+        $editOrganizations->save();
+
+        $viewAnimals = new Permission();
+        $viewAnimals->name          = 'view-animals';
+        $viewAnimals->display_name  = 'Перегляд тварин';
+        $viewAnimals->save();
+
+        $editAnimals = new Permission();
+        $editAnimals->name          = 'edit-animals';
+        $editAnimals->display_name  = 'Редагування тварин';
+        $editAnimals->save();
+
+        $createAnimals = new Permission();
+        $createAnimals->name          = 'create-animals';
+        $createAnimals->display_name  = 'Створення тварин';
+        $createAnimals->save();
+
+        $viewUsers = new Permission();
+        $viewUsers->name          = 'view-users';
+        $viewUsers->display_name  = 'Перегляд користувачів';
+        $viewUsers->save();
 
         $admin->attachPermissions([
             $adminPanel,
@@ -96,7 +120,11 @@ class RolesPermissionsSeeder extends Seeder
             $editUser,
             $deleteUser,
             $viewSyslog,
-            $privateData
+            $privateData,
+            $editOrganizations,
+            $viewAnimals,
+            $editAnimals,
+            $viewUsers
         ]);
 
         $contentAdmin->attachPermissions([

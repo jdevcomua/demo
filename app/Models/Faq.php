@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Orderable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -21,7 +22,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Faq extends Model
 {
+    use Orderable;
+
     protected $fillable = [
-        'id', 'question', 'answer'
+        'id', 'order', 'question', 'answer'
     ];
 }

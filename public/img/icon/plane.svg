@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="pet" transform="translate(-760.000000, -2773.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="181545" transform="translate(760.000000, 2773.000000)">
+                <path d="M14.9997,0 C6.7158,0 0.0003,6.7161 0.0003,14.9997 C0.0003,23.2833 6.7158,30 14.9997,30 C23.2836,30 29.9997,23.2837 29.9997,14.9997 C29.9997,6.7157 23.2837,0 14.9997,0 Z M22.2978,9.9461 L19.0543,13.0172 L21.1105,21.3016 L19.8835,22.5286 L15.9573,16.1258 L15.8668,16.0353 L11.8283,19.8593 C11.8055,19.8824 11.7798,19.8998 11.7565,19.9215 L11.6268,22.8696 L7.1303,18.3734 L10.0774,18.244 C10.0992,18.2201 10.1168,18.1947 10.1399,18.1716 L13.9639,14.1329 L13.9314,14.1 L7.4713,10.1168 L8.6983,8.8898 L16.9454,10.9844 L20.0533,7.7017 C20.6734,7.0816 21.6784,7.0818 22.298,7.7017 C22.9177,8.3215 22.9177,9.3263 22.2978,9.9461 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

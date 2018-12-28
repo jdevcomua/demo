@@ -3,14 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Events\AnimalFormRequestSent;
-use App\Helpers\Date;
 use App\Events\AnimalAdded;
+use App\Http\Requests\InformAnimalDeath;
+use App\Http\Requests\InformAnimalMovedOut;
 use App\Models\Animal;
 use App\Models\AnimalsFile;
 use App\Models\AnimalsRequest;
+use App\Models\CauseOfDeath;
+use App\Models\ChangeAnimalOwner;
+use App\Models\DeathArchiveRecord;
 use App\Models\Log;
+use App\Models\LostAnimal;
+use App\Models\MovedOutArchiveRecord;
 use App\Services\FilesService;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -32,7 +40,10 @@ class AnimalsController extends Controller
     public function index()
     {
         $user = \Auth::user();
+
         $pets = $user->animals->load(['species', 'color', 'breed', 'files']);
+
+        $pets = $pets->sortBy('archivable');
 
         return view('animals.index', [
             'pets' => $pets
@@ -129,7 +140,7 @@ class AnimalsController extends Controller
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
-        event(new AnimalAdded($user));
+        event(new AnimalAdded($user, $animal));
 
         \Session::flash('new-animal', ' ');
 
@@ -149,9 +160,11 @@ class AnimalsController extends Controller
     {
         $animal->load(['species', 'color', 'files']);
         $animal->imagesArray = $animal->images->pluck('path', 'num')->toArray();
+        $causesOfDeath = CauseOfDeath::all();
 
         return view('animals.show', [
-            'animal' => $animal
+            'animal' => $animal,
+            'causesOfDeath' => $causesOfDeath
         ]);
     }
 
@@ -343,12 +356,144 @@ class AnimalsController extends Controller
         $animal = Animal::where('badge', $badge)
 //            ->whereNull('user_id')
             ->first();
-        if (!$animal) {
+
+        if ($badge === null || !$animal) {
             return redirect()
                 ->back()
                 ->with('error', 'На жаль, тварина не знайдена');
         }
 
+        if (\Auth::user()->can('admin-panel')) {
+            return redirect()->route('admin.db.animals.edit', $animal->id);
+        }
+
         return redirect()->route('animals.show', $animal->id);
     }
+
+    /**
+     * @param Animal $animal
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function lost(Animal $animal)
+    {
+        $lost = $animal->lost;
+
+        $oldLost = ($lost !== null) ? clone $lost : new LostAnimal();
+
+        if ($lost) {
+            $lost->found = !$lost->found;
+
+            // If animal lost again - reset processed
+            if (!$lost->found) $lost->processed = false;
+
+            $lost->save();
+        } else {
+            $animal->lost()->create();
+        }
+
+        $animal->load('lost');
+        $lost = $animal->lost;
+
+        \RhaLogger::start();
+        \RhaLogger::update([
+            'action' => $lost->found ? Log::ACTION_ANIMAL_FOUND : Log::ACTION_ANIMAL_LOST,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        \RhaLogger::addChanges($lost, $oldLost, true, ($lost != null));
+
+
+        return redirect()->back();
+    }
+
+    public function changeOwner(Request $request)
+    {
+        $requestData = $request->all();
+
+        \RhaLogger::start(['data' => $requestData]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_ANIMAL_CHANGE_OWNER,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object(Animal::findOrFail($requestData['animal_id']));
+
+        $request->validate([
+            'full_name' => 'required',
+            'passport' => 'required',
+            'contact_phone' => 'required'
+        ]);
+
+        $changeOnwer = ChangeAnimalOwner::create($request->all());
+
+        \RhaLogger::addChanges($changeOnwer, new ChangeAnimalOwner(), true, ($changeOnwer != null));
+
+        return back()
+            ->with('success_request', 'Запит було створено успішно');
+    }
+
+    public function informDeath(InformAnimalDeath $request)
+    {
+        $request->validate($request->rules());
+
+        $requestData = $request->all();
+        $animal = Animal::find($requestData['animal_id']);
+
+        \RhaLogger::start(['data' => $requestData]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_ANIMAL_DEATH,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $requestData['date'] = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
+
+        $animal->archived_at = now();
+
+
+        $archiveRecord = new DeathArchiveRecord;
+        $archiveRecord->died_at = $requestData['date'];
+        $archiveRecord->cause_of_death_id = $requestData['cause_of_death'];
+
+        $archiveRecord->save();
+
+        $archiveRecord->archived()->save($animal);
+
+        \RhaLogger::addChanges($archiveRecord, new DeathArchiveRecord(), true, ($archiveRecord != null));
+
+
+        return route('animals.index');
+    }
+
+    public function informMoved(InformAnimalMovedOut $request)
+    {
+        $request->validate($request->rules());
+        $requestData = $request->all();
+
+        $animal = Animal::find($requestData['animal_id']);
+
+        \RhaLogger::start(['data' => $requestData]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_ANIMAL_MOVED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $requestData['date'] = Carbon::createFromFormat('d/m/Y', $requestData['date'])->toDateString();
+
+        $archiveRecord = new MovedOutArchiveRecord;
+        $archiveRecord->moved_out_at = $requestData['date'];
+
+
+        $animal->archived_at = now();
+
+        $archiveRecord->save();
+
+        $archiveRecord->archived()->save($animal);
+
+        \RhaLogger::addChanges($archiveRecord, new MovedOutArchiveRecord(), true, ($archiveRecord != null));
+
+        return route('animals.index');
+    }
+
 }

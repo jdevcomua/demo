@@ -115,7 +115,7 @@ class NotificationTemplate extends Model
 
     public function fillTextPlaceholders(User $user, $payload = null)
     {
-        $data = $this->flattenPayload($payload);
+        $data = static::flattenPayload($payload);
 
         $placeholders = [
             '{user.name}' => $user->name,
@@ -133,7 +133,7 @@ class NotificationTemplate extends Model
         return str_replace(array_keys($placeholders), array_values($placeholders), $this->body);
     }
 
-    private function flattenPayload($payload)
+    public static function flattenPayload($payload)
     {
         $res = [];
         if (is_array($payload)) {

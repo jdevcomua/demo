@@ -4,16 +4,31 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\AnimalAdded;
 use App\Helpers\DataTables;
+use App\Http\Requests\ArchiveAnimal;
+use App\Http\Requests\SterilizationVaccinationRequest;
 use App\Models\Animal;
+use App\Models\AnimalChronicle;
+use App\Models\AnimalOffense;
 use App\Models\AnimalsFile;
+use App\Models\AnimalVeterinaryMeasure;
+use App\Models\CauseOfDeath;
+use App\Models\DeathArchiveRecord;
 use App\Models\Log;
+use App\Models\MovedOutArchiveRecord;
+use App\Models\Offense;
+use App\Models\OffenseAffiliation;
+use App\Models\Organization;
 use App\Models\Role;
 use App\Models\Species;
+use App\Models\Sterilization;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
 use App\Models\UserPhone;
+use App\Models\Vaccination;
+use App\Models\VeterinaryMeasure;
 use App\Rules\Badge;
 use App\Rules\Phone;
+use App\Services\Animals\AnimalChronicleServiceInterface;
 use App\Services\FilesService;
 use App\User;
 use Cache;
@@ -51,6 +66,7 @@ class DataBasesController extends Controller
             ->leftJoin('user_phones', 'user_phones.user_id', '=', 'users.id')
             ->leftJoin('user_addresses', 'user_addresses.user_id', '=', 'users.id')
             ->leftJoin('animals', 'animals.user_id', '=', 'users.id')
+            ->leftJoin('organizations', 'users.organization_id', '=', 'organizations.id')
             ->groupBy('users.id');
 
         //COALESCE для того, чтоб не обваливалось при пустых значениях
@@ -66,6 +82,7 @@ class DataBasesController extends Controller
                     COALESCE(`user_addresses`.apartment, " ")
                        ) SEPARATOR "|")',
             'animals' => 'COUNT(DISTINCT `animals`.id)',
+            'organization_name' => 'organizations.name'
         ];
         $response = DataTables::provide($request, $model, $query, $aliases);
 
@@ -78,8 +95,11 @@ class DataBasesController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
+
+        $organizations = Organization::all();
+
         $user->load('animals', 'roles', 'emails', 'phones', 'addresses');
-        return view('admin.db.users_show', compact('user', 'roles'));
+        return view('admin.db.users_show', compact('user', 'roles', 'organizations'));
     }
 
     public function userUpdate(Request $request, $id)
@@ -136,6 +156,58 @@ class DataBasesController extends Controller
         return redirect()
             ->back()
             ->with('success_user', 'Дані оновлено успішно!');
+    }
+
+    public function userAttachOrganization(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $organization = Organization::find($request->organization_id);
+
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_EDIT,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($user);
+        $oldUser = clone $user;
+
+        $user->organization()->associate($organization);
+
+        $user->save();
+        $user->load('organization');
+
+
+        \RhaLogger::addChanges($user, $oldUser, true, ($user != null));
+
+
+        return back()->with('success_user', 'Організація була закріплена успішно!');
+    }
+
+    public function userDetachOrganization(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $organization = Organization::find($request->organization_id);
+
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_EDIT,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($user);
+        $oldUser = clone $user;
+
+        $user->organization()->dissociate($organization);
+
+        $user->save();
+        $user->load('organization');
+
+
+        \RhaLogger::addChanges($user, $oldUser, true, ($user != null));
+
+
+        return back()->with('success_user', 'Організація була відкріплена успішно!');
     }
 
     public function userUpdateAddress(Request $request, $id)
@@ -255,11 +327,46 @@ class DataBasesController extends Controller
         ]);
     }
 
+    public function animalArchiveIndex()
+    {
+        $causes_of_deaths = CauseOfDeath::all('id', 'name');
+        $causes_of_deaths_array = [];
+
+        foreach ($causes_of_deaths as $causes_of_death) {
+            $causes_of_deaths_array[$causes_of_death->id] = $causes_of_death->name;
+        }
+
+
+        return view('admin.db.animals_archive', [
+            'species' => Species::get(),
+            'causes_of_deaths_array' => $causes_of_deaths_array
+        ]);
+    }
+
+    public function animalArchive(ArchiveAnimal $request, $id)
+    {
+        $requestData = $request->all();
+        $animal = Animal::find($id);
+
+        \RhaLogger::start(['data' => $requestData]);
+        \RhaLogger::update([
+            'action' => ($requestData['archive_type'] !== 'moved_out') ? Log::ACTION_ANIMAL_DEATH : Log::ACTION_ANIMAL_MOVED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $request->validate($request->rules());
+
+        $request->persist($animal);
+        return back();
+    }
+
     public function animalData(Request $request, $id = null)
     {
         $model = new Animal();
 
         $query = $model->newQuery()
+            ->whereNull('archived_type')
             ->join('species', 'species.id', '=', 'animals.species_id')
             ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
             ->join('colors', 'colors.id', '=', 'animals.color_id')
@@ -281,6 +388,41 @@ class DataBasesController extends Controller
 
         return response('', 400);
     }
+
+    public function animalArchiveData(Request $request, $id = null)
+    {
+        $model = new Animal();
+
+        $query = $model->newQuery()
+            ->where('archived_type', '!=', 'NULL')
+            ->leftJoin('death_archive_records', 'death_archive_records.id', '=', 'animals.archived_id')
+            ->leftJoin('moved_out_archive_records', 'moved_out_archive_records.id', '=', 'animals.archived_id')
+            ->join('species', 'species.id', '=', 'animals.species_id')
+            ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
+            ->join('colors', 'colors.id', '=', 'animals.color_id')
+            ->leftJoin('users as users1', 'users1.id', '=', 'animals.user_id');
+
+        if ($id) $query->where('users1.id', '=', $id);
+
+        $aliases = [
+            'species_name' => 'species.name',
+            'breeds_name' => 'breeds.name',
+            'colors_name' => 'colors.name',
+            'owner_name' => 'CONCAT(`users1`.last_name, \' \', `users1`.first_name, \'||\', `users1`.id)',
+            'owner_type' => 'if (animals.user_id IS NULL, 0, 1)',
+            'death' => 'death_archive_records.cause_of_death_id',
+            'death_date' => 'death_archive_records.died_at',
+            'moved_out_date' => 'moved_out_archive_records.moved_out_at'
+
+        ];
+
+        $response = DataTables::provide($request, $model, $query, $aliases);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
 
     public function animalCreate($id = null)
     {
@@ -380,7 +522,7 @@ class DataBasesController extends Controller
 
         if ($user) {
             $animal = $user->animals()->create($data);
-            event(new AnimalAdded($user, [$animal]));
+            event(new AnimalAdded($user, $animal, [$animal]));
         } else {
             $animal = Animal::create($data);
         }
@@ -425,7 +567,11 @@ class DataBasesController extends Controller
         return view('admin.db.animals_edit', [
             'animal' => $animal,
             'species' => Species::get(),
-            'users' => json_encode($users)
+            'users' => json_encode($users),
+            'causesOfDeath' => CauseOfDeath::all(),
+            'veterinaryMeasures' => VeterinaryMeasure::all(),
+            'offenses' => Offense::all(),
+            'offenseAffiliations' => OffenseAffiliation::all()
         ]);
     }
 
@@ -535,7 +681,7 @@ class DataBasesController extends Controller
             ->with('success_animal', 'Тварину було успішно видалено!');
     }
 
-    public function animalVerify(Request $request, $id) {
+    public function animalVerify(Request $request, AnimalChronicleServiceInterface $animalChronicleService, $id) {
         if ($request->has('state')) {
             $animal = $this->animalModel
                 ->findOrFail($id);
@@ -543,7 +689,7 @@ class DataBasesController extends Controller
             if ($state === 0 || $state === 1) {
                 \RhaLogger::start();
                 \RhaLogger::update([
-                    'action' => Log::ACTION_VERIFY,
+                    'action' => $state ? Log::ACTION_VERIFY : Log::ACTION_VERIFY_CANCEL,
                     'user_id' => \Auth::id(),
                 ]);
                 \RhaLogger::object($animal);
@@ -552,6 +698,8 @@ class DataBasesController extends Controller
                 $animal->confirm_user_id = ($state === 1) ? \Auth::id() : null;
                 $animal->save();
                 \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
+
+                $animalChronicleService->addAnimalChronicle($animal, $state ? 'verification-added' : 'verification-removed');
 
                 return redirect()->back();
             }
@@ -609,5 +757,299 @@ class DataBasesController extends Controller
             'species' => Species::get(),
             'user' => $user
         ]);
+    }
+
+    public function addIdentifyingDevice(Request $request, AnimalChronicleServiceInterface $chs,  $id)
+    {
+        $requestData = $request->all();
+        $chronicleTypesMap = [
+            'clip' => 'clip-added',
+            'chip' => 'chip-added',
+            'badge' => 'badge-added',
+        ];
+
+
+        $rulesByTypes = [
+            'clip' => 'required',
+            'chip' => 'required|size:15',
+            'badge' => 'required|between:5,8',
+        ];
+
+
+        $rules = [
+            'device_type' => 'required|in:' . implode(',', array_keys($rulesByTypes))
+        ];
+
+        $messages = [
+            '*.required' => 'Номер та тип пристрою є обов\'язковим полем!',
+            '*.size' => 'Номер пристрою повинен складатися з :size символів!',
+        ];
+
+        if(isset($rulesByTypes[$requestData['device_type']])) {
+            $rules['device_number'] = $rulesByTypes[$requestData['device_type']];
+        }
+
+        $validator = Validator::make($requestData, $rules, $messages);
+
+        $validator->validate();
+
+        $device_column = $requestData['device_type'];
+
+        $animal = Animal::findOrFail($id);
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_IDEVICE_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $oldAnimal = clone $animal;
+        $animal->$device_column = $requestData['device_number'];
+        $animal->save();
+
+        \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
+
+        $chs->addAnimalChronicle($animal,$chronicleTypesMap[$device_column], [$device_column => $requestData['device_number']]);
+
+        return back()->with('success_identifying_device', 'Пристрій було додано успішно!');
+    }
+
+    public function removeIdentifyingDevice(Request $request, AnimalChronicleServiceInterface $chs, $id)
+    {
+        $requestData = $request->all();
+        $chronicleTypesMap = [
+            'clip' => 'clip-removed',
+            'chip' => 'chip-removed',
+            'badge' => 'badge-removed',
+        ];
+
+        $validator = Validator::make($requestData, [
+            'device_type' => 'required|in:' . implode(',', array_keys($chronicleTypesMap))
+        ]);
+        $validator->validate();
+
+        $device_column = $requestData['device_type'];
+
+        $animal = Animal::findOrFail($id);
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_IDEVICE_REMOVED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $oldAnimal = clone $animal;
+        $animal->$device_column = null;
+        $animal->save();
+
+        \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
+
+        $chs->addAnimalChronicle($animal, $chronicleTypesMap[$device_column]);
+
+        return back()->with('success_identifying_device', 'Пристрій було видалено успішно!');
+    }
+
+    public function addSterilization(SterilizationVaccinationRequest $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
+    {
+        $animal = Animal::findOrFail($id);
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_STERILIZATION_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $sterilization = new Sterilization($request->validated());
+        $sterilization->animal()->associate($animal);
+        $sterilization->save();
+
+        \RhaLogger::addChanges($sterilization, new Sterilization(), true, ($sterilization != null));
+
+        $animalChronicleService->addAnimalChronicle($animal, 'sterilization-added', [
+            'date' => \App\Helpers\Date::getlocalizedDate($sterilization->date),
+        ]);
+
+        return back()->with('success_sterilization', 'Стерилізацію додано успішно!');
+    }
+
+    public function addVaccination(SterilizationVaccinationRequest $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
+    {
+        $animal = Animal::findOrFail($id);
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_VACCINATION_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $vaccination = new Vaccination($request->validated());
+        $vaccination->animal()->associate($animal);
+        $vaccination->save();
+
+        \RhaLogger::addChanges($vaccination, new Vaccination(), true, ($vaccination != null));
+
+        $animalChronicleService->addAnimalChronicle($animal, 'vaccination-added', [
+            'date' => \App\Helpers\Date::getlocalizedDate($vaccination->date),
+        ]);
+
+        return back()->with('success_vaccination', 'Щеплення було додано успішно!');
+    }
+
+    public function addVeterinaryMeasure(Request $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
+    {
+        $animal = Animal::findOrFail($id);
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_VET_MEASURE_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $request_data = $request->all();
+
+        $rules = [
+            'date' => 'required|date_format:d/m/Y|before:tomorrow',
+            'veterinary_measure' => 'required',
+            'made_by' => 'required|string',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
+        ];
+
+        $messages = [
+            'date.required' => 'Дата проведення є обов\'язковим полем!',
+            'date.before' => 'Дата проведення не може бути у майбутньому!',
+            'date.date_format' => 'Дата проведення повинна бути корректною!',
+            'made_by.required' => 'Поле \'Ким проведено\' є обов\'язковим! ',
+            'made_by.string' => 'Поле \'Ким проведено\' має бути строкою! ',
+            'veterinary_measure.required' => 'Захід є обов\'язковим полем!',
+            'documents.*.max' => 'Файли повинні бути не більше 2mb!',
+            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
+        ];
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        $validator->validate();
+
+        $veterinarymeasure = VeterinaryMeasure::findOrfail($request_data['veterinary_measure']);
+
+
+        $animalVeterinaryMeasure = new AnimalVeterinaryMeasure;
+        $animalVeterinaryMeasure->date = Carbon::createFromFormat('d/m/Y', $request_data['date'])->toDateString();
+        $animalVeterinaryMeasure->made_by = $request_data['made_by'];
+        $animalVeterinaryMeasure->description = $request_data['description'];
+        $animalVeterinaryMeasure->animal()->associate($animal);
+        $animalVeterinaryMeasure->veterinaryMeasure()->associate($veterinarymeasure);
+        $animalVeterinaryMeasure->save();
+
+        if (isset($request_data['documents'])) {
+            $this->filesService->handleVeterinaryMeasureFilesUpload($animalVeterinaryMeasure, $request_data);
+        }
+
+        \RhaLogger::addChanges($animalVeterinaryMeasure, new AnimalVeterinaryMeasure(), true, ($animalVeterinaryMeasure != null));
+
+        $animalChronicleService->addAnimalChronicle($animal, 'veterinary-measure-added', [
+            'veterinary_measure' => $veterinarymeasure->name,
+            'date' => \App\Helpers\Date::getlocalizedDate($animalVeterinaryMeasure->date)
+        ]);
+
+        return back()->with('success_veterinary_measures', 'Ветеринарний захід успішно додано!');
+    }
+
+    public function animalVeterinaryMeasure($id)
+    {
+        $animal_vet_measure = AnimalVeterinaryMeasure::findOrFail($id);
+
+        return view('admin.db.animal_vet_measure_show', compact('animal_vet_measure'));
+    }
+
+    public function addAnimalOffense(Request $request, AnimalChronicleServiceInterface $animalChronicleService, $id)
+    {
+        $animal = Animal::findOrFail($id);
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_OFFENSE_ADDED,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($animal);
+
+        $request_data = $request->all();
+
+        if (!isset($request_data['bite'])) {
+            $request_data['bite'] = 0;
+        }
+
+
+        $rules = [
+            'date' => 'required|date_format:d/m/Y|before:tomorrow',
+            'protocol_date' => 'required|date_format:d/m/Y|before:tomorrow',
+            'protocol_number' => 'required|max:20',
+            'offense' => 'required',
+            'offense_affiliation' => 'required',
+            'made_by' => 'required|string',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
+        ];
+
+        $messages = [
+            'date.required' => 'Дата правопорушення є обов\'язковим полем!',
+            'date.before' => 'Дата правопорушення не може бути у майбутньому!',
+            'date.date_format' => 'Дата правопорушення повинна бути корректною!',
+            'protocol_date.required' => 'Дата протоколу є обов\'язковим полем!',
+            'protocol_date.before' => 'Дата протоколу не може бути у майбутньому!',
+            'protocol_date.date_format' => 'Дата протоколу повинна бути корректною!',
+            'protocol_number.required' => 'Номер протоколу є обов\'язковим полем!',
+            'protocol_number.max' => 'Номер протоколу повинен містити не більше ніж :max символів!',
+            'made_by.required' => 'Поле \'Ким зафіксовано\' є обов\'язковим! ',
+            'made_by.string' => 'Поле \'Ким зафіксовано\' має бути строкою! ',
+            'offense.required' => 'Вид правопорушення є обов\'язковим полем!',
+            'offense_affiliation.required' => 'Належність правопорушення є обов\'язковим полем!',
+            'documents.*.max' => 'Файли повинні бути не більше 2mb!',
+            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
+        ];
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        $validator->validate();
+
+        $offense = Offense::findOrfail($request_data['offense']);
+        $offenseAffiliation = OffenseAffiliation::findOrfail($request_data['offense_affiliation']);
+
+
+        $animalOffense = new AnimalOffense;
+        $animalOffense->date = Carbon::createFromFormat('d/m/Y', $request_data['date'])->toDateString();
+        $animalOffense->protocol_date = Carbon::createFromFormat('d/m/Y', $request_data['protocol_date'])->toDateString();
+        $animalOffense->protocol_number = $request_data['protocol_number'];
+        $animalOffense->made_by = $request_data['made_by'];
+        $animalOffense->description = $request_data['description'];
+        $animalOffense->bite = $request_data['bite'];
+        $animalOffense->animal()->associate($animal);
+        $animalOffense->offense()->associate($offense);
+        $animalOffense->offenseAffiliation()->associate($offenseAffiliation);
+        $animalOffense->save();
+
+        if (isset($request_data['documents'])) {
+            $this->filesService->handleAnimalOffenseFilesUpload($animalOffense, $request_data);
+        }
+
+        \RhaLogger::addChanges($animalOffense, new AnimalOffense(), true, ($animalOffense != null));
+
+        $animalChronicleService->addAnimalChronicle($animal, 'animal-offense-added', [
+            'offense_affiliation' => $offenseAffiliation->name,
+            'date' => \App\Helpers\Date::getlocalizedDate($animalOffense->date),
+            'offense' => $offense->name
+        ]);
+
+        return back()->with('success_offense', 'Правопорушення успішно додано!');
+    }
+
+    public function animalOffense($id)
+    {
+        $animalOffense = AnimalOffense::findOrFail($id);
+
+        return view('admin.db.animal_offense_show', compact('animalOffense'));
     }
 }

@@ -1,13 +1,12 @@
 @extends('layout.app')
 
 @section('title', 'Мої тварини')
-
 @section('content')
     @if(count($pets))
         <div class="pets-list-header">СПИСОК МОЇХ ТВАРИН</div>
         <div class="pets-list">
             @foreach($pets as $pet)
-                <div class="pets-list-item">
+                <div class="pets-list-item {{$pet->archivable ? 'archived-pet' : ''}}">
                     @if(count($pet->images))
                         <div class="pet-photo" style="background-image: url('{{ $pet->images[0]->path }}')"></div>
                     @else
@@ -32,32 +31,41 @@
                         </div>
                         <div class="pet-info-block">
                             <span class="title">Статус</span>
-                            @if($pet->verified)
+                            @if($pet->archivable)
+                                <span class="content red">Архів</span>
+                            @elseif($pet->lost && !$pet->lost->found)
+                                <span class="content red">Загублено</span>
+                            @elseif($pet->verified)
                                 <span class="content green">Верифіковано</span>
                             @else
                                 <span class="content red">Не верифіковано</span>
                             @endif
                         </div>
                     </div>
-                    <div class="dropdown more-button dropleft">
-                        <div class="more-icon" data-toggle="dropdown"></div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item"
-                               href="{{ route('animals.show', ['id' => $pet->id]) }}">Переглянути картку</a>
-                            @if(!$pet->verified)
-                                <a class="dropdown-item"
-                                   href="{{ route('animals.edit', ['id' => $pet->id]) }}">Редагувати інформацію</a>
-                                <a class="dropdown-item"
-                                   href="{{ route('animals.destroy', ['id' => $pet->id]) }}" onclick="event.preventDefault();
-                                   document.getElementById('delete-form-{{ $pet->id }}').submit();">Видалити</a>
-                                <form id="delete-form-{{ $pet->id }}" action="{{ route('animals.destroy', ['id' => $pet->id]) }}"
-                                      method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            @endif
-                        </div>
-                    </div>
+                        @if(!$pet->archivable)
+                            <div class="dropdown more-button dropleft">
+                                <div class="more-icon" data-toggle="dropdown"></div>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item"
+                                       href="{{ route('animals.show', ['id' => $pet->id]) }}">Переглянути картку</a>
+                                    @if(!$pet->verified)
+                                        <a class="dropdown-item"
+                                           href="{{ route('animals.edit', ['id' => $pet->id]) }}">Редагувати
+                                            інформацію</a>
+                                        <a class="dropdown-item"
+                                           href="{{ route('animals.destroy', ['id' => $pet->id]) }}"
+                                           onclick="event.preventDefault();
+                                                   document.getElementById('delete-form-{{ $pet->id }}').submit();">Видалити</a>
+                                        <form id="delete-form-{{ $pet->id }}"
+                                              action="{{ route('animals.destroy', ['id' => $pet->id]) }}"
+                                              method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
 
                 </div>
             @endforeach
@@ -75,7 +83,7 @@
                 <hr>
                 <span>або</span>
             </div>
-            <a href="" class="btn btn-block btn-grey" id="animal-search" data-toggle="modal" data-target="#searchModal">Мою тварину вже <br> зареєстровано</a>
+            <a href="#" class="btn btn-block btn-grey" id="animal-search" data-toggle="modal" data-target="#searchModal">Мою тварину вже <br> зареєстровано</a>
             @if(false)
             <div class="line">
                 <hr>
@@ -140,17 +148,17 @@
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="breed">Порода <span class="required-field">*</span></label>
-                                    <select name="breed" id="breed" required></select>
+                                    <select name="breed" class="breed" required></select>
                                 </div>
                                 <div class="form-group select">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="color">Масть <span class="required-field">*</span></label>
-                                    <select name="color" id="color" required></select>
+                                    <select name="color" class="color" required></select>
                                 </div>
                                 <div class="form-group select hidden">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="fur">Тип шерсті <span class="required-field">*</span></label>
-                                    <select name="fur" id="fur" required></select>
+                                    <select name="fur" class="fur" required></select>
                                 </div>
                                 <div class="form-group datepicker">
                                     <div class="validation-error alert alert-danger hidden"></div>

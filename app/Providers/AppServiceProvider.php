@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Auth\KyivIdProvider;
+use App\Services\Animals\AnimalChronicleService;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +16,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->singleton('App\Services\Animals\AnimalChronicleServiceInterface', function ($app) {
+            return new AnimalChronicleService;
+        });
+
+        Relation::morphMap([
+            'Смерть' => 'App\Models\DeathArchiveRecord',
+            'Виїзд' => 'App\Models\MovedOutArchiveRecord',
+        ]);
+
         $this->bootKievIDSocialite();
 
         if(config('app.env') === 'production') {

@@ -14,8 +14,13 @@
             <div class="row">
 
                 <div class="col-md-2 col-sm-3 col-xs-6 mb25">
+                    <a href="{{ route('admin.db.animals.scan') }}" class="btn btn-primary btn-block">Сканувати QR-код</a>
+                </div>
+                @permission('create-animals')
+                <div class="col-md-2 col-sm-3 col-xs-6 mb25" style="padding-top: 0;">
                     <a href="{{ route('admin.db.animals.create') }}" class="btn btn-success btn-block">Додати тварину</a>
                 </div>
+                @endpermission
 
                 <div class="col-xs-12">
                     <div class="panel panel-visible" id="spy5">

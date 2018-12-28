@@ -1,9 +1,8 @@
 <?php
 
-
 namespace App\Models;
 
-
+use App\Helpers\ProcessedCache;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -52,6 +51,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AnimalsRequest extends Model
 {
+    use ProcessedCache;
+
     protected $fillable = [
         'id',
         'user_id',

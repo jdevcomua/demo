@@ -9,9 +9,13 @@
         <li><b>{user.animals.count}</b> - Кількість всіх тварин користувача</li>
         <li><b>{user.animals_verified.count}</b> - Кількість верифікованих тварин користувача</li>
         <li><b>{user.animals_unverified.count}</b> - Кількість не верифікованих тварин користувача</li>
+        @if(strrpos(Route::current()->getName(), 'template') === false)
         <li><b>{animal.nickname}</b> - Кличка тварини (опціонально)</li>
         <li><b>{animal.badge_num}</b> - Номер жетону тварини (опціонально)</li>
+        @endif
     </ul>
+    @if(strrpos(Route::current()->getName(), 'template') === false)
     <br>
     (опціонально) - змінна яка відображається лише в тому випадку коли подія містить цю інформацію.
+    @endif
 </div>

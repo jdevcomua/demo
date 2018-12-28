@@ -15,27 +15,33 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $color_id
  * @property int $fur_id
  * @property int $gender
- * @property \Carbon\Carbon $birthday
+ * @property \Illuminate\Support\Carbon $birthday
  * @property int $sterilized
- * @property int $user_id
+ * @property int|null $user_id
  * @property int $verified
  * @property string|null $comment
  * @property string|null $number
- * @property string|null $badge
  * @property int|null $confirm_user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $badge
  * @property int|null $request_user_id
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Models\Breed $breed
  * @property-read \App\Models\Color $color
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $documents
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $files
  * @property-read \App\Models\Fur $fur
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $images
+ * @property-read mixed $documents
+ * @property-read mixed $images
+ * @property-read mixed $verification
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
+ * @property-read \App\Models\LostAnimal $lost
  * @property-read \App\Models\Species $species
- * @property-read \App\User $user
- * @property-read \App\User|null $userThatConfirmed
+ * @property-read \App\User|null $user
  * @property-read \App\User|null $userThatRequest
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBadge($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBirthday($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBreedId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereColorId($value)
@@ -47,16 +53,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNickname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereRequestUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereSpeciesId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereSterilized($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereVerified($value)
  * @mixin \Eloquent
- * @property-read mixed $verification
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBadge($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereRequestUserId($value)
  */
 class Animal extends Model
 {
@@ -64,9 +67,16 @@ class Animal extends Model
     const GENDER_FEMALE = 0;
     const GENDER_MALE = 1;
 
+    private $identifying_devices = [
+        'chip' => 'Чіп',
+        'clip' => 'Кліпса',
+        'badge' => 'Жетон з QR-кодом'
+    ];
+
     protected $fillable = [
         'id', 'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id', 'user_id',
         'birthday', 'sterilized', 'comment', 'verified', 'number', 'badge', 'request_user_id',
+        'archived_type', 'archived_at', 'clip', 'chip',
 
         //generated attributes, don't fill them
         '_verification',
@@ -117,6 +127,11 @@ class Animal extends Model
         return $this->hasMany('App\Models\AnimalsFile');
     }
 
+    public function chronicles()
+    {
+        return $this->hasMany(AnimalChronicle::class);
+    }
+
     public function getImagesAttribute()
     {
         return $this->files
@@ -145,7 +160,61 @@ class Animal extends Model
         return $this->attributes['_verification'];
     }
 
-    public function userThatRequest () {
+    public function userThatRequest()
+    {
         return $this->belongsTo(User::class, 'request_user_id');
+    }
+
+    public function lost()
+    {
+        return $this->hasOne(LostAnimal::class);
+    }
+
+    public function changeOwner()
+    {
+        return $this->hasOne(ChangeAnimalOwner::class);
+    }
+
+    public function sterilization()
+    {
+        return $this->hasOne(Sterilization::class);
+    }
+
+    public function vaccination()
+    {
+        return $this->hasOne(Vaccination::class);
+    }
+
+    public function animalVeterinaryMeasure()
+    {
+        return $this->hasMany(AnimalVeterinaryMeasure::class);
+    }
+
+    public function animalOffenses()
+    {
+        return $this->hasMany(AnimalOffense::class);
+    }
+
+    public function archivable()
+    {
+        return $this->morphTo('archived', 'archived_type', 'archived_id');
+    }
+
+    public function identifyingDevicesArray(): array
+    {
+        return $this->identifying_devices;
+    }
+
+    public function getIdentifyingDevicesCountAttribute(): int
+    {
+        $count = 0;
+
+        foreach ($this->identifying_devices as $k => $v) {
+            if ($this->$k !== null) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 }

@@ -52,6 +52,11 @@ class UserAddress extends Model
         'building', 'apartment', 'postcode', 'lat', 'lon',
     ];
 
+    public function getFullAddressAttribute()
+    {
+        return $this->city . ', ' . $this->street . ' ' . $this->building . ', ' . $this->apartment;
+    }
+
 
     public function user()
     {

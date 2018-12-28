@@ -182,6 +182,51 @@
                                 </div>
                             </div>
                         </form>
+                                <div class="panel-body pb5 pt20">
+                                    <form action="{{ $user->organization ?
+                                    route('admin.db.users.detach.organization') :
+                                    route('admin.db.users.attach.organization')}}"
+                                          class="form-horizontal" method="post">
+                                        @csrf
+                                        @method('put')
+
+                                        <input type="hidden" name="user_id" value="{{$user->id}}">
+                                    <div class="form-group select-gen">
+                                        <label class="col-lg-3 control-label">Організація</label>
+                                        <div class="col-lg-8">
+                                            @if($user->organization)
+                                                <p class="form-control custom-field">
+                                                    <a href="{{route('admin.info.directories.edit.organization', $user->organization->id)}}">{{$user->organization->name}}</a>
+                                                </p>
+                                            @else
+                                                @if(\Auth::user()->can(['edit-organizations']))
+                                                <select name="organization_id" id="organizations_select" >
+                                                @foreach($organizations as $organization)
+                                                <option value="{{$organization->id}}">{{$organization->name}}</option>
+                                                @endforeach
+                                                </select>
+                                                    @else
+                                                    <p class="form-control custom-field">
+                                                        Не закріплено за користувачем
+                                                    </p>
+                                                    @endif
+                                            @endif
+
+                                                @permission('edit-organizations')
+                                                <div class="col-sm-12 pn mt15">
+                                                @if(!$user->organization)
+                                                    <button type="submit" class="btn btn-primary btn-block">Закріпити за користувачем</button>
+                                                @else
+                                                    <button type="submit" class="btn btn-danger btn-block">Відкріпити</button>
+
+                                                @endif
+                                                </div>
+                                                @endpermission
+
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -352,6 +397,7 @@
         jQuery(document).ready(function() {
 
             $('.form-group.select-gen select').selectize();
+            $('#organizations_select').selectize();
 
         });
     </script>

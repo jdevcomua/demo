@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\NotificationTemplate;
+use App\Models\Organization;
 use App\Models\UserAddress;
 use App\Models\UserEmail;
 use App\Models\UserPhone;
@@ -66,7 +67,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'id', 'ext_id', 'first_name', 'last_name', 'middle_name', 'birthday',
-        'inn', 'passport', 'gender', 'banned'
+        'inn', 'passport', 'gender', 'banned', 'organization_id'
     ];
 
     protected $dates = [
@@ -190,5 +191,22 @@ class User extends Authenticatable
     {
         $email = $this->emailsAdditional()->first();
         return $email ? $email->email : null ?? '';
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+    public function getContactInfoAttribute()
+    {
+
+        $contactInfo = [
+            'contact_name' => $this->first_name,
+            'contact_phone' => $this->phones[0]->phone,
+            'contact_email' => $this->primary_email->email
+        ];
+
+        return json_encode($contactInfo);
+
     }
 }

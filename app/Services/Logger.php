@@ -65,6 +65,9 @@ class Logger
             $changes = $oldModel->getDirty();
         }
 
+        $this->preprocessData($oldModel, $attr);
+        $this->preprocessData($oldModel, $changes);
+
         foreach ($attr as $k => $v) {
             if (array_key_exists($k, $changes) && $changes[$k] != $v) {
                 $attr[$k] = [
@@ -87,12 +90,29 @@ class Logger
     {
         if ($data) {
             $data = json_decode($data, true);
+
         } else return '';
         if (is_array($data)) {
+
             $res = '';
             foreach ($data as $k => $v) {
+                $label = Log::$idsModelsToDisplay[$k]['name'] ?? Log::$idsObjectTypesMap[$k]['name'] ?? $k;
                 $res .= '<span>';
-                $res .= '<b>' . $k . '</b>: ';
+                $res .= '<b>' . $label . '</b>: ';
+
+                if (!empty(Log::$idsObjectTypesMap[$k])) {
+                    $v['old'] = $v['old'] !== null ? "<a href=\"" . route('admin.object') .
+                       "/" . Log::$idsObjectTypesMap[$k]['morph_name'] . "/" . $v['old'] . "\">" . Log::$idsObjectTypesMap[$k]['morph_name'] . " #" . $v['old'] . "</a>" : null;
+                    $v['new'] = $v['new'] !== null ? "<a href=\"" . route('admin.object') .
+                        "/" . Log::$idsObjectTypesMap[$k]['morph_name'] . "/" . $v['new'] . "\">" . Log::$idsObjectTypesMap[$k]['morph_name'] . " #" . $v['new'] . "</a>" : null;
+                }
+                if (!empty(Log::$idsModelsToDisplay[$k])) {
+                    $model = Log::$idsModelsToDisplay[$k]['model'];
+                    $columnName = Log::$idsModelsToDisplay[$k]['column_name'];
+
+                    $v['old'] = ($v['old'] !== null) ? static::getValueByModelName($model, $v['old'], $columnName) : null;
+                    $v['new'] = ($v['new'] !== null) ? static::getValueByModelName($model, $v['new'], $columnName) : null;
+                }
                 if ($v['old'] !== null) $res .= '<c-r>' . $v['old'] . '</c-r> ⟶ ';
                 $res .= '<c-g>' . $v['new'] . '</c-g>';
                 $res .= '</span>';
@@ -100,6 +120,13 @@ class Logger
             return $res;
         }
         return '';
+    }
+
+    private static function getValueByModelName($modelName, $id, $columnName)
+    {
+        $modelsPath = ($modelName !== 'User') ? '\App\Models\\' : '\App\\';
+        $modelClass = $modelsPath . $modelName;
+        return $modelClass::findOrFail($id)->$columnName;
     }
 
     /**
@@ -123,6 +150,27 @@ class Logger
         $this->update([
             'payload' => json_encode($curr),
         ]);
+    }
+
+    private function replaceKey($array, $oldKey, $newKey): array
+    {
+
+        if ($array !== [] && isset($array[$oldKey])) {
+            $temp = $array[$oldKey];
+
+            unset($array[$oldKey]);
+            $array[$newKey] = $temp;
+        }
+        return $array;
+    }
+
+    private function preprocessData($model, &$data): void
+    {
+        $className = (new \ReflectionClass($model))->getShortName();
+
+        if ($className === 'Animal') {
+            $data = $this->replaceKey($data, 'user_id', 'new_owner');
+        }
     }
 
 }

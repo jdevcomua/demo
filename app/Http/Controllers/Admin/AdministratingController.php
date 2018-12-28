@@ -99,6 +99,7 @@ class AdministratingController extends Controller
         switch ($type) {
             case 'Користувач' : return redirect()->route('admin.db.users.show', $id);
             case 'Тварина' : return redirect()->route('admin.db.animals.edit', $id);
+            case 'Організація' : return redirect()->route('admin.info.directories.edit.organization', $id);
             default: abort(404);
         }
     }

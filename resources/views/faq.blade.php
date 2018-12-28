@@ -21,9 +21,7 @@
                     </div>
 
                     <div id="collapse{{ $q->id }}" class="collapse" aria-labelledby="heading{{ $q->id }}">
-                        <div class="card-body">
-                            {{ $q->answer }}
-                        </div>
+                        <div class="card-body">{{ $q->answer }}</div>
                     </div>
                 </div>
             @endforeach

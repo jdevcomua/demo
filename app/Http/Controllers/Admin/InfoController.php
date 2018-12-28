@@ -6,10 +6,19 @@ use App\Helpers\DataTables;
 use App\Http\Requests\NotificationTemplateRequest;
 use App\Models\Block;
 use App\Models\Breed;
+use App\Models\CauseOfDeath;
 use App\Models\Color;
+use App\Models\DeathArchiveRecord;
 use App\Models\Fur;
+use App\Models\Log;
 use App\Models\NotificationTemplate;
+use App\Models\Offense;
+use App\Models\OffenseAffiliation;
+use App\Models\Organization;
+use App\Models\OrganizationsFile;
 use App\Models\Species;
+use App\Models\VeterinaryMeasure;
+use App\Services\FilesService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
@@ -20,12 +29,16 @@ class InfoController extends Controller
     private $breedModel;
     private $colorModel;
     private $furModel;
+    private $causeOfDeathModel;
+    private $filesService;
 
-    public function __construct(Breed $breedModel, Color $colorModel, Fur $furModel)
+
+    public function __construct(Breed $breedModel, Color $colorModel, Fur $furModel, CauseOfDeath $causeOfDeathModel, FilesService $filesService)
     {
         $this->breedModel = $breedModel;
         $this->colorModel = $colorModel;
-        $this->furModel = $furModel;
+        $this->causeOfDeathModel = $causeOfDeathModel;
+        $this->filesService = $filesService;
     }
 
     public function directoryIndex()
@@ -400,6 +413,623 @@ class InfoController extends Controller
         return response('', 400);
     }
 
+    public function directoryDataCauseOfDeath(Request $request)
+    {
+        $model = new CauseOfDeath;
+
+        $query = $model->newQuery();
+
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryStoreCauseOfDeath(Request $request)
+    {
+        if($request->has(['d_name'])) {
+            $data = $request->only(['d_name']);
+
+            $validator = Validator::make($data, [
+                'd_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('cause_of_deaths', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('d_name'));
+                    })
+                ],
+            ], [
+                'd_name.required' => 'Причина смерті є обов\'язковим полем',
+                'd_name.unique' => 'Причина смерті має бути унікальним',
+                'd_name.max' => 'Причина смерті має бути менше :max символів',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator, 'cause_of_deaths')
+                    ->withInput();
+            }
+
+            $color = new CauseOfDeath;
+            $color->name = $data['d_name'];
+            $color->save();
+
+            return redirect()
+                ->back()
+                ->with('success_cause_of_deaths', 'Причину смерті додано успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryUpdateCauseOfDeath(Request $request)
+    {
+        $causeOfDeath = CauseOfDeath::findOrFail($request->get('id'));
+        $validator = Validator::make($request->all(), [
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('cause_of_deaths')->where(function ($query) use($causeOfDeath, $request) {
+                    return $query->where('name', $request->get('name'));
+                })
+            ],
+        ], [
+            'name.required' => 'Причина смерті є обов\'язковим полем',
+            'name.unique' => 'Причина смерті має бути унікальним',
+            'name.max' => 'Причина смерті має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'cause_of_deaths_rem')
+                ->withInput();
+        }
+        $causeOfDeath->name = $request->get('name');
+        $causeOfDeath->save();
+
+        return redirect()
+            ->back()
+            ->with('success_cause_of_deaths_rem', 'Причину смерті змінено успішно !');
+    }
+
+    public function directoryRemoveCauseOfDeath(Request $request)
+    {
+        if ($request->has('id')) {
+            $causeOfDeath = $this->causeOfDeathModel
+                ->where('id', '=', $request->get('id'))
+                ->firstOrFail();
+
+            $count = DeathArchiveRecord::where('cause_of_death_id', '=', $causeOfDeath->id)->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити причину смерті. Кількість тварин що її мають: ' . $count,
+                    ], 'cause_of_deaths_rem');
+            }
+
+            $causeOfDeath->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_cause_of_deaths_rem', 'Причину смерті видалено успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryDataVeterinary(Request $request)
+    {
+        $model = new VeterinaryMeasure;
+
+        $query = $model->newQuery();
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryStoreVeterinary(Request $request)
+    {
+        if($request->has(['v_name'])) {
+            $data = $request->only(['v_name']);
+
+            $validator = Validator::make($data, [
+                'v_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('veterinary_measures', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('v_name'));
+                    })
+                ],
+            ], [
+                'v_name.required' => 'Ветеринарний захід є обов\'язковим полем',
+                'v_name.unique' => 'Ветеринарний захід має бути унікальним',
+                'v_name.max' => 'Ветеринарний захід має бути менше :max символів',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator, 'veterinary')
+                    ->withErrors($validator, 'veterinary')
+                    ->withInput();
+            }
+
+            $veterinary = new VeterinaryMeasure;
+            $veterinary->name = $data['v_name'];
+            $veterinary->save();
+
+            return redirect()
+                ->back()
+                ->with('success_veterinary', 'Ветеринарний захід додано успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryUpdateVeterinary(Request $request)
+    {
+        $veterinary = VeterinaryMeasure::findOrFail($request->get('id'));
+        $validator = Validator::make($request->all(), [
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('veterinary_measures')->where(function ($query) use($veterinary, $request) {
+                    return $query->where('name', $request->get('name'));
+                })
+            ],
+        ], [
+            'name.required' => 'Причина смерті є обов\'язковим полем',
+            'name.unique' => 'Причина смерті має бути унікальним',
+            'name.max' => 'Причина смерті має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'cause_of_deaths_rem')
+                ->withInput();
+        }
+        $veterinary->name = $request->get('name');
+        $veterinary->save();
+
+        return redirect()
+            ->back()
+            ->with('success_veterinary_rem', 'Ветеринарний захід змінено успішно !');
+    }
+
+    public function directoryRemoveVeterinary(Request $request)
+    {
+        if ($request->has('id')) {
+            $veterinary = VeterinaryMeasure::findOrFail($request->get('id'));
+
+            $count = $veterinary->animalVeterinaryMeasures()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити ветеринарний захід. Кількість тварин що її мають: ' . $count,
+                    ], 'veterinary_rem');
+            }
+
+            $veterinary->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_veterinary_rem', 'Ветеринарний захід видалено успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryDataOrganization(Request $request)
+    {
+        $model = new Organization;
+
+        $query = $model->newQuery();
+
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryEditOrganization(Organization $organization)
+    {
+        $inputsDisabled = \Auth::user()->can(['edit-organizations']) ? '' : 'disabled';
+
+        return view('admin.info.organization_edit', compact('organization', 'inputsDisabled'));
+    }
+
+    public function directoryUpdateOrganization(Request $request, Organization $organization)
+    {
+        $rules = [
+            'name' => 'required|string|max:256',
+            'chief_full_name' => 'required|string|max:256',
+            'contact_info' => 'required|string',
+            'address' => 'required|string',
+            'requisites' => 'required|string',
+        ];
+
+        $messages = [
+            'name.required' => 'Назва є обов\'язковим полем',
+            'name.max' => 'Назва має бути менше :max символів',
+            'chief_full_name.required' => 'ПІБ представника є обов\'язковим полем',
+            'chief_full_name.max' => 'ПІБ представника має бути менше :max символів',
+            'address.required' => 'Адреса є обов\'язковим полем',
+            'requisites.required' => 'Реквізити є обов\'язковим полем',
+            'contact_info.required' => 'Контактні дані є обов\'язковим полем',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($this->filterValidatorErrors($validator), 'organization')
+                ->withInput();
+        }
+
+        \RhaLogger::start(['data' => $request->all()]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_EDIT,
+            'user_id' => \Auth::id(),
+        ]);
+        \RhaLogger::object($organization);
+        $oldOrganization = clone $organization;
+        $organization->fill($request->all());
+        $organization->save();
+        \RhaLogger::addChanges($organization, $oldOrganization, true, ($organization != null));
+
+
+
+        return back()->with('success_organization', 'Організацію оновлено успішно!');
+    }
+
+    public function directoryCreateOrganization()
+    {
+        return view('admin.info.organization_create');
+    }
+
+    public function directoryStoreOrganization(Request $request)
+    {
+        $request_data = $request->except('documents');
+        $documents = $request->only('documents');
+
+        $rules = [
+            'name' => 'required|string|max:256',
+            'chief_full_name' => 'required|string|max:256',
+            'contact_info' => 'required|string',
+            'address' => 'required|string',
+            'requisites' => 'required|string',
+        ];
+
+        $messages = [
+            'name.required' => 'Назва є обов\'язковим полем',
+            'name.max' => 'Назва має бути менше :max символів',
+            'chief_full_name.required' => 'ПІБ представника є обов\'язковим полем',
+            'chief_full_name.max' => 'ПІБ представника має бути менше :max символів',
+            'address.required' => 'Адреса є обов\'язковим полем',
+            'requisites.required' => 'Реквізити є обов\'язковим полем',
+            'contact_info.required' => 'Контактні дані є обов\'язковим полем',
+        ];
+
+        if ($documents) {
+            $rules['documents.*'] = 'file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048';
+            $messages['documents.*.max'] = 'Документи повинні бути не більше 2Mb';
+            $messages['documents.*.mimes'] = 'Документи повинні бути в форматі зображення або текстового документу!';
+        }
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($this->filterValidatorErrors($validator), 'organization')
+                ->withInput();
+        }
+
+        \RhaLogger::start(['data' => $request_data]);
+        \RhaLogger::update([
+            'action' => Log::ACTION_CREATE,
+            'user_id' => \Auth::id(),
+        ]);
+
+        $organization = Organization::create($request_data);
+
+        if ($documents) {
+            $this->filesService->handleOrganizationFilesUpload($organization, $documents);
+        }
+
+        \RhaLogger::addChanges($organization, new Organization(), true, ($organization != null));
+        if ($organization) \RhaLogger::object($organization);
+
+        return redirect()->route('admin.info.directories.index')->with('success', 'Організацію успешно створено!');
+    }
+
+    public function directoryRemoveOrganization(Request $request)
+    {
+        if ($request->has('id')) {
+            $organization = Organization::find($request->id);
+
+            if ($organization->user) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити організацію так як вона закріплена за користувачем.',
+                    ], 'organization_rem');
+            }
+
+            \RhaLogger::start();
+            \RhaLogger::update([
+                'action' => Log::ACTION_DELETE,
+                'user_id' => \Auth::id(),
+            ]);
+            \RhaLogger::object($organization);
+            $organization->delete();
+            \RhaLogger::end(true);
+
+            return redirect()
+                ->back()
+                ->with('success_organization_rem', 'Організацію видалено успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function organizationUploadFile(Request $request, $id)
+    {
+        $data = $request->only(['documents']);
+
+        $validator = Validator::make($data, [
+            'documents' => 'nullable|array',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
+        ], [
+            'documents.*.max' => 'Документи повинні бути не більше 2Mb',
+            'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'organization_files')
+                ->withInput();
+        }
+
+        $organization = Organization::findOrFail($id);
+
+        $this->filesService->handleOrganizationFilesUpload($organization, $data);
+
+        return back()
+            ->with('success_organization_files', 'Файли додано успішно !');
+    }
+
+    public function organizationRemoveFile($id)
+    {
+        $file = OrganizationsFile::findOrFail($id);
+        $file->delete();
+        return response()->json([
+            'status' => 'ok'
+        ]);
+    }
+
+    public function directoryDataOffenseAffiliation(Request $request)
+    {
+        $model = new OffenseAffiliation;
+
+        $query = $model->newQuery();
+
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryStoreOffenseAffiliation(Request $request)
+    {
+        if($request->has(['of_a_name'])) {
+            $data = $request->only(['of_a_name']);
+
+            $validator = Validator::make($data, [
+                'of_a_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('offense_affiliations', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('of_a_name'));
+                    })
+                ],
+            ], [
+                'of_a_name.required' => 'Належність правопорушення є обов\'язковим полем',
+                'of_a_name.unique' => 'Належність правопорушення має бути унікальним',
+                'of_a_name.max' => 'Належність правопорушення має бути менше :max символів',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator, 'offense_affiliation')
+                    ->withErrors($validator, 'offense_affiliation')
+                    ->withInput();
+            }
+
+            $offenseAffiliation = new OffenseAffiliation;
+            $offenseAffiliation->name = $data['of_a_name'];
+            $offenseAffiliation->save();
+
+            return redirect()
+                ->back()
+                ->with('success_offense_affiliation', 'Належність правопорушення додано успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryUpdateOffenseAffiliation(Request $request)
+    {
+        $offenseAffiliation = OffenseAffiliation::findOrFail($request->get('id'));
+        $validator = Validator::make($request->all(), [
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('offense_affiliations')->where(function ($query) use($offenseAffiliation, $request) {
+                    return $query->where('name', $request->get('name'));
+                })
+            ],
+        ], [
+            'name.required' => 'Належність правопорушення є обов\'язковим полем',
+            'name.unique' => 'Належність правопорушення має бути унікальним',
+            'name.max' => 'Належність правопорушення має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'offense_affiliation_rem')
+                ->withInput();
+        }
+        $offenseAffiliation->name = $request->get('name');
+        $offenseAffiliation->save();
+
+        return redirect()
+            ->back()
+            ->with('success_offense_affiliation_rem', 'Належність правопорушення змінено успішно !');
+    }
+
+    public function directoryRemoveOffenseAffiliation(Request $request)
+    {
+        if ($request->has('id')) {
+            $offenseAffiliation = OffenseAffiliation::findOrFail($request->get('id'));
+
+            $count = $offenseAffiliation->animalOffenses()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити належність правопорушення. Кількість тварин що її мають: ' . $count,
+                    ], 'offense_affiliation_rem');
+            }
+
+            $offenseAffiliation->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_offense_affiliation_rem', 'Належність правопорушення видалено успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryDataOffense(Request $request)
+    {
+        $model = new Offense;
+
+        $query = $model->newQuery();
+
+
+        $response = DataTables::provide($request, $model, $query);
+
+        if ($response) return response()->json($response);
+
+        return response('', 400);
+    }
+
+    public function directoryStoreOffense(Request $request)
+    {
+        if($request->has(['of_name'])) {
+            $data = $request->only(['of_name']);
+
+            $validator = Validator::make($data, [
+                'of_name' => ['required',
+                    'string',
+                    'max:256',
+                    Rule::unique('offenses', 'name')->where(function ($query) use($request) {
+                        return $query->where('name', $request->get('of_name'));
+                    })
+                ],
+            ], [
+                'of_name.required' => 'Вид правопорушення є обов\'язковим полем',
+                'of_name.unique' => 'Вид правопорушення має бути унікальним',
+                'of_name.max' => 'Вид правопорушення має бути менше :max символів',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator, 'offense')
+                    ->withErrors($validator, 'offense')
+                    ->withInput();
+            }
+
+            $offense = new Offense;
+            $offense->name = $data['of_name'];
+            $offense->save();
+
+            return redirect()
+                ->back()
+                ->with('success_offense', 'Вид правопорушення додано успішно !');
+        }
+        return response('', 400);
+    }
+
+    public function directoryUpdateOffense(Request $request)
+    {
+        $offense = Offense::findOrFail($request->get('id'));
+        $validator = Validator::make($request->all(), [
+            'name' => ['required',
+                'string',
+                'max:256',
+                Rule::unique('offenses')->where(function ($query) use($offense, $request) {
+                    return $query->where('name', $request->get('name'));
+                })
+            ],
+        ], [
+            'name.required' => 'Вид правопорушення є обов\'язковим полем',
+            'name.unique' => 'Вид правопорушення має бути унікальним',
+            'name.max' => 'Вид правопорушення має бути менше :max символів',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator, 'offense_rem')
+                ->withInput();
+        }
+        $offense->name = $request->get('name');
+        $offense->save();
+
+        return redirect()
+            ->back()
+            ->with('success_offense_rem', 'Вид правопорушення змінено успішно !');
+    }
+
+    public function directoryRemoveOffense(Request $request)
+    {
+        if ($request->has('id')) {
+            $offense = Offense::findOrFail($request->get('id'));
+
+            $count = $offense->animalOffenses()->count();
+            if ($count) {
+                return redirect()
+                    ->back()
+                    ->withErrors([
+                        'err' => 'Неможливо видалити вид правопорушення. Кількість тварин що її мають: ' . $count,
+                    ], 'veterinary_rem');
+            }
+
+            $offense->delete();
+
+            return redirect()
+                ->back()
+                ->with('success_offense_rem', 'Вид правопорушення видалено успішно !');
+        }
+        return response('', 400);
+    }
+
+
     public function notificationsIndex()
     {
         return view('admin.info.notifications');
@@ -471,6 +1101,18 @@ class InfoController extends Controller
         return redirect()
             ->route('admin.info.notifications.index')
             ->with('success_notifications', 'Нотифікацію було успішно видалено!');
+    }
+
+    private function filterValidatorErrors(\Illuminate\Validation\Validator $data)
+    {
+        $messagesUniq = [];
+        $res = [];
+        foreach ($data->messages()->messages() as $k => $v) {
+            if (array_search($v, $messagesUniq) !== false) continue;
+            $res[$k] = $v;
+            $messagesUniq[] = $v;
+        }
+        return $res;
     }
 
 }

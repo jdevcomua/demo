@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Animal;
 use App\Models\Faq;
 use Cache;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SiteController extends Controller
 {
@@ -22,11 +25,26 @@ class SiteController extends Controller
         $faqs = Cache::tags('faq')
             ->remember('faq', 1000, function()
         {
-            return Faq::all();
+            return Faq::all()->sortBy('order');
         });
         return view('faq', [
             'questions' => $faqs
         ]);
+    }
+
+    public function badgeData(Request $request)
+    {
+        $animal = Animal::where('badge', '=', $request->get('n'))->first();
+
+        if ($animal) {
+            $user = $request->user();
+
+            return ($user && $user->can('admin-panel'))
+                ? redirect()->route('admin.db.animals.edit', $animal->id)
+                : view('animals.show_contacts_owner', compact('animal'));
+        }
+
+        throw new NotFoundHttpException;
     }
 
 }

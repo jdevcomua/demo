@@ -41,6 +41,17 @@ body {
   }
 }
 
+.fa-sort-dropdown {
+  &-desc, &-asc {
+    background: no-repeat url('/img/icon/dropdown.svg') 100% center;
+    width: 1rem;
+    height: 0.7rem;
+  }
+  &-asc {
+    transform: scaleY(-1);
+  }
+}
+
 img.logo {
   width: 51px;
   height: 70px;
@@ -67,6 +78,7 @@ img {
   }
   .content-body {
     padding: 30px 10px 20px;
+    overflow-x: hidden;
   }
 }
 
@@ -246,6 +258,7 @@ img {
       padding: 0 2rem 1rem;
       color: #999;
       font-weight: 500;
+      white-space: pre-line;
     }
   }
 }

@@ -38,6 +38,10 @@
   }
 }
 
+.no-cursor:hover {
+  cursor: default;
+}
+
 .btn {
   max-width: 100%;
   font-weight: bold;
@@ -46,6 +50,24 @@
   color: #999;
   letter-spacing: 0.7px;
   border-radius: 0.9rem;
+
+  &.btn-found {
+    background: transparent;
+    border: 2px solid #014479;
+    padding: 0.5rem 1.1rem;
+    color: #014479;
+    max-width: 60%;
+    font-size: 1.1rem;
+    font-weight: 600;
+    &.btn-found-white {
+      border: 2px solid #fff;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      margin-left: 3rem;
+    }
+
+  }
+
   &.btn-big {
     font-size: 1.7rem;
     padding: 1.3rem 6rem;
@@ -59,13 +81,75 @@
       background-color: #0966af;
     }
   }
+  &.btn-light-blue {
+    background-color: #007eff;
+    border-color: #007eff;
+    color: #fff;
+    &:hover {
+      background-color: rgb(0, 109, 210);
+    }
+  }
+  &.btn-dgrey {
+    background-color: #9b9b9b;
+    border-color: #9b9b9b;
+    color: #fff;
+    &:hover {
+      background-color: #868686;
+    }
+  }
+  &.btn-red {
+    background-color: #d0021b;
+    border-color: #d0021b;
+    color: #fff;
+    &:hover {
+      background-color: #ba0319;
+      border-color: #ba0319;
+    }
+  }
   &.btn-cancel:hover {
     color: #000;
+  }
+  &.btn-tbig {
+    font-size: 1.7rem;
+    padding: 0.9rem 5.1rem;
+  }
+  &.btn-i {
+    background-repeat: no-repeat;
+    background-size: 1.9rem;
+    padding-left: 7.5rem;
+    padding-right: 3rem;
+    background-position: 2.8rem 50%;
+    min-width: 18rem;
+    &.i-warn {
+      background-image: url('/img/icon/warn.png');
+    }
+    &.i-ok {
+      background-image: url('/img/icon/ok.svg');
+    }
+    &.i-change {
+      background-image: url('/img/icon/change.png');
+    }
+    &.i-dead {
+      background-image: url('/img/icon/dead.svg');
+    }
+    &.i-plane {
+      background-image: url('/img/icon/plane.svg');
+    }
+  }
+}
+@media (max-width: 950px) {
+  .btn.btn-found.btn-found-white {
+    margin-left: 0;
   }
 }
 .btn.focus, .btn:focus, textarea:focus {
   box-shadow: none;
   outline: none;
+}
+@media (max-width: 1000px) {
+  .btn.btn-tbig {
+    font-size: 1.4rem;
+  }
 }
 @media (max-width: 650px) {
   .btn {

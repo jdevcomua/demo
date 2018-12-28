@@ -5,7 +5,7 @@
         <a href="tel:0443668019">(044) 366-80-19</a>
     </div>
     <div class="footer-kiev-portal">
-        <div class="col col-about">
+        <div class="col-about">
             <div class="col-about-header">
                 <img src="{{ asset('img/icon/gerb.png') }}" alt="Герб" class="logo">
                 <div class="about-header-content">
@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="col col-contacts">
+        <div class="col-contacts">
             <div class="contacts-item">
                 <span class="above-text">Служба підтримки користувачів</span>
                 <span class="above-text">"Реєстру домашніх тварин"</span>
@@ -26,7 +26,7 @@
                 <span class="above-text">e-mail: <a class="text-white" href="mailto:support.rdt@kyivcity.gov.ua ">support.rdt@kyivcity.gov.ua </a></span>
             </div>
         </div>
-        <div class="col col-about contacts-item">
+        <div class="col-about contacts-item">
             <span class="above-text">Комунальне підприємство</span>
             <span class="above-text">"Київська міська лікарня</span>
             <span class="above-text">ветеринарноі медицини" (КП КМЛВМ)</span><br><br>

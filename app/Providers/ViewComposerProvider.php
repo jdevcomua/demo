@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 use App\Models\AnimalsRequest;
-use Illuminate\Http\Request;
+use App\Models\ChangeAnimalOwner;
+use App\Models\FoundAnimal;
+use App\Models\LostAnimal;
 use Illuminate\Support\ServiceProvider;
+use ReflectionClass;
 use View;
 
 class ViewComposerProvider extends ServiceProvider
@@ -12,43 +15,35 @@ class ViewComposerProvider extends ServiceProvider
     /**
      * Bootstrap services.
      *
-     * @param Request $request
      * @return void
      */
-    public function boot(Request $request)
+    public function boot()
     {
         View::composer('*', function ($view) {
             $view->with('auth', \Auth::user());
         });
 
-        View::composer('admin.layout.app', function ($view) use ($request) {
+        View::composer('admin.layout.app', function ($view) {
             $view->with([
-                'hasNewRequests' => $this->hasNewRequests($request)
+                'hasNewRequestsOwn' => $this->hasNewRequests(AnimalsRequest::class),
+                'hasNewRequestsLost' => $this->hasNewRequests(LostAnimal::class),
+                'hasNewRequestsFound' => $this->hasNewRequests(FoundAnimal::class),
+                'hasNewRequestsChangeOwn' => $this->hasNewRequests(ChangeAnimalOwner::class),
             ]);
         });
     }
 
     /**
-     * Register services.
-     *
-     * @return void
+     * @return bool|mixed
+     * @throws \ReflectionException
      */
-    public function register()
+    private function hasNewRequests($class)
     {
+        $name = (new ReflectionClass($class))->getShortName();
+        $cachedName = $name . '_has_unprocessed';
 
-    }
-
-    /**
-     * @param Request $request
-     */
-    private function hasNewRequests(Request $request)
-    {
-        $route = $request->getRequestUri();
-        if ($route) {
-            if (strpos($route, '/data') === false) { // Ignoring data routes
-                return (AnimalsRequest::where('processed', 0)->count() == true);
-            }
-        }
-        return false;
+        return \Cache::tags($name)->remember($cachedName, config('cache.ttl'), function () use ($class) {
+            return !!$class::where('processed', '=', 0)->count();
+        });
     }
 }

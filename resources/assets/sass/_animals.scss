@@ -6,6 +6,19 @@
   font-style: normal;
 }
 
+.pets-lost-nav {
+  text-transform: uppercase;
+  & a {
+    color: #999;
+  }
+  & a.active {
+    color: #333;
+  }
+  & a:hover {
+    text-decoration: none;
+    color: #333;
+  }
+}
 
 .pets-list-header {
   font-size: 1.4rem;
@@ -13,16 +26,34 @@
   letter-spacing: 1px;
   margin: 0 1rem;
 }
+
+.pets-list-sort {
+  margin: 1rem;
+  color: #999;
+  font-size: 1rem;
+  &-item {
+    padding-right: 1.5%;
+    & a {
+      color: inherit;
+    }
+    &.active {
+      text-decoration: underline;
+    }
+  }
+}
+.archived-pet {
+  background-color: rgba(154, 154, 154, 0.33);
+}
 .pets-list-item {
   display: flex;
   padding: 3rem;
   border-bottom: 1px solid #ddd;
   position: relative;
   .pet-photo {
+    position: relative;
     flex-shrink: 0;
     width: 160px;
     height: 160px;
-    overflow: hidden;
     border-radius: 1rem;
     background-color: #ddd;
     display: flex;
@@ -668,4 +699,94 @@ $width: 100px;
 }
 .cam-video {
   max-width: 100%;
+}
+
+
+.animal-actions {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  .animal-action {
+    width: 50%;
+    .action-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 1.2rem;
+    }
+    .action-description {
+      font-size: 14px;
+      line-height: 1.43;
+      color: #999999;
+      height: 7.5rem;
+      width: 23.7rem;
+    }
+
+  }
+ & .animal-action:nth-child(n+3) {
+   margin-top: 80px;
+ }
+}
+
+.animal-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 9.5rem;
+  text-align: center;
+  background-image: linear-gradient(#1f425d, #3a7098);
+  padding: 0.6rem 1.2rem;
+  position: absolute;
+  bottom: -1.3rem;
+  border-radius: 0.6rem;
+
+  &-icon {
+    height: 1.7rem;
+    width: 1.7rem;
+    display: inline-block;
+    background: url('/img/icon/paw.svg') no-repeat;
+    background-size: contain;
+  }
+  &-number {
+    font-weight: 500;
+    color: #fff;
+  }
+}
+
+.pet-chronicles-block {
+  & .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  & .pet-chronicles-block-item {
+    &:not(:last-child) {
+      margin-bottom: 2rem;
+    }
+    & .date {
+      color: #999999;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    & .content {
+      font-size: 1.5rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: #333333;
+      margin-top: 0.4rem;
+    }
+  }
+}
+@media (max-width: 760px) {
+  .animal-actions .animal-action {
+    width: 100%;
+    margin-bottom: 4rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .action-description {
+      height: auto;
+      margin-bottom: 2rem;
+      width: 70%;
+    }
+  }
 }
