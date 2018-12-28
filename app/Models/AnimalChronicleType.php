@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AnimalChronicleType extends Model
 {
+    protected $fillable = [ 'type', 'template_text' ];
+
     public $timestamps = false;
 
     public function fields()

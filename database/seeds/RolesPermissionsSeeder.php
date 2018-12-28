@@ -13,129 +13,109 @@ class RolesPermissionsSeeder extends Seeder
      */
     public function run()
     {
-        $admin = new Role();
-        $admin->name         = 'admin';
-        $admin->display_name = 'Адміністратор системи';
-        $admin->save();
+        $adminPanel = $this->addPermission('Доступ до адмін-панелі', 'admin-panel');
+        $verifyAnimal = $this->addPermission('Верифікація тварин', 'verify-animal');
+        $deleteAnimal = $this->addPermission('Видалення тварин', 'delete-animal');
+        $editContent = $this->addPermission('Редагування контенту', 'edit-content');
+        $changeRoles = $this->addPermission('Зміна ролей користувачів', 'change-roles');
+        $privateData = $this->addPermission('Перегляд персональних данних користувачів', 'private-data');
+        $blockUser = $this->addPermission('Блокування користувачів', 'block-user');
+        $deleteUser = $this->addPermission('Видалення користувачів', 'delete-user');
+        $editUser = $this->addPermission('Редагування користувачів', 'edit-user');
+        $editRoles = $this->addPermission('Редагування дозволів ролей', 'edit-roles');
+        $viewSyslog = $this->addPermission('Перегляд системного журналу', 'view-syslog');
+        $editOrganizations = $this->addPermission('Управління закладами та установами', 'edit-organizations');
+        $viewAnimals = $this->addPermission('Перегляд тварин', 'view-animals');
+        $editAnimals = $this->addPermission('Редагування тварин', 'edit-animals');
+        $createAnimals = $this->addPermission('Створення тварин', 'create-animals');
+        $viewUsers = $this->addPermission('Перегляд користувачів', 'view-users');
 
-        $contentAdmin = new Role();
-        $contentAdmin->name         = 'content-admin';
-        $contentAdmin->display_name = 'Адміністратор контенту';
-        $contentAdmin->save();
 
-        $recorder = new Role();
-        $recorder->name         = 'recorder';
-        $recorder->display_name = 'Реєстратор';
-        $recorder->save();
+        $this->syncPermissions(
+            $this->addRole('Адміністратор системи', 'admin'),
+            [
+                $adminPanel,
+                $verifyAnimal,
+                $deleteAnimal,
+                $editContent,
+                $changeRoles,
+                $editRoles,
+                $blockUser,
+                $editUser,
+                $deleteUser,
+                $viewSyslog,
+                $privateData,
+                $editOrganizations,
+                $viewAnimals,
+                $editAnimals,
+                $createAnimals,
+                $viewUsers
+            ]
+        );
 
+        $this->syncPermissions(
+            $this->addRole('Адміністратор контенту', 'content-admin'),
+            [
+                $adminPanel,
+                $editContent,
+            ]
+        );
 
-        $adminPanel = new Permission();
-        $adminPanel->name         = 'admin-panel';
-        $adminPanel->display_name = 'Доступ до адмін-панелі';
-        $adminPanel->save();
+        $this->syncPermissions(
+            $this->addRole('Реєстратор', 'recorder'),
+            [
+                $adminPanel,
+                $verifyAnimal,
+            ]
+        );
 
-        $verifyAnimal = new Permission();
-        $verifyAnimal->name         = 'verify-animal';
-        $verifyAnimal->display_name = 'Верифікація тварин';
-        $verifyAnimal->save();
+        \Cache::tags(config('entrust.role_user_table'))->flush();
+        \Cache::tags(config('entrust.roles_table'))->flush();
+        \Cache::tags(config('entrust.permission_role_table'))->flush();
+        \Cache::tags(config('entrust.permission'))->flush();
+    }
 
-        $deleteAnimal = new Permission();
-        $deleteAnimal->name             = 'delete-animal';
-        $deleteAnimal->display_name     = 'Видалення тварин';
-        $deleteAnimal->save();
+    /**
+     * @param $display
+     * @param $name
+     * @return Permission
+     */
+    private function addPermission($display, $name)
+    {
+        return $this->addItem(new Permission(), $display, $name);
+    }
 
-        $editContent = new Permission();
-        $editContent->name          = 'edit-content';
-        $editContent->display_name  = 'Редагування контенту';
-        $editContent->save();
+    /**
+     * @param $display
+     * @param $name
+     * @return Role
+     */
+    private function addRole($display, $name)
+    {
+        return $this->addItem(new Role(), $display, $name);
+    }
 
-        $changeRoles = new Permission();
-        $changeRoles->name          = 'change-roles';
-        $changeRoles->display_name  = 'Зміна ролей користувачів';
-        $changeRoles->save();
+    private function addItem($model, $display, $name)
+    {
+        if (!$res = $model->where('name', '=', $name)->first()) {
+            $res = $model->create([
+                'name' => $name,
+                'display_name' => $display
+            ]);
+        }
+        return $res;
+    }
 
-        $privateData = new Permission();
-        $privateData->name          = 'private-data';
-        $privateData->display_name  = 'Перегляд персональних данних користувачів';
-        $privateData->save();
+    /**
+     * @param Role $role
+     * @param array $permissions
+     */
+    private function syncPermissions($role, $permissions)
+    {
+        $permissions = (new \Illuminate\Support\Collection($permissions))
+            ->pluck('id')
+            ->toArray();
 
-        $blockUser = new Permission();
-        $blockUser->name             = 'block-user';
-        $blockUser->display_name     = 'Блокування користувачів';
-        $blockUser->save();
-
-        $deleteUser = new Permission();
-        $deleteUser->name             = 'delete-user';
-        $deleteUser->display_name     = 'Видалення користувачів';
-        $deleteUser->save();
-
-        $editUser = new Permission();
-        $editUser->name             = 'edit-user';
-        $editUser->display_name     = 'Редагування користувачів';
-        $editUser->save();
-
-        $editRoles = new Permission();
-        $editRoles->name          = 'edit-roles';
-        $editRoles->display_name  = 'Редагування дозволів ролей';
-        $editRoles->save();
-
-        $viewSyslog = new Permission();
-        $viewSyslog->name             = 'view-syslog';
-        $viewSyslog->display_name     = 'Перегляд системного журналу';
-        $viewSyslog->save();
-
-        $editOrganizations = new Permission();
-        $editOrganizations->name          = 'edit-organizations';
-        $editOrganizations->display_name  = 'Управління закладами та установами';
-        $editOrganizations->save();
-
-        $viewAnimals = new Permission();
-        $viewAnimals->name          = 'view-animals';
-        $viewAnimals->display_name  = 'Перегляд тварин';
-        $viewAnimals->save();
-
-        $editAnimals = new Permission();
-        $editAnimals->name          = 'edit-animals';
-        $editAnimals->display_name  = 'Редагування тварин';
-        $editAnimals->save();
-
-        $createAnimals = new Permission();
-        $createAnimals->name          = 'create-animals';
-        $createAnimals->display_name  = 'Створення тварин';
-        $createAnimals->save();
-
-        $viewUsers = new Permission();
-        $viewUsers->name          = 'view-users';
-        $viewUsers->display_name  = 'Перегляд користувачів';
-        $viewUsers->save();
-
-        $admin->attachPermissions([
-            $adminPanel,
-            $verifyAnimal,
-            $deleteAnimal,
-            $editContent,
-            $changeRoles,
-            $editRoles,
-            $blockUser,
-            $editUser,
-            $deleteUser,
-            $viewSyslog,
-            $privateData,
-            $editOrganizations,
-            $viewAnimals,
-            $editAnimals,
-            $viewUsers
-        ]);
-
-        $contentAdmin->attachPermissions([
-            $adminPanel,
-            $editContent,
-        ]);
-
-        $recorder->attachPermissions([
-            $adminPanel,
-            $verifyAnimal,
-        ]);
-
+        $role->perms()->sync($permissions);
     }
 }

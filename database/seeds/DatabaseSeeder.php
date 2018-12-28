@@ -12,12 +12,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(RolesPermissionsSeeder::class);
-        $this->call(SpeciesSeeder::class);
-        $this->call(ColorsSeeder::class);
-        $this->call(BreedsSeeder::class);
-        $this->call(FursSeeder::class);
-        $this->call(UserSeeder::class);
-        $this->call(AnimalSeeder::class);
+
+        if (config('app.debug')) {
+            $this->call(SpeciesSeeder::class);
+            $this->call(ColorsSeeder::class);
+            $this->call(BreedsSeeder::class);
+            $this->call(FursSeeder::class);
+            $this->call(UserSeeder::class);
+            $this->call(AnimalSeeder::class);
+        }
+
         $this->call(BlocksSeeder::class);
         $this->call(AnimalChroniclesSeeder::class);
 //        $this->call(NotificationsSeeder::class);

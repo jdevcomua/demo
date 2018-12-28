@@ -13,115 +13,68 @@ class AnimalChroniclesSeeder extends Seeder
      */
     public function run()
     {
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'badge-added';
-        $chronicleType->template_text = 'Жетон з QR-кодом додано. Номер жетону: {badge}.';
-        $chronicleType->save();
+        $this->addType('badge-added', 'Жетон з QR-кодом додано. Номер жетону: {badge}.', [
+            'badge'
+        ]);
 
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'badge';
-        $chronicleField->save();
+        $this->addType('clip-added', 'Кліпсу додано. Номер кліпси: {clip}.', [
+            'clip'
+        ]);
 
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'clip-added';
-        $chronicleType->template_text = 'Кліпсу додано. Номер кліпси: {clip}.';
-        $chronicleType->save();
+        $this->addType('chip-added', 'Чіп додано. Номер чіпу: {chip}.', [
+            'chip'
+        ]);
 
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'clip';
-        $chronicleField->save();
+        $this->addType('badge-removed', 'Жетон з QR-кодом видалено.', []);
+        $this->addType('clip-removed', 'Кліпсу видалено.', []);
+        $this->addType('chip-removed', 'Чіп видалено.', []);
 
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'chip-added';
-        $chronicleType->template_text = 'Чіп додано. Номер чіпу: {chip}.';
-        $chronicleType->save();
+        $this->addType('sterilization-added', 'Тварину було стерилізовано. Дата стерилізації: {date}.', [
+            'date'
+        ]);
 
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'chip';
-        $chronicleField->save();
+        $this->addType('vaccination-added', 'Проведено щеплення від сказу. Дата проведення: {date}.', [
+            'date'
+        ]);
+
+        $this->addType('veterinary-measure-added', 'Проведено ветеринарний захід: {veterinary_measure}. Дата проведення: {date}.', [
+            'veterinary_measure', 'date'
+        ]);
+
+        $this->addType('animal-offense-added', '{offense_affiliation}. Вид правопорушення: {offense}. Дата: {date}.', [
+            'date', 'offense_affiliation', 'offense'
+        ]);
+
+        $this->addType('verification-added', 'Тварину верифіковано.', []);
+        $this->addType('verification-removed', 'Верифікацію відмінено.', []);
+    }
 
 
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'badge-removed';
-        $chronicleType->template_text = 'Жетон з QR-кодом видалено.';
-        $chronicleType->save();
+    private function addType($type, $text, $fields)
+    {
+        $typeModel = new AnimalChronicleType();
+        $fieldModel = new AnimalChronicleField();
 
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'clip-removed';
-        $chronicleType->template_text = 'Кліпсу видалено.';
-        $chronicleType->save();
+        $typeM = $typeModel->where('type', '=', $type)->first();
+        if (!$typeM) {
+            $typeM = $typeModel->create([
+                'type' => $type,
+                'template_text' => $text
+            ]);
+        }
 
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'chip-removed';
-        $chronicleType->template_text = 'Чіп видалено.';
-        $chronicleType->save();
+        foreach ($fields as $field) {
+            $fieldM = $fieldModel
+                ->where('animal_chronicle_type_id', '=', $typeM->id)
+                ->where('field_name', '=', $field)
+                ->first();
 
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'sterilization-added';
-        $chronicleType->template_text = 'Тварину було стерилізовано. Дата стерилізації: {date}.';
-        $chronicleType->save();
-
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'date';
-        $chronicleField->save();
-
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'vaccination-added';
-        $chronicleType->template_text = 'Проведено щеплення від сказу. Дата проведення: {date}.';
-        $chronicleType->save();
-
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'date';
-        $chronicleField->save();
-
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'veterinary-measure-added';
-        $chronicleType->template_text = 'Проведено ветеринарний захід: {veterinary_measure}. Дата проведення: {date}.';
-        $chronicleType->save();
-
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'veterinary_measure';
-        $chronicleField->save();
-
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'date';
-        $chronicleField->save();
-
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'animal-offense-added';
-        $chronicleType->template_text = '{offense_affiliation}. Вид правопорушення: {offense}. Дата: {date}.';
-        $chronicleType->save();
-
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'date';
-        $chronicleField->save();
-
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'offense_affiliation';
-        $chronicleField->save();
-
-        $chronicleField = new AnimalChronicleField;
-        $chronicleField->animal_chronicle_type_id = $chronicleType->id;
-        $chronicleField->field_name = 'offense';
-        $chronicleField->save();
-
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'verification-added';
-        $chronicleType->template_text = 'Тварину верифіковано.';
-        $chronicleType->save();
-
-        $chronicleType = new AnimalChronicleType;
-        $chronicleType->type = 'verification-removed';
-        $chronicleType->template_text = 'Верифікацію відмінено.';
-        $chronicleType->save();
+            if (!$fieldM) {
+                $fieldModel->create([
+                    'animal_chronicle_type_id' => $typeM->id,
+                    'field_name' => $field
+                ]);
+            }
+        }
     }
 }
