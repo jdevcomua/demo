@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AnimalChronicleField extends Model
 {
+    protected $fillable = [ 'animal_chronicle_type_id', 'field_name' ];
+
     public $timestamps = false;
 
     public function type()
