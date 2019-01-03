@@ -14,6 +14,6 @@ class PdfController extends Controller
         $animal = Animal::findOrFail($id);
         $pdfDataProvider = new AnimalPdfDataProvider($animal);
 
-        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.animal_info_pdf', 'animal.pdf');
+        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'animal.pdf');
     }
 }

@@ -15,6 +15,15 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'reports',
+    'as' => 'reports.'
+], function () {
+    Route::get('registered-animals', 'Admin\ReportsController@registeredAnimalsIndex')->name('registered-animals.index');
+    Route::post('registered-animals/generate', 'Admin\ReportsController@registeredAnimalsGenerate')->name('registered-animals.generate');
+    Route::get('registered-animals/download', 'Admin\ReportsController@registeredAnimalsDownload')->name('registered-animals.download');
+});
+
+Route::group([
     'prefix' => 'users',
     'as' => 'db.users.'
 ], function () {

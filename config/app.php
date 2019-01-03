@@ -166,6 +166,7 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\BlockServiceProvider::class,
         \App\Providers\LoggerServiceProvider::class,
         \App\Providers\ViewComposerProvider::class,
@@ -223,6 +224,7 @@ return [
         'Block' => App\Facades\BlockFacade::class,
         'RhaLogger' => App\Facades\RhaLogger::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

@@ -1,8 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+@extends('admin.layout.app')
 
+@section('styles')
     <style>
         @font-face {
             font-family: "Dojo Sans Serif";
@@ -14,9 +12,7 @@
             font-family: "Dojo Sans Serif", "DejaVu Sans", sans-serif;
         }
         .page_break { page-break-before: always; }
-        .container {
-            margin: 2% 1% 0 6%;
-        }
+
         thead tr th:first-child,
         tbody tr td:first-child {
             width: 4%;
@@ -61,11 +57,17 @@
             border-bottom: 1px solid #000;
         }
     </style>
-    @yield('style')
-</head>
-<body>
-    <div class="container">
-        @yield('content')
+@endsection
+@section('content')
+    <header id="topbar">
+        <div class="topbar-left">
+            <span>{{$title}}</span>
+        </div>
+    </header>
+    <div class="container" style="margin-top: 30px;">
+        @include('admin.reports.partials.forms.registered_animals_by_species')
+        @if(isset($viewDocument))
+            @include('admin.reports.partials.registered_animals_by_species', ['document' => $viewDocument])
+        @endif
     </div>
-</body>
-</html>
+@endsection

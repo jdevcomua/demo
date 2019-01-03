@@ -65,6 +65,26 @@
                         </li>
                     </ul>
                 </li>
+
+            <li{!! (strpos($curRoute, '.reports.') !== false) ? ' class="active" ' : '' !!}>
+                <a class="accordion-toggle {!! (strpos($curRoute, '.content.') !== false)
+                            ? 'menu-open' : '' !!}" href="#">
+                    <span class="fa fa-file-text"></span>
+                    <span class="sidebar-title">Звіти</span>
+                    <span class="caret"></span>
+                </a>
+                <ul class="nav sub-nav">
+                    <li{!! (strpos($curRoute, '.reports.registered-animals.index') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.registered-animals.index')}}">
+                            <span class="fa fa-question-circle"></span>Реєстрація тварин</a>
+                    </li>
+                    <li{!! (strpos($curRoute, '.content.block') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.content.block.index')}}">
+                            <span class="fa fa-info-circle"></span>Блоки
+                        </a>
+                    </li>
+                </ul>
+            </li>
                 <li class="sidebar-label pt20">Mailing Settings</li>
 
                 <li {!! (strpos($curRoute, '.templates') !== false) ? ' class="active" ' : '' !!}>
