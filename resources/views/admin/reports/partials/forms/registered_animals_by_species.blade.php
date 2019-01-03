@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="{{route('admin.reports.registered-animals.generate')}}" method="POST" style="margin-bottom: 30px;">
+<form class="form-horizontal" action="{{route($formRoute)}}" method="POST" style="margin-bottom: 30px;">
     @csrf
     <div class="row">
         <div class="form-group datepicker">
@@ -19,6 +19,6 @@
     <br>
     <button type="submit" class="ml-auto mt-6 btn confirm btn-primary">Згенерувати звіт</button>
     @if(isset($dateFrom) && isset($dateTo))
-    <a href="{{route('admin.reports.registered-animals.download', ['dateFrom' => $dateFrom, 'dateTo' => $dateTo])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт</a>
+    <a href="{{route($formRouteDownload, ['dateFrom' => $dateFrom, 'dateTo' => $dateTo])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт</a>
     @endif
 </form>

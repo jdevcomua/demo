@@ -7,7 +7,7 @@ use App\Models\Animal;
 use App\Models\Species;
 use App\Services\Pdf\Contracts\PdfDataProviderInterface;
 
-class ReportRegisteredAnimalsPdfDataProvider extends CommonLogicPdfDataProvider implements PdfDataProviderInterface
+class ReportRegisteredHomelessAnimalsPdfDataProvider extends CommonLogicPdfDataProvider implements PdfDataProviderInterface
 {
     private $dateFrom;
     private $dateTo;
@@ -20,42 +20,46 @@ class ReportRegisteredAnimalsPdfDataProvider extends CommonLogicPdfDataProvider 
 
     public function data(): Document
     {
-        $registeredAnimalsTable = new Table;
-        $registeredAnimalsTable
+        $registeredHomelessAnimalsTable = new Table;
+        $registeredHomelessAnimalsTable
             ->setTitle($this->makeTitle())
             ->setHeaders(['№ з/п', 'Тварини', 'Всього'])
-            ->setColumns($this->registeredAnimalsColumns());
+            ->setColumns($this->registeredAnimalsHomelessColumns());
 
         $document = new Document;
         $document
-            ->setTitle('Звіт про реєстрацію тварин в системі РДТ за період')
-            ->setTables([$registeredAnimalsTable]);
+            ->setTitle('Звіт про реєстрацію безпритульних тварин в системі РДТ за період')
+            ->setTables([$registeredHomelessAnimalsTable]);
 
         return $document;
     }
 
     private function makeTitle()
     {
-        return 'Звіт про реєстрацію тварин в системі РДТ за період з '
+        return 'Звіт про реєстрацію безпритульних тварин в системі РДТ за період з '
             . $this->localizedDate($this->dateFrom)
             . 'р. по '
             . $this->localizedDate($this->dateTo)
             . 'р.';
     }
 
-    private function registeredAnimalsColumns()
+    private function registeredAnimalsHomelessColumns()
     {
         $dogSpeciesId = Species::where('name', '=', 'Собака')->first()->id;
         $catSpeciesId = Species::where('name', '=', 'Кiт')->first()->id;
 
         $dogsAmount = static::whereInDateRange($this->dateFrom, $this->dateTo)->where([
+            ['user_id', '=', null],
             ['species_id', '=', $dogSpeciesId],
         ])->get()->count();
 
 
         $catsAmount = static::whereInDateRange($this->dateFrom, $this->dateTo)->where([
+            ['user_id', '=', 'NULL'],
             ['species_id', '=', $catSpeciesId],
         ])->get()->count();
+
+        $this->resetRowNumber();
 
         return [
             [$this->rowNumber(), 'Собаки', $dogsAmount],

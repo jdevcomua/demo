@@ -21,6 +21,10 @@ Route::group([
     Route::get('registered-animals', 'Admin\ReportsController@registeredAnimalsIndex')->name('registered-animals.index');
     Route::post('registered-animals/generate', 'Admin\ReportsController@registeredAnimalsGenerate')->name('registered-animals.generate');
     Route::get('registered-animals/download', 'Admin\ReportsController@registeredAnimalsDownload')->name('registered-animals.download');
+
+    Route::get('registered-animals/homeless', 'Admin\ReportsController@registeredAnimalsHomelessIndex')->name('registered-animals-homeless.index');
+    Route::post('registered-animals/homeless/generate', 'Admin\ReportsController@registeredAnimalsHomelessGenerate')->name('registered-animals-homeless.generate');
+    Route::get('registered-animals/homeless/download', 'Admin\ReportsController@registeredAnimalsHomelessDownload')->name('registered-animals-homeless.download');
 });
 
 Route::group([

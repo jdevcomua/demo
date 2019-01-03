@@ -74,13 +74,13 @@
                     <span class="caret"></span>
                 </a>
                 <ul class="nav sub-nav">
-                    <li{!! (strpos($curRoute, '.reports.registered-animals.index') !== false) ? ' class="active" ' : '' !!}>
+                    <li{!! (strpos($curRoute, '.reports.registered-animals.') !== false) ? ' class="active" ' : '' !!}>
                         <a href="{{route('admin.reports.registered-animals.index')}}">
                             <span class="fa fa-question-circle"></span>Реєстрація тварин</a>
                     </li>
-                    <li{!! (strpos($curRoute, '.content.block') !== false) ? ' class="active" ' : '' !!}>
-                        <a href="{{route('admin.content.block.index')}}">
-                            <span class="fa fa-info-circle"></span>Блоки
+                    <li{!! (strpos($curRoute, '.reports.registered-animals-homeless.') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.registered-animals-homeless.index')}}">
+                            <span class="fa fa-info-circle"></span>Реєстрація безпритульних тварин
                         </a>
                     </li>
                 </ul>
