@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Services\Pdf\DataProviders\ReportAnimalsBySpeciesPdfDataProvider;
 use App\Services\Pdf\DataProviders\ReportRegisteredAnimalsPdfDataProvider;
 use App\Services\Pdf\DataProviders\ReportRegisteredHomelessAnimalsPdfDataProvider;
 use App\Services\Pdf\PdfGeneratorService;
@@ -12,7 +13,10 @@ class ReportsController extends Controller
 {
     public function registeredAnimalsIndex()
     {
-        return view('admin.reports.view_report', ['title' => 'Звіт - реєстрація тварин', 'formRoute' => 'admin.reports.registered-animals.generate']);
+        return view('admin.reports.view_report', [
+            'title' => 'Звіт - реєстрація тварин',
+            'formRouteDownload' => 'admin.reports.registered-animals.download',
+            'formRoute' => 'admin.reports.registered-animals.generate']);
     }
 
     public function registeredAnimalsGenerate(Request $request)
@@ -46,7 +50,10 @@ class ReportsController extends Controller
 
     public function registeredAnimalsHomelessIndex()
     {
-        return view('admin.reports.view_report', ['title' => 'Звіт - реєстрація безпритульних тварин', 'formRoute' => 'admin.reports.registered-animals-homeless.generate',
+        return view('admin.reports.view_report', [
+            'title' => 'Звіт - реєстрація безпритульних тварин',
+            'formRouteDownload' => 'admin.reports.registered-animals-homeless.download',
+            'formRoute' => 'admin.reports.registered-animals-homeless.generate',
         ]);
     }
 
@@ -76,6 +83,25 @@ class ReportsController extends Controller
         $pdfDataProvider = new ReportRegisteredHomelessAnimalsPdfDataProvider($dateFrom, $dateTo);
 
         return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'registered_homeless_animals_report.pdf');
+    }
+
+    public function animalsAmountBySpecies()
+    {
+        $pdfDataProvider = new ReportAnimalsBySpeciesPdfDataProvider;
+
+        return view('admin.reports.view_report', [
+            'title' => 'Звіт - кількість тварин за видом',
+            'form' => 'admin.reports.partials.forms.animals_amount_without_dates',
+            'formRouteDownload' => 'admin.reports.animals-amount-species.download',
+            'viewDocument' => $pdfDataProvider->data(),
+        ]);
+    }
+
+    public function animalsAmountBySpeciesDownload(PdfGeneratorService $generatorService)
+    {
+        $pdfDataProvider = new ReportAnimalsBySpeciesPdfDataProvider;
+
+        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'amount_of_animals_by_species_report.pdf');
     }
 
     private function dateConvert($date)

@@ -83,6 +83,11 @@
                             <span class="fa fa-info-circle"></span>Реєстрація безпритульних тварин
                         </a>
                     </li>
+                    <li{!! (strpos($curRoute, '.reports.animals-amount-species') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.animals-amount-species.index')}}">
+                            <span class="fa fa-info-circle"></span>Кількість тварин за видом
+                        </a>
+                    </li>
                 </ul>
             </li>
                 <li class="sidebar-label pt20">Mailing Settings</li>
