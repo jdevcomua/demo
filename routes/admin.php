@@ -29,6 +29,9 @@ Route::group([
     Route::get('animals-amount/species', 'Admin\ReportsController@animalsAmountBySpecies')->name('animals-amount-species.index');
     Route::get('animals-amount/species/download', 'Admin\ReportsController@animalsAmountBySpeciesDownload')->name('animals-amount-species.download');
 
+    Route::get('animals-amount/breeds', 'Admin\ReportsController@animalsAmountByBreeds')->name('animals-amount-breeds.index');
+    Route::get('animals-amount/breeds/download', 'Admin\ReportsController@animalsAmountByBreedsDownload')->name('animals-amount-breeds.download');
+
 });
 
 Route::group([

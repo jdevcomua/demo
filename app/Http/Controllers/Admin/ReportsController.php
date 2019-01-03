@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Services\Pdf\DataProviders\ReportAnimalsByBreedsPdfDataProvider;
 use App\Services\Pdf\DataProviders\ReportAnimalsBySpeciesPdfDataProvider;
 use App\Services\Pdf\DataProviders\ReportRegisteredAnimalsPdfDataProvider;
 use App\Services\Pdf\DataProviders\ReportRegisteredHomelessAnimalsPdfDataProvider;
@@ -102,6 +103,25 @@ class ReportsController extends Controller
         $pdfDataProvider = new ReportAnimalsBySpeciesPdfDataProvider;
 
         return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'amount_of_animals_by_species_report.pdf');
+    }
+
+    public function animalsAmountByBreeds()
+    {
+        $pdfDataProvider = new ReportAnimalsByBreedsPdfDataProvider;
+
+        return view('admin.reports.view_report', [
+            'title' => 'Звіт - кількість тварин за породою',
+            'form' => 'admin.reports.partials.forms.animals_amount_without_dates',
+            'formRouteDownload' => 'admin.reports.animals-amount-breeds.download',
+            'viewDocument' => $pdfDataProvider->data(),
+        ]);
+    }
+
+    public function animalsAmountByBreedsDownload(PdfGeneratorService $generatorService)
+    {
+        $pdfDataProvider = new ReportAnimalsByBreedsPdfDataProvider;
+
+        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'amount_of_animals_by_breeds_report.pdf');
     }
 
     private function dateConvert($date)
