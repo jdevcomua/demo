@@ -19,9 +19,11 @@ class BackupDatabase extends Command
         parent::__construct();
 
         $this->process = new Process(sprintf(
-            'mysqldump -h ${DB_HOST} -u%s -p%s %s' .     // make db dump
-            '| gzip > %s' .                                    // compress db dump
-            '&& find %s -mtime +6 -type f -delete',            // delete dumps older than 1 week
+            'mysqldump -h %s -u%s -p%s %s' .      // make db dump
+            '| gzip > %s ' .                            // compress db dump
+            '&& touch .gitignore ' .                    // update .gitignore date
+            '&& find %s -mtime +6 -type f -delete',     // delete files older than 1 week
+            config('database.connections.mysql.host'),
             config('database.connections.mysql.username'),
             config('database.connections.mysql.password'),
             config('database.connections.mysql.database'),
