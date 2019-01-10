@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Services\Pdf\DataProviders\ReportAnimalsByBreedsPdfDataProvider;
 use App\Services\Pdf\DataProviders\ReportAnimalsBySpeciesPdfDataProvider;
+use App\Services\Pdf\DataProviders\ReportRegisteredAnimalsOwnersPdfDataProvider;
 use App\Services\Pdf\DataProviders\ReportRegisteredAnimalsPdfDataProvider;
 use App\Services\Pdf\DataProviders\ReportRegisteredHomelessAnimalsPdfDataProvider;
 use App\Services\Pdf\PdfGeneratorService;
@@ -122,6 +123,43 @@ class ReportsController extends Controller
         $pdfDataProvider = new ReportAnimalsByBreedsPdfDataProvider;
 
         return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'amount_of_animals_by_breeds_report.pdf');
+    }
+
+    public function registeredAnimalsOwners()
+    {
+        return view('admin.reports.view_report', [
+            'title' => 'Звіт - реєстрація власників тварин',
+            'formRouteDownload' => 'admin.reports.registered-animals-owners.download',
+            'formRoute' => 'admin.reports.registered-animals-owners.generate',
+        ]);
+    }
+
+    public function registeredAnimalsOwnersGenerate(Request $request)
+    {
+        $dateFrom = $this->dateConvert($request->get('dateFrom'));
+        $dateTo = $this->dateConvert($request->get('dateTo'));
+
+        $pdfDataProvider = new ReportRegisteredAnimalsOwnersPdfDataProvider($dateFrom, $dateTo);
+
+
+        return view('admin.reports.view_report', [
+            'title' => 'Звіт - реєстрація власників тварин',
+            'formRoute' => 'admin.reports.registered-animals-owners.generate',
+            'formRouteDownload' => 'admin.reports.registered-animals-owners.download',
+            'viewDocument' => $pdfDataProvider->data(),
+            'dateFrom' => $this->dateConvertForPicker($dateFrom),
+            'dateTo' => $this->dateConvertForPicker($dateTo),
+        ]);
+    }
+
+    public function registeredAnimalsOwnersDownload(Request $request, PdfGeneratorService $generatorService)
+    {
+        $dateFrom = $this->dateConvert($request->get('dateFrom'));
+        $dateTo = $this->dateConvert($request->get('dateTo'));
+
+        $pdfDataProvider = new ReportRegisteredAnimalsOwnersPdfDataProvider($dateFrom, $dateTo);
+
+        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'registered_animals_owners_report.pdf');
     }
 
     private function dateConvert($date)

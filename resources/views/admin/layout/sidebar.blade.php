@@ -93,6 +93,11 @@
                             <span class="fa fa-info-circle"></span>Кількість тварин за породою
                         </a>
                     </li>
+                    <li{!! (strpos($curRoute, '.reports.registered-animals-owners.') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.registered-animals-owners.index')}}">
+                            <span class="fa fa-info-circle"></span>Реєстрація власників тварин
+                        </a>
+                    </li>
                 </ul>
             </li>
                 <li class="sidebar-label pt20">Mailing Settings</li>

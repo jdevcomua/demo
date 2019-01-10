@@ -32,6 +32,9 @@ Route::group([
     Route::get('animals-amount/breeds', 'Admin\ReportsController@animalsAmountByBreeds')->name('animals-amount-breeds.index');
     Route::get('animals-amount/breeds/download', 'Admin\ReportsController@animalsAmountByBreedsDownload')->name('animals-amount-breeds.download');
 
+    Route::get('registered-owners/', 'Admin\ReportsController@registeredAnimalsOwners')->name('registered-animals-owners.index');
+    Route::post('registered-owners/generate', 'Admin\ReportsController@registeredAnimalsOwnersGenerate')->name('registered-animals-owners.generate');
+    Route::get('registered-owners/download', 'Admin\ReportsController@registeredAnimalsOwnersDownload')->name('registered-animals-owners.download');
 });
 
 Route::group([
