@@ -21,13 +21,14 @@ class BackupDatabase extends Command
         $this->process = new Process(sprintf(
             'mysqldump -h %s -u%s -p%s %s' .      // make db dump
             '| gzip > %s ' .                            // compress db dump
-            '&& touch .gitignore ' .                    // update .gitignore date
+            '&& touch %s ' .                            // update .gitignore date
             '&& find %s -mtime +6 -type f -delete',     // delete files older than 1 week
             config('database.connections.mysql.host'),
             config('database.connections.mysql.username'),
             config('database.connections.mysql.password'),
             config('database.connections.mysql.database'),
             storage_path('backup/back_' . date('d-m-y_H-i-s') . '.sql.gz'),
+            storage_path('backup/.gitignore'),
             storage_path('backup/')
         ));
     }
