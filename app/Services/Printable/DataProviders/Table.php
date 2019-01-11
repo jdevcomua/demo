@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Pdf\DataProviders;
+namespace App\Services\Printable\DataProviders;
 
 
 class Table

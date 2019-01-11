@@ -1,5 +1,6 @@
-<form class="form-horizontal" action="{{route($formRoute)}}" method="POST" style="margin-bottom: 30px;">
+<form class="form-horizontal" action="{{route('admin.reports.report.preview')}}" method="POST" style="margin-bottom: 30px;">
     @csrf
+    <input type="hidden" name="reportType" value="{{$reportType}}">
     <div class="row">
         <div class="form-group datepicker">
             <label class="col-lg-1 control-label">Період з</label>
@@ -19,6 +20,6 @@
     <br>
     <button type="submit" class="ml-auto mt-6 btn confirm btn-primary">Згенерувати звіт</button>
     @if(isset($dateFrom) && isset($dateTo))
-    <a href="{{route($formRouteDownload, ['dateFrom' => $dateFrom, 'dateTo' => $dateTo])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт</a>
+    <a href="{{route('admin.reports.report.download', ['reportType' => $reportType, 'dateFrom' => $dateFrom, 'dateTo' => $dateTo])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт</a>
     @endif
 </form>

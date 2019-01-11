@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Pdf\DataProviders;
+namespace App\Services\Printable\DataProviders;
 
 
 use App\Models\Animal;
 use App\Models\Species;
-use App\Services\Pdf\Contracts\PdfDataProviderInterface;
+use App\Services\Printable\Contracts\PrintDataProviderInterface;
 
-class ReportAnimalsBySpeciesPdfDataProvider extends CommonLogicPdfDataProvider implements PdfDataProviderInterface
+class ReportAnimalsBySpeciesPrintDataProvider extends CommonLogicPrintDataProvider implements PrintDataProviderInterface
 {
     public function data(): Document
     {

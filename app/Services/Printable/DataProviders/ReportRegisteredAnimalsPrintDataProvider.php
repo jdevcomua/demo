@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Pdf\DataProviders;
+namespace App\Services\Printable\DataProviders;
 
 
 use App\Models\Animal;
 use App\Models\Species;
-use App\Services\Pdf\Contracts\PdfDataProviderInterface;
+use App\Services\Printable\Contracts\PrintDataProviderInterface;
 
-class ReportRegisteredAnimalsPdfDataProvider extends CommonLogicPdfDataProvider implements PdfDataProviderInterface
+class ReportRegisteredAnimalsPrintDataProvider extends CommonLogicPrintDataProvider implements PrintDataProviderInterface
 {
     private $dateFrom;
     private $dateTo;

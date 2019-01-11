@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Pdf\DataProviders;
+namespace App\Services\Printable\DataProviders;
 
 
 use App\Models\Animal;
-use App\Services\Pdf\Contracts\PdfDataProviderInterface;
+use App\Services\Printable\Contracts\PrintDataProviderInterface;
 
-class AnimalPdfDataProvider extends CommonLogicPdfDataProvider implements PdfDataProviderInterface
+class AnimalPrintDataProvider extends CommonLogicPrintDataProvider implements PrintDataProviderInterface
 {
     private $animal;
 

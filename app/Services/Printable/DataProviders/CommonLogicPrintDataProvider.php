@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Pdf\DataProviders;
+namespace App\Services\Printable\DataProviders;
 
 
-abstract class CommonLogicPdfDataProvider
+abstract class CommonLogicPrintDataProvider
 {
     protected $rowNumber;
 

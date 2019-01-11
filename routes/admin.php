@@ -18,6 +18,9 @@ Route::group([
     'prefix' => 'reports',
     'as' => 'reports.'
 ], function () {
+    Route::post('report/preview', 'Admin\ReportsController@preview')->name('report.preview');
+    Route::get('report/download', 'Admin\ReportsController@download')->name('report.download');
+
     Route::get('registered-animals', 'Admin\ReportsController@registeredAnimalsIndex')->name('registered-animals.index');
     Route::post('registered-animals/generate', 'Admin\ReportsController@registeredAnimalsGenerate')->name('registered-animals.generate');
     Route::get('registered-animals/download', 'Admin\ReportsController@registeredAnimalsDownload')->name('registered-animals.download');

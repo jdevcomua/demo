@@ -65,11 +65,7 @@
         </div>
     </header>
     <div class="container" style="margin-top: 30px;">
-        @if(isset($form))
-            @include($form, ['formRoute' => $formRoute ?? '', 'formRouteDownload' => $formRouteDownload])
-        @else
-            @include('admin.reports.partials.forms.registered_animals_by_species', ['formRoute' => $formRoute, 'formRouteDownload' => $formRouteDownload])
-        @endif
+        @include($form, ['reportType' => $reportType])
         @if(isset($viewDocument))
             @include('admin.reports.partials.registered_animals_by_species', ['document' => $viewDocument])
         @endif
