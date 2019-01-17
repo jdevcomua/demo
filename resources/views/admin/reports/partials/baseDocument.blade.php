@@ -13,4 +13,6 @@
             <td><div class="sign-line"></div></td>
         </tr>
     </table>
+@else
+    <div style="margin-bottom: 40px"></div>
 @endif

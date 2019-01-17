@@ -3,6 +3,7 @@
 namespace App\Services\Printable;
 
 
+use App\Services\Printable\Exceptions\NoReportMethodFoundException;
 use Illuminate\Http\Request;
 
 class ReportsManager
@@ -17,6 +18,7 @@ class ReportsManager
         'registeredAnimalsOwners' => 'App\Services\Printable\DataProviders\ReportRegisteredAnimalsOwnersPrintDataProvider',
         'animalsAmountBySpecies' => 'App\Services\Printable\DataProviders\ReportAnimalsBySpeciesPrintDataProvider',
         'animalsAmountByBreeds' => 'App\Services\Printable\DataProviders\ReportAnimalsByBreedsPrintDataProvider',
+        'registeredAnimalsOfOwner' => 'App\Services\Printable\DataProviders\AnimalsOfOwnerPrintDataProvider',
     ];
 
     protected $reportNamesTypesMapping = [
@@ -28,6 +30,9 @@ class ReportsManager
         'reportNoForm' => [
             'animalsAmountBySpecies',
             'animalsAmountByBreeds'
+        ],
+        'reportOwner' => [
+            'registeredAnimalsOfOwner'
         ]
     ];
 
@@ -36,7 +41,8 @@ class ReportsManager
         'registeredAnimalsHomeless' => 'Звіт - реєстрація безпритульних тварин',
         'registeredAnimalsOwners' => 'Звіт - реєстрація власників тварин',
         'animalsAmountBySpecies' => 'Звіт - кількість тварин за видом',
-        'animalsAmountByBreeds' => 'Звіт - кількість тварин за породою'
+        'animalsAmountByBreeds' => 'Звіт - кількість тварин за породою',
+        'registeredAnimalsOfOwner' => 'Довідка за тваринами, що зареєстровані на певного власника'
     ];
 
     public function init(Request $request)
@@ -101,6 +107,32 @@ class ReportsManager
         return $printService->download();
     }
 
+    protected function reportOwnerDownload()
+    {
+        $owner_id = $this->request->get('owner_id');
+        $dataProviderClass = $this->getDataProviderClass();
+        $this->dataProvider = new $dataProviderClass($owner_id);
+
+        $printService = new PdfPrintService();
+        $printService->init($this->dataProvider, 'print.tables_with_sign_place_pdf', $this->reportName . '.pdf');
+
+        return $printService->download();
+    }
+
+    protected function reportOwnerPreview()
+    {
+        $owner_id = $this->request->get('owner_id');
+        $dataProviderClass = $this->getDataProviderClass();
+        $this->dataProvider = new $dataProviderClass($owner_id);
+
+        return view('admin.reports.view_report', [
+            'title' => $this->getPageTitle(),
+            'form' => 'admin.reports.partials.forms.report_select_owner_form',
+            'reportName' => $this->reportName,
+            'viewDocument' => $this->dataProvider->data(),
+            'ownerId' => $owner_id,
+        ]);
+    }
 
     protected function dateConvert($date)
     {
@@ -119,6 +151,7 @@ class ReportsManager
                 return $index;
             }
         }
+        throw new NoReportMethodFoundException();
     }
 
     protected function getPageTitle(): string

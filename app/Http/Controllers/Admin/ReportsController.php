@@ -72,6 +72,16 @@ class ReportsController extends Controller
         ]);
     }
 
+    public function registeredAnimalsOfOwner(Request $request)
+    {
+        return $this->preview($request, view('admin.reports.view_report', [
+            'title' => 'Довідка за тваринами, що зареєстровані на певного власника',
+            'form' => 'admin.reports.partials.forms.report_select_owner_form',
+            'reportName' => 'registeredAnimalsOfOwner',
+//            'viewDocument' => $pdfDataProvider->data(),
+        ]));
+    }
+
     protected function preview(Request $request, $view)
     {
         if ($request->isMethod('post')) {

@@ -71,3 +71,24 @@
         @endif
     </div>
 @endsection
+
+@section('scripts-end')
+    <script>
+        $.ajax({
+            url: '/ajax/users',
+            type: 'get',
+            success: function(data) {
+                var users = $('.form-group.select select#owner').selectize({
+                    options: JSON.parse(data),
+                    labelField: 'name',
+                    valueField: 'value',
+                    searchField: ['name']
+                });
+                users[0].selectize.setValue($('.form-group.select select#owner').data('value'));
+            },
+            error: function(data) {
+                console.error(data);
+            }
+        });
+    </script>
+@endsection

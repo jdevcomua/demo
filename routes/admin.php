@@ -23,6 +23,7 @@ Route::group([
     Route::any('registered-animals', 'Admin\ReportsController@registeredAnimalsIndex')->name('registered-animals.index');
     Route::any('registered-animals/homeless', 'Admin\ReportsController@registeredAnimalsHomelessIndex')->name('registered-animals-homeless.index');
     Route::any('registered-owners/', 'Admin\ReportsController@registeredAnimalsOwners')->name('registered-animals-owners.index');
+    Route::any('registered-animals-of-owner/', 'Admin\ReportsController@registeredAnimalsOfOwner')->name('registered-animals-of-owner.index');
     Route::get('animals-amount/species', 'Admin\ReportsController@animalsAmountBySpeciesIndex')->name('animals-amount-species.index');
     Route::get('animals-amount/breeds', 'Admin\ReportsController@animalsAmountByBreeds')->name('animals-amount-breeds.index');
 });
