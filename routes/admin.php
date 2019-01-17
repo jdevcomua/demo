@@ -18,26 +18,13 @@ Route::group([
     'prefix' => 'reports',
     'as' => 'reports.'
 ], function () {
-    Route::post('report/preview', 'Admin\ReportsController@preview')->name('report.preview');
     Route::get('report/download', 'Admin\ReportsController@download')->name('report.download');
 
-    Route::get('registered-animals', 'Admin\ReportsController@registeredAnimalsIndex')->name('registered-animals.index');
-    Route::post('registered-animals/generate', 'Admin\ReportsController@registeredAnimalsGenerate')->name('registered-animals.generate');
-    Route::get('registered-animals/download', 'Admin\ReportsController@registeredAnimalsDownload')->name('registered-animals.download');
-
-    Route::get('registered-animals/homeless', 'Admin\ReportsController@registeredAnimalsHomelessIndex')->name('registered-animals-homeless.index');
-    Route::post('registered-animals/homeless/generate', 'Admin\ReportsController@registeredAnimalsHomelessGenerate')->name('registered-animals-homeless.generate');
-    Route::get('registered-animals/homeless/download', 'Admin\ReportsController@registeredAnimalsHomelessDownload')->name('registered-animals-homeless.download');
-
-    Route::get('animals-amount/species', 'Admin\ReportsController@animalsAmountBySpecies')->name('animals-amount-species.index');
-    Route::get('animals-amount/species/download', 'Admin\ReportsController@animalsAmountBySpeciesDownload')->name('animals-amount-species.download');
-
+    Route::any('registered-animals', 'Admin\ReportsController@registeredAnimalsIndex')->name('registered-animals.index');
+    Route::any('registered-animals/homeless', 'Admin\ReportsController@registeredAnimalsHomelessIndex')->name('registered-animals-homeless.index');
+    Route::any('registered-owners/', 'Admin\ReportsController@registeredAnimalsOwners')->name('registered-animals-owners.index');
+    Route::get('animals-amount/species', 'Admin\ReportsController@animalsAmountBySpeciesIndex')->name('animals-amount-species.index');
     Route::get('animals-amount/breeds', 'Admin\ReportsController@animalsAmountByBreeds')->name('animals-amount-breeds.index');
-    Route::get('animals-amount/breeds/download', 'Admin\ReportsController@animalsAmountByBreedsDownload')->name('animals-amount-breeds.download');
-
-    Route::get('registered-owners/', 'Admin\ReportsController@registeredAnimalsOwners')->name('registered-animals-owners.index');
-    Route::post('registered-owners/generate', 'Admin\ReportsController@registeredAnimalsOwnersGenerate')->name('registered-animals-owners.generate');
-    Route::get('registered-owners/download', 'Admin\ReportsController@registeredAnimalsOwnersDownload')->name('registered-animals-owners.download');
 });
 
 Route::group([

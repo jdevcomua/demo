@@ -1,7 +1,7 @@
 @if($document->title() !== null)
     <h3 style="text-align: center;">{{$document->title()}}</h3>
 @endif
-@include('pdf.base_tables', ['document' => $document])
+@include('print.base_tables', ['document' => $document])
 
 @if($document->signBlock())
     <table class="sign-block">

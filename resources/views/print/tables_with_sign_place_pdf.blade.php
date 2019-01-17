@@ -1,4 +1,4 @@
-@extends('pdf.master')
+@extends('print.master')
 
 @section('content')
     @if($document->title() !== null)

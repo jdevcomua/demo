@@ -67,7 +67,7 @@
                 </li>
 
             <li{!! (strpos($curRoute, '.reports.') !== false) ? ' class="active" ' : '' !!}>
-                <a class="accordion-toggle {!! (strpos($curRoute, '.content.') !== false)
+                <a class="accordion-toggle {!! (strpos($curRoute, '.reports.') !== false)
                             ? 'menu-open' : '' !!}" href="#">
                     <span class="fa fa-file-text"></span>
                     <span class="sidebar-title">Звіти</span>

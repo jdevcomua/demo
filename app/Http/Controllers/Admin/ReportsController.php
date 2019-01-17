@@ -21,107 +21,43 @@ class ReportsController extends Controller
         $this->reportsManager = $reportsManager;
     }
 
-    public function registeredAnimalsIndex()
+    public function registeredAnimalsIndex(Request $request)
     {
-        return view('admin.reports.view_report', [
+        return $this->preview($request, view('admin.reports.view_report', [
             'title' => 'Звіт - реєстрація тварин',
-            'formRouteDownload' => 'admin.reports.registered-animals.download',
-            'formRoute' => 'admin.reports.registered-animals.generate']);
+            'form' => 'admin.reports.partials.forms.report_with_dates_form',
+            'reportName' => 'registeredAnimals'
+        ]));
     }
 
-    public function preview(Request $request)
+    public function registeredAnimalsHomelessIndex(Request $request)
     {
-        $this->reportsManager->init($request);
-    }
-
-    public function download(Request $request)
-    {
-
-    }
-
-    public function registeredAnimalsGenerate(Request $request)
-    {
-        $dateFrom = $this->dateConvert($request->get('dateFrom'));
-        $dateTo = $this->dateConvert($request->get('dateTo'));
-
-        $pdfDataProvider = new ReportRegisteredAnimalsPrintDataProvider($dateFrom, $dateTo);
-
-
-        return view('admin.reports.view_report', [
-            'title' => 'Звіт - реєстрація тварин',
-            'formRoute' => 'admin.reports.registered-animals.generate',
-            'formRouteDownload' => 'admin.reports.registered-animals.download',
-            'viewDocument' => $pdfDataProvider->data(),
-            'dateFrom' => $this->dateConvertForPicker($dateFrom),
-            'dateTo' => $this->dateConvertForPicker($dateTo),
-            ]);
-    }
-
-    public function registeredAnimalsDownload(Request $request, PdfPrintService $generatorService)
-    {
-        $dateFrom = $this->dateConvert($request->get('dateFrom'));
-        $dateTo = $this->dateConvert($request->get('dateTo'));
-
-
-        $pdfDataProvider = new ReportRegisteredAnimalsPrintDataProvider($dateFrom, $dateTo);
-
-        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'registered_animals_report.pdf');
-    }
-
-    public function registeredAnimalsHomelessIndex()
-    {
-        return view('admin.reports.view_report', [
+        return $this->preview($request, view('admin.reports.view_report', [
             'title' => 'Звіт - реєстрація безпритульних тварин',
-            'formRouteDownload' => 'admin.reports.registered-animals-homeless.download',
-            'formRoute' => 'admin.reports.registered-animals-homeless.generate',
-        ]);
+            'form' => 'admin.reports.partials.forms.report_with_dates_form',
+            'reportName' => 'registeredAnimalsHomeless'
+        ]));
     }
 
-    public function registeredAnimalsHomelessGenerate(Request $request)
-    {
-        $dateFrom = $this->dateConvert($request->get('dateFrom'));
-        $dateTo = $this->dateConvert($request->get('dateTo'));
-
-        $pdfDataProvider = new ReportRegisteredHomelessAnimalsPrintDataProvider($dateFrom, $dateTo);
-
-
-        return view('admin.reports.view_report', [
-            'title' => 'Звіт - реєстрація безпритульних тварин',
-            'formRoute' => 'admin.reports.registered-animals-homeless.generate',
-            'formRouteDownload' => 'admin.reports.registered-animals-homeless.download',
-            'viewDocument' => $pdfDataProvider->data(),
-            'dateFrom' => $this->dateConvertForPicker($dateFrom),
-            'dateTo' => $this->dateConvertForPicker($dateTo),
-        ]);
-    }
-
-    public function registeredAnimalsHomelessDownload(Request $request, PdfPrintService $generatorService)
-    {
-        $dateFrom = $this->dateConvert($request->get('dateFrom'));
-        $dateTo = $this->dateConvert($request->get('dateTo'));
-
-        $pdfDataProvider = new ReportRegisteredHomelessAnimalsPrintDataProvider($dateFrom, $dateTo);
-
-        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'registered_homeless_animals_report.pdf');
-    }
-
-    public function animalsAmountBySpecies()
+    public function animalsAmountBySpeciesIndex()
     {
         $pdfDataProvider = new ReportAnimalsBySpeciesPrintDataProvider;
 
         return view('admin.reports.view_report', [
             'title' => 'Звіт - кількість тварин за видом',
-            'form' => 'admin.reports.partials.forms.animals_amount_without_dates',
-            'formRouteDownload' => 'admin.reports.animals-amount-species.download',
+            'form' => 'admin.reports.partials.forms.no_form',
+            'reportName' => 'animalsAmountBySpecies',
             'viewDocument' => $pdfDataProvider->data(),
         ]);
     }
 
-    public function animalsAmountBySpeciesDownload(PdfPrintService $generatorService)
+    public function registeredAnimalsOwners(Request $request)
     {
-        $pdfDataProvider = new ReportAnimalsBySpeciesPrintDataProvider;
-
-        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'amount_of_animals_by_species_report.pdf');
+        return $this->preview($request, view('admin.reports.view_report', [
+            'title' => 'Звіт - реєстрація власників тварин',
+            'form' => 'admin.reports.partials.forms.report_with_dates_form',
+            'reportName' => 'registeredAnimalsOwners'
+        ]));
     }
 
     public function animalsAmountByBreeds()
@@ -130,63 +66,24 @@ class ReportsController extends Controller
 
         return view('admin.reports.view_report', [
             'title' => 'Звіт - кількість тварин за породою',
-            'form' => 'admin.reports.partials.forms.animals_amount_without_dates',
-            'formRouteDownload' => 'admin.reports.animals-amount-breeds.download',
+            'form' => 'admin.reports.partials.forms.no_form',
+            'reportName' => 'animalsAmountBySpecies',
             'viewDocument' => $pdfDataProvider->data(),
         ]);
     }
 
-    public function animalsAmountByBreedsDownload(PdfPrintService $generatorService)
+    protected function preview(Request $request, $view)
     {
-        $pdfDataProvider = new ReportAnimalsByBreedsPrintDataProvider;
-
-        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'amount_of_animals_by_breeds_report.pdf');
+        if ($request->isMethod('post')) {
+            $this->reportsManager->init($request);
+            return $this->reportsManager->preview();
+        }
+        return $view;
     }
 
-    public function registeredAnimalsOwners()
+    public function download(Request $request)
     {
-        return view('admin.reports.view_report', [
-            'title' => 'Звіт - реєстрація власників тварин',
-            'formRouteDownload' => 'admin.reports.registered-animals-owners.download',
-            'formRoute' => 'admin.reports.registered-animals-owners.generate',
-        ]);
-    }
-
-    public function registeredAnimalsOwnersGenerate(Request $request)
-    {
-        $dateFrom = $this->dateConvert($request->get('dateFrom'));
-        $dateTo = $this->dateConvert($request->get('dateTo'));
-
-        $pdfDataProvider = new ReportRegisteredAnimalsOwnersPrintDataProvider($dateFrom, $dateTo);
-
-
-        return view('admin.reports.view_report', [
-            'title' => 'Звіт - реєстрація власників тварин',
-            'formRoute' => 'admin.reports.registered-animals-owners.generate',
-            'formRouteDownload' => 'admin.reports.registered-animals-owners.download',
-            'viewDocument' => $pdfDataProvider->data(),
-            'dateFrom' => $this->dateConvertForPicker($dateFrom),
-            'dateTo' => $this->dateConvertForPicker($dateTo),
-        ]);
-    }
-
-    public function registeredAnimalsOwnersDownload(Request $request, PdfPrintService $generatorService)
-    {
-        $dateFrom = $this->dateConvert($request->get('dateFrom'));
-        $dateTo = $this->dateConvert($request->get('dateTo'));
-
-        $pdfDataProvider = new ReportRegisteredAnimalsOwnersPrintDataProvider($dateFrom, $dateTo);
-
-        return $generatorService->generateAndDownload($pdfDataProvider, 'pdf.tables_with_sign_place_pdf', 'registered_animals_owners_report.pdf');
-    }
-
-    private function dateConvert($date)
-    {
-        return \Carbon\Carbon::createFromFormat('d/m/Y', $date)->toDateString();
-    }
-
-    private function dateConvertForPicker($date)
-    {
-        return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
+        $this->reportsManager->init($request);
+        return $this->reportsManager->download();
     }
 }
