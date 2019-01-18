@@ -11,6 +11,6 @@
     <button type="submit" class="ml-auto mt-6 btn confirm btn-primary">Згенерувати звіт</button>
     @if(isset($ownerId))
         <a href="{{route('admin.reports.report.download', ['reportName' => $reportName,'owner_id' => $ownerId, 'format' => 'pdf'])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт PDF</a>
-        <a href="{{route('admin.reports.report.download', ['reportName' => $reportName,'owner_id' => $ownerId, 'format' => 'xls'])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт XLS</a>
+        <a href="{{route('admin.reports.report.download', ['reportName' => $reportName,'owner_id' => $ownerId, 'format' => 'xlsx'])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт XLSX</a>
     @endif
 </form>

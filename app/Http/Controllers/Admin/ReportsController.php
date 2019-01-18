@@ -67,7 +67,7 @@ class ReportsController extends Controller
         return view('admin.reports.view_report', [
             'title' => 'Звіт - кількість тварин за породою',
             'form' => 'admin.reports.partials.forms.no_form',
-            'reportName' => 'animalsAmountBySpecies',
+            'reportName' => 'animalsAmountByBreeds',
             'viewDocument' => $pdfDataProvider->data(),
         ]);
     }
@@ -78,7 +78,6 @@ class ReportsController extends Controller
             'title' => 'Довідка за тваринами, що зареєстровані на певного власника',
             'form' => 'admin.reports.partials.forms.report_select_owner_form',
             'reportName' => 'registeredAnimalsOfOwner',
-//            'viewDocument' => $pdfDataProvider->data(),
         ]));
     }
 

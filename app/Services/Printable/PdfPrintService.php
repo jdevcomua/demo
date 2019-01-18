@@ -19,7 +19,7 @@ class PdfPrintService implements PrintServiceInterface
     public function init(PrintDataProviderInterface $dataProvider, string $view, string $pdfFileName)
     {
         $this->pdf = PDF::loadView($view, ['document' => $dataProvider->data()]);
-        $this->pdfFileName = $pdfFileName;
+        $this->pdfFileName = $pdfFileName . '.pdf';
         $this->view = $view;
     }
 
@@ -27,10 +27,5 @@ class PdfPrintService implements PrintServiceInterface
     public function download()
     {
         return $this->pdf->download($this->pdfFileName);
-    }
-
-    public function preview()
-    {
-        return \View::get($this->view);
     }
 }

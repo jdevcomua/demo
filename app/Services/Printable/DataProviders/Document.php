@@ -66,4 +66,10 @@ class Document
         $this->signText = $text;
         return $this;
     }
+
+    public function titleNoHtml()
+    {
+        if ($this->title === null) return null;
+        return preg_replace('/<[^>]*>/', '', $this->title);
+    }
 }

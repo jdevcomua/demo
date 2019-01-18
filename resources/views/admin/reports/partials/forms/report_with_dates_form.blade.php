@@ -21,6 +21,6 @@
     <button type="submit" class="ml-auto mt-6 btn confirm btn-primary">Згенерувати звіт</button>
     @if(isset($dateFrom) && isset($dateTo))
     <a href="{{route('admin.reports.report.download', ['reportName' => $reportName, 'dateFrom' => $dateFrom, 'dateTo' => $dateTo, 'format' => 'pdf'])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт PDF</a>
-    <a href="{{route('admin.reports.report.download', ['reportName' => $reportName, 'dateFrom' => $dateFrom, 'dateTo' => $dateTo, 'format' => 'xls'])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт XLS</a>
+    <a href="{{route('admin.reports.report.download', ['reportName' => $reportName, 'dateFrom' => $dateFrom, 'dateTo' => $dateTo, 'format' => 'xlsx'])}}" class="ml-auto mt-6 btn confirm btn-success">Завантажити звіт XLSX</a>
     @endif
 </form>

@@ -86,13 +86,15 @@ class ReportsManager
     {
         $dateFrom = $this->dateConvert($this->request->get('dateFrom'));
         $dateTo = $this->dateConvert($this->request->get('dateTo'));
+        $format = $this->request->get('format');
 
 
         $dataProviderClass = $this->getDataProviderClass();
         $this->dataProvider = new $dataProviderClass($dateFrom, $dateTo);
 
-        $printService = new PdfPrintService();
-        $printService->init($this->dataProvider, 'print.tables_with_sign_place_pdf', $this->reportName . '.pdf');
+        $printService =  $format !== 'xlsx' ? new PdfPrintService() : new ExcelPrintService();
+
+        $printService->init($this->dataProvider, 'print.tables_with_sign_place_pdf', $this->reportName);
         return $printService->download();
     }
 
@@ -100,9 +102,10 @@ class ReportsManager
     {
         $dataProviderClass = $this->getDataProviderClass();
         $this->dataProvider = new $dataProviderClass();
+        $format = $this->request->get('format');
 
-        $printService = new PdfPrintService();
-        $printService->init($this->dataProvider, 'print.tables_with_sign_place_pdf', $this->reportName . '.pdf');
+        $printService =  $format !== 'xlsx' ? new PdfPrintService() : new ExcelPrintService();
+        $printService->init($this->dataProvider, 'print.tables_with_sign_place_pdf', $this->reportName);
 
         return $printService->download();
     }
@@ -112,9 +115,10 @@ class ReportsManager
         $owner_id = $this->request->get('owner_id');
         $dataProviderClass = $this->getDataProviderClass();
         $this->dataProvider = new $dataProviderClass($owner_id);
+        $format = $this->request->get('format');
 
-        $printService = new PdfPrintService();
-        $printService->init($this->dataProvider, 'print.tables_with_sign_place_pdf', $this->reportName . '.pdf');
+        $printService =  $format !== 'xlsx' ? new PdfPrintService() : new ExcelPrintService();
+        $printService->init($this->dataProvider, 'print.tables_with_sign_place_pdf', $this->reportName);
 
         return $printService->download();
     }
