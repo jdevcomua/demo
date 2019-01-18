@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Notifications\Notifiable;
 
 class Handler extends ExceptionHandler
 {
@@ -29,11 +30,16 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * @param  \Exception $exception
      * @return void
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
+        if ($this->shouldReport($exception) && config('app.env') !== 'local') {
+            $this->slack()->notify(new \App\Notifications\Exception($exception));
+        }
+
         parent::report($exception);
     }
 
@@ -47,5 +53,16 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         return parent::render($request, $exception);
+    }
+
+    private function slack()
+    {
+        return new class {
+            use Notifiable;
+
+            public function routeNotificationForSlack() {
+                return config('logging.channels.slack.url');
+            }
+        };
     }
 }
