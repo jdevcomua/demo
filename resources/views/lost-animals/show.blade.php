@@ -26,19 +26,24 @@
                 <span class="content">{{ $animal->species->name }}</span>
             </div>
 
+            @if($animal->color)
             <div class="pet-info-block">
                 <span class="title">Масть</span>
                 <span class="content">{{ $animal->color->name }}</span>
             </div>
+            @endif
 
             <div class="pet-info-block">
                 <span class="title">Знайдено</span>
                 <span class="content">{{ \App\Helpers\Date::getlocalizedDate($animal->created_at) }}</span>
             </div>
+
+            @if($animal->breed)
             <div class="pet-info-block">
                 <span class="title">Порода</span>
                 <span class="content">{{ $animal->breed->name }}</span>
             </div>
+            @endif
 
             <div class="pet-info-block w-100">
                 <span class="title">Адреса де знайшли тваринку</span>
