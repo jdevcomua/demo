@@ -17,7 +17,7 @@ class KyivIdUserResolver
     public static function resolve($user):? User
     {
         if (!$user) return null;
-        if (!$user->inn && !$user->passport) return null;
+        if (!$user->inn || !$user->passport) return null;
 //        if (!$user->phones) return null;
 
         //Searching by external kievID

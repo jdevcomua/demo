@@ -7,6 +7,7 @@ use App\Models\Log;
 use Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Two\InvalidStateException;
 use Socialite;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -37,6 +38,8 @@ class AuthController extends Controller
             $user = KyivIdUserResolver::resolve(
                 Socialite::driver('kyivID')->user()
             );
+        } catch (InvalidStateException $e) {
+            return redirect()->route('login');
         } catch (\Throwable $e) {
             \RhaLogger::addError($e);
             throw $e;
