@@ -30,19 +30,21 @@
                             <span class="title">{{ $lostAnimal->animal->species->name }}</span>
                             <span class="content">{{ $lostAnimal->animal->nickname }}</span>
                         </div>
-                        <div class="pet-info-block">
-                            <span class="title">Адреса проживання</span>
-                            <span class="content">{{ ($lostAnimal->animal->user->living_address !== null) ? $lostAnimal->animal->user->living_address->full_address : 'Не заповнено' }}</span>
-                        </div>
-
+                        @if($lostAnimal->animal->user !== null)
+                            <div class="pet-info-block">
+                                <span class="title">Адреса проживання</span>
+                                <span class="content">{{ ($lostAnimal->animal->user->living_address !== null) ? $lostAnimal->animal->user->living_address->full_address : 'Не заповнено' }}</span>
+                            </div>
+                        @endif
                         <div class="pet-info-block">
                             <span class="title">Загубилася</span>
                             <span class="content">{{ \App\Helpers\Date::getlocalizedDate($lostAnimal->animal->lost->lost_at) }}</span>
                         </div>
-                        <div class="pet-info-block">
-                            <button class="btn btn-found contact" data-contact='{{$lostAnimal->animal->user->contact_info}}'>Знайшов</button>
-                        </div>
-
+                        @if($lostAnimal->animal->user !== null)
+                            <div class="pet-info-block">
+                                <button class="btn btn-found contact" data-contact='{{$lostAnimal->animal->user->contact_info}}'>Знайшов</button>
+                            </div>
+                        @endif
                     </div>
                     <div class="dropdown more-button dropleft">
                         <div class="more-icon" data-toggle="dropdown"></div>
