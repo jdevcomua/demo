@@ -229,14 +229,11 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 
         if (array_get($user, 'data.profile.gender.gender')) {
             switch (array_get($user, 'data.profile.gender.gender')) {
-                case 'MALE':
-                    $data['gender'] = \App\User::GENDER_MALE;
-                    break;
                 case 'FEMALE':
                     $data['gender'] = \App\User::GENDER_FEMALE;
                     break;
                 default:
-                    //TODO log this, something bad happened
+                    $data['gender'] = \App\User::GENDER_MALE;
             }
         }
 

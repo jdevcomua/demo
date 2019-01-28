@@ -187,11 +187,18 @@ class AnimalPrintDataProvider extends CommonLogicPrintDataProvider implements Pr
 
     private function address()
     {
-        $address = $this->animal->user->living_address ?? $this->animal->user->registration_address;
-        if ($address === null) {
+        $address = null;
+        $user = $this->animal->user;
+
+        if ($user) {
+            $address = $user->living_address ?? $user->registration_address;
+        }
+
+        if ($address) {
+            return $address->city . ', ' . $address->street . ', будинок ' . $address->building . $address->apartment;
+        } else {
             return '-';
         }
-        return $address->city . ', ' . $address->street . ', будинок ' . $address->building . $address->apartment;
     }
 
 }
