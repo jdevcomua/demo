@@ -50,6 +50,7 @@ class ExcelPrintService implements PrintServiceInterface
                 }
                 $this->makeCellsMerge($sheet);
                 $this->formatCells($sheet);
+                $this->makeHeadersBold($sheet);
             });
         });
     }
@@ -82,6 +83,20 @@ class ExcelPrintService implements PrintServiceInterface
                 $this->alignLeft($sheet, $rangeString);
                 $this->setBorders($sheet, $rangeString);
             }
+        }
+    }
+
+    private function makeHeadersBold(&$sheet)
+    {
+        foreach ($this->tables as $table) {
+            $tableStartRange = $table->getExcelStartRange();
+            $startCell = $tableStartRange['letterFrom'];
+            $endCell = $tableStartRange['letterTo'];
+            $shiftFromTop = $tableStartRange['index'];
+
+            $cellsRange = $startCell . $shiftFromTop . ':' . $endCell . $shiftFromTop;
+
+            $sheet->getStyle($cellsRange)->getFont()->setBold( true );
         }
     }
 
