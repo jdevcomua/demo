@@ -208,10 +208,12 @@ class AdministratingController extends Controller
     {
         $users = $filter->process($request)->get();
 
-        $dataProvider = new FilteredUsers($users);
+        if (count($users)) {
+            $dataProvider = new FilteredUsers($users);
 
-        $printService = new ExcelPrintService();
-        $printService->init($dataProvider, 'print.tables_with_sign_place_pdf', 'Користувачі');
-        $printService->download();
+            $printService = new ExcelPrintService();
+            $printService->init($dataProvider, 'print.tables_with_sign_place_pdf', 'Користувачі');
+            $printService->download();
+        }
     }
 }

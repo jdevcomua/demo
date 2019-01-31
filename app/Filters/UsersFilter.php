@@ -108,7 +108,7 @@ class UsersFilter
         return false;
     }
 
-    private function convertToDateTime(string $dateString): string
+    private function convertToDateTime(string $dateString): ?string
     {
         if ($dateString === null || $dateString === '-') return null;
 

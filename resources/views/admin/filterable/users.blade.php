@@ -69,7 +69,9 @@
                 </div>
                 <div class="panel-footer text-right">
                     <button type="submit" class="btn btn-primary ph25">Результати</button>
-                    <button type="submit" id="download" class="btn btn-success ph25">Завантажити в XLSX</button>
+                    @if(count($users))
+                        <button type="submit" id="download" class="btn btn-success ph25">Завантажити в XLSX</button>
+                    @endif
                 </div>
             </form>
         </div>
