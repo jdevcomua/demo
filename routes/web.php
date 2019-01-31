@@ -71,6 +71,8 @@ Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () 
             ->name('animals.search');
         Route::post('/animal/request', 'AjaxController@requestAnimal')
             ->name('animals.request');
+        Route::get('/organizations', 'AjaxController@getOrganizations')
+            ->name('getOrganizations');
     });
 
 });

@@ -6,6 +6,7 @@ use App\Events\AnimalBadgeRequestSent;
 use App\Helpers\Date;
 use App\Models\Animal;
 use App\Models\AnimalsRequest;
+use App\Models\Organization;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -66,6 +67,20 @@ class AjaxController extends Controller
         }, $users, array_keys($users));
 
         return response(json_encode($users));
+    }
+
+    public function getOrganizations()
+    {
+        $organizations = Organization::all()->pluck('name', 'id')->toArray();
+
+        $organizations = array_map(function ($value, $key) {
+            return [
+                'name' => $value,
+                'value' => $key
+            ];
+        }, $organizations, array_keys($organizations));
+
+        return response(json_encode($organizations));
     }
 
     public function badgeSearch(Request $request)

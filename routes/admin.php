@@ -320,6 +320,10 @@ Route::group([
             ->name('index');
         Route::get('data', 'Admin\AdministratingController@userData')
             ->name('data');
+        Route::any('/filter', 'Admin\AdministratingController@usersFilter')
+            ->name('filter.index');
+        Route::post('/filter/download', 'Admin\AdministratingController@usersFilterDownload')
+            ->name('filter.download');
     });
 
     Route::group([

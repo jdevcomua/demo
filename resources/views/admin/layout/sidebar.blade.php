@@ -25,6 +25,15 @@
             </li>
             @endpermission
 
+            @permission('view-users')
+            <li @if($curRoute == 'admin.administrating.users.filter.index') class="active" @endif>
+                <a href="{{ route('admin.administrating.users.filter.index') }}">
+                    <span class="fa fa-users"></span>
+                    <span class="sidebar-title">Фільтр - Користувачі</span>
+                </a>
+            </li>
+            @endpermission
+
             <li {!! (strpos($curRoute, '.db.archive.animals') !== false) ? ' class="active" ' : '' !!}>
                 <a href="{{route('admin.db.archive.animals.index')}}">
                     <span class="fa fa-archive"></span>
