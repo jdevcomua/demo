@@ -1,16 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
-
 Route::get('/b', 'SiteController@badgeData');
 
-Route::get('/', 'SiteController')->name('index');
-
-Route::view('/about', 'about')->name('about');
+Route::view('/', 'about')->name('index');
 Route::get('/faq', 'SiteController@faq')->name('faq');
 
 Route::view('/bad-login', 'errors/bad-login')->name('bad-login');
-
 Route::view('/banned', 'errors/banned')->name('banned');
 
 // Authentication Routes...
@@ -18,7 +13,6 @@ Route::get('login', 'AuthController@login')->name('login');
 Route::get('auth/attempt', 'AuthController@loginAttempt');
 Route::get('auth/callback', 'AuthController@loginCallback');
 Route::post('logout', 'AuthController@logout')->name('logout');
-
 
 Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () {
 
@@ -45,8 +39,6 @@ Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () 
         Route::post('/profile', 'ProfileController@update')->name('profile.update');
 
     });
-
-
 
     Route::group([
         'prefix' => '/ajax',

@@ -3,7 +3,7 @@
 @section('title', 'Про проект')
 
 @section('content')
-    <div class="cols-block">
+    <div class="cols-block cols-content-only">
         <div class="cols-block-header">
             <div class="block-title">ПРО ПРОЕКТ</div>
             <div class="block-sub-title"></div>
