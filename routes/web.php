@@ -2,6 +2,7 @@
 
 Route::get('/b', 'SiteController@badgeData');
 
+Route::redirect('/about', '/');
 Route::view('/', 'about')->name('index');
 Route::get('/faq', 'SiteController@faq')->name('faq');
 
