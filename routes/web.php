@@ -56,23 +56,19 @@ Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () 
             ->name('getBreeds');
         Route::get('/species/{species}/colors', 'AjaxController@getColors')
             ->name('getColors');
-    });
 
-    Route::group([
-        'prefix' => '/ajax',
-        'as' => 'ajax.',
-        'middleware' => ['auth'],
-    ], function () {
-        Route::get('/species/{species}/furs', 'AjaxController@getFurs')
-            ->name('getFurs');
-        Route::get('/users', 'AjaxController@getUsers')
-            ->name('getUsers');
-        Route::post('/search', 'AjaxController@badgeSearch')
-            ->name('animals.search');
-        Route::post('/animal/request', 'AjaxController@requestAnimal')
-            ->name('animals.request');
-        Route::get('/organizations', 'AjaxController@getOrganizations')
-            ->name('getOrganizations');
+        Route::group(['middleware' => ['auth']], function () {
+            Route::get('/species/{species}/furs', 'AjaxController@getFurs')
+                ->name('getFurs');
+            Route::get('/users', 'AjaxController@getUsers')
+                ->name('getUsers');
+            Route::post('/search', 'AjaxController@badgeSearch')
+                ->name('animals.search');
+            Route::post('/animal/request', 'AjaxController@requestAnimal')
+                ->name('animals.request');
+            Route::get('/organizations', 'AjaxController@getOrganizations')
+                ->name('getOrganizations');
+        });
     });
 
 });
