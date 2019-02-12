@@ -25,7 +25,8 @@ class LostRequestsController extends Controller
 
         $query = $model->newQuery()
             ->leftJoin('animals', 'animals.id', '=', 'lost_animals.animal_id')
-            ->groupBy('id');
+            ->groupBy('id')
+            ->orderBy('created_at', 'desc');
 
         $aliases = [
             'nickname' => '`animals`.nickname',
@@ -66,7 +67,8 @@ class LostRequestsController extends Controller
             ->leftJoin('species', 'species.id', '=', 'found_animals.species_id')
             ->leftJoin('breeds', 'breeds.id', '=', 'found_animals.breed_id')
             ->leftJoin('colors', 'colors.id', '=', 'found_animals.color_id')
-            ->groupBy('id');
+            ->groupBy('id')
+            ->orderBy('created_at', 'desc');
 
         $aliases = [
             'breed' => '`breeds`.name',
