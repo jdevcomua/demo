@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IFoundAnimal;
 use App\Models\FoundAnimal;
 use App\Models\LostAnimal;
 use App\Services\FilesService;
@@ -36,58 +37,10 @@ class AnimalsLostController extends Controller
         return view('lost-animals.found', compact('foundAnimals'));
     }
 
-    public function iFoundAnimal(Request $request)
+    public function iFoundAnimal(IFoundAnimal $request)
     {
         $requestData = $request->all();
-
-        $rules = [
-            'species' => 'required|integer|exists:species,id',
-            'breed' => 'nullable|exists:breeds,id',
-            'color' => 'nullable|exists:colors,id',
-            'found_address' => 'required|string|max:2000',
-            'contact_name' => 'required|string|max:2000',
-            'contact_phone' => 'required|string|max:2000',
-            'contact_email' => 'required|email|string|max:2000',
-            'badge' => 'nullable|min:5|max:8',
-            'documents' => 'nullable|array|max:2',
-            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:2048',
-        ];
-
-        $messages = [
-            'species.required' => 'Вид є обов\'язковим полем',
-            'found_address.required' => 'Адреса де знайшли тварину є обов\'язковим полем',
-            'contact_name.required' => 'Ваше ім\'я є обов\'язковим полем',
-            'contact_phone.required' => 'Ваш телефон є обов\'язковим полем',
-            'contact_email.email' => 'Ваш email повинен бути валідним',
-            'contact_email.required' => 'Ваш email є обов\'язковим полем',
-            'badge.min' => 'Номер жетону повинен складатися мінімум з 5 символів',
-            'badge.max' => 'Номер жетону повинен складатися максимум з 8 символів',
-            'documents.max' => 'Максимальна кількість фотографій не повинна перевищувати 9 файлів',
-            'documents.*.max' => 'Фото повинні бути не більше 2Mb',
-            'documents.*.mimes' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png',
-        ];
-
-        $validator = Validator::make($requestData, $rules, $messages);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $dataToSave = [
-            'species_id' => $requestData['species'],
-            'breed_id' => $requestData['breed'],
-            'color_id' => $requestData['color'],
-            'found_address' => $requestData['found_address'],
-            'contact_name' => $requestData['contact_name'],
-            'contact_phone' => $requestData['contact_phone'],
-            'contact_email' => $requestData['contact_email']
-        ];
-
-        if(isset($requestData['badge'])) {
-            $dataToSave['badge'] = $requestData['badge'];
-        }
+        $dataToSave = $request->validated();
 
         $foundAnimal = FoundAnimal::create($dataToSave);
 

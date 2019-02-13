@@ -12,6 +12,7 @@ require('./parts/selectize');
 require('./parts/dropzone');
 require('./parts/validation');
 require('./parts/animal-search');
+require('./parts/ajax-validation');
 
 $.ajaxSetup({
     headers: {
@@ -36,5 +37,30 @@ $('#i-found-animal').on('click', function (e) {
 });
 
 $('#found-badge-btn').on('click', function () {
-    $('#form-modal #badge').parent().toggle();
+    let inputIdsToOmit = ['badge', 'contact_name', 'contact_phone', 'contact_email'];
+
+    let $form = $(this).parents().eq(1);
+    let $inputContainers = $form.find('.form-group');
+    let $onlyBadgeHidden = $('#only_badge_hidden');
+
+    if ($onlyBadgeHidden.attr('value') === "1") {
+        $onlyBadgeHidden.attr('value', "0");
+    } else {
+        $onlyBadgeHidden.attr('value', "1");
+    }
+    $inputContainers.each(function () {
+        $currentInput = $(this).find('input');
+        if (!$currentInput.length || ($currentInput.length && inputIdsToOmit.indexOf($currentInput.attr('id')) === -1)) {
+            $(this).toggle();
+        }
+    });
+});
+
+$('.one-click').on('click', function(e) {
+    $(this).attr('disabled', '');
+});
+
+window.setValidationWithCallBack('#form-modal-found-animal', function () {
+    $('#foundAnimalModal').modal('hide');
+    $('#foundAnimalSuccess').modal('show');
 });
