@@ -131,14 +131,24 @@
                                     </div>
                                 </div>
                                 @permission('verify-animal')
-                                <div class="form-group">
-                                    <label for="badge" class="col-lg-3 control-label">Номер жетону</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" id="badge" name="badge" class="form-control"
-                                               value="{{ old('badge') }}" required>
-                                        <span class="help-block mt5">Номер повинен бути від 5 до 8 символів та складатися тільки з кириличних літер або цифр</span>
+                                    <div class="form-group select">
+                                        <label for="device_type" class="col-lg-3 control-label">Вид засобу ідентифікації:</label>
+                                        <div class="col-lg-8">
+                                            <select name="device_type" id="device_type" required>
+                                                @foreach($animal->identifyingDevicesArray() as $k => $v)
+                                                    @if($animal->$k === null)
+                                                        <option value="{{$k}}">{{$v}}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="device_number" class="col-lg-3 control-label">Номер засобу ідентифікації:</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" id="device_number" name="device_number" class="form-control">
+                                        </div>
+                                    </div>
                                 @endpermission
                                 <div class="form-group">
                                     <label class="col-lg-3 control-label" for="comment">Коментарі (Особливі прикмети)</label>
@@ -198,7 +208,11 @@
 
             $('.form-group.select-gen select').selectize();
 
-
+            $('#device_type').selectize({
+                maxItems: 1,
+                persist: false,
+                create: false,
+            });
         });
     </script>
 @endsection
