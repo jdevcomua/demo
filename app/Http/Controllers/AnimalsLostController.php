@@ -39,12 +39,11 @@ class AnimalsLostController extends Controller
 
     public function iFoundAnimal(IFoundAnimal $request)
     {
-        $requestData = $request->all();
         $dataToSave = $request->validated();
 
         $foundAnimal = FoundAnimal::create($dataToSave);
 
-        $this->filesService->handleFoundAnimalFilesUpload($foundAnimal, $requestData);
+        $this->filesService->handleFoundAnimalFilesUpload($foundAnimal, $dataToSave);
 
         return response()->json([
             'status' => 'ok',
