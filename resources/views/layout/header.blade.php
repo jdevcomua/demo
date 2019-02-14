@@ -129,7 +129,7 @@
                                             <span class="mobile">Виберіть файл</span>
                                         </label>
                                         <input type='file' id="manual-upload-modal1" name="documents[]" multiple />
-                                        <div class="deletable files-list"></div>
+                                        <div class="files-list"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -151,8 +151,6 @@
                                     <input type="text" class="form-control" id="contact_email" name="contact_email" >
                                 </div>
                                 <a href="" id="i-found-animal-submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax" style="width: 350px;">Відправити</a>
-                                {{--<button type="submit" class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Відправити</button>--}}
-
                             </form>
                         </div>
                     </div>

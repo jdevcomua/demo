@@ -5,6 +5,34 @@ window.setValidationWithCallBack = function (formSelector, callBackOnSuccess) {
         var form = $(this).closest('form');
         var ajaxData = new FormData(form.get(0));
 
+        //todo: needs refactoring, replacement of hardcoded input name
+        let ajaxDataFiles = ajaxData.getAll('documents[]');
+        let ajaxDataFileToAdd = [];
+
+        let fileNamesToDelete = fileNamesToDeleteFromFormData(form, 'documents[]');
+
+        ajaxData.delete('documents[]');
+
+        if (fileNamesToDelete.length) {
+            for (let i = 0; i < ajaxDataFiles.length; i++) {
+                let name = ajaxDataFiles[i].name;
+                if (fileNamesToDelete.indexOf(name) === -1) {
+                    ajaxDataFileToAdd.push(ajaxDataFiles[i]);
+                }
+            }
+            if (ajaxDataFileToAdd.length) {
+                for (let i = 0; i < ajaxDataFileToAdd.length; i++) {
+                    ajaxData.append('documents[]', ajaxDataFileToAdd[i]);
+                }
+            }
+        } else {
+            if (fileNamesToDelete === -1) {
+                for (let i = 0; i < ajaxDataFiles.length; i++) {
+                    ajaxData.append('documents[]', ajaxDataFiles[i]);
+                }
+            }
+        }
+
         jQuery.ajax({
             url: form.attr('action'),
             type: 'POST',
@@ -38,3 +66,38 @@ function fillErrors(form, errors) {
 $('.validation-error').on('click', function () {
     $(this).addClass('hidden');
 });
+
+function fileNamesToDeleteFromFormData($form, inputName) {
+    let $filesListItems = $form.find('[name="' + inputName + '"]').siblings('.files-list').children();
+    let fileListItems = [];
+
+    let filesFromInput = $form.find('input[name="' + inputName + '"]').prop('files');
+    let filesFromInputNames = [];
+    let fileNamesToDelete = [];
+
+
+
+    if ($filesListItems.length) {
+        $filesListItems.each(function () {
+            fileListItems.push($(this).find('.file-name').text() + $(this).find('.file-ext').text())
+        });
+
+
+        for(let i = 0; i < filesFromInput.length; i++) {
+            filesFromInputNames.push(filesFromInput[i].name);
+        }
+
+        for (let i = 0; i < filesFromInputNames.length; i++) {
+            if (fileListItems.indexOf(filesFromInputNames[i]) === -1) {
+                fileNamesToDelete.push(filesFromInputNames[i]);
+            }
+        }
+
+        if (!fileNamesToDelete.length) {
+            return -1;
+        }
+
+        return fileNamesToDelete;
+    }
+    return [];
+}
