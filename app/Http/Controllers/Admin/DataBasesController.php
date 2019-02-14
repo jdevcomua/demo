@@ -449,7 +449,7 @@ class DataBasesController extends Controller
     public function animalStore(Request $request)
     {
         $data = $request->only(['user_id', 'nickname', 'species', 'gender', 'breed', 'color', 'fur', 'user',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number']);
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number', 'tallness']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -478,6 +478,7 @@ class DataBasesController extends Controller
             'clip' => 'nullable|unique:animals',
             'chip' => 'nullable|unique:animals|size:15',
             'badge' => 'nullable|unique:animals|between:5,8',
+            'tallness' => 'nullable|integer|min:10|max:100',
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
         ], [
@@ -501,7 +502,9 @@ class DataBasesController extends Controller
             'badge.unique' => 'Номер жетону вже використовується',
             'clip.unique' => 'Кліпса вже використовується',
             'chip.unique' => 'Чіп вже використовується',
-            'chip.size' => 'Номер чіпу повинен складатися з :size символів!'
+            'chip.size' => 'Номер чіпу повинен складатися з :size символів!',
+            'tallness.min' => 'Зріст має бути більше :min см',
+            'tallness.max' => 'Зріст має бути менше :max см'
         ]);
         if ($validator->fails()) {
             return redirect()
@@ -590,7 +593,7 @@ class DataBasesController extends Controller
             ->findOrFail($id);
 
         $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur', 'user',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'badge']);
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'badge', 'tallness']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -613,6 +616,7 @@ class DataBasesController extends Controller
                 new Badge()
             ],
             'comment' => 'nullable|string|max:2000',
+            'tallness' => 'nullable|integer|min:10|max:100',
             'images' => 'nullable|array',
             'images.*' => 'nullable|image|max:2048',
             'documents' => 'nullable|array',
@@ -635,7 +639,9 @@ class DataBasesController extends Controller
             'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
             'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
-            'badge.unique' => 'Номер жетону вже використовується'
+            'badge.unique' => 'Номер жетону вже використовується',
+            'tallness.min' => 'Зріст має бути більше :min см',
+            'tallness.max' => 'Зріст має бути менше :max см'
         ]);
 
         if ($validator->fails()) {

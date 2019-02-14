@@ -51,6 +51,10 @@
                 <span class="content">{{ $animal->fur->name }}</span>
             </div>
             <div class="pet-info-block">
+                <span class="title">Зріст</span>
+                <span class="content">{{ $animal->tallness !== null ?  $animal->tallness . ' см' : 'Не вказано'}}</span>
+            </div>
+            <div class="pet-info-block">
                 <span class="title">Дата народження</span>
                 <span class="content">{{ \App\Helpers\Date::getlocalizedDate($animal->birthday) }}</span>
             </div>

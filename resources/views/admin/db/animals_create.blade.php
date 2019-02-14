@@ -113,6 +113,13 @@
                                         <select name="fur" id="fur" required data-value="{{ old('fur') }}"></select>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="tallness" class="col-lg-3 control-label">Зріст</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="tallness" name="tallness" class="form-control" value="{{ old('tallness') }}">
+                                        <span class="help-block mt5">Зріст вказується в сантиметрах</span>
+                                    </div>
+                                </div>
                                 <div class="form-group datepicker">
                                     <label for="birthday" class="col-lg-3 control-label">Дата народження</label>
                                     <div class="col-lg-8 ">
