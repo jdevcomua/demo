@@ -12,7 +12,7 @@
     <div class="animal-show">
         <div class="animal-images">
             <div class="animal-image main"
-                 style="background-image: url('{{ count($animal->imagesArray) ? '/' . $animal->imagesArray[0] : '/img/no_photo.png' }}')">
+                 style="background-image: url('{{ isset($animal->imagesArray[0]) ? '/' . $animal->imagesArray[0] : '/img/no_photo.png' }}')">
             </div>
             @for($i = 1; $i < 9; $i++)
                 @if(array_key_exists($i, $animal->imagesArray))

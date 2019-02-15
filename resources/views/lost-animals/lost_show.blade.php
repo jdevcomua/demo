@@ -10,7 +10,7 @@
     <div class="animal-show">
         <div class="animal-images">
             <div class="animal-image main"
-                 @if(array_key_exists(1, $animal->imagesArray)) style="background-image: url('/{{ $animal->imagesArray[1] }}')" @endif>
+                 style="background-image: url('{{ isset($animal->imagesArray[1]) ? '/' . $animal->imagesArray[1] : '/img/no_photo.png' }}')">
             </div>
             @for($i = 2; $i < 10; $i++)
                 @if(array_key_exists($i, $animal->imagesArray))
