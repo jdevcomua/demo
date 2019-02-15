@@ -159,9 +159,9 @@
         </div>
     </div>
 
-    <div class="modal fade" id="foundAnimalSuccess" tabindex="-2" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal fade" id="foundAnimalSuccess" tabindex="-2" role="dialog" aria-labelledby="foundAnimalSuccessModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content" id="modal-content">
+            <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
