@@ -12,7 +12,7 @@
     <div class="animal-show">
         <div class="animal-images">
             <div class="animal-image main"
-                 @if(array_key_exists(0, $animal->imagesArray)) style="background-image: url('/{{ $animal->imagesArray[0] }}')" @endif>
+                 style="background-image: url('{{ count($animal->imagesArray) ? '/' . $animal->imagesArray[0] : '/img/no_photo.png' }}')">
             </div>
             @for($i = 1; $i < 9; $i++)
                 @if(array_key_exists($i, $animal->imagesArray))
@@ -23,13 +23,13 @@
         <div class="pet-info">
             <div class="pet-info-block">
                 <span class="title">Вид</span>
-                <span class="content">{{ $animal->species->name }}</span>
+                <span class="content">{{ $animal->species->name ?? 'Не заповнено' }}</span>
             </div>
 
             @if($animal->color)
             <div class="pet-info-block">
                 <span class="title">Масть</span>
-                <span class="content">{{ $animal->color->name }}</span>
+                <span class="content">{{ $animal->color->name ?? 'Не заповнено'}}</span>
             </div>
             @endif
 
@@ -41,13 +41,13 @@
             @if($animal->breed)
             <div class="pet-info-block">
                 <span class="title">Порода</span>
-                <span class="content">{{ $animal->breed->name }}</span>
+                <span class="content">{{ $animal->breed->name ?? 'Не заповнено'}}</span>
             </div>
             @endif
 
             <div class="pet-info-block w-100">
                 <span class="title">Адреса де знайшли тваринку</span>
-                <span class="content">{{ $animal->found_address }}</span>
+                <span class="content">{{ $animal->found_address ?? 'Не заповнено'}}</span>
             </div>
 
             <div class="pet-info-block comment mt-lg-5">
@@ -57,17 +57,17 @@
 
             <div class="pet-info-block">
                 <span class="title">Ім'я</span>
-                <span class="content">{{ $animal->contact_name }}</span>
+                <span class="content">{{ $animal->contact_name ?? 'Не заповнено'}}</span>
             </div>
 
             <div class="pet-info-block">
                 <span class="title">Телефон</span>
-                <span class="content">{{ $animal->contact_phone }}</span>
+                <span class="content">{{ $animal->contact_phone ?? 'Не заповнено'}}</span>
             </div>
 
             <div class="pet-info-block w-100">
                 <span class="title">Email</span>
-                <span class="content">{{ $animal->contact_email }}</span>
+                <span class="content">{{ $animal->contact_email ?? 'Не заповнено'}}</span>
             </div>
 
         </div>

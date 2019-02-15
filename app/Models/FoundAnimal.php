@@ -38,10 +38,11 @@ class FoundAnimal extends Model
 
     public function getContactInfoAttribute(): String
     {
+        $contactEmail = $this->contact_email ?? 'Не заповнено';
         $contactInfo = [
             'contact_name' => $this->contact_name,
             'contact_phone' => $this->contact_phone,
-            'contact_email' => $this->contact_email
+            'contact_email' => $contactEmail
         ];
 
         return json_encode($contactInfo);
