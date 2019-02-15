@@ -92,7 +92,7 @@ class AjaxController extends Controller
         if (!$animal) {
             return response()->json([
                 'message' => 'not found'
-            ],400);
+            ],404);
         }
         $animal->breed_text = $animal->breed->name;
         $animal->color_text = $animal->color->name;

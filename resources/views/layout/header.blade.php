@@ -74,7 +74,7 @@
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="badge">Номер жетону</label>
                                     <p>Додайте номер жетону, якщо він є у тварини</p>
-                                    <input type="text" class="form-control" id="badge" name="badge">
+                                    <input type="text" class="form-control" id="found-badge" name="badge">
                                 </div>
                                 <p><a href="#" style="text-decoration: underline; color: inherit" id="found-badge-btn">Знайдено тільки жетон тварини</a></p>
 
