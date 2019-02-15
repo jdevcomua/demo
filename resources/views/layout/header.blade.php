@@ -186,4 +186,8 @@
             </div>
         </div>
     </div>
+
+    @if(isset($_GET['badgeNotFound']))
+        @include('animals.partials.badgeNotFound')
+    @endif
 </header>

@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', 'Верифікуйте вашу тварину')
+@section('title', 'Контактні дані власника тварини')
 
 @section('content')
     <div class="cols-block pb-0">
