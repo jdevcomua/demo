@@ -11,15 +11,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class SiteController extends Controller
 {
 
-    public function __invoke()
-    {
-        if (\Auth::user() !== null) {
-            return redirect()->route('animals.index');
-        } else {
-            return redirect()->route('about');
-        }
-    }
-
     public function faq()
     {
         $faqs = Cache::tags('faq')
@@ -44,7 +35,7 @@ class SiteController extends Controller
                 : view('animals.show_contacts_owner', compact('animal'));
         }
 
-        return redirect()->route('about', ['badgeNotFound' => 'show']);
+        return redirect()->route('index', ['badgeNotFound' => 'show']);
     }
 
 }

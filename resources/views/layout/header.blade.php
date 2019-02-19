@@ -37,7 +37,7 @@
                 <a href="{{ route('profile') }}" class="nav-item @if($curRoute == 'profile') active @endif">Мій профіль</a>
                 <div class="nav-divider"></div>
             @endauth
-            <a href="{{ route('about') }}" class="nav-item @if($curRoute == 'about') active @endif">Про проект</a>
+            <a href="{{ route('index') }}" class="nav-item @if($curRoute == 'index') active @endif">Про проект</a>
             <a href="{{ route('faq') }}" class="nav-item @if($curRoute == 'faq') active @endif">Часті запитання</a>
             <a href="{{ route('lost-animals.index') }}" class="nav-item @if(strpos($curRoute, 'lost-animals.') !== false) active @endif">Загублені/знайдені</a>
             <a href="#" class="nav-item btn btn-found btn-found-white" id="i-found-animal">Знайшов тварину</a>
