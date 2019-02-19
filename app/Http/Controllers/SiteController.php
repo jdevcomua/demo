@@ -35,7 +35,7 @@ class SiteController extends Controller
                 : view('animals.show_contacts_owner', compact('animal'));
         }
 
-        return redirect()->route('about', ['badgeNotFound' => 'show']);
+        return redirect()->route('index', ['badgeNotFound' => 'show']);
     }
 
 }
