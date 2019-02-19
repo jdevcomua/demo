@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Helpers\Date;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -217,4 +219,11 @@ class Animal extends Model
 
         return $count;
     }
+
+    public function getAgeAttribute()
+    {
+        $diff = $this->birthday->diff(Carbon::now());
+        return Date::getDiffLocalized($diff);
+    }
+
 }

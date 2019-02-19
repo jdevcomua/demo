@@ -58,6 +58,10 @@
                 <span class="title">Дата народження</span>
                 <span class="content">{{ \App\Helpers\Date::getlocalizedDate($animal->birthday) }}</span>
             </div>
+            <div class="pet-info-block">
+                <span class="title">Вік тварини</span>
+                <span class="content">{{ $animal->age }}</span>
+            </div>
             <div class="pet-info-block w-100">
                 <span class="title">Порода</span>
                 <span class="content">{{ $animal->breed->name }}</span>
