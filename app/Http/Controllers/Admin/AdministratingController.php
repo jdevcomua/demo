@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\AnimalRequestAccepted;
 use App\Events\AnimalRequestDeclined;
+use App\Filters\UserFilter;
+use App\Filters\UsersFilter;
 use App\Helpers\DataTables;
 use App\Models\Animal;
 use App\Models\AnimalsRequest;
+use App\Services\Printable\DataProviders\FilteredUsers;
+use App\Services\Printable\ExcelPrintService;
 use App\User;
 use Cache;
 use Carbon\Carbon;
@@ -186,5 +190,30 @@ class AdministratingController extends Controller
         return redirect()
             ->back()
             ->with('success_request', 'Запит було відхилено успішно!');
+    }
+
+    public function usersFilter(Request $request, UsersFilter $filter)
+    {
+        $users = User::all();
+
+        if ($request->method() === 'POST') {
+            $users = $filter->process($request)->get();
+            $request->flash();
+        }
+
+        return view('admin.filterable.users', compact('users'));
+    }
+
+    public function usersFilterDownload(Request $request, UsersFilter $filter)
+    {
+        $users = $filter->process($request)->get();
+
+        if (count($users)) {
+            $dataProvider = new FilteredUsers($users);
+
+            $printService = new ExcelPrintService();
+            $printService->init($dataProvider, 'print.tables_with_sign_place_pdf', 'Користувачі');
+            $printService->download();
+        }
     }
 }

@@ -119,6 +119,11 @@
                     <label for="fur">Тип шерсті <span class="required-field">*</span></label>
                     <select name="fur" class="fur" required></select>
                 </div>
+                <div class="form-group">
+                    <div class="validation-error alert alert-danger hidden"></div>
+                    <label for="tallness">Зріст(вказується в см)</label>
+                    <input type="text" class="form-control" id="tallness" name="tallness">
+                </div>
                 <div class="form-group datepicker">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="birthday">Дата народження  <span class="required-field">*</span></label>

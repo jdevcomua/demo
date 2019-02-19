@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Helpers\Date;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -76,7 +78,7 @@ class Animal extends Model
     protected $fillable = [
         'id', 'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id', 'user_id',
         'birthday', 'sterilized', 'comment', 'verified', 'number', 'badge', 'request_user_id',
-        'archived_type', 'archived_at', 'clip', 'chip',
+        'archived_type', 'archived_at', 'clip', 'chip', 'tallness',
 
         //generated attributes, don't fill them
         '_verification',
@@ -217,4 +219,11 @@ class Animal extends Model
 
         return $count;
     }
+
+    public function getAgeAttribute()
+    {
+        $diff = $this->birthday->diff(Carbon::now());
+        return Date::getDiffLocalized($diff);
+    }
+
 }

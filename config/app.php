@@ -166,6 +166,7 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\BlockServiceProvider::class,
         \App\Providers\LoggerServiceProvider::class,
         \App\Providers\ViewComposerProvider::class,
@@ -223,6 +224,38 @@ return [
         'Block' => App\Facades\BlockFacade::class,
         'RhaLogger' => App\Facades\RhaLogger::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+    ],
+
+
+    'debug_blacklist' => [
+        '_ENV' => [
+            'APP_KEY',
+            'DB_HOST',
+            'DB_DATABASE',
+            'DB_USERNAME',
+            'DB_PASSWORD',
+            'REDIS_HOST',
+            'REDIS_PASSWORD',
+            'MAIL_USERNAME',
+            'MAIL_PASSWORD',
+            'LOG_SLACK_WEBHOOK_URL',
+            'KYIV_ID_CLIENT',
+            'KYIV_ID_SECRET',
+        ],
+        '_SERVER' => [
+            'APP_KEY',
+            'DB_HOST',
+            'DB_DATABASE',
+            'DB_USERNAME',
+            'DB_PASSWORD',
+            'REDIS_HOST',
+            'REDIS_PASSWORD',
+            'MAIL_USERNAME',
+            'MAIL_PASSWORD',
+            'LOG_SLACK_WEBHOOK_URL',
+            'KYIV_ID_CLIENT',
+            'KYIV_ID_SECRET',
+        ],
     ],
 
 ];

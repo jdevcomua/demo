@@ -1,55 +1,52 @@
 <?php
 
-namespace App\Services\Pdf\DataProviders;
+namespace App\Services\Printable\DataProviders;
 
 
 use App\Models\Animal;
-use App\Services\Pdf\Contracts\PdfDataProviderInterface;
+use App\Services\Printable\Contracts\PrintDataProviderInterface;
 
-class AnimalPdfDataProvider implements PdfDataProviderInterface
+class AnimalPrintDataProvider extends CommonLogicPrintDataProvider implements PrintDataProviderInterface
 {
     private $animal;
-    private $rowNumber;
 
     public function __construct(Animal $animal)
     {
         $this->animal = $animal;
     }
 
-    public function data(): array
+    public function data(): Document
     {
-        $baseInfoTable = [
-            'headers' => ['№ з/п', 'Назва поля', 'Опис'],
-            'columns' => $this->baseInfoColumns()
-        ];
+        $baseInfoTable = new Table();
+        $baseInfoTable
+            ->setHeaders(['№ з/п', 'Назва поля', 'Опис'])
+            ->setColumns($this->baseInfoColumns());
 
-        $veterinaryMeasuresTable = [
-            'title' => 'Ветеринарні заходи',
-            'headers' => ['№ з/п', 'Ветеринарний захід', 'Ким проведено', 'Дата'],
-            'columns' => $this->veterinaryMeasuresColumns()
-        ];
+        $veterinaryMeasuresTable = new Table();
+        $veterinaryMeasuresTable
+            ->setTitle('Ветеринарні заходи')
+            ->setHeaders(['№ з/п', 'Ветеринарний захід', 'Ким проведено', 'Дата'])
+            ->setColumns($this->veterinaryMeasuresColumns());
 
-        $offensesTable = [
-            'title' => 'Правопорушення',
-            'headers' => ['№ з/п', 'Правопорушення', 'Опис', 'Зафіксував', 'Наявність укусу'],
-            'columns' => $this->offensesColumns()
-        ];
+        $offensesTable = new Table();
+        $offensesTable
+            ->setTitle('Правопорушення')
+            ->setHeaders(['№ з/п', 'Правопорушення', 'Опис', 'Зафіксував', 'Наявність укусу'])
+            ->setColumns($this->offensesColumns());
 
-        $historyTable = [
-            'title' => 'Історія',
-            'headers' => ['№ з/п', 'Дата', 'Опис'],
-            'columns' => $this->historyColumns()
+        $historyTable = new Table();
+        $historyTable
+            ->setTitle('Історія')
+            ->setHeaders(['№ з/п', 'Дата', 'Опис'])
+            ->setColumns($this->historyColumns());
 
-        ];
 
-        $tables = [$baseInfoTable, $veterinaryMeasuresTable, $offensesTable, $historyTable];
+        $document = new Document;
+        $document
+            ->setTitle('Реєстраційна картка тварини')
+            ->setTables([$baseInfoTable, $veterinaryMeasuresTable, $offensesTable, $historyTable]);
 
-        foreach ($tables as $index => $table) {
-            if (!count($table['columns'])) {
-                unset($tables[$index]);
-            }
-        }
-        return $tables;
+        return $document;
     }
 
     private function historyColumns()
@@ -186,21 +183,6 @@ class AnimalPdfDataProvider implements PdfDataProviderInterface
         $archivedColumn = [$this->rowNumber(), 'Тварину архівовано', $archivedText];
 
         return $archivedColumn;
-    }
-
-    private function rowNumber()
-    {
-        return ++$this->rowNumber;
-    }
-
-    private function resetRowNumber()
-    {
-        $this->rowNumber = 0;
-    }
-
-    private function localizedDate($date)
-    {
-        return \App\Helpers\Date::getlocalizedDate($date);
     }
 
     private function address()

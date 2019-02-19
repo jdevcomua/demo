@@ -34,4 +34,45 @@ class Date
         }
     }
 
+    public static function getDiffLocalized(\DateInterval $date)
+    {
+        $months = [
+            'місяць' => [1],
+            'місяця' => [2, 3, 4],
+        ];
+
+        $years = [
+            'рік' => [1],
+            'роки' => [2, 3, 4],
+        ];
+
+        $yearsPart = '';
+        $monthsPart = '';
+
+        if ($date->y) {
+            foreach ($years as $k => $v) {
+                if (array_search($date->y % 10, $v) !== false) {
+                    $yearsPart = $date->y . ' ' . $k;
+                }
+            }
+            if ($yearsPart === '') {
+                $yearsPart = $date->y . ' ' . 'років ';
+            }
+        }
+
+        foreach ($months as $k => $v) {
+            if (array_search($date->m % 10, $v) !== false) {
+                $monthsPart = $date->m . ' ' . $k;
+            }
+        }
+
+        if ($monthsPart === '') {
+            $monthsPart = $date->m . ' ' . 'місяців';
+        }
+
+        $fullDate = $yearsPart . $monthsPart;
+
+        return trim($fullDate);
+    }
+
 }

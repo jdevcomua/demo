@@ -35,7 +35,7 @@ class SiteController extends Controller
                 : view('animals.show_contacts_owner', compact('animal'));
         }
 
-        throw new NotFoundHttpException;
+        return redirect()->route('about', ['badgeNotFound' => 'show']);
     }
 
 }

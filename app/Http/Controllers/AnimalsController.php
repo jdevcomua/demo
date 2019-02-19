@@ -69,7 +69,7 @@ class AnimalsController extends Controller
     public function store(Request $request)
     {
         $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
-                                'birthday', 'sterilized', 'comment', 'images', 'documents']);
+                                'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness']);
 
         if (array_key_exists('birthday', $data) && $data['birthday']) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -83,6 +83,7 @@ class AnimalsController extends Controller
             'breed' => 'required|integer|exists:breeds,id',
             'color' => 'required|integer|exists:colors,id',
             'fur' => 'required|integer|exists:furs,id',
+            'tallness' => 'nullable|integer|min:10|max:100',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
@@ -99,6 +100,8 @@ class AnimalsController extends Controller
             'breed.required' => 'Порода є обов\'язковим полем',
             'color.required' => 'Масть є обов\'язковим полем',
             'fur.required' => 'Тип шерсті є обов\'язковим полем',
+            'tallness.min' => 'Зріст має бути більше :min см',
+            'tallness.max' => 'Зріст має бути менше :max см',
             'birthday.required' => 'Дата народження є обов\'язковим полем',
             'birthday.before' => 'Дата народження не може бути у майбутньому!',
             'birthday.date' => 'Дата народження повинна бути корректною датою',
@@ -196,7 +199,7 @@ class AnimalsController extends Controller
     public function update(Request $request, Animal $animal)
     {
         $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
-            'birthday', 'sterilized', 'comment', 'images', 'documents']);
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -210,6 +213,7 @@ class AnimalsController extends Controller
             'breed' => 'required|integer|exists:breeds,id',
             'color' => 'required|integer|exists:colors,id',
             'fur' => 'required|integer|exists:furs,id',
+            'tallness' => 'nullable|integer|min:10|max:100',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
@@ -225,6 +229,8 @@ class AnimalsController extends Controller
             'breed.required' => 'Порода є обов\'язковим полем',
             'color.required' => 'Масть є обов\'язковим полем',
             'fur.required' => 'Тип шерсті є обов\'язковим полем',
+            'tallness.min' => 'Зріст має бути більше :min см',
+            'tallness.max' => 'Зріст має бути менше :max см',
             'birthday.required' => 'Дата народження є обов\'язковим полем',
             'birthday.before' => 'Дата народження не може бути у майбутньому!',
             'birthday.date' => 'Дата народження повинна бути корректною датою',

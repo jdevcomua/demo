@@ -6,6 +6,7 @@ use App\Events\AnimalBadgeRequestSent;
 use App\Helpers\Date;
 use App\Models\Animal;
 use App\Models\AnimalsRequest;
+use App\Models\Organization;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -68,6 +69,20 @@ class AjaxController extends Controller
         return response(json_encode($users));
     }
 
+    public function getOrganizations()
+    {
+        $organizations = Organization::all()->pluck('name', 'id')->toArray();
+
+        $organizations = array_map(function ($value, $key) {
+            return [
+                'name' => $value,
+                'value' => $key
+            ];
+        }, $organizations, array_keys($organizations));
+
+        return response(json_encode($organizations));
+    }
+
     public function badgeSearch(Request $request)
     {
         $badge = $request->get('badge');
@@ -77,7 +92,7 @@ class AjaxController extends Controller
         if (!$animal) {
             return response()->json([
                 'message' => 'not found'
-            ],400);
+            ],404);
         }
         $animal->breed_text = $animal->breed->name;
         $animal->color_text = $animal->color->name;

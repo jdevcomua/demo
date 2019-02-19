@@ -25,6 +25,15 @@
             </li>
             @endpermission
 
+            @permission('view-users')
+            <li @if($curRoute == 'admin.administrating.users.filter.index') class="active" @endif>
+                <a href="{{ route('admin.administrating.users.filter.index') }}">
+                    <span class="fa fa-users"></span>
+                    <span class="sidebar-title">Фільтр - Користувачі</span>
+                </a>
+            </li>
+            @endpermission
+
             <li {!! (strpos($curRoute, '.db.archive.animals') !== false) ? ' class="active" ' : '' !!}>
                 <a href="{{route('admin.db.archive.animals.index')}}">
                     <span class="fa fa-archive"></span>
@@ -65,6 +74,46 @@
                         </li>
                     </ul>
                 </li>
+
+            <li{!! (strpos($curRoute, '.reports.') !== false) ? ' class="active" ' : '' !!}>
+                <a class="accordion-toggle {!! (strpos($curRoute, '.reports.') !== false)
+                            ? 'menu-open' : '' !!}" href="#">
+                    <span class="fa fa-file-text"></span>
+                    <span class="sidebar-title">Звіти</span>
+                    <span class="caret"></span>
+                </a>
+                <ul class="nav sub-nav">
+                    <li{!! (strpos($curRoute, '.reports.registered-animals.') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.registered-animals.index')}}">
+                            <span class="fa fa-question-circle"></span>Реєстрація тварин</a>
+                    </li>
+                    <li{!! (strpos($curRoute, '.reports.registered-animals-homeless.') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.registered-animals-homeless.index')}}">
+                            <span class="fa fa-info-circle"></span>Реєстрація безпритульних тварин
+                        </a>
+                    </li>
+                    <li{!! (strpos($curRoute, '.reports.animals-amount-species') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.animals-amount-species.index')}}">
+                            <span class="fa fa-info-circle"></span>Кількість тварин за видом
+                        </a>
+                    </li>
+                    <li{!! (strpos($curRoute, '.reports.animals-amount-breeds') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.animals-amount-breeds.index')}}">
+                            <span class="fa fa-info-circle"></span>Кількість тварин за породою
+                        </a>
+                    </li>
+                    <li{!! (strpos($curRoute, '.reports.registered-animals-owners.') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.registered-animals-owners.index')}}">
+                            <span class="fa fa-info-circle"></span>Реєстрація власників тварин
+                        </a>
+                    </li>
+                    <li{!! (strpos($curRoute, '.reports.registered-animals-of-owner.') !== false) ? ' class="active" ' : '' !!}>
+                        <a href="{{route('admin.reports.registered-animals-of-owner.index')}}">
+                            <span class="fa fa-info-circle"></span>Довідка за тваринами власника
+                        </a>
+                    </li>
+                </ul>
+            </li>
                 <li class="sidebar-label pt20">Mailing Settings</li>
 
                 <li {!! (strpos($curRoute, '.templates') !== false) ? ' class="active" ' : '' !!}>

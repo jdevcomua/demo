@@ -15,6 +15,20 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'reports',
+    'as' => 'reports.'
+], function () {
+    Route::get('report/download', 'Admin\ReportsController@download')->name('report.download');
+
+    Route::any('registered-animals', 'Admin\ReportsController@registeredAnimalsIndex')->name('registered-animals.index');
+    Route::any('registered-animals/homeless', 'Admin\ReportsController@registeredAnimalsHomelessIndex')->name('registered-animals-homeless.index');
+    Route::any('registered-owners/', 'Admin\ReportsController@registeredAnimalsOwners')->name('registered-animals-owners.index');
+    Route::any('registered-animals-of-owner/', 'Admin\ReportsController@registeredAnimalsOfOwner')->name('registered-animals-of-owner.index');
+    Route::get('animals-amount/species', 'Admin\ReportsController@animalsAmountBySpeciesIndex')->name('animals-amount-species.index');
+    Route::get('animals-amount/breeds', 'Admin\ReportsController@animalsAmountByBreeds')->name('animals-amount-breeds.index');
+});
+
+Route::group([
     'prefix' => 'users',
     'as' => 'db.users.'
 ], function () {
@@ -306,6 +320,10 @@ Route::group([
             ->name('index');
         Route::get('data', 'Admin\AdministratingController@userData')
             ->name('data');
+        Route::any('/filter', 'Admin\AdministratingController@usersFilter')
+            ->name('filter.index');
+        Route::post('/filter/download', 'Admin\AdministratingController@usersFilterDownload')
+            ->name('filter.download');
     });
 
     Route::group([

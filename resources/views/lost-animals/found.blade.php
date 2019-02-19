@@ -21,14 +21,14 @@
                         @if($foundAnimal->badge)
                             <div class="animal-badge">
                                 <span class="animal-badge-icon"></span>
-                                <span class="animal-badge-number">{{$foundAnimal->badge}}</span>
+                                <span class="animal-badge-number">{{$foundAnimal->badge ?? 'Не заповнено'}}</span>
                             </div>
                         @endif
                     </div>
                     <div class="pet-info">
                         <div class="pet-info-block">
                             <span class="title">Вид</span>
-                            <span class="content">{{ $foundAnimal->species->name }}</span>
+                            <span class="content">{{ $foundAnimal->species->name ?? 'Не заповнено'}}</span>
                         </div>
                         <div class="pet-info-block">
                             <span class="title">Адреса де знайшли тварину</span>
