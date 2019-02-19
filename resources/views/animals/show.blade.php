@@ -78,6 +78,35 @@
             <span class="title">Коментарі (Особливі прикмети)</span>
             <span class="content">{{ $animal->comment }}</span>
         </div>
+        @if(count($animal->animalVeterinaryMeasure))
+            <hr class="divider">
+            <div class="pet-section-container">
+                <p class="title">Ветеринарні заходи</p>
+                @foreach ($animal->animalVeterinaryMeasure as $index => $measure)
+                <div class="fields-container">
+                    <div class="field-container">
+                        <p class="label">Дата заходу:</p>
+                        <p class="value">{{$measure->date->format('m/d/Y')}}</p>
+                    </div>
+                    <div class="field-container">
+                        <p class="label">Захід:</p>
+                        <p class="value">{{$measure->veterinaryMeasure->name}}</p>
+                    </div>
+                    <div class="field-container">
+                        <p class="label">Відомості щодо заходу:</p>
+                        <p class="value">{{$measure->description ?? 'Відсутні'}}</p>
+                    </div>
+                    <div class="field-container">
+                        <p class="label">Ким проведено захід:</p>
+                        <p class="value">{{$measure->made_by}}</p>
+                    </div>
+                </div>
+                @if (count($animal->animalVeterinaryMeasure) > $index + 1)
+                    <hr class="half-divider">
+                @endif
+                @endforeach
+            </div>
+        @endif
         @if(count($animal->chronicles))
             <hr class="divider">
             <div class="pet-chronicles-block">
