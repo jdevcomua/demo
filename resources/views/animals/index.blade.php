@@ -15,7 +15,7 @@
                     <div class="pet-info">
                         <div class="pet-info-block">
                             <span class="title">{{ $pet->species->name }}</span>
-                            <span class="content">{{ $pet->nickname }}</span>
+                            <span class="content">{{ $pet->nickname }} {{$pet->nickname_lat ? '(' . $pet->nickname_lat . ')' : ''}}</span>
                         </div>
                         <div class="pet-info-block">
                             <span class="title">Порода</span>

@@ -71,6 +71,13 @@
                                             value="{{ old('nickname') }}" required>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="nickname_lat" class="col-lg-3 control-label">Кличка на латині</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="nickname_lat" name="nickname_lat" class="form-control"
+                                               value="{{ old('nickname_lat') }}" >
+                                    </div>
+                                </div>
                                 <div class="form-group select-gen">
                                     <label for="species" class="col-lg-3 control-label">Вид</label>
                                     <div class="col-lg-8">

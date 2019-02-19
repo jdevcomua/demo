@@ -6,7 +6,7 @@
 @section('content')
     <div class="page-title">
         <a href="{{ route('index') }}" class="page-back-link"></a>
-        <div class="title">{{ $animal->nickname }}</div>
+        <div class="title">{{ $animal->nickname }} {{$animal->nickname_lat ? '(' . $animal->nickname_lat . ')' : ''}}</div>
         @if(!$animal->verified) <a href="{{ route('animals.edit', $animal->id) }}" class="action-link">Редагувати</a> @endif
     </div>
     <div class="animal-show">

@@ -78,7 +78,7 @@ class Animal extends Model
     protected $fillable = [
         'id', 'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id', 'user_id',
         'birthday', 'sterilized', 'comment', 'verified', 'number', 'badge', 'request_user_id',
-        'archived_type', 'archived_at', 'clip', 'chip', 'tallness',
+        'archived_type', 'archived_at', 'clip', 'chip', 'tallness', 'nickname_lat',
 
         //generated attributes, don't fill them
         '_verification',

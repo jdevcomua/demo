@@ -55,6 +55,11 @@
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
+                    <label for="nickname_lat">Кличка на латині</label>
+                    <input type="text" class="form-control" id="nickname_lat" name="nickname_lat" value="{{$pet->nickname_lat ?? ''}}" >
+                </div>
+                <div class="form-group">
+                    <div class="validation-error alert alert-danger hidden"></div>
                     <label>Вид <span class="required-field">*</span></label>
                     <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn radio-item big-radio @if($pet->species_id === 1) active @endif">

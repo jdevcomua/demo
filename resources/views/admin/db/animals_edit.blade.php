@@ -85,6 +85,13 @@
                                             value="{{ old('nickname') ?? $animal->nickname}}" required>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="nickname_lat" class="col-lg-3 control-label">Кличка на латині</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="nickname_lat" name="nickname_lat" class="form-control"
+                                               value="{{ old('nickname_lat') ?? $animal->nickname_lat }}" >
+                                    </div>
+                                </div>
                                 <div class="form-group select-gen">
                                     <label for="species" class="col-lg-3 control-label">Вид</label>
                                     <div class="col-lg-8">
@@ -142,16 +149,6 @@
                                         />
                                     </div>
                                 </div>
-                                @permission('verify-animal')
-                                <div class="form-group">
-                                    <label for="badge" class="col-lg-3 control-label">Номер жетону</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" id="badge" name="badge" class="form-control"
-                                               value="{{ $animal->badge }}" required>
-                                        <span class="help-block mt5">Номер повинен бути від 5 до 8 символів та складатися тільки з кириличних літер або цифр</span>
-                                    </div>
-                                </div>
-                                @endpermission
                                 <div class="form-group">
                                     <label for="sterilized" class="col-lg-3 control-label"></label>
                                     <div class="col-lg-8">

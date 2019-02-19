@@ -68,7 +68,7 @@ class AnimalsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
+        $data = $request->only(['nickname', 'nickname_lat', 'species', 'gender', 'breed', 'color', 'fur',
                                 'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness']);
 
         if (array_key_exists('birthday', $data) && $data['birthday']) {
@@ -78,6 +78,7 @@ class AnimalsController extends Controller
 
         $validator = Validator::make($data, [
             'nickname' => 'required|string|max:256',
+            'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
@@ -95,6 +96,8 @@ class AnimalsController extends Controller
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
+            'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
+            'nickname_lat.regex' => 'Кличка на латині має містити тільки латинські символи',
             'species.required' => 'Вид є обов\'язковим полем',
             'gender.required' => 'Стать є обов\'язковим полем',
             'breed.required' => 'Порода є обов\'язковим полем',
@@ -199,7 +202,7 @@ class AnimalsController extends Controller
     public function update(Request $request, Animal $animal)
     {
         $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness']);
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness', 'nickname_lat']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -208,6 +211,7 @@ class AnimalsController extends Controller
 
         $validator = Validator::make($data, [
             'nickname' => 'required|string|max:256',
+            'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
@@ -223,6 +227,8 @@ class AnimalsController extends Controller
             'documents.*' => 'nullable|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
+            'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
+            'nickname_lat.regex' => 'Кличка на латині має містити тільки латинські символи',
             'nickname.max' => 'Кличка має бути менше :max символів',
             'species.required' => 'Вид є обов\'язковим полем',
             'gender.required' => 'Стать є обов\'язковим полем',

@@ -448,7 +448,7 @@ class DataBasesController extends Controller
 
     public function animalStore(Request $request)
     {
-        $data = $request->only(['user_id', 'nickname', 'species', 'gender', 'breed', 'color', 'fur', 'user',
+        $data = $request->only(['user_id', 'nickname', 'nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
             'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number', 'tallness']);
 
         if (array_key_exists('birthday', $data)) {
@@ -465,6 +465,7 @@ class DataBasesController extends Controller
         $validator = Validator::make($data, [
             'user' => 'nullable|integer|exists:users,id',
             'nickname' => 'required|string|max:256',
+            'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
@@ -484,6 +485,8 @@ class DataBasesController extends Controller
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
+            'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
+            'nickname_lat.regex' => 'Кличка на латині має містити тільки латинські символи',
             'species.required' => 'Вид є обов\'язковим полем',
             'gender.required' => 'Стать є обов\'язковим полем',
             'breed.required' => 'Порода є обов\'язковим полем',
@@ -592,8 +595,8 @@ class DataBasesController extends Controller
         $animal = $this->animalModel
             ->findOrFail($id);
 
-        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur', 'user',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'badge', 'tallness']);
+        $data = $request->only(['nickname','nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -603,6 +606,7 @@ class DataBasesController extends Controller
         $validator = Validator::make($data, [
             'user' => 'nullable|integer|exists:users,id',
             'nickname' => 'required|string|max:256',
+            'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
@@ -610,11 +614,6 @@ class DataBasesController extends Controller
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
-            'badge' => [
-                'nullable',
-                'unique:animals,badge,' . $id,
-                new Badge()
-            ],
             'comment' => 'nullable|string|max:2000',
             'tallness' => 'nullable|integer|min:10|max:100',
             'images' => 'nullable|array',
@@ -624,6 +623,8 @@ class DataBasesController extends Controller
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
+            'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
+            'nickname_lat.regex' => 'Кличка на латині має містити тільки латинські символи',
             'species.required' => 'Вид є обов\'язковим полем',
             'gender.required' => 'Стать є обов\'язковим полем',
             'breed.required' => 'Порода є обов\'язковим полем',
@@ -639,7 +640,6 @@ class DataBasesController extends Controller
             'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
             'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
-            'badge.unique' => 'Номер жетону вже використовується',
             'tallness.min' => 'Зріст має бути більше :min см',
             'tallness.max' => 'Зріст має бути менше :max см'
         ]);
