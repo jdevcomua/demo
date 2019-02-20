@@ -62,6 +62,16 @@
                 <span class="title">Вік тварини</span>
                 <span class="content">{{ $animal->age }}</span>
             </div>
+            @if($animal->veterinaryPassport)
+                <div class="pet-info-block">
+                    <span class="title">Номер ветеринарного паспорту</span>
+                    <span class="content">{{ $animal->veterinaryPassport->number }}</span>
+                </div>
+                <div class="pet-info-block">
+                    <span class="title">Ким видано паспорт</span>
+                    <span class="content">{{ $animal->veterinaryPassport->issued_by }}</span>
+                </div>
+            @endif
             <div class="pet-info-block w-100">
                 <span class="title">Порода</span>
                 <span class="content">{{ $animal->breed->name }}</span>

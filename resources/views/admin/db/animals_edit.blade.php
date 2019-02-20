@@ -400,6 +400,76 @@
                     </div>
                 </div>
 
+                <div class="col-md-6">
+                    <div class="panel panel-visible" id="spy57">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <span class="glyphicon glyphicon-tasks"></span>Ветеринарний паспорт</div>
+                        </div>
+                        @if($errors->veterinary_passport)
+                            @foreach($errors->veterinary_passport->all() as $error)
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-remove pr10"></i>
+                                    {{ $error }}
+                                </div>
+                            @endforeach
+                        @endif
+
+                        @if (\Session::has('success_veterinary_passport'))
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <i class="fa fa-check pr10"></i>
+                                {{ \Session::get('success_veterinary_passport') }}
+                            </div>
+                        @endif
+
+                        @if($animal->veterinaryPassport)
+                                    <form class="form-horizontal" id="removeVeterinaryPassportForm"
+                                          action="{{route('admin.db.animals.remove-veterinary-passport', $animal->id)}}" method="post">
+                                        @csrf
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label class="col-sm-3 col-xs-5 control-label">Номер:</label>
+                                                <div class="col-xs-6">
+                                                    <label class="control-label">{{$animal->veterinaryPassport->number}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 col-xs-5 control-label">Ким видано паспорт:</label>
+                                                <div class="col-xs-6">
+                                                    <label class="control-label">{{$animal->veterinaryPassport->issued_by}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                        @else
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label"></label>
+                                    <div class="col-xs-8">
+                                        <label class="control-label">Ветеринарний паспорт відстуній</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @permission('edit-animals')
+                    @if($animal->veterinaryPassport)
+                            <div class="panel-footer text-right">
+                                    <button type="submit" class="btn btn-default ph25" id="veterinaryPassportDeleteButton">Видалити</button>
+                                <a id="veterinaryPassportButton" href="javascript:void(0)"
+                                   class="btn btn-success ph25 float-right">Редагувати</a>
+                            </div>
+                        @else
+                            <div class="panel-footer text-right">
+                                <a id="veterinaryPassportButton" href="javascript:void(0)"
+                                   class="btn btn-success ph25 float-right">Додати</a>
+                            </div>
+                        @endif
+                        @endpermission
+                    </div>
+                </div>
+
 
                 <div class="col-md-12">
                     <div class="panel panel-visible" id="spy11">
@@ -1096,6 +1166,62 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="veterinaryPassportModal" tabindex="-2" role="dialog"
+                 aria-labelledby="veterinaryPassportModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">Ветеринарний паспорт</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="veterinaryPassportForm"
+                                          action="{{$animal->veterinaryPassport ?
+                                          route('admin.db.animals.update-veterinary-passport', $animal->id) :
+                                          route('admin.db.animals.add-veterinary-passport', $animal->id) }}"
+                                          method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label for="created_at" class="col-lg-3 control-label">Номер
+                                                    паспорту:</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" name="number" class="form-control"
+                                                           value="{{$animal->veterinaryPassport->number ?? ''}}"
+                                                           required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label for="created_at" class="col-lg-3 control-label">Ким
+                                                    видано:</label>
+                                                <div class="col-lg-9">
+                                                    <div class="validation-error alert alert-danger hidden"></div>
+                                                    <input type="text" name="issued_by" class="form-control"
+                                                           value="{{$animal->veterinaryPassport->issued_by ?? ''}}"
+                                                           required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <button type="submit"
+                                                class="ml-auto mt-6 btn confirm btn-primary">
+                                            {{$animal->veterinaryPassport ? 'Зберегти' : 'Додати'}}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
 @endsection
 
@@ -1262,6 +1388,17 @@
 
         $('.one-click').on('click', function(e) {
             $(this).attr('disabled', '');
+        });
+
+        $('#veterinaryPassportButton').on('click', function () {
+            $('#veterinaryPassportModal').modal('show');
+        });
+
+        $('#veterinaryPassportDeleteButton').on('click', function () {
+            let confirmed = confirm("Ви впевнені що хочете видалити ветеринарний паспорт?");
+            if (confirmed) {
+                $('#removeVeterinaryPassportForm').submit();
+            }
         });
     </script>
 @endsection

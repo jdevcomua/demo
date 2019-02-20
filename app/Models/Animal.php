@@ -202,6 +202,11 @@ class Animal extends Model
         return $this->morphTo('archived', 'archived_type', 'archived_id');
     }
 
+    public function veterinaryPassport()
+    {
+        return $this->belongsTo(VeterinaryPassport::class);
+    }
+
     public function identifyingDevicesArray(): array
     {
         return $this->identifying_devices;

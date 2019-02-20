@@ -120,6 +120,12 @@ Route::group([
         ->name('add-offense');
     Route::get('offense/{id?}', 'Admin\DataBasesController@animalOffense')
         ->name('offense');
+    Route::post('add-veterinary-passport/{id}', 'Admin\DataBasesController@addVeterinaryPassport')
+        ->name('add-veterinary-passport');
+    Route::post('remove-veterinary-passport/{id}', 'Admin\DataBasesController@removeVeterinaryPassport')
+        ->name('remove-veterinary-passport');
+    Route::post('update-veterinary-passport/{id}', 'Admin\DataBasesController@updateVeterinaryPassport')
+        ->name('update-veterinary-passport');
 });
 
 Route::group([

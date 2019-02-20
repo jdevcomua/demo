@@ -26,6 +26,7 @@ use App\Models\UserEmail;
 use App\Models\UserPhone;
 use App\Models\Vaccination;
 use App\Models\VeterinaryMeasure;
+use App\Models\VeterinaryPassport;
 use App\Rules\Badge;
 use App\Rules\Phone;
 use App\Services\Animals\AnimalChronicleServiceInterface;
@@ -1066,5 +1067,72 @@ class DataBasesController extends Controller
         $animalOffense = AnimalOffense::findOrFail($id);
 
         return view('admin.db.animal_offense_show', compact('animalOffense'));
+    }
+
+    public function addVeterinaryPassport(int $id, Request $request)
+    {
+        $request_data  = $request->all();
+
+        $rules = [
+            'number' => 'required|max:256',
+            'issued_by' => 'required|max:256'
+        ];
+
+        $messages = [
+            'number.required' => 'Номер паспорту є обов\'язковим полем',
+            'issued_by.required' => 'Ким видано є обов\'язковим полем',
+            'number.max' => 'Номер паспорту має містити не більше ніж :max символів',
+            'issued_by.max' => 'Ким видано має містити не більше ніж :max символів'
+        ];
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        $validator->validate();
+
+        $animal = Animal::findOrFail($id);
+
+        $veterinaryPassport = new VeterinaryPassport;
+        $veterinaryPassport->fill($request_data);
+        $veterinaryPassport->save();
+        $animal->veterinaryPassport()->associate($veterinaryPassport);
+        $animal->save();
+
+        return back()->with('success_veterinary_passport', 'Ветеринарний паспорт успішно додано!');
+    }
+
+    public function updateVeterinaryPassport(int $id, Request $request)
+    {
+        $request_data  = $request->all();
+
+        $rules = [
+            'number' => 'required|max:256',
+            'issued_by' => 'required|max:256'
+        ];
+
+        $messages = [
+            'number.required' => 'Номер паспорту є обов\'язковим полем',
+            'issued_by.required' => 'Ким видано є обов\'язковим полем',
+            'number.max' => 'Номер паспорту має містити не більше ніж :max символів',
+            'issued_by.max' => 'Ким видано має містити не більше ніж :max символів'
+        ];
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        $validator->validate();
+
+        $animal = Animal::findOrFail($id);
+
+        $veterinaryPassport = $animal->veterinaryPassport;
+        $veterinaryPassport->fill($request_data);
+        $veterinaryPassport->save();
+
+        return back()->with('success_veterinary_passport', 'Ветеринарний паспорт успішно оновлено!');
+    }
+
+    public function removeVeterinaryPassport(int $id)
+    {
+        $animal = Animal::findOrFail($id);
+        $animal->veterinaryPassport()->delete();
+        return back()->with('success_veterinary_passport', 'Ветеринарний паспорт успішно видалено!');
     }
 }
