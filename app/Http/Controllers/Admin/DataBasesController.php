@@ -7,14 +7,12 @@ use App\Helpers\DataTables;
 use App\Http\Requests\ArchiveAnimal;
 use App\Http\Requests\SterilizationVaccinationRequest;
 use App\Models\Animal;
-use App\Models\AnimalChronicle;
 use App\Models\AnimalOffense;
 use App\Models\AnimalsFile;
 use App\Models\AnimalVeterinaryMeasure;
 use App\Models\CauseOfDeath;
-use App\Models\DeathArchiveRecord;
+use App\Models\IdentifyingDeviceType;
 use App\Models\Log;
-use App\Models\MovedOutArchiveRecord;
 use App\Models\Offense;
 use App\Models\OffenseAffiliation;
 use App\Models\Organization;
@@ -27,7 +25,6 @@ use App\Models\UserPhone;
 use App\Models\Vaccination;
 use App\Models\VeterinaryMeasure;
 use App\Models\VeterinaryPassport;
-use App\Rules\Badge;
 use App\Rules\Phone;
 use App\Services\Animals\AnimalChronicleServiceInterface;
 use App\Services\FilesService;
@@ -950,7 +947,7 @@ class DataBasesController extends Controller
 
         $validator->validate();
 
-        $veterinarymeasure = VeterinaryMeasure::findOrfail($request_data['veterinary_measure']);
+        $veterinarymeasure = VeterinaryMeasure::findOrFail($request_data['veterinary_measure']);
 
 
         $animalVeterinaryMeasure = new AnimalVeterinaryMeasure;
@@ -1031,8 +1028,8 @@ class DataBasesController extends Controller
 
         $validator->validate();
 
-        $offense = Offense::findOrfail($request_data['offense']);
-        $offenseAffiliation = OffenseAffiliation::findOrfail($request_data['offense_affiliation']);
+        $offense = Offense::findOrFail($request_data['offense']);
+        $offenseAffiliation = OffenseAffiliation::findOrFail($request_data['offense_affiliation']);
 
 
         $animalOffense = new AnimalOffense;
