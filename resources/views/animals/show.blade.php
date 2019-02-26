@@ -42,6 +42,19 @@
                     <span class="content red">Не верифіковано</span>
                 @endif
             </div>
+            @if($animal->verified)
+                <div class="pet-info-block">
+                    <span class="title">Дата верифікації</span>
+                    <span class="content">{{ $animal->verification->updated_at->format('d/m/Y') }}</span>
+                </div>
+                @if($animal->verification->user)
+                    <div class="pet-info-block">
+                        <span class="title">Ким верифіковано</span>
+                        <span class="content">{{ $animal->verification->user->name }}</span>
+                    </div>
+                @endif
+            @endif
+
             <div class="pet-info-block">
                 <span class="title">Масть</span>
                 <span class="content">{{ $animal->color->name }}</span>
@@ -61,6 +74,10 @@
             <div class="pet-info-block">
                 <span class="title">Вік тварини</span>
                 <span class="content">{{ $animal->age }}</span>
+            </div>
+            <div class="pet-info-block">
+                <span class="title">Дата реєстрації</span>
+                <span class="content">{{ $animal->created_at->format('d/m/Y') }}</span>
             </div>
             @if($animal->veterinaryPassport)
                 <div class="pet-info-block">
