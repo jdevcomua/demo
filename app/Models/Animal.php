@@ -241,6 +241,32 @@ class Animal extends Model
         return Date::getDiffLocalized($diff);
     }
 
+    public function hasDocuments(): bool
+    {
+        return $this->hasFilesCommonLogic($this, 'documents');
+    }
+
+    public function hasVetFiles(): bool
+    {
+        return $this->hasFilesCommonLogic($this->animalVeterinaryMeasure, 'files', 1);
+    }
+
+    private function hasFilesCommonLogic($entity, $filesRelationName, $iterable = null): bool
+    {
+        $hasFiles = false;
+        if ($iterable !== null) {
+            foreach ($entity as $entityItem) {
+                if (count($entityItem->$filesRelationName)) {
+                    return true;
+                }
+            }
+        } else {
+            return count($entity->$filesRelationName);
+        }
+
+        return $hasFiles;
+    }
+
     public function getAvailableIdentifyingDevicesTypes()
     {
         $allDeviceTypes = IdentifyingDeviceType::all();

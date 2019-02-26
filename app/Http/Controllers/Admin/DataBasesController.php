@@ -10,7 +10,6 @@ use App\Http\Requests\SterilizationVaccinationRequest;
 use App\Models\Animal;
 use App\Models\AnimalChronicle;
 use App\Models\AnimalOffense;
-use App\Models\AnimalsFile;
 use App\Models\AnimalVeterinaryMeasure;
 use App\Models\CauseOfDeath;
 use App\Models\IdentifyingDevice;
@@ -36,6 +35,7 @@ use Cache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 
 class DataBasesController extends Controller
@@ -780,7 +780,23 @@ class DataBasesController extends Controller
 
     public function animalRemoveFile($id)
     {
-        $file = AnimalsFile::findOrFail($id);
+        return $this->removeFileCommonLogic('App\Models\AnimalsFile', $id);
+    }
+
+    public function veterinaryMeasureRemoveFile($id)
+    {
+        return $this->removeFileCommonLogic('App\Models\AnimalVeterinaryMeasureFile', $id);
+    }
+
+    public function animalOffenseRemoveFile($id)
+    {
+        return $this->removeFileCommonLogic('App\Models\AnimalOffenseFile', $id);
+    }
+
+    private function removeFileCommonLogic($fileEntityClass, $id)
+    {
+        $file = $fileEntityClass::findOrFail($id);
+        Storage::delete($file->path);
         $file->delete();
         return response()->json([
             'status' => 'ok'

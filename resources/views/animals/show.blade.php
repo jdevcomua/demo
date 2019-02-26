@@ -101,10 +101,12 @@
                 </div>
             @endif
         </div>
-        <div class="pet-info-block comment">
-            <span class="title">Коментарі (Особливі прикмети)</span>
-            <span class="content">{{ $animal->comment }}</span>
-        </div>
+        @if($animal->comment !== null)
+            <div class="pet-info-block comment">
+                <span class="title">Коментарі (Особливі прикмети)</span>
+                <span class="content">{{ $animal->comment }}</span>
+            </div>
+        @endif
         @if(count($animal->animalVeterinaryMeasure))
             <hr class="divider">
             <div class="pet-section-container">
@@ -183,14 +185,26 @@
         <div class="files-container">
             <div class="files-container-title">Файли</div>
             <div class="files-list">
-                @forelse($animal->documents as $doc)
-                    <a href="/{{ $doc->path }}" class="file-item">
-                        <span class="file-name">{{ $doc->filename }}</span>
-                        <span class="file-ext">.{{ $doc->fileextension }}</span>
-                    </a>
-                @empty
+                @if($animal->hasDocuments() || $animal->hasVetFiles())
+                    @foreach($animal->documents as $doc)
+                        <a href="/{{ $doc->path }}" class="file-item">
+                            <span class="file-name">{{ $doc->filename }}</span>
+                            <span class="file-ext">.{{ $doc->fileextension }}</span>
+                        </a>
+                    @endforeach
+                    @foreach($animal->animalVeterinaryMeasure as $veterinaryMeasure)
+                        @if(count($veterinaryMeasure->files))
+                            @foreach($veterinaryMeasure->files as $file)
+                                <a href="/{{ $doc->path }}" class="file-item">
+                                    <span class="file-name">{{ $file->filename }}</span>
+                                    <span class="file-ext">.{{ $file->fileextension }}</span>
+                                </a>
+                            @endforeach
+                        @endif
+                    @endforeach
+                @else
                     <div class="no-files">Файли відсутні...</div>
-                @endforelse
+                @endif
             </div>
         </div>
         <hr class="divider">

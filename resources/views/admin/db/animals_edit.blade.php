@@ -478,9 +478,8 @@
                         @else
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="col-xs-3 control-label"></label>
-                                    <div class="col-xs-8">
-                                        <label class="control-label">Засоби ідентифікації відсутні</label>
+                                    <div class="col-xs-12">
+                                        <p class="text-center" style="color: #666a6a;font-weight: bold;">Засоби ідентифікації відсутні</p>
                                     </div>
                                 </div>
                             </div>
@@ -779,6 +778,39 @@
                                             @endpermission
                                         </div>
                                     @endforeach
+
+                                        @foreach($animal->animalVeterinaryMeasure as $veterinaryMeasure)
+                                            @foreach($veterinaryMeasure->files as $file)
+                                                <div class="file-item doc">
+                                                    <a href="/{{ $file->path }}">
+                                                        <div class="file-preview" style="background-image: url('/img/file.png');"></div>
+                                                        <div class="file-name">{{ $file->filename }}.{{ $file->fileextension }}</div>
+                                                    </a>
+                                                    @permission('edit-animals')
+                                                    <div class="file-delete"
+                                                         data-rem="{{ route('admin.db.animals.veterinary-remove-file', $file->id) }}">
+                                                        <i class="fa fa-times" aria-hidden="true"></i></div>
+                                                    @endpermission
+                                                </div>
+                                            @endforeach
+                                        @endforeach
+
+
+                                        @foreach($animal->animalOffenses as $offense)
+                                            @foreach($offense->files as $file)
+                                                <div class="file-item doc">
+                                                    <a href="/{{ $file->path }}">
+                                                        <div class="file-preview" style="background-image: url('/img/file.png');"></div>
+                                                        <div class="file-name">{{ $file->filename }}.{{ $file->fileextension }}</div>
+                                                    </a>
+                                                    @permission('edit-animals')
+                                                    <div class="file-delete"
+                                                         data-rem="{{ route('admin.db.animals.offense-remove-file', $file->id) }}">
+                                                        <i class="fa fa-times" aria-hidden="true"></i></div>
+                                                    @endpermission
+                                                </div>
+                                            @endforeach
+                                        @endforeach
 
                                         @permission('edit-animals')
                                     <label for="images" class="upload file-item">

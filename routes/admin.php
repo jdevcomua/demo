@@ -116,10 +116,14 @@ Route::group([
         ->name('add-veterinary-measure');
     Route::get('veterinary-measure/{id?}', 'Admin\DataBasesController@animalVeterinaryMeasure')
         ->name('show-veterinary-measure');
+    Route::post('veterinary-measure/file/{id}/remove', 'Admin\DataBasesController@veterinaryMeasureRemoveFile')
+        ->name('veterinary-remove-file');
     Route::post('add-offense/{id}', 'Admin\DataBasesController@addAnimalOffense')
         ->name('add-offense');
     Route::get('offense/{id?}', 'Admin\DataBasesController@animalOffense')
         ->name('offense');
+    Route::post('offense/file/{id}/remove', 'Admin\DataBasesController@animalOffenseRemoveFile')
+        ->name('offense-remove-file');
     Route::post('add-veterinary-passport/{id}', 'Admin\DataBasesController@addVeterinaryPassport') //todo veterinary-passport/add/{id}
         ->name('add-veterinary-passport');
     Route::post('remove-veterinary-passport/{id}', 'Admin\DataBasesController@removeVeterinaryPassport')
