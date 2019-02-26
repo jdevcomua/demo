@@ -408,7 +408,7 @@
                     <div class="panel panel-visible" id="spy5">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                <span class="glyphicon glyphicon-tasks"></span>Ідентифікуючі пристрої</div>
+                                <span class="glyphicon glyphicon-tasks"></span>Засоби ідентифікації</div>
                         </div>
                         @if($errors->identifying_device)
                             @foreach($errors->identifying_device->all() as $error)
@@ -448,7 +448,7 @@
                                                 </div>
                                                 </div>
                                                 <div class="row">
-                                                <label class="col-sm-3 col-xs-5 control-label">Ким додано:</label>
+                                                <label class="col-sm-3 col-xs-5 control-label">Ким видано:</label>
                                                 <div class="col-xs-6">
                                                     <label class="control-label">{{$identifyingDevice->issued_by}}</label>
                                                 </div>
@@ -480,7 +480,7 @@
                                 <div class="form-group">
                                     <label class="col-xs-3 control-label"></label>
                                     <div class="col-xs-8">
-                                        <label class="control-label">Ідентифікуючі пристрої відсутні</label>
+                                        <label class="control-label">Засоби ідентифікації відсутні</label>
                                     </div>
                                 </div>
                             </div>

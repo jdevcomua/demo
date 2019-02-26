@@ -117,6 +117,39 @@
                 @endforeach
             </div>
         @endif
+        @if(count($animal->identifyingDevices))
+            <hr class="divider">
+            <div class="pet-section-container">
+                <p class="title">Засоби ідентифікації</p>
+                @foreach ($animal->identifyingDevices as $index => $identifyingDevice)
+                    <div class="fields-container">
+                        <div class="field-container">
+                            <p class="label">Тип пристрою:</p>
+                            <p class="value">{{$identifyingDevice->type->name}}</p>
+                        </div>
+                        <div class="field-container">
+                            <p class="label">Номер пристрою:</p>
+                            <p class="value">{{$identifyingDevice->number}}</p>
+                        </div>
+                        <div class="field-container">
+                            <p class="label">Ким видано:</p>
+                            <p class="value">{{$identifyingDevice->issued_by}}</p>
+                        </div>
+                        <div class="field-container">
+                            <p class="label">Додаткова інформація:</p>
+                            <p class="value">{{$identifyingDevice->info ?? 'Відсутня'}}</p>
+                        </div>
+                        <div class="field-container">
+                            <p class="label">Дата видачі:</p>
+                            <p class="value">{{$identifyingDevice->created_at->format('m/d/Y')}}</p>
+                        </div>
+                    </div>
+                    @if (count($animal->identifyingDevices) > $index + 1)
+                        <hr class="half-divider">
+                    @endif
+                @endforeach
+            </div>
+        @endif
         @if(count($animal->chronicles))
             <hr class="divider">
             <div class="pet-chronicles-block">
