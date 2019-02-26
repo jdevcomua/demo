@@ -148,19 +148,18 @@
                                     <div class="form-group select">
                                         <label for="device_type" class="col-lg-3 control-label">Вид засобу ідентифікації:</label>
                                         <div class="col-lg-8">
-                                            <select name="device_type" id="device_type" required>
-                                                @foreach($animal->identifyingDevicesArray() as $k => $v)
-                                                    @if($animal->$k === null)
-                                                        <option value="{{$k}}">{{$v}}</option>
-                                                    @endif
-                                                @endforeach
+                                            <select name="device_type" id="device_type">
+                                                <option value="">-</option>
+                                            @foreach($identifyingDeviceTypes as $identifyingDeviceType)
+                                                        <option value="{{$identifyingDeviceType->id}}">{{$identifyingDeviceType->name}}</option>
+                                            @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="device_number" class="col-lg-3 control-label">Номер засобу ідентифікації:</label>
                                         <div class="col-lg-8">
-                                            <input type="text" id="device_number" name="device_number" class="form-control">
+                                            <input type="text" id="device_number" name="device_number" class="form-control" value="{{old('device_number') ?? ''}}">
                                         </div>
                                     </div>
                                 @endpermission

@@ -64,4 +64,16 @@ class AnimalChronicle extends Model
     {
         return str_replace('{' . $key . '}', $value, $text);
     }
+
+    public static function getChronicleFieldByType($type): string
+    {
+        $types = [
+            Animal::IDENTIFYING_DEVICES_TYPE_CLIP => 'clip',
+            Animal::IDENTIFYING_DEVICES_TYPE_CHIP => 'chip',
+            Animal::IDENTIFYING_DEVICES_TYPE_BADGE => 'badge',
+            Animal::IDENTIFYING_DEVICES_TYPE_BRAND => 'brand',
+        ];
+
+        return $types[$type];
+    }
 }

@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\AnimalAdded;
 use App\Helpers\DataTables;
+use App\Http\Requests\AddIdentifyingDevice;
 use App\Http\Requests\ArchiveAnimal;
 use App\Http\Requests\SterilizationVaccinationRequest;
 use App\Models\Animal;
+use App\Models\AnimalChronicle;
 use App\Models\AnimalOffense;
 use App\Models\AnimalsFile;
 use App\Models\AnimalVeterinaryMeasure;
 use App\Models\CauseOfDeath;
+use App\Models\IdentifyingDevice;
 use App\Models\IdentifyingDeviceType;
 use App\Models\Log;
 use App\Models\Offense;
@@ -440,7 +443,8 @@ class DataBasesController extends Controller
             'species' => Species::get(),
             'user' => $user,
             'users' => json_encode($users),
-            'animal' => $animal
+            'animal' => $animal,
+            'identifyingDeviceTypes' => IdentifyingDeviceType::all()
         ]);
     }
 
@@ -456,11 +460,15 @@ class DataBasesController extends Controller
 
         $deviceType = $data['device_type'];
         $deviceNumber = $data['device_number'];
-        $data[$deviceType] = $deviceNumber;
-        unset($data['device_type']);
-        unset($data['device_number']);
 
-        $validator = Validator::make($data, [
+        switch ($deviceType) {
+            case Animal::IDENTIFYING_DEVICES_TYPE_BADGE: $deviceNumberRule = 'nullable|between:5,8'; break;
+            case Animal::IDENTIFYING_DEVICES_TYPE_CLIP: $deviceNumberRule = 'nullable'; break;
+            case Animal::IDENTIFYING_DEVICES_TYPE_CHIP: $deviceNumberRule = 'nullable|size:15'; break;
+            case Animal::IDENTIFYING_DEVICES_TYPE_BRAND: $deviceNumberRule = 'nullable'; break;
+        }
+
+        $rules = [
             'user' => 'nullable|integer|exists:users,id',
             'nickname' => 'required|string|max:256',
             'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
@@ -480,7 +488,14 @@ class DataBasesController extends Controller
             'tallness' => 'nullable|integer|min:10|max:100',
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
-        ], [
+            'device_type' => 'nullable'
+        ];
+
+        if (isset($deviceNumberRule)) {
+            $rules['device_number'] = $deviceNumberRule;
+        }
+
+        $messages = [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
             'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
@@ -500,13 +515,13 @@ class DataBasesController extends Controller
             'images.*.image' => 'Файли повинні бути в форматі зображення!',
             'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!',
-            'badge.unique' => 'Номер жетону вже використовується',
-            'clip.unique' => 'Кліпса вже використовується',
-            'chip.unique' => 'Чіп вже використовується',
-            'chip.size' => 'Номер чіпу повинен складатися з :size символів!',
             'tallness.min' => 'Зріст має бути більше :min см',
-            'tallness.max' => 'Зріст має бути менше :max см'
-        ]);
+            'tallness.max' => 'Зріст має бути менше :max см',
+            'device_number.size' => 'Номер пристрою повинен складатися з :size символів!',
+            'device_number.between' => 'Номер пристрою повинен бути не менше :min символів та не більше :max символів!'
+        ];
+
+        $validator = Validator::make($data, $rules, $messages);
         if ($validator->fails()) {
             return redirect()
                 ->back()
@@ -539,6 +554,16 @@ class DataBasesController extends Controller
         } else {
             $animal = Animal::create($data);
         }
+
+
+        if ($deviceType !== null && $deviceNumber !== null) {
+            $animal->identifyingDevices()->create([
+                'number' => $deviceNumber,
+                'issued_by' => \Auth::user()->full_name,
+                'identifying_device_type_id' => $deviceType
+            ]);
+        }
+
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
@@ -772,41 +797,16 @@ class DataBasesController extends Controller
         ]);
     }
 
-    public function addIdentifyingDevice(Request $request, AnimalChronicleServiceInterface $chs,  $id)
+    public function addIdentifyingDevice(AddIdentifyingDevice $request, AnimalChronicleServiceInterface $chs,  $id)
     {
-        $requestData = $request->all();
+        $validatedData = $request->validated();
+
         $chronicleTypesMap = [
-            'clip' => 'clip-added',
-            'chip' => 'chip-added',
-            'badge' => 'badge-added',
+            Animal::IDENTIFYING_DEVICES_TYPE_CLIP => 'clip-added',
+            Animal::IDENTIFYING_DEVICES_TYPE_CHIP => 'chip-added',
+            Animal::IDENTIFYING_DEVICES_TYPE_BADGE => 'badge-added',
+            Animal::IDENTIFYING_DEVICES_TYPE_BRAND => 'brand-added',
         ];
-
-
-        $rulesByTypes = [
-            'clip' => 'required',
-            'chip' => 'required|size:15',
-            'badge' => 'required|between:5,8',
-        ];
-
-
-        $rules = [
-            'device_type' => 'required|in:' . implode(',', array_keys($rulesByTypes))
-        ];
-
-        $messages = [
-            '*.required' => 'Номер та тип пристрою є обов\'язковим полем!',
-            '*.size' => 'Номер пристрою повинен складатися з :size символів!',
-        ];
-
-        if(isset($rulesByTypes[$requestData['device_type']])) {
-            $rules['device_number'] = $rulesByTypes[$requestData['device_type']];
-        }
-
-        $validator = Validator::make($requestData, $rules, $messages);
-
-        $validator->validate();
-
-        $device_column = $requestData['device_type'];
 
         $animal = Animal::findOrFail($id);
 
@@ -818,12 +818,17 @@ class DataBasesController extends Controller
         \RhaLogger::object($animal);
 
         $oldAnimal = clone $animal;
-        $animal->$device_column = $requestData['device_number'];
+
+        $animal->identifyingDevices()->create($validatedData);
+
         $animal->save();
 
         \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
-        $chs->addAnimalChronicle($animal,$chronicleTypesMap[$device_column], [$device_column => $requestData['device_number']]);
+        $chs->addAnimalChronicle(
+            $animal,$chronicleTypesMap[$validatedData['device_type']],
+            [AnimalChronicle::getChronicleFieldByType($validatedData['device_type']) => $validatedData['number']]
+        );
 
         return back()->with('success_identifying_device', 'Пристрій було додано успішно!');
     }
@@ -831,20 +836,18 @@ class DataBasesController extends Controller
     public function removeIdentifyingDevice(Request $request, AnimalChronicleServiceInterface $chs, $id)
     {
         $requestData = $request->all();
+
+
         $chronicleTypesMap = [
-            'clip' => 'clip-removed',
-            'chip' => 'chip-removed',
-            'badge' => 'badge-removed',
+            Animal::IDENTIFYING_DEVICES_TYPE_CLIP => 'clip-removed',
+            Animal::IDENTIFYING_DEVICES_TYPE_CHIP => 'chip-removed',
+            Animal::IDENTIFYING_DEVICES_TYPE_BADGE => 'badge-removed',
+            Animal::IDENTIFYING_DEVICES_TYPE_BRAND => 'brand-removed',
         ];
 
-        $validator = Validator::make($requestData, [
-            'device_type' => 'required|in:' . implode(',', array_keys($chronicleTypesMap))
-        ]);
-        $validator->validate();
-
-        $device_column = $requestData['device_type'];
-
         $animal = Animal::findOrFail($id);
+        $device = IdentifyingDevice::findOrFail($requestData['id']);
+        $deviceType = $device->type->id;
 
         \RhaLogger::start(['data' => $request->all()]);
         \RhaLogger::update([
@@ -854,12 +857,12 @@ class DataBasesController extends Controller
         \RhaLogger::object($animal);
 
         $oldAnimal = clone $animal;
-        $animal->$device_column = null;
+        $device->delete();
         $animal->save();
 
         \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
-        $chs->addAnimalChronicle($animal, $chronicleTypesMap[$device_column]);
+        $chs->addAnimalChronicle($animal, $chronicleTypesMap[$deviceType]);
 
         return back()->with('success_identifying_device', 'Пристрій було видалено успішно!');
     }

@@ -25,9 +25,14 @@ class AnimalChroniclesSeeder extends Seeder
             'chip'
         ]);
 
+        $this->addType('brand-added', 'Тавро додано. Номер тавра: {brand}.', [
+            'brand'
+        ]);
+
         $this->addType('badge-removed', 'Жетон з QR-кодом видалено.', []);
         $this->addType('clip-removed', 'Кліпсу видалено.', []);
         $this->addType('chip-removed', 'Чіп видалено.', []);
+        $this->addType('brand-removed', 'Тавро видалено.', []);
 
         $this->addType('sterilization-added', 'Тварину було стерилізовано. Дата стерилізації: {date}.', [
             'date'

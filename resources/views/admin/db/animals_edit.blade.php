@@ -333,72 +333,6 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="panel panel-visible" id="spy5">
-                        <div class="panel-heading">
-                            <div class="panel-title">
-                                <span class="glyphicon glyphicon-tasks"></span>Ідентифікуючі пристрої</div>
-                        </div>
-                        @if($errors->identifying_device)
-                            @foreach($errors->identifying_device->all() as $error)
-                                <div class="alert alert-danger alert-dismissable">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                    <i class="fa fa-remove pr10"></i>
-                                    {{ $error }}
-                                </div>
-                            @endforeach
-                        @endif
-
-                        @if (\Session::has('success_identifying_device'))
-                            <div class="alert alert-success alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                <i class="fa fa-check pr10"></i>
-                                {{ \Session::get('success_identifying_device') }}
-                            </div>
-                        @endif
-
-                        @if($animal->identifying_devices_count > 0)
-                            @foreach($animal->identifyingDevicesArray() as $k => $v)
-                                @if($animal->$k !== null)
-                                    <form class="form-horizontal" action="{{route('admin.db.animals.remove-identifying-device', $animal->id)}}" method="post">
-                                        @csrf
-                                        <input type="hidden" name="device_type" value="{{$k}}">
-                                        <div class="panel-body">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 col-xs-5 control-label">{{$v}}:</label>
-                                                <div class="col-xs-6">
-                                                    <label class="control-label">{{$animal->$k}}</label>
-                                                </div>
-                                                @permission('edit-animals')
-                                                <div class="col-sm-3 col-xs-12">
-                                                    <button type="submit" class="btn btn-default deleteDeviceBtn ph25">Видалити</button>
-                                                </div>
-                                                @endpermission
-                                            </div>
-                                        </div>
-                                    </form>
-                                @endif
-                            @endforeach
-                        @else
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label class="col-xs-3 control-label"></label>
-                                    <div class="col-xs-8">
-                                        <label class="control-label">Ідентифікуючі пристрої відсутні</label>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if($animal->identifying_devices_count < count($animal->identifyingDevicesArray()))
-                            @permission('edit-animals')
-                            <div class="panel-footer text-right">
-                                <a id="deviceAddButton" href="javascript:void(0)"
-                                   class="btn btn-success ph25 float-right">Додати</a>
-                            </div>
-                            @endpermission
-                        @endif
-                    </div>
-                </div>
 
                 <div class="col-md-6">
                     <div class="panel panel-visible" id="spy57">
@@ -425,24 +359,24 @@
                         @endif
 
                         @if($animal->veterinaryPassport)
-                                    <form class="form-horizontal" id="removeVeterinaryPassportForm"
-                                          action="{{route('admin.db.animals.remove-veterinary-passport', $animal->id)}}" method="post">
-                                        @csrf
-                                        <div class="panel-body">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 col-xs-5 control-label">Номер:</label>
-                                                <div class="col-xs-6">
-                                                    <label class="control-label">{{$animal->veterinaryPassport->number}}</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-3 col-xs-5 control-label">Ким видано паспорт:</label>
-                                                <div class="col-xs-6">
-                                                    <label class="control-label">{{$animal->veterinaryPassport->issued_by}}</label>
-                                                </div>
-                                            </div>
+                            <form class="form-horizontal" id="removeVeterinaryPassportForm"
+                                  action="{{route('admin.db.animals.remove-veterinary-passport', $animal->id)}}" method="post">
+                                @csrf
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 col-xs-5 control-label">Номер:</label>
+                                        <div class="col-xs-6">
+                                            <label class="control-label">{{$animal->veterinaryPassport->number}}</label>
                                         </div>
-                                    </form>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 col-xs-5 control-label">Ким видано паспорт:</label>
+                                        <div class="col-xs-6">
+                                            <label class="control-label">{{$animal->veterinaryPassport->issued_by}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         @else
                             <div class="panel-body">
                                 <div class="form-group">
@@ -454,9 +388,9 @@
                             </div>
                         @endif
                         @permission('edit-animals')
-                    @if($animal->veterinaryPassport)
+                        @if($animal->veterinaryPassport)
                             <div class="panel-footer text-right">
-                                    <button type="submit" class="btn btn-default ph25" id="veterinaryPassportDeleteButton">Видалити</button>
+                                <button type="submit" class="btn btn-default ph25" id="veterinaryPassportDeleteButton">Видалити</button>
                                 <a id="veterinaryPassportButton" href="javascript:void(0)"
                                    class="btn btn-success ph25 float-right">Редагувати</a>
                             </div>
@@ -467,6 +401,98 @@
                             </div>
                         @endif
                         @endpermission
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="panel panel-visible" id="spy5">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <span class="glyphicon glyphicon-tasks"></span>Ідентифікуючі пристрої</div>
+                        </div>
+                        @if($errors->identifying_device)
+                            @foreach($errors->identifying_device->all() as $error)
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <i class="fa fa-remove pr10"></i>
+                                    {{ $error }}
+                                </div>
+                            @endforeach
+                        @endif
+
+                        @if (\Session::has('success_identifying_device'))
+                            <div class="alert alert-success alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <i class="fa fa-check pr10"></i>
+                                {{ \Session::get('success_identifying_device') }}
+                            </div>
+                        @endif
+
+                        @if($animal->identifyingDevices !== null && count($animal->identifyingDevices))
+                            @foreach($animal->identifyingDevices as $identifyingDevice)
+                                    <form class="form-horizontal" action="{{route('admin.db.animals.remove-identifying-device', $animal->id)}}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{$identifyingDevice->id}}">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                <label class="col-sm-3 col-xs-5 control-label">Тип:</label>
+                                                <div class="col-xs-6">
+                                                    <label class="control-label">{{$identifyingDevice->type->name}}</label>
+                                                </div>
+                                                </div>
+                                                <div class="row">
+                                                <label class="col-sm-3 col-xs-5 control-label">Номер пристрою:</label>
+                                                <div class="col-xs-6">
+                                                    <label class="control-label">{{$identifyingDevice->number}}</label>
+                                                </div>
+                                                </div>
+                                                <div class="row">
+                                                <label class="col-sm-3 col-xs-5 control-label">Ким додано:</label>
+                                                <div class="col-xs-6">
+                                                    <label class="control-label">{{$identifyingDevice->issued_by}}</label>
+                                                </div>
+                                                </div>
+                                                <div class="row">
+                                                <label class="col-sm-3 col-xs-5 control-label">Додаткова інформація:</label>
+                                                <div class="col-xs-6">
+                                                    <label class="control-label">{{$identifyingDevice->info ?? 'Відсутня'}}</label>
+                                                </div>
+                                                </div>
+                                                <div class="row">
+                                                <label class="col-sm-3 col-xs-5 control-label">Дата видачі:</label>
+                                                <div class="col-xs-6">
+                                                    <label class="control-label">{{$identifyingDevice->created_at}}</label>
+                                                </div>
+                                                </div>
+                                                @permission('edit-animals')
+                                                <br>
+                                                <div class="col-sm-3 col-xs-12 pull-right">
+                                                    <button type="submit" class="btn btn-default deleteDeviceBtn ph25">Видалити</button>
+                                                </div>
+                                                @endpermission
+                                            </div>
+                                        </div>
+                                    </form>
+                            @endforeach
+                        @else
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-xs-3 control-label"></label>
+                                    <div class="col-xs-8">
+                                        <label class="control-label">Ідентифікуючі пристрої відсутні</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @if($animal->identifying_devices_count < count($animal->identifyingDevicesArray()))
+                            @permission('edit-animals')
+                            <div class="panel-footer text-right">
+                                <a id="deviceAddButton" href="javascript:void(0)"
+                                   class="btn btn-success ph25 float-right">Додати</a>
+                            </div>
+                            @endpermission
+                        @endif
                     </div>
                 </div>
 
@@ -861,28 +887,47 @@
                                 <div class="col-md-12">
                                     <form id="identifyDeviceForm" action="{{route('admin.db.animals.add-identifying-device', $animal->id)}}" method="POST">
                                         @csrf
-                                        <div class="row">
                                             <div class="form-group select">
+                                                <div class="row">
                                                 <label for="archive_type" class="col-lg-3 control-label">Тип пристрою:</label>
                                                 <div class="col-lg-9">
                                                     <div class="validation-error alert alert-danger hidden"></div>
                                                     <select name="device_type" id="device_type" required>
-                                                        @foreach($animal->identifyingDevicesArray() as $k => $v)
-                                                            @if($animal->$k === null)
-                                                                <option value="{{$k}}">{{$v}}</option>
-                                                            @endif
+                                                        @foreach($animal->getAvailableIdentifyingDevicesTypes() as $identifyingDeviceType)
+                                                            <option value="{{$identifyingDeviceType->id}}">{{$identifyingDeviceType->name}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="created_at" class="col-lg-3 control-label">Номер пристрою:</label>
-                                                    <div class="col-lg-9">
-                                                        <div class="validation-error alert alert-danger hidden"></div>
-                                                        <input type="text" name="device_number" class="form-control" required>
-                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                    <label for="number" class="col-lg-3 control-label">Номер пристрою:</label>
+                                                    <div class="col-lg-9">
+                                                        <div class="validation-error alert alert-danger hidden"></div>
+                                                        <input type="text" id="number" name="number" class="form-control" required>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                    <label for="issued_by" class="col-lg-3 control-label">Ким видано:</label>
+                                                    <div class="col-lg-9">
+                                                        <div class="validation-error alert alert-danger hidden"></div>
+                                                        <input type="text" id="issued_by" name="issued_by" class="form-control"
+                                                               value="{{\Auth::user()->full_name}}" readonly required>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                    <label for="info" class="col-lg-3 control-label">Додаткова інформація:</label>
+                                                    <div class="col-lg-9">
+                                                        <div class="validation-error alert alert-danger hidden"></div>
+                                                        <input type="text" id="info" name="info" class="form-control" required>
+                                                    </div>
+                                                    </div>
+                                                </div>
                                         <br>
                                         <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax">Додати</button>
                                     </form>
@@ -1381,7 +1426,7 @@
 
             for (var key in errors) {
                 if (errors.hasOwnProperty(key)) {
-                    form.find('[name="' + key + '"]').siblings('.validation-error').empty().append("<p>" + errors[key][0] + "</p>").removeClass('hidden');
+                    form.find('[name="' + key + '"]').siblings('.validation-error').empty().append("<p>" + errors[key][0] + "</p>").removeClass('hidden').css('display', 'inline-block');
                 }
             }
         }

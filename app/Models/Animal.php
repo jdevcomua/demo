@@ -69,6 +69,11 @@ class Animal extends Model
     const GENDER_FEMALE = 0;
     const GENDER_MALE = 1;
 
+    const IDENTIFYING_DEVICES_TYPE_CHIP = 1;
+    const IDENTIFYING_DEVICES_TYPE_CLIP = 2;
+    const IDENTIFYING_DEVICES_TYPE_BADGE = 3;
+    const IDENTIFYING_DEVICES_TYPE_BRAND = 4;
+
     private $identifying_devices = [
         'chip' => 'Чіп',
         'clip' => 'Кліпса',
@@ -207,6 +212,11 @@ class Animal extends Model
         return $this->belongsTo(VeterinaryPassport::class);
     }
 
+    public function identifyingDevices()
+    {
+        return $this->hasMany(IdentifyingDevice::class);
+    }
+
     public function identifyingDevicesArray(): array
     {
         return $this->identifying_devices;
@@ -229,6 +239,21 @@ class Animal extends Model
     {
         $diff = $this->birthday->diff(Carbon::now());
         return Date::getDiffLocalized($diff);
+    }
+
+    public function getAvailableIdentifyingDevicesTypes()
+    {
+        $allDeviceTypes = IdentifyingDeviceType::all();
+
+        if ($this->identifyingDevices !== null && count($this->identifyingDevices)) {
+            $takenDeviceTypes = [];
+            foreach ($this->identifyingDevices as $identifyingDevice) {
+                $takenDeviceTypes[] = $identifyingDevice->type;
+            }
+            $takenDeviceTypesCollection = collect($takenDeviceTypes);
+            return $allDeviceTypes->diff($takenDeviceTypesCollection);
+        }
+        return $allDeviceTypes;
     }
 
 }
