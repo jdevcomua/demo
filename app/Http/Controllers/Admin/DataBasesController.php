@@ -448,7 +448,7 @@ class DataBasesController extends Controller
         ]);
     }
 
-    public function animalStore(Request $request)
+    public function animalStore(Request $request, AnimalChronicleServiceInterface $chs)
     { //Todo убрать дублирование кода
         $data = $request->only(['user_id', 'nickname', 'nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
             'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number', 'tallness']);
@@ -562,6 +562,10 @@ class DataBasesController extends Controller
                 'issued_by' => \Auth::user()->full_name,
                 'identifying_device_type_id' => $deviceType
             ]);
+
+            $chronicleField = AnimalChronicle::getChronicleFieldByType($deviceType);
+
+            $chs->addAnimalChronicle($animal,$chronicleField . '-added', [$chronicleField => $deviceNumber]);
         }
 
 
