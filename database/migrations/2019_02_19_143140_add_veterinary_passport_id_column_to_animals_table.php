@@ -31,7 +31,7 @@ class AddVeterinaryPassportIdColumnToAnimalsTable extends Migration
     public function down()
     {
         Schema::table('animals', function (Blueprint $table) {
-            $table->dropForeign('veterinary_passport_id');
+            $table->dropForeign(['veterinary_passport_id']);
             $table->dropColumn('veterinary_passport_id');
         });
     }
