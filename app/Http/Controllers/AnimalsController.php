@@ -76,7 +76,7 @@ class AnimalsController extends Controller
             $data['birthday'] = Carbon::createFromTimestamp(strtotime($data['birthday']));
         }
 
-        $validator = Validator::make($data, [
+        $validator = Validator::make($data, [    //Todo public function validate() (повторение огромного куска кода)
             'nickname' => 'required|string|max:256',
             'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
             'species' => 'required|integer|exists:species,id',
@@ -369,7 +369,7 @@ class AnimalsController extends Controller
 //            ->whereNull('user_id')
             ->first();
 
-        if ($badge === null || !$animal) {
+        if ($badge === null || !$animal) {  //Todo лишний запрос в БД
             return redirect()
                 ->back()
                 ->with('error', 'На жаль, тварина не знайдена');
@@ -403,8 +403,8 @@ class AnimalsController extends Controller
             $animal->lost()->create();
         }
 
-        $animal->load('lost');
-        $lost = $animal->lost;
+        $animal->load('lost');     //Todo см 15 строк выше
+        $lost = $animal->lost;   //Todo см 16 строк выше
 
         \RhaLogger::start();
         \RhaLogger::update([
@@ -446,7 +446,7 @@ class AnimalsController extends Controller
 
     public function informDeath(InformAnimalDeath $request)
     {
-        $request->validate($request->rules());
+        $request->validate($request->rules()); //Todo Валидация в кастомных реквестах автоматическая
 
         $requestData = $request->all();
         $animal = Animal::find($requestData['animal_id']);
@@ -479,7 +479,7 @@ class AnimalsController extends Controller
 
     public function informMoved(InformAnimalMovedOut $request)
     {
-        $request->validate($request->rules());
+        $request->validate($request->rules()); //Todo Валидация в кастомных реквестах автоматическая
         $requestData = $request->all();
 
         $animal = Animal::find($requestData['animal_id']);

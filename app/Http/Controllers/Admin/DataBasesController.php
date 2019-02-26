@@ -160,7 +160,7 @@ class DataBasesController extends Controller
     }
 
     public function userAttachOrganization(Request $request)
-    {
+    { //Todo убрать дублирование кода
         $user = User::find($request->user_id);
         $organization = Organization::find($request->organization_id);
 
@@ -449,7 +449,7 @@ class DataBasesController extends Controller
     }
 
     public function animalStore(Request $request)
-    {
+    { //Todo убрать дублирование кода
         $data = $request->only(['user_id', 'nickname', 'nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
             'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number', 'tallness']);
 

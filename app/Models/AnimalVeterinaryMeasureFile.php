@@ -22,6 +22,7 @@ class AnimalVeterinaryMeasureFile extends Model
 
     public function getFileNameAttribute()
     {
+        //todo этот метод повторяется в нескольких моделях вынеси в трейт или в какую-то базовую модель
         $arr = explode('/', $this->name);
         $fname = $arr[count($arr) - 1];
         $arr = explode('.', $fname);
@@ -31,6 +32,7 @@ class AnimalVeterinaryMeasureFile extends Model
 
     public function getFileExtensionAttribute()
     {
+        //todo этот метод повторяется в нескольких моделях вынеси в трейт или в какую-то базовую модель
         $arr = explode('/', $this->name);
         $fname = $arr[count($arr) - 1];
         $arr = explode('.', $fname);

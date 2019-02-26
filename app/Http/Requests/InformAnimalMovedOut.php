@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class InformAnimalMovedOut extends FormRequest
+class InformAnimalMovedOut extends FormRequest //todo все реквесты нужно называть ...Request
 {
     /**
      * Determine if the user is authorized to make this request.

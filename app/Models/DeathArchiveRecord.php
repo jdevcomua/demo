@@ -24,6 +24,7 @@ class DeathArchiveRecord extends Model
 
     public function getCarbonDiedAtAttribute($value)
     {
+        //todo protected $dates делает то же самое
         return Carbon::parse($value);
     }
 

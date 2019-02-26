@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AnimalChronicle extends Model
 {
-
+    //todo чтоб не мучаться с геттерами\сеттерами есть вариант вызвать свойство $dates и перечислить все поля дат там
     public function type()
     {
         return $this->belongsTo(AnimalChronicleType::class, 'animal_chronicle_type_id');

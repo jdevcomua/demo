@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IFoundAnimal extends FormRequest
+class IFoundAnimal extends FormRequest //todo все реквесты нужно называть ...Request + закос под Apple
 {
     /**
      * Determine if the user is authorized to make this request.

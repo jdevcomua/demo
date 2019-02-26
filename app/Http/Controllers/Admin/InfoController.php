@@ -429,7 +429,7 @@ class InfoController extends Controller
 
     public function directoryStoreCauseOfDeath(Request $request)
     {
-        if($request->has(['d_name'])) {
+        if($request->has(['d_name'])) {  //Todo вынести повторяющийся код в от дельный метод
             $data = $request->only(['d_name']);
 
             $validator = Validator::make($data, [
@@ -535,7 +535,7 @@ class InfoController extends Controller
 
     public function directoryStoreVeterinary(Request $request)
     {
-        if($request->has(['v_name'])) {
+        if($request->has(['v_name'])) { //Todo вынести повторяющийся код в от дельный метод
             $data = $request->only(['v_name']);
 
             $validator = Validator::make($data, [
@@ -647,7 +647,7 @@ class InfoController extends Controller
     }
 
     public function directoryUpdateOrganization(Request $request, Organization $organization)
-    {
+    { //Todo вынести повторяющийся код в от дельный метод
         $rules = [
             'name' => 'required|string|max:256',
             'chief_full_name' => 'required|string|max:256',
@@ -832,7 +832,7 @@ class InfoController extends Controller
     }
 
     public function directoryStoreOffenseAffiliation(Request $request)
-    {
+    { //Todo вынести повторяющийся код в от дельный метод
         if($request->has(['of_a_name'])) {
             $data = $request->only(['of_a_name']);
 
@@ -938,7 +938,7 @@ class InfoController extends Controller
     }
 
     public function directoryStoreOffense(Request $request)
-    {
+    { //Todo вынести повторяющийся код в от дельный метод
         if($request->has(['of_name'])) {
             $data = $request->only(['of_name']);
 
