@@ -522,6 +522,9 @@ img {
   .notification {
     margin-bottom: 0;
   }
+  .text-with-square-block .text-with-square-wrapper {
+    transform: translate(5px, -15px)
+  }
 }
 @media (max-width: 500px) {
   .notification {
