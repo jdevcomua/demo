@@ -316,7 +316,13 @@ img {
 .notification:hover {
   text-decoration: none;
 }
-
+.main-page-wrapper {
+  .last-img {
+    margin: 40px auto 50px auto;
+    display: none;
+    width: 36rem
+  }
+}
 .three-cols-block {
   display: flex;
   flex-direction: row;
@@ -506,6 +512,10 @@ img {
   }
   .three-cols-block:first-child + h2.block-title {
     margin-top: 50px;
+  }
+
+  .main-page-wrapper .last-img {
+    display: block;
   }
 }
 @media (max-width: 650px) {

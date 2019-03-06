@@ -213,7 +213,7 @@
                 </div>
             </div>
         </div>
-
+        <img class="last-img" src="{{asset('/img/girl_with_laptop.svg')}}" style="" alt="Girl with laptop">
     </div>
 
 
