@@ -179,10 +179,9 @@
                                 <div class="text-with-square-block">
                                     <div class="square"></div>
                                     <div class="text-with-square-wrapper">
-                                        <span class="text-with-square">Заповніть форму "Занйдено тварину" та відправте інформацію</span>
+                                        <span class="text-with-square">Заповніть форму "Знайдено тварину" та відправте інформацію</span>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="step-block">
