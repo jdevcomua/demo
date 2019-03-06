@@ -27,7 +27,7 @@ class AnimalsLostController extends Controller
     {
         $lostAnimals = $lostAnimal->sortable(['created_at' => 'desc'])->where(['found' => 0])->paginate();
 
-        return view('lost-animals.index', compact('lostAnimals'));
+        return view('lost-animals.index', compact('lostAnimals'));  //Todo на вьюхе нет пагинации
     }
 
     public function foundIndex(FoundAnimal $foundAnimal)
@@ -37,7 +37,7 @@ class AnimalsLostController extends Controller
         return view('lost-animals.found', compact('foundAnimals'));
     }
 
-    public function iFoundAnimal(IFoundAnimal $request)
+    public function iFoundAnimal(IFoundAnimal $request) //Todo: закос под яблочную продукцию?
     {
         $dataToSave = $request->validated();
 
@@ -58,7 +58,7 @@ class AnimalsLostController extends Controller
      */
     public function create()
     {
-        //
+        //Todo ?
     }
 
     /**
@@ -69,7 +69,7 @@ class AnimalsLostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Todo ?
     }
 
     /**
@@ -107,7 +107,7 @@ class AnimalsLostController extends Controller
      */
     public function edit($id)
     {
-        //
+        //Todo ?
     }
 
     /**
@@ -119,7 +119,7 @@ class AnimalsLostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //Todo ?
     }
 
     /**
@@ -130,6 +130,6 @@ class AnimalsLostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //Todo ?
     }
 }

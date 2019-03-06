@@ -23,5 +23,7 @@ class AnimalSeeder extends Seeder
                 'user_id' => 1, 'verified' => 0, 'confirm_user_id' => 1
             ],
         ]);
+
+
     }
 }

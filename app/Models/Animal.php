@@ -69,6 +69,11 @@ class Animal extends Model
     const GENDER_FEMALE = 0;
     const GENDER_MALE = 1;
 
+    const IDENTIFYING_DEVICES_TYPE_CHIP = 1;
+    const IDENTIFYING_DEVICES_TYPE_CLIP = 2;
+    const IDENTIFYING_DEVICES_TYPE_BADGE = 3;
+    const IDENTIFYING_DEVICES_TYPE_BRAND = 4;
+
     private $identifying_devices = [
         'chip' => 'Чіп',
         'clip' => 'Кліпса',
@@ -78,7 +83,7 @@ class Animal extends Model
     protected $fillable = [
         'id', 'nickname', 'species_id', 'gender', 'breed_id', 'color_id', 'fur_id', 'user_id',
         'birthday', 'sterilized', 'comment', 'verified', 'number', 'badge', 'request_user_id',
-        'archived_type', 'archived_at', 'clip', 'chip', 'tallness',
+        'archived_type', 'archived_at', 'clip', 'chip', 'tallness', 'nickname_lat',
 
         //generated attributes, don't fill them
         '_verification',
@@ -202,6 +207,16 @@ class Animal extends Model
         return $this->morphTo('archived', 'archived_type', 'archived_id');
     }
 
+    public function veterinaryPassport()
+    {
+        return $this->belongsTo(VeterinaryPassport::class);
+    }
+
+    public function identifyingDevices()
+    {
+        return $this->hasMany(IdentifyingDevice::class);
+    }
+
     public function identifyingDevicesArray(): array
     {
         return $this->identifying_devices;
@@ -224,6 +239,47 @@ class Animal extends Model
     {
         $diff = $this->birthday->diff(Carbon::now());
         return Date::getDiffLocalized($diff);
+    }
+
+    public function hasDocuments(): bool
+    {
+        return $this->hasFilesCommonLogic($this, 'documents');
+    }
+
+    public function hasVetFiles(): bool
+    {
+        return $this->hasFilesCommonLogic($this->animalVeterinaryMeasure, 'files', 1);
+    }
+
+    private function hasFilesCommonLogic($entity, $filesRelationName, $iterable = null): bool
+    {
+        $hasFiles = false;
+        if ($iterable !== null) {
+            foreach ($entity as $entityItem) {
+                if (count($entityItem->$filesRelationName)) {
+                    return true;
+                }
+            }
+        } else {
+            return count($entity->$filesRelationName);
+        }
+
+        return $hasFiles;
+    }
+
+    public function getAvailableIdentifyingDevicesTypes()
+    {
+        $allDeviceTypes = IdentifyingDeviceType::all();
+
+        if ($this->identifyingDevices !== null && count($this->identifyingDevices)) {
+            $takenDeviceTypes = [];
+            foreach ($this->identifyingDevices as $identifyingDevice) {
+                $takenDeviceTypes[] = $identifyingDevice->type;
+            }
+            $takenDeviceTypesCollection = collect($takenDeviceTypes);
+            return $allDeviceTypes->diff($takenDeviceTypesCollection);
+        }
+        return $allDeviceTypes;
     }
 
 }

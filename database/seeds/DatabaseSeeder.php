@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(BlocksSeeder::class);
         $this->call(AnimalChroniclesSeeder::class);
+        $this->call(IdentifyingDeviceTypesSeeder::class);
 //        $this->call(NotificationsSeeder::class);
     }
 }

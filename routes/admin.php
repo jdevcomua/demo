@@ -48,10 +48,10 @@ Route::group([
     Route::put('update/{id}/address', 'Admin\DataBasesController@userUpdateAddress')
         ->name('update.address')
         ->middleware('permission:edit-user');
-    Route::put('attach/organization', 'Admin\DataBasesController@userAttachOrganization')
+    Route::put('attach/organization', 'Admin\DataBasesController@userAttachOrganization') //todo organization/attach
         ->name('attach.organization')
         ->middleware('permission:edit-organizations');
-    Route::put('detach/organization', 'Admin\DataBasesController@userDetachOrganization')
+    Route::put('detach/organization', 'Admin\DataBasesController@userDetachOrganization') //todo organization/detach
         ->name('detach.organization')
         ->middleware('permission:edit-organizations');
     Route::put('roles/update/{id?}', 'Admin\DataBasesController@userUpdateRoles')
@@ -104,7 +104,7 @@ Route::group([
         ->name('add-identifying-device');
     Route::post('removeIdevice/{id}', 'Admin\DataBasesController@removeIdentifyingDevice')
         ->name('remove-identifying-device');
-    Route::post('add-sterilization/{id}', 'Admin\DataBasesController@addSterilization')
+    Route::post('add-sterilization/{id}', 'Admin\DataBasesController@addSterilization') //todo sterilization/add/{id}
         ->name('add-sterilization');
     Route::post('add-vaccination/{id}', 'Admin\DataBasesController@addVaccination')
         ->name('add-vaccination');
@@ -116,10 +116,20 @@ Route::group([
         ->name('add-veterinary-measure');
     Route::get('veterinary-measure/{id?}', 'Admin\DataBasesController@animalVeterinaryMeasure')
         ->name('show-veterinary-measure');
+    Route::post('veterinary-measure/file/{id}/remove', 'Admin\DataBasesController@veterinaryMeasureRemoveFile')
+        ->name('veterinary-remove-file');
     Route::post('add-offense/{id}', 'Admin\DataBasesController@addAnimalOffense')
         ->name('add-offense');
     Route::get('offense/{id?}', 'Admin\DataBasesController@animalOffense')
         ->name('offense');
+    Route::post('offense/file/{id}/remove', 'Admin\DataBasesController@animalOffenseRemoveFile')
+        ->name('offense-remove-file');
+    Route::post('add-veterinary-passport/{id}', 'Admin\DataBasesController@addVeterinaryPassport') //todo veterinary-passport/add/{id}
+        ->name('add-veterinary-passport');
+    Route::post('remove-veterinary-passport/{id}', 'Admin\DataBasesController@removeVeterinaryPassport')
+        ->name('remove-veterinary-passport');
+    Route::post('update-veterinary-passport/{id}', 'Admin\DataBasesController@updateVeterinaryPassport')
+        ->name('update-veterinary-passport');
 });
 
 Route::group([

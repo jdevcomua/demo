@@ -19,6 +19,7 @@ class MovedOutArchiveRecord extends Model
 
     public function getCarbonDiedAtAttribute($value)
     {
+        //todo private $dates
         return Carbon::parse($value);
     }
 }

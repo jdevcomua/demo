@@ -33,7 +33,7 @@ class FoundAnimal extends Model
 
     public function images()
     {
-        return $this->hasMany(FoundAnimalsFile::class);
+        return $this->hasMany(FoundAnimalsFile::class);    //Todo выбери один тип обозначения класса, или строкой или вызывай метод ::class
     }
 
     public function getContactInfoAttribute(): String

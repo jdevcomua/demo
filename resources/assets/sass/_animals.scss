@@ -776,6 +776,24 @@ $width: 100px;
     }
   }
 }
+
+.pet-section-container {
+  & .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  & .fields-container {
+    margin-bottom: 25px;
+    & .field-container {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.3rem;
+    }
+  }
+  & .half-divider {
+    width:50%;
+  }
+}
 @media (max-width: 760px) {
   .animal-actions .animal-action {
     width: 100%;

@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\AnimalAdded;
 use App\Helpers\DataTables;
+use App\Http\Requests\AddIdentifyingDevice;
 use App\Http\Requests\ArchiveAnimal;
 use App\Http\Requests\SterilizationVaccinationRequest;
 use App\Models\Animal;
 use App\Models\AnimalChronicle;
 use App\Models\AnimalOffense;
-use App\Models\AnimalsFile;
 use App\Models\AnimalVeterinaryMeasure;
 use App\Models\CauseOfDeath;
-use App\Models\DeathArchiveRecord;
+use App\Models\IdentifyingDevice;
+use App\Models\IdentifyingDeviceType;
 use App\Models\Log;
-use App\Models\MovedOutArchiveRecord;
 use App\Models\Offense;
 use App\Models\OffenseAffiliation;
 use App\Models\Organization;
@@ -26,7 +26,7 @@ use App\Models\UserEmail;
 use App\Models\UserPhone;
 use App\Models\Vaccination;
 use App\Models\VeterinaryMeasure;
-use App\Rules\Badge;
+use App\Models\VeterinaryPassport;
 use App\Rules\Phone;
 use App\Services\Animals\AnimalChronicleServiceInterface;
 use App\Services\FilesService;
@@ -35,6 +35,7 @@ use Cache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 
 class DataBasesController extends Controller
@@ -159,7 +160,7 @@ class DataBasesController extends Controller
     }
 
     public function userAttachOrganization(Request $request)
-    {
+    { //Todo убрать дублирование кода
         $user = User::find($request->user_id);
         $organization = Organization::find($request->organization_id);
 
@@ -442,13 +443,14 @@ class DataBasesController extends Controller
             'species' => Species::get(),
             'user' => $user,
             'users' => json_encode($users),
-            'animal' => $animal
+            'animal' => $animal,
+            'identifyingDeviceTypes' => IdentifyingDeviceType::all()
         ]);
     }
 
-    public function animalStore(Request $request)
-    {
-        $data = $request->only(['user_id', 'nickname', 'species', 'gender', 'breed', 'color', 'fur', 'user',
+    public function animalStore(Request $request, AnimalChronicleServiceInterface $chs)
+    { //Todo убрать дублирование кода
+        $data = $request->only(['user_id', 'nickname', 'nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
             'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number', 'tallness']);
 
         if (array_key_exists('birthday', $data)) {
@@ -458,13 +460,18 @@ class DataBasesController extends Controller
 
         $deviceType = $data['device_type'];
         $deviceNumber = $data['device_number'];
-        $data[$deviceType] = $deviceNumber;
-        unset($data['device_type']);
-        unset($data['device_number']);
 
-        $validator = Validator::make($data, [
+        switch ($deviceType) {
+            case Animal::IDENTIFYING_DEVICES_TYPE_BADGE: $deviceNumberRule = 'nullable|between:5,8'; break;
+            case Animal::IDENTIFYING_DEVICES_TYPE_CLIP: $deviceNumberRule = 'nullable'; break;
+            case Animal::IDENTIFYING_DEVICES_TYPE_CHIP: $deviceNumberRule = 'nullable|size:15'; break;
+            case Animal::IDENTIFYING_DEVICES_TYPE_BRAND: $deviceNumberRule = 'nullable'; break;
+        }
+
+        $rules = [
             'user' => 'nullable|integer|exists:users,id',
             'nickname' => 'required|string|max:256',
+            'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
@@ -481,9 +488,18 @@ class DataBasesController extends Controller
             'tallness' => 'nullable|integer|min:10|max:100',
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
-        ], [
+            'device_type' => 'nullable'
+        ];
+
+        if (isset($deviceNumberRule)) {
+            $rules['device_number'] = $deviceNumberRule;
+        }
+
+        $messages = [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
+            'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
+            'nickname_lat.regex' => 'Кличка на латині має містити тільки латинські символи',
             'species.required' => 'Вид є обов\'язковим полем',
             'gender.required' => 'Стать є обов\'язковим полем',
             'breed.required' => 'Порода є обов\'язковим полем',
@@ -499,13 +515,13 @@ class DataBasesController extends Controller
             'images.*.image' => 'Файли повинні бути в форматі зображення!',
             'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!',
-            'badge.unique' => 'Номер жетону вже використовується',
-            'clip.unique' => 'Кліпса вже використовується',
-            'chip.unique' => 'Чіп вже використовується',
-            'chip.size' => 'Номер чіпу повинен складатися з :size символів!',
             'tallness.min' => 'Зріст має бути більше :min см',
-            'tallness.max' => 'Зріст має бути менше :max см'
-        ]);
+            'tallness.max' => 'Зріст має бути менше :max см',
+            'device_number.size' => 'Номер пристрою повинен складатися з :size символів!',
+            'device_number.between' => 'Номер пристрою повинен бути не менше :min символів та не більше :max символів!'
+        ];
+
+        $validator = Validator::make($data, $rules, $messages);
         if ($validator->fails()) {
             return redirect()
                 ->back()
@@ -538,6 +554,20 @@ class DataBasesController extends Controller
         } else {
             $animal = Animal::create($data);
         }
+
+
+        if ($deviceType !== null && $deviceNumber !== null) {
+            $animal->identifyingDevices()->create([
+                'number' => $deviceNumber,
+                'issued_by' => \Auth::user()->full_name,
+                'identifying_device_type_id' => $deviceType
+            ]);
+
+            $chronicleField = AnimalChronicle::getChronicleFieldByType($deviceType);
+
+            $chs->addAnimalChronicle($animal,$chronicleField . '-added', [$chronicleField => $deviceNumber]);
+        }
+
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
 
@@ -592,8 +622,8 @@ class DataBasesController extends Controller
         $animal = $this->animalModel
             ->findOrFail($id);
 
-        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur', 'user',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'badge', 'tallness']);
+        $data = $request->only(['nickname','nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -603,6 +633,7 @@ class DataBasesController extends Controller
         $validator = Validator::make($data, [
             'user' => 'nullable|integer|exists:users,id',
             'nickname' => 'required|string|max:256',
+            'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
@@ -610,11 +641,6 @@ class DataBasesController extends Controller
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
-            'badge' => [
-                'nullable',
-                'unique:animals,badge,' . $id,
-                new Badge()
-            ],
             'comment' => 'nullable|string|max:2000',
             'tallness' => 'nullable|integer|min:10|max:100',
             'images' => 'nullable|array',
@@ -624,6 +650,8 @@ class DataBasesController extends Controller
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
+            'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
+            'nickname_lat.regex' => 'Кличка на латині має містити тільки латинські символи',
             'species.required' => 'Вид є обов\'язковим полем',
             'gender.required' => 'Стать є обов\'язковим полем',
             'breed.required' => 'Порода є обов\'язковим полем',
@@ -639,7 +667,6 @@ class DataBasesController extends Controller
             'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
             'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
-            'badge.unique' => 'Номер жетону вже використовується',
             'tallness.min' => 'Зріст має бути більше :min см',
             'tallness.max' => 'Зріст має бути менше :max см'
         ]);
@@ -757,7 +784,23 @@ class DataBasesController extends Controller
 
     public function animalRemoveFile($id)
     {
-        $file = AnimalsFile::findOrFail($id);
+        return $this->removeFileCommonLogic('App\Models\AnimalsFile', $id);
+    }
+
+    public function veterinaryMeasureRemoveFile($id)
+    {
+        return $this->removeFileCommonLogic('App\Models\AnimalVeterinaryMeasureFile', $id);
+    }
+
+    public function animalOffenseRemoveFile($id)
+    {
+        return $this->removeFileCommonLogic('App\Models\AnimalOffenseFile', $id);
+    }
+
+    private function removeFileCommonLogic($fileEntityClass, $id)
+    {
+        $file = $fileEntityClass::findOrFail($id);
+        Storage::delete($file->path);
         $file->delete();
         return response()->json([
             'status' => 'ok'
@@ -774,41 +817,16 @@ class DataBasesController extends Controller
         ]);
     }
 
-    public function addIdentifyingDevice(Request $request, AnimalChronicleServiceInterface $chs,  $id)
+    public function addIdentifyingDevice(AddIdentifyingDevice $request, AnimalChronicleServiceInterface $chs,  $id)
     {
-        $requestData = $request->all();
+        $validatedData = $request->validated();
+
         $chronicleTypesMap = [
-            'clip' => 'clip-added',
-            'chip' => 'chip-added',
-            'badge' => 'badge-added',
+            Animal::IDENTIFYING_DEVICES_TYPE_CLIP => 'clip-added',
+            Animal::IDENTIFYING_DEVICES_TYPE_CHIP => 'chip-added',
+            Animal::IDENTIFYING_DEVICES_TYPE_BADGE => 'badge-added',
+            Animal::IDENTIFYING_DEVICES_TYPE_BRAND => 'brand-added',
         ];
-
-
-        $rulesByTypes = [
-            'clip' => 'required',
-            'chip' => 'required|size:15',
-            'badge' => 'required|between:5,8',
-        ];
-
-
-        $rules = [
-            'device_type' => 'required|in:' . implode(',', array_keys($rulesByTypes))
-        ];
-
-        $messages = [
-            '*.required' => 'Номер та тип пристрою є обов\'язковим полем!',
-            '*.size' => 'Номер пристрою повинен складатися з :size символів!',
-        ];
-
-        if(isset($rulesByTypes[$requestData['device_type']])) {
-            $rules['device_number'] = $rulesByTypes[$requestData['device_type']];
-        }
-
-        $validator = Validator::make($requestData, $rules, $messages);
-
-        $validator->validate();
-
-        $device_column = $requestData['device_type'];
 
         $animal = Animal::findOrFail($id);
 
@@ -820,12 +838,17 @@ class DataBasesController extends Controller
         \RhaLogger::object($animal);
 
         $oldAnimal = clone $animal;
-        $animal->$device_column = $requestData['device_number'];
+
+        $animal->identifyingDevices()->create($validatedData);
+
         $animal->save();
 
         \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
-        $chs->addAnimalChronicle($animal,$chronicleTypesMap[$device_column], [$device_column => $requestData['device_number']]);
+        $chs->addAnimalChronicle(
+            $animal,$chronicleTypesMap[$validatedData['device_type']],
+            [AnimalChronicle::getChronicleFieldByType($validatedData['device_type']) => $validatedData['number']]
+        );
 
         return back()->with('success_identifying_device', 'Пристрій було додано успішно!');
     }
@@ -833,20 +856,18 @@ class DataBasesController extends Controller
     public function removeIdentifyingDevice(Request $request, AnimalChronicleServiceInterface $chs, $id)
     {
         $requestData = $request->all();
+
+
         $chronicleTypesMap = [
-            'clip' => 'clip-removed',
-            'chip' => 'chip-removed',
-            'badge' => 'badge-removed',
+            Animal::IDENTIFYING_DEVICES_TYPE_CLIP => 'clip-removed',
+            Animal::IDENTIFYING_DEVICES_TYPE_CHIP => 'chip-removed',
+            Animal::IDENTIFYING_DEVICES_TYPE_BADGE => 'badge-removed',
+            Animal::IDENTIFYING_DEVICES_TYPE_BRAND => 'brand-removed',
         ];
 
-        $validator = Validator::make($requestData, [
-            'device_type' => 'required|in:' . implode(',', array_keys($chronicleTypesMap))
-        ]);
-        $validator->validate();
-
-        $device_column = $requestData['device_type'];
-
         $animal = Animal::findOrFail($id);
+        $device = IdentifyingDevice::findOrFail($requestData['id']);
+        $deviceType = $device->type->id;
 
         \RhaLogger::start(['data' => $request->all()]);
         \RhaLogger::update([
@@ -856,12 +877,12 @@ class DataBasesController extends Controller
         \RhaLogger::object($animal);
 
         $oldAnimal = clone $animal;
-        $animal->$device_column = null;
+        $device->delete();
         $animal->save();
 
         \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
-        $chs->addAnimalChronicle($animal, $chronicleTypesMap[$device_column]);
+        $chs->addAnimalChronicle($animal, $chronicleTypesMap[$deviceType]);
 
         return back()->with('success_identifying_device', 'Пристрій було видалено успішно!');
     }
@@ -949,7 +970,7 @@ class DataBasesController extends Controller
 
         $validator->validate();
 
-        $veterinarymeasure = VeterinaryMeasure::findOrfail($request_data['veterinary_measure']);
+        $veterinarymeasure = VeterinaryMeasure::findOrFail($request_data['veterinary_measure']);
 
 
         $animalVeterinaryMeasure = new AnimalVeterinaryMeasure;
@@ -1030,8 +1051,8 @@ class DataBasesController extends Controller
 
         $validator->validate();
 
-        $offense = Offense::findOrfail($request_data['offense']);
-        $offenseAffiliation = OffenseAffiliation::findOrfail($request_data['offense_affiliation']);
+        $offense = Offense::findOrFail($request_data['offense']);
+        $offenseAffiliation = OffenseAffiliation::findOrFail($request_data['offense_affiliation']);
 
 
         $animalOffense = new AnimalOffense;
@@ -1066,5 +1087,72 @@ class DataBasesController extends Controller
         $animalOffense = AnimalOffense::findOrFail($id);
 
         return view('admin.db.animal_offense_show', compact('animalOffense'));
+    }
+
+    public function addVeterinaryPassport(int $id, Request $request)
+    {
+        $request_data  = $request->all();
+
+        $rules = [
+            'number' => 'required|max:256',
+            'issued_by' => 'required|max:256'
+        ];
+
+        $messages = [
+            'number.required' => 'Номер паспорту є обов\'язковим полем',
+            'issued_by.required' => 'Ким видано є обов\'язковим полем',
+            'number.max' => 'Номер паспорту має містити не більше ніж :max символів',
+            'issued_by.max' => 'Ким видано має містити не більше ніж :max символів'
+        ];
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        $validator->validate();
+
+        $animal = Animal::findOrFail($id);
+
+        $veterinaryPassport = new VeterinaryPassport;
+        $veterinaryPassport->fill($request_data);
+        $veterinaryPassport->save();
+        $animal->veterinaryPassport()->associate($veterinaryPassport);
+        $animal->save();
+
+        return back()->with('success_veterinary_passport', 'Ветеринарний паспорт успішно додано!');
+    }
+
+    public function updateVeterinaryPassport(int $id, Request $request)
+    {
+        $request_data  = $request->all();
+
+        $rules = [
+            'number' => 'required|max:256',
+            'issued_by' => 'required|max:256'
+        ];
+
+        $messages = [
+            'number.required' => 'Номер паспорту є обов\'язковим полем',
+            'issued_by.required' => 'Ким видано є обов\'язковим полем',
+            'number.max' => 'Номер паспорту має містити не більше ніж :max символів',
+            'issued_by.max' => 'Ким видано має містити не більше ніж :max символів'
+        ];
+
+        $validator = Validator::make($request_data, $rules, $messages);
+
+        $validator->validate();
+
+        $animal = Animal::findOrFail($id);
+
+        $veterinaryPassport = $animal->veterinaryPassport;
+        $veterinaryPassport->fill($request_data);
+        $veterinaryPassport->save();
+
+        return back()->with('success_veterinary_passport', 'Ветеринарний паспорт успішно оновлено!');
+    }
+
+    public function removeVeterinaryPassport(int $id)
+    {
+        $animal = Animal::findOrFail($id);
+        $animal->veterinaryPassport()->delete();
+        return back()->with('success_veterinary_passport', 'Ветеринарний паспорт успішно видалено!');
     }
 }

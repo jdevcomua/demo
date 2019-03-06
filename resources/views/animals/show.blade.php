@@ -6,7 +6,7 @@
 @section('content')
     <div class="page-title">
         <a href="{{ route('index') }}" class="page-back-link"></a>
-        <div class="title">{{ $animal->nickname }}</div>
+        <div class="title">{{ $animal->nickname }} {{$animal->nickname_lat ? '(' . $animal->nickname_lat . ')' : ''}}</div>
         @if(!$animal->verified) <a href="{{ route('animals.edit', $animal->id) }}" class="action-link">Редагувати</a> @endif
     </div>
     <div class="animal-show">
@@ -42,6 +42,19 @@
                     <span class="content red">Не верифіковано</span>
                 @endif
             </div>
+            @if($animal->verified)
+                <div class="pet-info-block">
+                    <span class="title">Дата верифікації</span>
+                    <span class="content">{{ $animal->verification->updated_at->format('d/m/Y') }}</span>
+                </div>
+                @if($animal->verification->user)
+                    <div class="pet-info-block">
+                        <span class="title">Ким верифіковано</span>
+                        <span class="content">{{ $animal->verification->user->name }}</span>
+                    </div>
+                @endif
+            @endif
+
             <div class="pet-info-block">
                 <span class="title">Масть</span>
                 <span class="content">{{ $animal->color->name }}</span>
@@ -62,6 +75,20 @@
                 <span class="title">Вік тварини</span>
                 <span class="content">{{ $animal->age }}</span>
             </div>
+            <div class="pet-info-block">
+                <span class="title">Дата реєстрації</span>
+                <span class="content">{{ $animal->created_at->format('d/m/Y') }}</span>
+            </div>
+            @if($animal->veterinaryPassport)
+                <div class="pet-info-block">
+                    <span class="title">Номер ветеринарного паспорту</span>
+                    <span class="content">{{ $animal->veterinaryPassport->number }}</span>
+                </div>
+                <div class="pet-info-block">
+                    <span class="title">Ким видано паспорт</span>
+                    <span class="content">{{ $animal->veterinaryPassport->issued_by }}</span>
+                </div>
+            @endif
             <div class="pet-info-block w-100">
                 <span class="title">Порода</span>
                 <span class="content">{{ $animal->breed->name }}</span>
@@ -74,10 +101,74 @@
                 </div>
             @endif
         </div>
-        <div class="pet-info-block comment">
-            <span class="title">Коментарі (Особливі прикмети)</span>
-            <span class="content">{{ $animal->comment }}</span>
-        </div>
+        @if($animal->comment !== null)
+            <div class="pet-info-block comment">
+                <span class="title">Коментарі (Особливі прикмети)</span>
+                <span class="content">{{ $animal->comment }}</span>
+            </div>
+        @endif
+        @if(count($animal->animalVeterinaryMeasure))
+            <hr class="divider">
+            <div class="pet-section-container">
+                <p class="title">Ветеринарні заходи</p>
+                @foreach ($animal->animalVeterinaryMeasure as $index => $measure)
+                <div class="fields-container">
+                    <div class="field-container">
+                        <p class="label">Дата заходу:</p>
+                        <p class="value">{{$measure->date->format('m/d/Y')}}</p>
+                    </div>
+                    <div class="field-container">
+                        <p class="label">Захід:</p>
+                        <p class="value">{{$measure->veterinaryMeasure->name}}</p>
+                    </div>
+                    <div class="field-container">
+                        <p class="label">Відомості щодо заходу:</p>
+                        <p class="value">{{$measure->description ?? 'Відсутні'}}</p>
+                    </div>
+                    <div class="field-container">
+                        <p class="label">Ким проведено захід:</p>
+                        <p class="value">{{$measure->made_by}}</p>
+                    </div>
+                </div>
+                @if (count($animal->animalVeterinaryMeasure) > $index + 1)
+                    <hr class="half-divider">
+                @endif
+                @endforeach
+            </div>
+        @endif
+        @if(count($animal->identifyingDevices))
+            <hr class="divider">
+            <div class="pet-section-container">
+                <p class="title">Засоби ідентифікації</p>
+                @foreach ($animal->identifyingDevices as $index => $identifyingDevice)
+                    <div class="fields-container">
+                        <div class="field-container">
+                            <p class="label">Тип пристрою:</p>
+                            <p class="value">{{$identifyingDevice->type->name}}</p>
+                        </div>
+                        <div class="field-container">
+                            <p class="label">Номер пристрою:</p>
+                            <p class="value">{{$identifyingDevice->number}}</p>
+                        </div>
+                        <div class="field-container">
+                            <p class="label">Ким видано:</p>
+                            <p class="value">{{$identifyingDevice->issued_by}}</p>
+                        </div>
+                        <div class="field-container">
+                            <p class="label">Додаткова інформація:</p>
+                            <p class="value">{{$identifyingDevice->info ?? 'Відсутня'}}</p>
+                        </div>
+                        <div class="field-container">
+                            <p class="label">Дата видачі:</p>
+                            <p class="value">{{$identifyingDevice->created_at->format('m/d/Y')}}</p>
+                        </div>
+                    </div>
+                    @if (count($animal->identifyingDevices) > $index + 1)
+                        <hr class="half-divider">
+                    @endif
+                @endforeach
+            </div>
+        @endif
         @if(count($animal->chronicles))
             <hr class="divider">
             <div class="pet-chronicles-block">
@@ -94,14 +185,26 @@
         <div class="files-container">
             <div class="files-container-title">Файли</div>
             <div class="files-list">
-                @forelse($animal->documents as $doc)
-                    <a href="/{{ $doc->path }}" class="file-item">
-                        <span class="file-name">{{ $doc->filename }}</span>
-                        <span class="file-ext">.{{ $doc->fileextension }}</span>
-                    </a>
-                @empty
+                @if($animal->hasDocuments() || $animal->hasVetFiles())
+                    @foreach($animal->documents as $doc)
+                        <a href="/{{ $doc->path }}" class="file-item">
+                            <span class="file-name">{{ $doc->filename }}</span>
+                            <span class="file-ext">.{{ $doc->fileextension }}</span>
+                        </a>
+                    @endforeach
+                    @foreach($animal->animalVeterinaryMeasure as $veterinaryMeasure)
+                        @if(count($veterinaryMeasure->files))
+                            @foreach($veterinaryMeasure->files as $file)
+                                <a href="/{{ $doc->path }}" class="file-item">
+                                    <span class="file-name">{{ $file->filename }}</span>
+                                    <span class="file-ext">.{{ $file->fileextension }}</span>
+                                </a>
+                            @endforeach
+                        @endif
+                    @endforeach
+                @else
                     <div class="no-files">Файли відсутні...</div>
-                @endforelse
+                @endif
             </div>
         </div>
         <hr class="divider">

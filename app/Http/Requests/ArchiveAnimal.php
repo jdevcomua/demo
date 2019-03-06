@@ -8,7 +8,7 @@ use App\Models\MovedOutArchiveRecord;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArchiveAnimal extends FormRequest
+class ArchiveAnimal extends FormRequest  //todo все реквесты нужно называть ...Request
 
 {
 

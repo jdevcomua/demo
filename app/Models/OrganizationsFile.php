@@ -27,6 +27,7 @@ class OrganizationsFile extends Model
 
     public function getFileNameAttribute()
     {
+        //todo дубликат метода
         $arr = explode('/', $this->name);
         $fname = $arr[count($arr) - 1];
         $arr = explode('.', $fname);
@@ -36,6 +37,7 @@ class OrganizationsFile extends Model
 
     public function getFileExtensionAttribute()
     {
+        //todo дубликат метода
         $arr = explode('/', $this->name);
         $fname = $arr[count($arr) - 1];
         $arr = explode('.', $fname);
