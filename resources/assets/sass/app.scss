@@ -517,6 +517,17 @@ img {
   .main-page-wrapper .last-img {
     display: block;
   }
+
+  .step-container, .image-with-caption {
+    width:100%;
+  }
+  .image-with-caption {
+    display: flex;
+    align-items: center;
+    p {
+      margin-left: 25px;
+    }
+  }
 }
 @media (max-width: 650px) {
   .notification {
@@ -524,6 +535,9 @@ img {
   }
   .text-with-square-block .text-with-square-wrapper {
     transform: translate(5px, -15px)
+  }
+  .step-container .step-main-block {
+    transform: translate(10px, -50px);
   }
 }
 @media (max-width: 500px) {
