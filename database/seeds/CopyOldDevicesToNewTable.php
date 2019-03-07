@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 
 class CopyOldDevicesToNewTable extends Seeder
 {
-    const ISSUED_BY = 'Адміністратор системи';
+    const ISSUED_BY = 'КП КМЛВМ';
     /**
      * Run the database seeds.
      *

@@ -2,7 +2,7 @@
 
 Route::get('/b', 'SiteController@badgeData');
 
-Route::view('/about', 'about')->name('about');
+Route::view('/about-page', 'about')->name('about');
 Route::view('/', 'index')->name('index');
 Route::get('/faq', 'SiteController@faq')->name('faq');
 
