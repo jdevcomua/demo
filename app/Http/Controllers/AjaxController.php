@@ -6,6 +6,8 @@ use App\Events\AnimalBadgeRequestSent;
 use App\Helpers\Date;
 use App\Models\Animal;
 use App\Models\AnimalsRequest;
+use App\Models\IdentifyingDevice;
+use App\Models\IdentifyingDeviceType;
 use App\Models\Organization;
 use App\User;
 use Illuminate\Http\Request;
@@ -86,9 +88,14 @@ class AjaxController extends Controller
     public function badgeSearch(Request $request)
     {
         $badge = $request->get('badge');
-        $animal = Animal::where('badge', $badge)
+        $badgeTypeId = IdentifyingDeviceType::where('name', 'Жетон')->firstOrFail()->id;
+        $animal = IdentifyingDevice::where('identifying_device_type_id', $badgeTypeId)
+            ->where('number', $badge)
+            ->firstOrFail()
+            ->animal()
             ->whereNull('user_id')
             ->first();
+        
         if (!$animal) {
             return response()->json([
                 'message' => 'not found'
