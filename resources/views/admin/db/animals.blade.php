@@ -139,10 +139,11 @@
                 order: [[ 14, "desc" ]], // def. sort by created_at DESC
                 columns: [
                     { "data": "id"},
-                    { "data": "badge" },
-                    { "data": "chip" },
-                    { "data": "clip" },
-                    { "data": "brand" },
+                    { data: "badge_number"},
+                    { data: "chip_number"},
+                    { data: "clip_number"},
+                    { data: "brand_number"},
+
                     {
                         "data": "id",
                         defaultContent: '',
