@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label for="last_name">Номер телефону</label>
                     <input type="text" class="form-control" id="last_name"
-                           value="{{$animal->user->phones[0]->phone}}" readonly>
+                           value="{{$animal->user->contactPhone}}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="last_name">Пошта</label>

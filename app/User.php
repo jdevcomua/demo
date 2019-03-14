@@ -197,12 +197,26 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Organization::class);
     }
+
+    public function getContactPhoneAttribute()
+    {
+        $allPhones = $this->phones;
+        $types = ['PRIMARY', 'ADDITIONAL', 'MANUAL'];
+        foreach ($types as $type) {
+            foreach ($allPhones as $phone) {
+                if ($phone->type === $type) return $phone->phone;
+            }
+        }
+
+        return null;
+    }
+
     public function getContactInfoAttribute()
     {
 
         $contactInfo = [
             'contact_name' => $this->first_name,
-            'contact_phone' => $this->phones[0]->phone,
+            'contact_phone' => $this->contactPhone,
             'contact_email' => $this->primary_email->email
         ];
 

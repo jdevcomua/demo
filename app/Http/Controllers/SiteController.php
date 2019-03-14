@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Animal;
 use App\Models\Faq;
+use App\Models\IdentifyingDevice;
+use App\Models\IdentifyingDeviceType;
 use Cache;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,7 +27,16 @@ class SiteController extends Controller
 
     public function badgeData(Request $request)
     {
-        $animal = Animal::where('badge', '=', $request->get('n'))->first();
+        $badgeTypeId = IdentifyingDeviceType::where('name', 'Жетон')->firstOrFail()->id;
+        $badgeDevice = IdentifyingDevice::where('identifying_device_type_id', $badgeTypeId)
+            ->where('number', $request->get('n'))
+            ->first();;
+
+        $animal = null;
+
+        if ($badgeDevice) {
+            $animal = $badgeDevice->animal;
+        }
 
         if ($animal) {
             $user = $request->user();
