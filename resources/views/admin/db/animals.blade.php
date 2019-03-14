@@ -42,6 +42,9 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Номер жетону</th>
+                                    <th>Номер чіпу</th>
+                                    <th>Номер кліпси</th>
+                                    <th>Номер тавра</th>
                                     <th>Дії</th>
                                     <th>Кличка</th>
                                     <th>Вид</th>
@@ -58,6 +61,9 @@
                                     <th>Оновлено</th>
                                 </tr>
                                 <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th class="no-search"></th>
@@ -81,6 +87,7 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                     <th class="select">
                                         <select>
                                             <option selected value>---</option>
@@ -88,7 +95,6 @@
                                             <option value="1">Стерилізовано</option>
                                         </select>
                                     </th>
-                                    <th></th>
                                     <th class="select">
                                         <select>
                                             <option selected value>---</option>
@@ -134,6 +140,9 @@
                 columns: [
                     { "data": "id"},
                     { "data": "badge" },
+                    { "data": "chip" },
+                    { "data": "clip" },
+                    { "data": "brand" },
                     {
                         "data": "id",
                         defaultContent: '',

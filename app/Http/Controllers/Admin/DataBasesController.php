@@ -371,6 +371,7 @@ class DataBasesController extends Controller
             ->join('species', 'species.id', '=', 'animals.species_id')
             ->join('breeds', 'breeds.id', '=', 'animals.breed_id')
             ->join('colors', 'colors.id', '=', 'animals.color_id')
+            ->leftJoin('identifying_devices', 'identifying_devices.animal_id', '=', 'animals.id')
             ->leftJoin('users as users1', 'users1.id', '=', 'animals.user_id');
 
         if ($id) $query->where('users1.id', '=', $id);
@@ -381,6 +382,10 @@ class DataBasesController extends Controller
             'colors_name' => 'colors.name',
             'owner_name' => 'CONCAT(`users1`.last_name, \' \', `users1`.first_name, \'||\', `users1`.id)',
             'owner_type' => 'if (animals.user_id IS NULL, 0, 1)',
+            'badge' => 'if (identifying_devices.identifying_device_type_id = ' . IdentifyingDeviceType::TYPE_BADGE . ', identifying_devices.number, NULL)',
+            'clip' => 'if (identifying_devices.identifying_device_type_id = ' . IdentifyingDeviceType::TYPE_CLIP . ', identifying_devices.number, NULL)',
+            'chip' => 'if (identifying_devices.identifying_device_type_id = ' . IdentifyingDeviceType::TYPE_CHIP . ', identifying_devices.number, NULL)',
+            'brand' => 'if (identifying_devices.identifying_device_type_id = ' . IdentifyingDeviceType::TYPE_BRAND . ', identifying_devices.number, NULL)',
         ];
 
         $response = DataTables::provide($request, $model, $query, $aliases);
