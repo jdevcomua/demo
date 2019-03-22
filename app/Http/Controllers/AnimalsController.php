@@ -78,7 +78,7 @@ class AnimalsController extends Controller
 
         $validator = Validator::make($data, [    //Todo public function validate() (повторение огромного куска кода)
             'nickname' => 'required|string|max:256',
-            'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
+            'nickname_lat' => 'nullable|not_regex:/[А-Яа-яЁё]/u|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
@@ -97,7 +97,7 @@ class AnimalsController extends Controller
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname.max' => 'Кличка має бути менше :max символів',
             'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
-            'nickname_lat.regex' => 'Кличка на латині має містити тільки латинські символи',
+            'nickname_lat.not_regex' => 'Кличка на латині має містити тільки латинські символи',
             'species.required' => 'Вид є обов\'язковим полем',
             'gender.required' => 'Стать є обов\'язковим полем',
             'breed.required' => 'Порода є обов\'язковим полем',
@@ -212,7 +212,7 @@ class AnimalsController extends Controller
 
         $validator = Validator::make($data, [
             'nickname' => 'required|string|max:256',
-            'nickname_lat' => 'nullable|regex:/^[a-zA-Z]+$/u|max:256',
+            'nickname_lat' => 'nullable|not_regex:/[А-Яа-яЁё]/u|max:256',
             'species' => 'required|integer|exists:species,id',
             'gender' => 'required|integer|in:0,1',
             'breed' => 'required|integer|exists:breeds,id',
@@ -229,7 +229,7 @@ class AnimalsController extends Controller
         ], [
             'nickname.required' => 'Кличка є обов\'язковим полем',
             'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
-            'nickname_lat.regex' => 'Кличка на латині має містити тільки латинські символи',
+            'nickname_lat.not_regex' => 'Кличка на латині має містити тільки латинські символи',
             'nickname.max' => 'Кличка має бути менше :max символів',
             'species.required' => 'Вид є обов\'язковим полем',
             'gender.required' => 'Стать є обов\'язковим полем',
