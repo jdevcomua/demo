@@ -40,7 +40,7 @@
             <a href="{{ route('about') }}" class="nav-item @if($curRoute == 'about') active @endif">Про проект</a>
             <a href="{{ route('faq') }}" class="nav-item @if($curRoute == 'faq') active @endif">Часті запитання</a>
             <a href="{{ route('lost-animals.index') }}" class="nav-item @if(strpos($curRoute, 'lost-animals.') !== false) active @endif">Загублені/знайдені</a>
-            <a href="#" class="nav-item btn btn-found btn-found-white" id="i-found-animal">Знайшов тварину</a>
+            <a href="#" class="nav-item btn btn-found btn-found-white" id="i-found-animal">Знайдено тварину</a>
 
         </nav>
         <div class="socials">
@@ -62,8 +62,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3>Знайшов тварину</h3>
-                            <p>Будь ласка, заповніть інформацію про тварину щоб ми швидше могли знайти власника.<br><br> Поля з зірочкою * обов'язкові для заповення.<br>
+                            <h3>Знайдено тварину</h3>
+                            <p>Будь ласка, заповніть форму та надішліть нам інформацію про знайдену тварину, щоб якнайшвидше знайти її власника.<br><br> Поля з зірочкою * обов'язкові для заповення.<br>
                             </p>
                         </div>
                         <div class="col-md-12">

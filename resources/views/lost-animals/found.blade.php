@@ -69,7 +69,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3>Зв'язатися з власником об'яви</h3>
+                            <h3>Зв’язатися з автором оголошення</h3>
                         </div>
                         <div class="col-md-12">
                             <form class="search-request" id="form-modal" enctype="multipart/form-data" action="{{route('lost-animals.i-found-animal')}}" method="POST">

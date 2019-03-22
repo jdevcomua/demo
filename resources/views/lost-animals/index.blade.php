@@ -42,7 +42,7 @@
                         </div>
                         @if($lostAnimal->animal->user !== null)
                             <div class="pet-info-block">
-                                <button class="btn btn-found contact" data-contact='{{$lostAnimal->animal->user->contact_info}}'>Знайшов</button>
+                                <button class="btn btn-found contact" data-contact='{{$lostAnimal->animal->user->contact_info}}'>Зв'язатися</button>
                             </div>
                         @endif
                     </div>
