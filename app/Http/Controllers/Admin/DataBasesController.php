@@ -472,7 +472,7 @@ class DataBasesController extends Controller
     public function animalStore(Request $request, AnimalChronicleServiceInterface $chs)
     { //Todo убрать дублирование кода
         $data = $request->only(['user_id', 'nickname', 'nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number', 'tallness']);
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number', 'tallness', 'testing']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -500,6 +500,7 @@ class DataBasesController extends Controller
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
+            'testing' => 'nullable|string|max:500',
             'comment' => 'nullable|string|max:2000',
             'images' => 'required|array',
             'images.*' => 'required|image|max:2048',
@@ -530,6 +531,7 @@ class DataBasesController extends Controller
             'birthday.before' => 'Дата народження не може бути у майбутньому!',
             'birthday.date' => 'Дата народження повинна бути корректною датою',
             'birthday.after' => 'Тварини стільки не живуть!',
+            'testing.max' => 'Тестування тварини має бути менше :max символів',
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
             'images.*.max' => 'Фото повинні бути не більше 2Mb',
@@ -644,7 +646,7 @@ class DataBasesController extends Controller
             ->findOrFail($id);
 
         $data = $request->only(['nickname','nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness']);
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness', 'testing']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -662,6 +664,7 @@ class DataBasesController extends Controller
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
+            'testing' => 'nullable|string|max:500',
             'comment' => 'nullable|string|max:2000',
             'tallness' => 'nullable|integer|min:10|max:100',
             'images' => 'nullable|array',
@@ -682,6 +685,7 @@ class DataBasesController extends Controller
             'birthday.before' => 'Дата народження не може бути у майбутньому!',
             'birthday.date' => 'Дата народження повинна бути корректною датою',
             'birthday.after' => 'Тварини стільки не живуть!',
+            'testing.max' => 'Тестування тварини має бути менше :max символів',
             'comment.max' => 'Коментарій має бути менше :max символів',
             'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
             'images.*.max' => 'Фото повинні бути не більше 2Mb',

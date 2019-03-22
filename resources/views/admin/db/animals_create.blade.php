@@ -164,6 +164,13 @@
                                     </div>
                                 @endpermission
                                 <div class="form-group">
+                                    <label class="col-lg-3 control-label" for="testing">Тестування тварини</label>
+                                    <div class="col-lg-8">
+                                    <textarea class="form-control" id="testing" name="testing"
+                                              rows="3" style="resize: none">{{ old('testing') }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-lg-3 control-label" for="comment">Коментарі (Особливі прикмети)</label>
                                     <div class="col-lg-8">
                                         <textarea class="form-control" id="comment" name="comment"
