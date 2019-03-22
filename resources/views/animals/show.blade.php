@@ -107,11 +107,11 @@
                 <span class="content">{{ $animal->comment }}</span>
             </div>
         @endif
-        @if(count($animal->animalVeterinaryMeasure))
+        @if(count($veterinaryMeasures))
             <hr class="divider">
             <div class="pet-section-container">
                 <p class="title">Ветеринарні заходи</p>
-                @foreach ($animal->animalVeterinaryMeasure as $index => $measure)
+                @foreach ($veterinaryMeasures as $index => $measure)
                 <div class="fields-container">
                     <div class="field-container">
                         <p class="label">Дата заходу:</p>
@@ -119,7 +119,7 @@
                     </div>
                     <div class="field-container">
                         <p class="label">Захід:</p>
-                        <p class="value">{{$measure->veterinaryMeasure->name}}</p>
+                        <p class="value">{{$measure->name ?? $measure->veterinaryMeasure->name}}</p>
                     </div>
                     <div class="field-container">
                         <p class="label">Відомості щодо заходу:</p>
@@ -130,7 +130,7 @@
                         <p class="value">{{$measure->made_by}}</p>
                     </div>
                 </div>
-                @if (count($animal->animalVeterinaryMeasure) > $index + 1)
+                @if (count($veterinaryMeasures) > $index + 1)
                     <hr class="half-divider">
                 @endif
                 @endforeach

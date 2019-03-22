@@ -170,7 +170,8 @@ class AnimalsController extends Controller
 
         return view('animals.show', [
             'animal' => $animal,
-            'causesOfDeath' => $causesOfDeath
+            'causesOfDeath' => $causesOfDeath,
+            'veterinaryMeasures' => $animal->veterinaryMeasures
         ]);
     }
 

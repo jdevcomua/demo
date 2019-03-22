@@ -282,4 +282,20 @@ class Animal extends Model
         return $allDeviceTypes;
     }
 
+
+    public function getVeterinaryMeasuresAttribute()
+    {
+        $veterinaryMeasures = $this->animalVeterinaryMeasure;
+
+        if ($this->sterilization !== null) {
+            $veterinaryMeasures[] = $this->sterilization;
+        }
+
+        if ($this->vaccination !== null) {
+            $veterinaryMeasures[] = $this->vaccination;
+        }
+
+        return $veterinaryMeasures;
+    }
+
 }

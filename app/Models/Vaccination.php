@@ -37,8 +37,15 @@ class Vaccination extends Model
         'date', 'created_at', 'updated_at'
     ];
 
+    protected $name = 'Щеплення від сказу';
+
     public function animal()
     {
         return $this->belongsTo(Animal::class);
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->name;
     }
 }

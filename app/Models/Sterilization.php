@@ -37,8 +37,16 @@ class Sterilization extends Model
         'date', 'created_at', 'updated_at'
     ];
 
+    protected $name = 'Стерилізація';
+
+
     public function animal()
     {
         return $this->belongsTo(Animal::class);
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->name;
     }
 }
