@@ -87,6 +87,7 @@ class AnimalsController extends Controller
             'tallness' => 'nullable|integer|min:10|max:100',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
+            'half_breed' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
             'images' => 'required|array',
             'images.1' => 'required|image',
@@ -203,7 +204,7 @@ class AnimalsController extends Controller
     public function update(Request $request, Animal $animal)
     {
         $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness', 'nickname_lat']);
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness', 'nickname_lat', 'half_breed']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -221,6 +222,7 @@ class AnimalsController extends Controller
             'tallness' => 'nullable|integer|min:10|max:100',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
+            'half_breed' => 'nullable|in:1',
             'comment' => 'nullable|string|max:2000',
             'images' => 'nullable|array',
             'images.*' => 'nullable|image|max:2048',

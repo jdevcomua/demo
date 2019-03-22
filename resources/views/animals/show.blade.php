@@ -97,6 +97,10 @@
                 <span class="title">Порода</span>
                 <span class="content">{{ $animal->breed->name }}</span>
             </div>
+            <div class="pet-info-block">
+                <span class="title">Метис породи</span>
+                <span class="content">{{ $animal->half_breed ? 'Так' : 'Ні' }}</span>
+            </div>
         </div>
         <div class="animal-options">
             @if($animal->sterilized)

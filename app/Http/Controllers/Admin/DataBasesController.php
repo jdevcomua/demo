@@ -472,7 +472,8 @@ class DataBasesController extends Controller
     public function animalStore(Request $request, AnimalChronicleServiceInterface $chs)
     { //Todo убрать дублирование кода
         $data = $request->only(['user_id', 'nickname', 'nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number', 'tallness', 'testing']);
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'device_type', 'device_number', 'tallness', 'testing',
+            'half_breed']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -500,6 +501,7 @@ class DataBasesController extends Controller
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
+            'half_breed' => 'nullable|in:1',
             'testing' => 'nullable|string|max:500',
             'comment' => 'nullable|string|max:2000',
             'images' => 'required|array',
@@ -646,7 +648,7 @@ class DataBasesController extends Controller
             ->findOrFail($id);
 
         $data = $request->only(['nickname','nickname_lat', 'species', 'gender', 'breed', 'color', 'fur', 'user',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness', 'testing']);
+            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness', 'testing', 'half_breed']);
 
         if (array_key_exists('birthday', $data)) {
             $data['birthday'] = str_replace('/', '-', $data['birthday']);
@@ -664,6 +666,7 @@ class DataBasesController extends Controller
             'fur' => 'required|integer|exists:furs,id',
             'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
             'sterilized' => 'nullable|in:1',
+            'half_breed' => 'nullable|in:1',
             'testing' => 'nullable|string|max:500',
             'comment' => 'nullable|string|max:2000',
             'tallness' => 'nullable|integer|min:10|max:100',

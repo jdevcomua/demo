@@ -108,6 +108,15 @@
                                         <select name="breed" id="breed" required data-value="{{ old('breed') }}"></select>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="sterilized" class="col-lg-3 control-label"></label>
+                                    <div class="col-lg-8">
+                                        <div class="checkbox-custom pt10">
+                                            <input type="checkbox" id="half_breed" value="1" name="half_breed">
+                                            <label for="half_breed">Метис породи</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group select">
                                     <label for="color" class="col-lg-3 control-label">Масть</label>
                                     <div class="col-lg-8">

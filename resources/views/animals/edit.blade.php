@@ -95,6 +95,15 @@
                     <label for="breed">Порода <span class="required-field">*</span></label>
                     <select name="breed" class="breed" required data-value="{{ $pet->breed_id }}"></select>
                 </div>
+                <div class="form-group">
+                    <div class="validation-error alert alert-danger hidden"></div>
+                    <label for="half_breed">Метис породи</label>
+                    <div style="width: 100%;">
+                        <input type="checkbox" class="form-control" id="half_breed" value="1" style="width:4%;
+                        display: inline; float: left; margin-right: 10px;" name="half_breed">
+                        <label for="half_breed" style="display: inline; font-weight: 100; font-size: 1.1rem;">Відзначте це поле, якщо ваша тварина не є чистокровною</label>
+                    </div>
+                </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="color">Масть <span class="required-field">*</span></label>
