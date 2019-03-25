@@ -146,7 +146,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
-                                    <label for="contact_email">E-mail</label>
+                                    <label for="contact_email">E-mail *</label>
                                     <p>Додайте контактний e-mail</p>
                                     <input type="text" class="form-control" id="contact_email" name="contact_email" >
                                 </div>

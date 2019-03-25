@@ -34,7 +34,7 @@ class IFoundAnimal extends FormRequest //todo все реквесты нужно
             'additional_info' => 'nullable|string|max:255',
             'contact_name' => 'required|string|max:255',
             'contact_phone' => 'required|string|max:255',
-            'contact_email' => 'nullable|email|string|max:255',
+            'contact_email' => 'required|email|string|max:255',
             'documents' => 'nullable|array|max:2',
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:2048',
         ];
@@ -44,7 +44,7 @@ class IFoundAnimal extends FormRequest //todo все реквесты нужно
                 'badge' => 'required|min:5|max:8',
                 'contact_name' => 'required|string|max:255',
                 'contact_phone' => 'required|string|max:255',
-                'contact_email' => 'nullable|email|string|max:255',
+                'contact_email' => 'required|email|string|max:255',
             ];
         }
 
@@ -69,6 +69,7 @@ class IFoundAnimal extends FormRequest //todo все реквесты нужно
             'contact_phone.required' => 'Телефон є обов\'язковим полем',
             'contact_phone.max' => 'Телефон не повинен перевищувати :max символів',
             'contact_email.email' => 'E-mail повинен бути валідним',
+            'contact_email.required' => 'E-mail є обов\'язковим полем',
             'documents.max' => 'Максимальна кількість фотографій не повинна перевищувати 9 файлів',
             'documents.*.max' => 'Фото повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png',
