@@ -169,10 +169,12 @@ class AnimalsController extends Controller
         $animal->imagesArray = $animal->images->pluck('path', 'num')->toArray();
         $causesOfDeath = CauseOfDeath::all();
 
+        $veterinaryMeasures = $animal->veterinaryMeasures->sortByDesc('created_at')->values();
+
         return view('animals.show', [
             'animal' => $animal,
             'causesOfDeath' => $causesOfDeath,
-            'veterinaryMeasures' => $animal->veterinaryMeasures
+            'veterinaryMeasures' => $veterinaryMeasures
         ]);
     }
 

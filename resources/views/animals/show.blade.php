@@ -123,7 +123,7 @@
                 <div class="fields-container">
                     <div class="field-container">
                         <p class="label">Дата заходу:</p>
-                        <p class="value">{{$measure->date->format('m/d/Y')}}</p>
+                        <p class="value">{{$measure->date->format('d/m/Y')}}</p>
                     </div>
                     <div class="field-container">
                         <p class="label">Захід:</p>
