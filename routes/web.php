@@ -5,6 +5,7 @@ Route::get('/b', 'SiteController@badgeData');
 Route::view('/about-page', 'about')->name('about');
 Route::view('/', 'index')->name('index');
 Route::get('/faq', 'SiteController@faq')->name('faq');
+Route::view('/agreement', 'agreement')->name('agreement');
 
 Route::view('/bad-login', 'errors/bad-login')->name('bad-login');
 Route::view('/banned', 'errors/banned')->name('banned');

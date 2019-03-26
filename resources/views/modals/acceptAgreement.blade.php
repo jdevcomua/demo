@@ -7,7 +7,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-12"><h3 style="text-align: center; font-size: 1.4rem; font-weight: 500; margin-bottom: 30px; text-transform: uppercase">Користуючись цим сайтом ви даєте згоду на
-                            <a href="">Обробку персональних даних</a></h3>
+                            <a href="{{route('agreement')}}">Обробку персональних даних</a></h3>
                     </div>
                 </div>
                 <div class="row">
@@ -26,8 +26,9 @@
 @section('scripts-end')
 <script>
     let $agreementAcceptModal = $('#agreementAcceptModal');
-    let agreementAccepted = {{\Auth::user() ? \Auth::user()->terms_accepted : true}};
-    if (!agreementAccepted) {
+    let dontShowAgreementModal = {{\Request::route()->getName() === 'agreement' ? 1 : 0}};
+    let agreementAccepted = {{\Auth::user() ? \Auth::user()->terms_accepted : 1}};
+    if (!agreementAccepted && !dontShowAgreementModal) {
         $agreementAcceptModal.modal({
             backdrop: 'static',
             keyboard: false

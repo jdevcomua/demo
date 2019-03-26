@@ -36,11 +36,17 @@
                     <div class="panel-heading">
                         <div class="panel-title">
                             <span class="glyphicon glyphicon-tasks"></span>
-                            @if($block->title === 'about-page')
+                            @switch($block->title)
+                                @case('about-page')
                                 Сторінка "Про проект"
-                            @elseif ($block->title === 'animal-verify')
+                                @break
+                                @case('animal-verify')
                                 Верифікація тварини
-                            @endif
+                                @break
+                                @case('agreement-page')
+                                Сторінка "Згода на обробку персональних даних"
+                                @break
+                            @endswitch
                         </div>
                     </div>
                     <div class="panel-body pn">
