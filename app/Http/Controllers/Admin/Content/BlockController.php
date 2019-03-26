@@ -14,6 +14,7 @@ class BlockController extends Controller
     const ABOUT_PAGE = 'about-page';
     const ANIMAL_VERIFY = 'animal-verify';
     const AGREEMENT_PAGE = 'agreement-page';
+    const RULES_PAGE = 'rules-page';
 
     public function index()
     {
@@ -38,8 +39,14 @@ class BlockController extends Controller
             ]);
             $block3->save();
 
+            $block4 = new Block([
+                'title' => self::RULES_PAGE,
+                'body' => ''
+            ]);
+            $block4->save();
+
             $blocks = new Collection();
-            $blocks->merge($block, $block2, $block3);
+            $blocks->merge($block, $block2, $block3, $block4);
 
             \Cache::tags('blocks')->flush();
         }
