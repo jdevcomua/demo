@@ -794,6 +794,43 @@ $width: 100px;
     width:50%;
   }
 }
+
+.agreement-checkbox-block {
+  display: flex;
+  margin-top: 2rem;
+  .checkbox {
+    margin-right: 1rem;
+    .check {
+      height: 2rem;
+      width: 2rem;
+      position: relative;
+      &:after {
+        content: '\D7';
+        display: block;
+        background: white url(/img/icon/check.svg) 0 2rem/1.7rem 1.6rem no-repeat;
+        pointer-events: none;
+        font-size: 2rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2rem;
+        width: 2rem;
+        color: transparent;
+        -webkit-transition: .25s all ease-in-out;
+        transition: .25s all ease-in-out;
+        border-radius: 10%;
+        line-height: 2rem;
+        border: solid 2px #999999;
+      }
+      &:checked:after {
+        background-position: 0 0;
+      }
+      &:hover:after {
+        border-color: #0b4478;
+      }
+    }
+  }
+}
 @media (max-width: 760px) {
   .animal-actions .animal-action {
     width: 100%;

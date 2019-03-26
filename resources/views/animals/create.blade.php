@@ -194,6 +194,15 @@
                     <input class="btn btn-primary" type="submit" value="Зберегти">
                     <a class="btn btn-cancel" href="{{ route('animals.index') }}">Скасувати</a>
                 </div>
+                <div class="agreement-checkbox-block">
+                    <div class="checkbox">
+                        <input class="check" type="checkbox"/>
+                    </div>
+                    <div class="text">
+                        З <a href="{{route('rules')}}">правилами утримання і догляду за домашніми тваринами</a> ознайомлений
+                    </div>
+                </div>
+
             </div>
         </div>
     </form>
