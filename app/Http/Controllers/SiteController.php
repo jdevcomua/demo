@@ -49,4 +49,24 @@ class SiteController extends Controller
         return redirect()->route('index', ['badgeNotFound' => 'show']);//Todo: ты уверен что нужно возвращать этот кусок GET-запросом?
     }
 
+    public function acceptTerms()
+    {
+        $user = \Auth::user();
+
+        if ($user) {
+            $user->terms_accepted = 1;
+            $user->save();
+            return \Response::json(['message' => 'Success']);
+        }
+        return \Response::json(['message' => 'Bad request'], 400);
+    }
+
+    public function declineTerms()
+    {
+        if (\Auth::user()) {
+            \Auth::logout();
+            return redirect()->route('index');
+        }
+    }
+
 }

@@ -187,6 +187,8 @@
         </div>
     </div>
 
+    @include('modals.acceptTerms')
+
     @if(isset($_GET['badgeNotFound']))
         @include('animals.partials.badgeNotFound')
     @endif

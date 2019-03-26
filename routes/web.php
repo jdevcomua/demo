@@ -38,6 +38,8 @@ Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () 
 
         Route::get('/profile', 'ProfileController@show')->name('profile');
         Route::post('/profile', 'ProfileController@update')->name('profile.update');
+        Route::post('/accept-terms', 'SiteController@acceptTerms')->name('accept-terms');
+        Route::get('/decline-terms', 'SiteController@declineTerms')->name('decline-terms');
 
     });
 
