@@ -203,7 +203,7 @@
                     @foreach($animal->animalVeterinaryMeasure as $veterinaryMeasure)
                         @if(count($veterinaryMeasure->files))
                             @foreach($veterinaryMeasure->files as $file)
-                                <a href="/{{ $doc->path }}" class="file-item">
+                                <a href="/{{ $file->path }}" class="file-item">
                                     <span class="file-name">{{ $file->filename }}</span>
                                     <span class="file-ext">.{{ $file->fileextension }}</span>
                                 </a>
