@@ -26,7 +26,7 @@
 @section('scripts-end')
 <script>
     let $agreementAcceptModal = $('#agreementAcceptModal');
-    let dontShowAgreementModal = {{\Request::route()->getName() === 'agreement' ? 1 : 0}};
+    let dontShowAgreementModal = window.location.pathname === '/agreement';
     let agreementAccepted = {{\Auth::user() ? \Auth::user()->terms_accepted : 1}};
     if (!agreementAccepted && !dontShowAgreementModal) {
         $agreementAcceptModal.modal({
