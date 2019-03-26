@@ -49,7 +49,7 @@ class SiteController extends Controller
         return redirect()->route('index', ['badgeNotFound' => 'show']);//Todo: ты уверен что нужно возвращать этот кусок GET-запросом?
     }
 
-    public function acceptTerms()
+    public function acceptAgreement()
     {
         $user = \Auth::user();
 
@@ -61,7 +61,7 @@ class SiteController extends Controller
         return \Response::json(['message' => 'Bad request'], 400);
     }
 
-    public function declineTerms()
+    public function declineAgreement()
     {
         if (\Auth::user()) {
             \Auth::logout();

@@ -1,4 +1,4 @@
-<div class="modal fade" id="termsAcceptModal" tabindex="-2" role="dialog" aria-labelledby="termsAcceptModalLabel" aria-hidden="true" style="padding-right: 15px;">
+<div class="modal fade" id="agreementAcceptModal" tabindex="-2" role="dialog" aria-labelledby="agreementAcceptModalLabel" aria-hidden="true" style="padding-right: 15px;">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,10 +12,10 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <a href="{{route('decline-terms')}}" class="btn btn-default decline" style="padding: 1rem 4rem;">Відмовляюсь</a>
+                        <a href="{{route('decline-agreement')}}" class="btn btn-default decline" style="padding: 1rem 4rem;">Відмовляюсь</a>
                     </div>
                     <div class="col-md-6">
-                        <a href="{{route('accept-terms')}}" id="acceptTermsButton" class="btn btn-primary accept" style="padding: 1rem 4rem;">Погоджуюсь</a>
+                        <a href="{{route('accept-agreement')}}" id="acceptAgreementButton" class="btn btn-primary accept" style="padding: 1rem 4rem;">Погоджуюсь</a>
                     </div>
                 </div>
             </div>
@@ -25,15 +25,15 @@
 
 @section('scripts-end')
 <script>
-    let $termsAcceptModal = $('#termsAcceptModal');
-    let termsAccepted = {{\Auth::user() ? \Auth::user()->terms_accepted : true}};
-    if (!termsAccepted) {
-        $termsAcceptModal.modal({
+    let $agreementAcceptModal = $('#agreementAcceptModal');
+    let agreementAccepted = {{\Auth::user() ? \Auth::user()->terms_accepted : true}};
+    if (!agreementAccepted) {
+        $agreementAcceptModal.modal({
             backdrop: 'static',
             keyboard: false
         });
     }
-    $('#acceptTermsButton').on('click', function (e) {
+    $('#acceptAgreementButton').on('click', function (e) {
         e.preventDefault();
         let route = $(this).attr('href');
         jQuery.ajax({
@@ -42,7 +42,7 @@
             contentType: false,
             processData: false,
         });
-        $termsAcceptModal.modal('hide');
+        $agreementAcceptModal.modal('hide');
     });
 </script>
 @endsection
