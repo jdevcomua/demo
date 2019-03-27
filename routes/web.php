@@ -64,6 +64,8 @@ Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () 
                 ->name('animals.request');
             Route::get('/organizations', 'AjaxController@getOrganizations')
                 ->name('getOrganizations');
+            Route::get('/device-types', 'AjaxController@getDeviceTypes')
+                ->name('getDeviceTypes');
         });
     });
 

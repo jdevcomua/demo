@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\AnimalFormRequestSent;
 use App\Events\AnimalAdded;
+use App\Http\Requests\AnimalRequest;
 use App\Http\Requests\InformAnimalDeath;
 use App\Http\Requests\InformAnimalMovedOut;
 use App\Models\Animal;
@@ -15,10 +16,9 @@ use App\Models\DeathArchiveRecord;
 use App\Models\Log;
 use App\Models\LostAnimal;
 use App\Models\MovedOutArchiveRecord;
+use App\Models\VeterinaryPassport;
 use App\Services\FilesService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -66,73 +66,9 @@ class AnimalsController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AnimalRequest $request)
     {
-        $data = $request->only(['nickname', 'nickname_lat', 'species', 'gender', 'breed', 'color', 'fur',
-                                'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness']);
-
-        if (array_key_exists('birthday', $data) && $data['birthday']) {
-            $data['birthday'] = str_replace('/', '-', $data['birthday']);
-            $data['birthday'] = Carbon::createFromTimestamp(strtotime($data['birthday']));
-        }
-
-        $validator = Validator::make($data, [    //Todo public function validate() (повторение огромного куска кода)
-            'nickname' => 'required|string|max:256',
-            'nickname_lat' => 'nullable|not_regex:/[А-Яа-яЁё]/u|max:256',
-            'species' => 'required|integer|exists:species,id',
-            'gender' => 'required|integer|in:0,1',
-            'breed' => 'required|integer|exists:breeds,id',
-            'color' => 'required|integer|exists:colors,id',
-            'fur' => 'required|integer|exists:furs,id',
-            'tallness' => 'nullable|integer|min:10|max:100',
-            'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
-            'sterilized' => 'nullable|in:1',
-            'half_breed' => 'nullable|in:1',
-            'comment' => 'nullable|string|max:2000',
-            'images' => 'required|array',
-            'images.1' => 'required|image',
-            'images.*' => 'required|image|max:2048',
-            'documents' => 'nullable|array',
-            'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
-        ], [
-            'nickname.required' => 'Кличка є обов\'язковим полем',
-            'nickname.max' => 'Кличка має бути менше :max символів',
-            'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
-            'nickname_lat.not_regex' => 'Кличка на латині має містити тільки латинські символи',
-            'species.required' => 'Вид є обов\'язковим полем',
-            'gender.required' => 'Стать є обов\'язковим полем',
-            'breed.required' => 'Порода є обов\'язковим полем',
-            'color.required' => 'Масть є обов\'язковим полем',
-            'fur.required' => 'Тип шерсті є обов\'язковим полем',
-            'tallness.min' => 'Зріст має бути більше :min см',
-            'tallness.max' => 'Зріст має бути менше :max см',
-            'birthday.required' => 'Дата народження є обов\'язковим полем',
-            'birthday.before' => 'Дата народження не може бути у майбутньому!',
-            'birthday.date' => 'Дата народження повинна бути корректною датою',
-            'birthday.after' => 'Тварини стільки не живуть!',
-            'comment.max' => 'Коментарій має бути менше :max символів',
-            'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
-            'images.1.required' => 'Додайте головне фото тварини!',
-            'images.*.max' => 'Фото повинні бути не більше 2Mb',
-            'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
-            'documents.*.max' => 'Документи повинні бути не більше 2Mb',
-            'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $data['species_id'] = $data['species'];
-        $data['breed_id'] = $data['breed'];
-        $data['color_id'] = $data['color'];
-        $data['fur_id'] = $data['fur'];
-        unset($data['species']);
-        unset($data['breed']);
-        unset($data['color']);
-        unset($data['fur']);
+        $data = $request->validated();
 
         $user = \Auth::user();
 
@@ -142,6 +78,10 @@ class AnimalsController extends Controller
             'user_id' => $user->id,
         ]);
         $animal = $user->animals()->create($data);
+
+        $this->addVeterinaryPassport($animal, $data);
+        $this->addIdentifyingDevice($animal, $data);
+
         \RhaLogger::addChanges($animal, new Animal(), true, ($animal != null));
         if ($animal) \RhaLogger::object($animal);
 
@@ -203,73 +143,9 @@ class AnimalsController extends Controller
      * @param Animal $animal
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Animal $animal)
+    public function update(AnimalRequest $request, Animal $animal)
     {
-        $data = $request->only(['nickname', 'species', 'gender', 'breed', 'color', 'fur',
-            'birthday', 'sterilized', 'comment', 'images', 'documents', 'tallness', 'nickname_lat', 'half_breed']);
-
-        if (array_key_exists('birthday', $data)) {
-            $data['birthday'] = str_replace('/', '-', $data['birthday']);
-            $data['birthday'] = Carbon::createFromTimestamp(strtotime($data['birthday']));
-        }
-
-        $validator = Validator::make($data, [
-            'nickname' => 'required|string|max:256',
-            'nickname_lat' => 'nullable|not_regex:/[А-Яа-яЁё]/u|max:256',
-            'species' => 'required|integer|exists:species,id',
-            'gender' => 'required|integer|in:0,1',
-            'breed' => 'required|integer|exists:breeds,id',
-            'color' => 'required|integer|exists:colors,id',
-            'fur' => 'required|integer|exists:furs,id',
-            'tallness' => 'nullable|integer|min:10|max:100',
-            'birthday' => 'required|date|after:1940-01-01|before:tomorrow',
-            'sterilized' => 'nullable|in:1',
-            'half_breed' => 'nullable|in:1',
-            'comment' => 'nullable|string|max:2000',
-            'images' => 'nullable|array',
-            'images.*' => 'nullable|image|max:2048',
-            'documents' => 'nullable|array',
-            'documents.*' => 'nullable|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
-        ], [
-            'nickname.required' => 'Кличка є обов\'язковим полем',
-            'nickname_lat.max' => 'Кличка на латині має бути менше :max символів',
-            'nickname_lat.not_regex' => 'Кличка на латині має містити тільки латинські символи',
-            'nickname.max' => 'Кличка має бути менше :max символів',
-            'species.required' => 'Вид є обов\'язковим полем',
-            'gender.required' => 'Стать є обов\'язковим полем',
-            'breed.required' => 'Порода є обов\'язковим полем',
-            'color.required' => 'Масть є обов\'язковим полем',
-            'fur.required' => 'Тип шерсті є обов\'язковим полем',
-            'tallness.min' => 'Зріст має бути більше :min см',
-            'tallness.max' => 'Зріст має бути менше :max см',
-            'birthday.required' => 'Дата народження є обов\'язковим полем',
-            'birthday.before' => 'Дата народження не може бути у майбутньому!',
-            'birthday.date' => 'Дата народження повинна бути корректною датою',
-            'birthday.after' => 'Тварини стільки не живуть!',
-            'comment.max' => 'Коментарій має бути менше :max символів',
-            'images.required' => 'Додайте щонайменше 1 фото вашої тваринки',
-            'images.*.image' => 'Файли повинні бути в форматі зображення!',
-            'images.*.max' => 'Фото повинні бути не більше 2Mb',
-            'documents.*.max' => 'Документи повинні бути не більше 2',
-            'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $data['species_id'] = $data['species'];
-        $data['breed_id'] = $data['breed'];
-        $data['color_id'] = $data['color'];
-        $data['fur_id'] = $data['fur'];
-        unset($data['species']);
-        unset($data['breed']);
-        unset($data['color']);
-        unset($data['fur']);
-
-        $data['sterilized'] = array_key_exists('sterilized', $data);
+        $data = $request->validated();
 
         \RhaLogger::start(['data' => $data]);
         \RhaLogger::update([
@@ -290,6 +166,33 @@ class AnimalsController extends Controller
             'status' => 'ok',
             'url' => route('animals.verify')
         ]);
+    }
+
+    protected function addVeterinaryPassport($animal, $data)
+    {
+        if (isset($data['veterinary_issued_by']) && isset($data['veterinary_number'])) {
+            $passport = new VeterinaryPassport();
+            $passport->fill([
+                'issued_by' => $data['veterinary_issued_by'],
+                'number' => $data['veterinary_number'],
+            ])->save();
+
+            $animal->veterinaryPassport()->associate($passport);
+            $animal->save();
+        }
+    }
+
+    protected function addIdentifyingDevice($animal, $data)
+    {
+        if (isset($data['device_type'])
+            && isset($data['device_number'])
+            && isset($data['device_issued_by'])) {
+            $animal->identifyingDevices()->create([
+                'identifying_device_type_id' => $data['device_type'],
+                'number' => $data['device_number'],
+                'issued_by' => $data['device_issued_by']
+            ]);
+        }
     }
 
     /**

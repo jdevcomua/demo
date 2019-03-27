@@ -57,6 +57,20 @@ class AjaxController extends Controller
         return response(json_encode($furs));
     }
 
+    public function getDeviceTypes()
+    {
+        $deviceTypes = IdentifyingDeviceType::all()->pluck('name', 'id')->toArray();
+
+        $deviceTypes = array_map(function ($value, $key) {
+            return [
+                'name' => $value,
+                'value' => $key
+            ];
+        }, $deviceTypes, array_keys($deviceTypes));
+
+        return response(json_encode($deviceTypes));
+    }
+
     public function getUsers()
     {
         $users = User::all()->pluck('name', 'id')->toArray();

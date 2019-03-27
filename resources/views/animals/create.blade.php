@@ -72,16 +72,25 @@
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="nickname">Кличка <span class="required-field">*</span></label>
+                    <small class="form-text text-muted">
+                        Вкажіть, як звати вашу тварину українською мовою
+                    </small>
                     <input type="text" class="form-control" id="nickname" name="nickname" required>
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="nickname_lat">Кличка на латині</label>
+                    <small class="form-text text-muted">
+                        Заповніть це поле, якщо ваша тварина має кличку іншою мовою
+                    </small>
                     <input type="text" class="form-control" id="nickname_lat" name="nickname_lat" >
                 </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label>Вид  <span class="required-field">*</span></label>
+                    <small class="form-text text-muted">
+                        Оберіть вид тварини
+                    </small>
                     <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn radio-item big-radio active">
                             <span class="label label-dog"></span>
@@ -96,6 +105,9 @@
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label>Стать  <span class="required-field">*</span></label>
+                    <small class="form-text text-muted">
+                        Оберіть стать тварини
+                    </small>
                     <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn radio-item big-radio active">
                             <span class="label"><i class="fa fa-mars" aria-hidden="true"></i></span>
@@ -112,6 +124,9 @@
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="breed">Порода  <span class="required-field">*</span></label>
+                    <small class="form-text text-muted">
+                        Оберіть породу тварини
+                    </small>
                     <select name="breed" class="breed" required></select>
                 </div>
                 <div class="form-group">
@@ -125,39 +140,116 @@
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="color">Масть  <span class="required-field">*</span></label>
+                    <label for="color">Окрас  <span class="required-field">*</span></label>
+                    <small class="form-text text-muted">
+                        Оберіть окрас (масть) тварини
+                    </small>
                     <select name="color" class="color" required></select>
                 </div>
                 <div class="form-group select">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="fur">Тип шерсті <span class="required-field">*</span></label>
+                    <small class="form-text text-muted">
+                        Оберіть тип шерсті тварини
+                    </small>
                     <select name="fur" class="fur" required></select>
-                </div>
-                <div class="form-group">
-                    <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="tallness">Зріст(вказується в см)</label>
-                    <input type="text" class="form-control" id="tallness" name="tallness">
                 </div>
                 <div class="form-group datepicker">
                     <div class="validation-error alert alert-danger hidden"></div>
                     <label for="birthday">Дата народження  <span class="required-field">*</span></label>
+                    <small class="form-text text-muted">
+                        Оберіть дату народження тварини
+                    </small>
                     <input type="text" class="form-control" id="birthday" name="birthday"
                            required autocomplete="off" readonly="true"
                     />
                 </div>
+                <div class="form-group">
+                    <div class="validation-error alert alert-danger hidden"></div>
+                    <label for="tallness">Зріст</label>
+                    <small class="form-text text-muted">
+                        Вкажіть зріст тварини в сантиметрах
+                    </small>
+                    <input type="text" class="form-control" id="tallness" name="tallness">
+                </div>
                 <div class="form-group btn-group-toggle checkbox-group" data-toggle="buttons">
-                    <label class="btn checkbox-item">
-                        <input type="checkbox" name="sterilized" autocomplete="off" value="1"> Стерилізовано
-                    </label>
                     @if(false)
                         <label class="btn checkbox-item">
                             <input type="checkbox" name="homeless" autocomplete="off"> Безпритульна
                         </label>
                     @endif
                 </div>
+            </div>
+        </div>
+        <div class="cols-block">
+            <div class="cols-block-header">
+                <div class="block-title">ЗАСІБ ІДЕНТИФІКАЦІЇ ТВАРИНИ</div>
+                <div class="block-sub-title">Додайте відомості про засіб ідентифікації тварини: жетон, чип або тавро, ящо такі є у тварини.</div>
+            </div>
+            <div class="cols-block-content form">
+                <div class="form-group select">
+                    <div class="validation-error alert alert-danger hidden"></div>
+                    <label for="device_type">Тип засобу</label>
+                    <small class="form-text text-muted">
+                        Оберіть тип засобу ідентифікації тварини
+                    </small>
+                    <select name="device_type" id="device_type" class="device_type" ></select>
+                </div>
                 <div class="form-group">
                     <div class="validation-error alert alert-danger hidden"></div>
-                    <label for="comment">Коментарі (Особливі прикмети)</label>
+                    <label for="device_number">Номер засобу</label>
+                    <small class="form-text text-muted">
+                        Вкажіть номер засобу ідентифікації тварини
+                    </small>
+                    <input type="text" class="form-control" id="device_number" name="device_number">
+                </div>
+                <div class="form-group">
+                    <div class="validation-error alert alert-danger hidden"></div>
+                    <label for="device_issued_by">Ким видано</label>
+                    <small class="form-text text-muted">
+                        Вкажіть, ким виданий засіб ідентифікації, якщо такий є у тварини.
+                    </small>
+                    <input type="text" class="form-control" id="device_issued_by" name="device_issued_by">
+                </div>
+            </div>
+        </div>
+        <div class="cols-block">
+            <div class="cols-block-header">
+                <div class="block-title">ІНШІ ВІДОМОСТІ</div>
+                <div class="block-sub-title">Додайте інші дані про вашу тварину.</div>
+            </div>
+            <div class="cols-block-content form">
+                <div class="form-group btn-group-toggle checkbox-group" data-toggle="buttons">
+                    <label for="sterilized" style="width: 100%">Стерилізація</label>
+                    <small class="form-text text-muted" style="margin-bottom: 1rem;">
+                        Відзначте, якщо вашу тварину стерилізовано
+                    </small>
+                    <label class="btn checkbox-item">
+                        <input type="checkbox" name="sterilized" id="sterilized" autocomplete="off" value="1"> Стерилізовано
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div class="validation-error alert alert-danger hidden"></div>
+                    <label for="veterinary_number">Номер ветеринарного паспорту</label>
+                    <small class="form-text text-muted">
+                        Вкажіть номер ветеринарного паспорту тварини, якщо такий є у тварини.
+                    </small>
+                    <input type="text" class="form-control" id="veterinary_number" name="veterinary_number">
+                </div>
+                <div class="form-group">
+                    <div class="validation-error alert alert-danger hidden"></div>
+                    <label for="veterinary_issued_by">Ким видано</label>
+                    <small class="form-text text-muted">
+                        Вкажіть, ким виданий ветеринарний паспорт, якщо такий є у тварини.
+                    </small>
+                    <input type="text" class="form-control" id="veterinary_issued_by" name="veterinary_issued_by">
+                </div>
+                <div class="form-group">
+                    <div class="validation-error alert alert-danger hidden"></div>
+                    <label for="comment">Додаткові відомості</label>
+                    <small class="form-text text-muted">
+                        Вкажіть особливі прикмети тварини та іншу інформацію щодо тварини, яку вважаєте за потрібну
+                    </small>
                     <textarea name="comment" id="comment" rows="5"></textarea>
                 </div>
             </div>
@@ -194,9 +286,10 @@
                     <input class="btn btn-primary" type="submit" value="Зберегти">
                     <a class="btn btn-cancel" href="{{ route('animals.index') }}">Скасувати</a>
                 </div>
+                <div class="validation-error alert alert-danger hidden" style="margin-top: 2rem;"></div>
                 <div class="agreement-checkbox-block">
                     <div class="checkbox">
-                        <input class="check" type="checkbox"/>
+                        <input class="check" type="checkbox" name="agree" value="1" />
                     </div>
                     <div class="text">
                         З <a href="{{route('rules')}}">правилами утримання і догляду за домашніми тваринами</a> ознайомлений

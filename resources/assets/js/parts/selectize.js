@@ -8,6 +8,23 @@ var options = {
 var breeds = $('.form-group.select select.breed').selectize(options);
 var colors = $('.form-group.select select.color').selectize(options);
 var furs = $('.form-group.select select.fur').selectize(options);
+var device_types = $('select#device_type').selectize(options);
+
+var xhrDeviceTypes;
+if (device_types.length) {
+    device_types[0].selectize.load(function (callback) {
+        xhrDeviceTypes && xhrDeviceTypes.abort();
+        xhrDeviceTypes = $.ajax({
+            url: '/ajax/device-types',
+            success: function success(results) {
+                callback(JSON.parse(results));
+            },
+            error: function error() {
+                callback();
+            }
+        });
+    });
+}
 
 var selects = [breeds, colors, furs];
 var selects_names = ['breeds', 'colors', 'furs'];
