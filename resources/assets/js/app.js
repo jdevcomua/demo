@@ -37,7 +37,7 @@ $('#i-found-animal').on('click', function (e) {
 });
 
 $('#found-badge-btn').on('click', function () {
-    let inputIdsToOmit = ['badge', 'contact_name', 'contact_phone', 'contact_email'];
+    let inputIdsToOmit = ['found-badge', 'contact_name', 'contact_phone', 'contact_email'];
 
     let $form = $(this).parents().eq(1);
     let $inputContainers = $form.find('.form-group');

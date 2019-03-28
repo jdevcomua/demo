@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AnimalFoundCreated;
 use App\Http\Requests\IFoundAnimal;
 use App\Models\FoundAnimal;
 use App\Models\LostAnimal;
@@ -44,6 +45,8 @@ class AnimalsLostController extends Controller
         $foundAnimal = FoundAnimal::create($dataToSave);
 
         $this->filesService->handleFoundAnimalFilesUpload($foundAnimal, $dataToSave);
+
+        event(new AnimalFoundCreated($foundAnimal->contact_email));
 
         return response()->json([
             'status' => 'ok',
