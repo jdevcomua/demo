@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BadgeScanned;
 use App\Models\Animal;
 use App\Models\Faq;
 use App\Models\IdentifyingDevice;
 use App\Models\IdentifyingDeviceType;
 use Cache;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SiteController extends Controller
 {
@@ -30,7 +30,7 @@ class SiteController extends Controller
         $badgeTypeId = IdentifyingDeviceType::where('name', 'Жетон')->firstOrFail()->id;
         $badgeDevice = IdentifyingDevice::where('identifying_device_type_id', $badgeTypeId)
             ->where('number', $request->get('n'))
-            ->first();;
+            ->first();
 
         $animal = null;
 
@@ -39,6 +39,9 @@ class SiteController extends Controller
         }
 
         if ($animal) {
+            $email = $animal->user->primaryEmail;
+            event(new BadgeScanned($email));
+
             $user = $request->user();
 
             return ($user && $user->can('admin-panel'))
