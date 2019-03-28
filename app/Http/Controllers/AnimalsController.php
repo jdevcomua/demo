@@ -79,8 +79,8 @@ class AnimalsController extends Controller
         ]);
         $animal = $user->animals()->create($data);
 
-        $this->addVeterinaryPassport($animal, $data);
-        $this->addIdentifyingDevice($animal, $data);
+        $this->handleVeterinaryPassport($animal, $data);
+        $this->handleIdentifyingDevice($animal, $data);
 
         \RhaLogger::addChanges($animal, new Animal(), true, ($animal != null));
         if ($animal) \RhaLogger::object($animal);
@@ -130,9 +130,13 @@ class AnimalsController extends Controller
 
         $animal->load(['species', 'color', 'files']);
         $animal->imagesArray = $animal->images->pluck('path', 'num')->toArray();
+        $passport = $animal->veterinaryPassport;
+        $device = $animal->identifyingDevices()->first();
 
         return view('animals.edit', [
-            'pet' => $animal
+                'pet' => $animal,
+                'passport' => $passport,
+                'device' => $device,
         ]);
     }
 
@@ -156,6 +160,10 @@ class AnimalsController extends Controller
         $oldAnimal = clone $animal;
         $animal->fill($data);
         $animal->save();
+
+        $this->handleVeterinaryPassport($animal, $data);
+        $this->handleIdentifyingDevice($animal, $data);
+
         \RhaLogger::addChanges($animal, $oldAnimal, true, ($animal != null));
 
         $this->filesService->handleAnimalFilesUpload($animal, $data);
@@ -168,30 +176,52 @@ class AnimalsController extends Controller
         ]);
     }
 
-    protected function addVeterinaryPassport($animal, $data)
+    protected function handleVeterinaryPassport($animal, $data)
     {
         if (isset($data['veterinary_issued_by']) && isset($data['veterinary_number'])) {
-            $passport = new VeterinaryPassport();
-            $passport->fill([
+            $dataToSave = [
                 'issued_by' => $data['veterinary_issued_by'],
                 'number' => $data['veterinary_number'],
-            ])->save();
+            ];
 
-            $animal->veterinaryPassport()->associate($passport);
-            $animal->save();
+            if (!$animal->veterinaryPassport) {
+                $passport = new VeterinaryPassport();
+                $passport->fill($dataToSave)->save();
+
+                $animal->veterinaryPassport()->associate($passport);
+                $animal->save();
+            } else {
+                $animal->veterinaryPassport->update($dataToSave);
+            }
+        } else {
+            $passport = $animal->veterinaryPassport;
+            if ($passport !== null) {
+                $passport->delete();
+            }
         }
     }
 
-    protected function addIdentifyingDevice($animal, $data)
+    protected function handleIdentifyingDevice($animal, $data)
     {
         if (isset($data['device_type'])
             && isset($data['device_number'])
             && isset($data['device_issued_by'])) {
-            $animal->identifyingDevices()->create([
+            $dataToSave = [
                 'identifying_device_type_id' => $data['device_type'],
                 'number' => $data['device_number'],
                 'issued_by' => $data['device_issued_by']
-            ]);
+            ];
+
+            if (!count($animal->identifyingDevices)) {
+                $animal->identifyingDevices()->create($dataToSave);
+            } else {
+                $animal->identifyingDevices()->first()->update($dataToSave);
+            }
+        } else {
+            $device = $animal->identifyingDevices()->first();
+            if ($device !== null) {
+                $device->delete();
+            }
         }
     }
 

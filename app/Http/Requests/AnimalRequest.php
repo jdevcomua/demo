@@ -47,17 +47,28 @@ class AnimalRequest extends FormRequest
             'device_type' => 'nullable|exists:identifying_device_types,id',
             'device_number' => 'nullable|max:255',
             'device_issued_by' => 'nullable|string|max:255',
-            'images' => 'required|array',
-            'images.1' => 'required|image',
-            'images.*' => 'required|image|max:2048',
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
         ];
 
+        $imagesRules = [
+            'images' => 'required|array',
+            'images.1' => 'required|image',
+            'images.*' => 'required|image|max:2048',
+        ];
+
         $data = $this->all();
+
+        if (isset($data['editing'])) {
+            $imagesRules = [
+                'images' => 'nullable|array',
+                'images.*' => 'nullable|image|max:2048',
+            ];
+        }
 
         $this->makeRequiredIfOneIsset($data,$rules, 'veterinary_number', 'veterinary_issued_by');
         $this->makeRequiredIfOneIsset($data,$rules, 'device_type', 'device_number', 'device_issued_by');
+        $rules = array_merge($rules, $imagesRules);
 
         return $rules;
     }
@@ -106,6 +117,16 @@ class AnimalRequest extends FormRequest
             'images.*.image' => 'Фото повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .svg',
             'documents.*.max' => 'Документи повинні бути не більше 2Mb',
             'documents.*.mimes' => 'Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf',
+            'device_type.exists' => 'Виберіть із списку один з типів',
+            'device_type.required' => 'Тип засобу є обов\'язковим полем',
+            'device_number.required' => 'Номер засобу є обов\'язковим полем',
+            'device_number.max' => 'Номер засобу має бути менше :max символів',
+            'device_issued_by.max' => 'Ким видано має бути менше :max символів',
+            'device_issued_by.required' => 'Ким видано є обов\'язковим полем',
+            'veterinary_number.required' => 'Номер ветеринарного паспорту є обов\'язковим полем',
+            'veterinary_number.max' => 'Номер ветеринарного паспорту має бути менше :max символів',
+            'veterinary_issued_by.max' => 'Ким видано має бути менше :max символів',
+            'veterinary_issued_by.required' => 'Ким видано є обов\'язковим полем',
         ];
     }
 

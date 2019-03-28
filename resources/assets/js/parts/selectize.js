@@ -18,6 +18,7 @@ if (device_types.length) {
             url: '/ajax/device-types',
             success: function success(results) {
                 callback(JSON.parse(results));
+                device_types[0].selectize.setValue(device_types.data('value'));
             },
             error: function error() {
                 callback();
