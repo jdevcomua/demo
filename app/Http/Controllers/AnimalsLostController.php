@@ -6,9 +6,9 @@ use App\Events\AnimalFoundCreated;
 use App\Http\Requests\IFoundAnimal;
 use App\Models\FoundAnimal;
 use App\Models\LostAnimal;
+use App\Notifications\EmailNotifiable;
 use App\Services\FilesService;
 use Illuminate\Http\Request;
-use Validator;
 
 class AnimalsLostController extends Controller
 {
@@ -46,7 +46,10 @@ class AnimalsLostController extends Controller
 
         $this->filesService->handleFoundAnimalFilesUpload($foundAnimal, $dataToSave);
 
-        event(new AnimalFoundCreated($foundAnimal->contact_email));
+        $notifiable = new EmailNotifiable();
+        $notifiable->email = $foundAnimal->contact_email;
+
+        event(new AnimalFoundCreated($notifiable, $foundAnimal));
 
         return response()->json([
             'status' => 'ok',

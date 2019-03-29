@@ -113,24 +113,27 @@ class NotificationTemplate extends Model
         return $items;
     }
 
-    public function fillTextPlaceholders(User $user, $payload = null)
+    public function fillTextPlaceholders($notifiable, $payload = null)
     {
-        $data = static::flattenPayload($payload);
+        if ($notifiable->email === null) {
+            $data = static::flattenPayload($payload);
 
-        $placeholders = [
-            '{user.name}' => $user->name,
-            '{user.full_name}' => $user->full_name,
-            '{user.first_name}' => $user->first_name,
-            '{user.last_name}' => $user->last_name,
-            '{user.middle_name}' => $user->middle_name,
-            '{user.animals.count}' => $user->animals->count(),
-            '{user.animals_verified.count}' => $user->animalsVerified()->count(),
-            '{user.animals_unverified.count}' => $user->animalsUnverified()->count(),
-            '{animal.nickname}' => array_key_exists('nickname', $data) ? $data['nickname'] : '',
-            '{animal.badge_num}' => array_key_exists('badge', $data) ? $data['badge'] : '',
-        ];
+            $placeholders = [
+                '{user.name}' => $notifiable->name,
+                '{user.full_name}' => $notifiable->full_name,
+                '{user.first_name}' => $notifiable->first_name,
+                '{user.last_name}' => $notifiable->last_name,
+                '{user.middle_name}' => $notifiable->middle_name,
+                '{user.animals.count}' => $notifiable->animals->count(),
+                '{user.animals_verified.count}' => $notifiable->animalsVerified()->count(),
+                '{user.animals_unverified.count}' => $notifiable->animalsUnverified()->count(),
+                '{animal.nickname}' => array_key_exists('nickname', $data) ? $data['nickname'] : '',
+                '{animal.badge_num}' => array_key_exists('badge', $data) ? $data['badge'] : '',
+            ];
 
-        return str_replace(array_keys($placeholders), array_values($placeholders), $this->body);
+            return str_replace(array_keys($placeholders), array_values($placeholders), $this->body);
+        }
+        return $this->body;
     }
 
     public static function flattenPayload($payload)

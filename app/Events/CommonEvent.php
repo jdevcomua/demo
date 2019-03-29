@@ -10,18 +10,18 @@ abstract class CommonEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $notifiable;
     public $payload;
 
     /**
      * Create a new event instance.
      *
-     * @param $user
+     * @param $notifiable
      * @param array|null $payload
      */
-    public function __construct($user, $payload = null)
+    public function __construct($notifiable, $payload = null)
     {
-        $this->user = $user;
+        $this->notifiable = $notifiable;
         $this->payload = $payload;
     }
 }

@@ -35,10 +35,10 @@ class CommonEventListener
 
             switch ($notification->type) {
                 case NotificationTemplate::TYPE_EMAIL:
-                    $this->sendEmail($event->user, $notification, $event->payload);
+                    $this->sendEmail($event->notifiable, $notification, $event->payload);
                     break;
                 case NotificationTemplate::TYPE_ALERT:
-                    $this->sendAlert($event->user, $notification, $event->payload);
+                    $this->sendAlert($event->notifiable, $notification, $event->payload);
                     break;
             }
         }
@@ -49,9 +49,9 @@ class CommonEventListener
      * @param NotificationTemplate $notification
      * @param array|null $payload
      */
-    private function sendEmail(User $user, NotificationTemplate $notification, $payload)
+    private function sendEmail($notifiable, NotificationTemplate $notification, $payload)
     {
-        $user->notify(new MailNotification($notification, $payload));
+        $notifiable->notify(new MailNotification($notification, $payload));
     }
 
     /**
@@ -59,8 +59,8 @@ class CommonEventListener
      * @param NotificationTemplate $notification
      * @param array|null $payload
      */
-    private function sendAlert(User $user, NotificationTemplate $notification, $payload)
+    private function sendAlert($notifiable, NotificationTemplate $notification, $payload)
     {
-        $user->notify(new AlertNotification($notification, $payload));
+        $notifiable->notify(new AlertNotification($notification, $payload));
     }
 }

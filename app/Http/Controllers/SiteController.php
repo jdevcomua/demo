@@ -39,8 +39,7 @@ class SiteController extends Controller
         }
 
         if ($animal) {
-            $email = $animal->user->primaryEmail;
-            event(new BadgeScanned($email));
+            event(new BadgeScanned($animal->user, [$animal]));
 
             $user = $request->user();
 

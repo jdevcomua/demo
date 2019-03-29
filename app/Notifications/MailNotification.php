@@ -48,7 +48,8 @@ class MailNotification extends Notification implements ShouldQueue
     {
         $body = $this->notification->fillTextPlaceholders($notifiable, $this->payload);
 
-        return (new CustomMail($this->notification->subject, $body))
-            ->to($notifiable->primaryEmail);
+        $email = $notifiable->email ?? $notifiable->primaryEmail;
+
+        return (new CustomMail($this->notification->subject, $body))->to($email);
     }
 }
