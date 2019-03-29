@@ -7,7 +7,8 @@
     <div class="page-title">
         <a href="{{ route('index') }}" class="page-back-link"></a>
         <div class="title">{{ $animal->nickname }} {{$animal->nickname_lat ? '(' . $animal->nickname_lat . ')' : ''}}</div>
-        @if(!$animal->verified) <a href="{{ route('animals.edit', $animal->id) }}" class="action-link">Редагувати</a> @endif
+        @if(!$animal->verified) <a href="{{ route('animals.edit', $animal->id) }}"
+                                   class="action-link">Редагувати</a> @endif
     </div>
     <div class="animal-show">
         <div class="animal-images">
@@ -21,10 +22,11 @@
             @endfor
         </div>
         @if($animal->badge !== null)
-        <div class="animal-badge" style="position: inherit; margin: 2rem 0 0 1.1rem; background-image: none; background-color: rgba(1, 68, 121, 0.8);">
-            <span class="animal-badge-icon"></span>
-            <span class="animal-badge-number">{{$animal->badge->number}}</span>
-        </div>
+            <div class="animal-badge"
+                 style="position: inherit; margin: 2rem 0 0 1.1rem; background-image: none; background-color: rgba(1, 68, 121, 0.8);">
+                <span class="animal-badge-icon"></span>
+                <span class="animal-badge-number">{{$animal->badge->number}}</span>
+            </div>
         @endif
         <div class="cols-block" style="padding-top: 5.5rem;">
             <div class="cols-block-header">
@@ -106,7 +108,9 @@
         <div class="cols-block">
             <div class="cols-block-header">
                 <div class="block-title">РЕЄСТРАЦІЯ, ВЕРИФІКАЦІЯ ТА ІДЕНТИФІКАЦІЇ</div>
-                <div class="block-sub-title">Відомості про верифікацію та засіб ідентифікації тварини: жетон, чип або тавро</div>
+                <div class="block-sub-title">Відомості про верифікацію та засіб ідентифікації тварини: жетон, чип або
+                    тавро
+                </div>
             </div>
             <div class="cols-block-content">
                 <div class="pet-info">
@@ -135,15 +139,13 @@
                                 <span class="content">{{ $animal->verification->user->name }}</span>
                             </div>
                         @endif
-                </div>
                     @endif
-                    @if(count($animal->identifyingDevices))
-                        {{--<div class="pet-info divider"></div>--}}
-                        {{--<hr class="divider">--}}
-                            @foreach ($animal->identifyingDevices as $index => $identifyingDevice)
-                        <div class="pet-info divider">
 
-                        <div class="pet-info-block">
+                </div>
+                @if(count($animal->identifyingDevices))
+                    @foreach ($animal->identifyingDevices as $index => $identifyingDevice)
+                        <div class="pet-info divider">
+                            <div class="pet-info-block">
                                 <span class="title">Тип пристрою</span>
                                 <span class="content">{{$identifyingDevice->type->name}}</span>
                             </div>
@@ -163,24 +165,21 @@
                                 <span class="title">Додаткова інформація</span>
                                 <span class="content">{{$identifyingDevice->info ?? 'Відсутня'}}</span>
                             </div>
-                                @if (count($animal->identifyingDevices) > $index + 1)
-                                    <hr class="half-divider">
-                                @endif
                         </div>
 
                     @endforeach
-                </div>
-                    @endif
-                </div>
-        <hr class="divider">
-        <div class="cols-block">
-            <div class="cols-block-header">
-                <div class="block-title">ВЕТЕРИНАРНІ ЗАХОДИ</div>
-                <div class="block-sub-title">Відомості про ветеринарні заходи щодо тварини</div>
+                @endif
             </div>
-            <div class="cols-block-content">
-                    @if(count($veterinaryMeasures))
-                        @foreach ($veterinaryMeasures as $index => $measure)
+        </div>
+        @if(count($veterinaryMeasures))
+            <hr class="divider">
+            <div class="cols-block">
+                <div class="cols-block-header">
+                    <div class="block-title">ВЕТЕРИНАРНІ ЗАХОДИ</div>
+                    <div class="block-sub-title">Відомості про ветеринарні заходи щодо тварини</div>
+                </div>
+                <div class="cols-block-content">
+                    @foreach ($veterinaryMeasures as $index => $measure)
                         <div class="pet-info @if($index) divider @endif">
                             <div class="pet-info-block">
                                 <span class="title">Дата</span>
@@ -201,18 +200,19 @@
                         </div>
 
                     @endforeach
+                </div>
             </div>
-            @endif
-        </div>
-        <hr class="divider">
+        @endif
 
-        <div class="cols-block">
-            <div class="cols-block-header">
-                <div class="block-title">ІСТОРІЯ</div>
-                <div class="block-sub-title">Журнал дій щодо тварини</div>
-            </div>
-            <div class="cols-block-content">
-                @if(count($animal->chronicles))
+        @if(count($animal->chronicles))
+            <hr class="divider">
+
+            <div class="cols-block">
+                <div class="cols-block-header">
+                    <div class="block-title">ІСТОРІЯ</div>
+                    <div class="block-sub-title">Журнал дій щодо тварини</div>
+                </div>
+                <div class="cols-block-content">
                     <div class="pet-chronicles-block">
                         @foreach($animal->chronicles->sortByDesc('created_at') as $chronicle)
                             <div class="pet-chronicles-block-item">
@@ -221,9 +221,9 @@
                             </div>
                         @endforeach
                     </div>
-                @endif
-        </div>
-    </div>
+                </div>
+            </div>
+        @endif
         <hr class="divider">
 
         <div class="cols-block">
@@ -259,38 +259,47 @@
             </div>
         </div>
 
-    <hr class="divider">
+        <hr class="divider">
         <div class="animal-actions">
             @if($animal->lost && !$animal->lost->found)
                 <div class="animal-action">
                     <div class="action-title">Тварину знайдено</div>
-                    <div class="action-description">Якщо ви знайшли вашого улюбленця тисніть кнопку <i>Тварину знайдено</i>!</div>
-                    <button class="btn btn-primary btn-i i-ok btn-tbig lost_animal-btn" >Тварину знайдено</button>
+                    <div class="action-description">Якщо ви знайшли вашого улюбленця тисніть кнопку <i>Тварину
+                            знайдено</i>!
+                    </div>
+                    <button class="btn btn-primary btn-i i-ok btn-tbig lost_animal-btn">Тварину знайдено</button>
                 </div>
             @else
                 <div class="animal-action">
                     <div class="action-title">Розшук</div>
-                    <div class="action-description">Якщо ви втратили вашого улюбленця тисніть кнопку <i>Розшук</i> для того щоб швидше знайти його!</div>
-                    <button class="btn btn-red btn-i i-warn btn-tbig lost_animal-btn" >Розшук</button>
+                    <div class="action-description">Якщо ви втратили вашого улюбленця тисніть кнопку <i>Розшук</i> для
+                        того щоб швидше знайти його!
+                    </div>
+                    <button class="btn btn-red btn-i i-warn btn-tbig lost_animal-btn">Розшук</button>
                 </div>
             @endif
             <div class="animal-action">
                 <div class="action-title">Зміна власника</div>
-                <div class="action-description">Якщо власник тварини змінився тисніть кнопку <i>Змінити власника</i> для того щоб повідомити про це нас</div>
+                <div class="action-description">Якщо власник тварини змінився тисніть кнопку <i>Змінити власника</i> для
+                    того щоб повідомити про це нас
+                </div>
                 <button class="btn btn-dgrey btn-i i-change btn-tbig" id="changeOwnerButton">Змінити власника</button>
             </div>
-                <div class="animal-action">
-                    <div class="action-title">Тварина померла</div>
-                    <div class="action-description">Якщо  ваш улюбленець помер тисніть кнопку <i>Тварина померла</i> для того щоб повідомити про це!</div>
-                    <button class="btn btn-dgrey btn-i i-dead btn-tbig" id="animal_death-btn" >Тварина померла</button>
+            <div class="animal-action">
+                <div class="action-title">Тварина померла</div>
+                <div class="action-description">Якщо ваш улюбленець помер тисніть кнопку <i>Тварина померла</i> для того
+                    щоб повідомити про це!
                 </div>
-                <div class="animal-action">
-                    <div class="action-title">Зміна країни</div>
-                    <div class="action-description">Якщо тварина змінила країну проживання тисніть кнопку <i>Тварина виїхала</i>  для того щоб повідомити про це!</div>
-                    <button class="btn btn-light-blue btn-i i-plane btn-tbig" id="moved_animal-btn">Тварина виїхала</button>
+                <button class="btn btn-dgrey btn-i i-dead btn-tbig" id="animal_death-btn">Тварина померла</button>
+            </div>
+            <div class="animal-action">
+                <div class="action-title">Зміна країни</div>
+                <div class="action-description">Якщо тварина змінила країну проживання тисніть кнопку <i>Тварина
+                        виїхала</i> для того щоб повідомити про це!
                 </div>
+                <button class="btn btn-light-blue btn-i i-plane btn-tbig" id="moved_animal-btn">Тварина виїхала</button>
+            </div>
         </div>
-    </div>
     </div>
 
 
@@ -298,7 +307,8 @@
         @csrf
     </form>
 
-    <div class="modal fade" id="requestChangeOwner" tabindex="-2" role="dialog" aria-labelledby="requestChangeOwnerLabel" aria-hidden="true">
+    <div class="modal fade" id="requestChangeOwner" tabindex="-2" role="dialog"
+         aria-labelledby="requestChangeOwnerLabel" aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -318,26 +328,33 @@
                                 <input type="hidden" name="animal_id" value="{{$animal->id}}">
                                 <div class="form-group">
                                     <div class="validation-error alert alert-danger hidden"></div>
-                                    <label for="full_name">ПІБ нового власника <span class="required-field">*</span></label>
+                                    <label for="full_name">ПІБ нового власника <span
+                                                class="required-field">*</span></label>
                                     <input type="text" class="form-control" id="full_name" name="full_name" required>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="validation-error alert alert-danger hidden"></div>
-                                            <label for="passport">Номер паспорту нового власника <span class="required-field">*</span></label>
-                                            <input type="text" class="form-control" id="passport" name="passport" required>
+                                            <label for="passport">Номер паспорту нового власника <span
+                                                        class="required-field">*</span></label>
+                                            <input type="text" class="form-control" id="passport" name="passport"
+                                                   required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="validation-error alert alert-danger hidden"></div>
-                                            <label for="contact_phone">Контактний номер телефону <span class="required-field">*</span></label>
-                                            <input type="text" class="form-control" id="contact_phone" name="contact_phone" required>
+                                            <label for="contact_phone">Контактний номер телефону <span
+                                                        class="required-field">*</span></label>
+                                            <input type="text" class="form-control" id="contact_phone"
+                                                   name="contact_phone" required>
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary" style="width: 350px;">Відправити</button>
+                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary"
+                                        style="width: 350px;">Відправити
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -346,7 +363,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="informAnimalDeath" tabindex="-2" role="dialog" aria-labelledby="informAnimalDeathLabel" aria-hidden="true">
+    <div class="modal fade" id="informAnimalDeath" tabindex="-2" role="dialog" aria-labelledby="informAnimalDeathLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -366,19 +384,22 @@
 
                                 <div class="form-group select" id="causeOfDeathBlock">
                                     <label for="archive_type" class="control-label">Оберіть причину смерті</label>
-                                        <select name="cause_of_death" id="cause_of_death" required>
-                                            @foreach($causesOfDeath as $causeOfDeath)
-                                                <option value="{{$causeOfDeath->id}}">{{$causeOfDeath->name}}</option>
-                                            @endforeach
-                                        </select>
+                                    <select name="cause_of_death" id="cause_of_death" required>
+                                        @foreach($causesOfDeath as $causeOfDeath)
+                                            <option value="{{$causeOfDeath->id}}">{{$causeOfDeath->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
 
-                                        <div class="form-group datepicker">
-                                            <div class="validation-error alert alert-danger hidden"></div>
-                                            <label for="created_at" class="control-label">Дата смерті</label>
-                                                <input type="text" id="date_death" name="date" class="form-control no-cursor readonly" autocomplete="off" required>
-                                        </div>
-                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax" style="width: 350px;">Повідомити</button>
+                                <div class="form-group datepicker">
+                                    <div class="validation-error alert alert-danger hidden"></div>
+                                    <label for="created_at" class="control-label">Дата смерті</label>
+                                    <input type="text" id="date_death" name="date"
+                                           class="form-control no-cursor readonly" autocomplete="off" required>
+                                </div>
+                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax"
+                                        style="width: 350px;">Повідомити
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -387,7 +408,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="informAnimalMoved" tabindex="-2" role="dialog" aria-labelledby="informAnimalMovedLabel" aria-hidden="true">
+    <div class="modal fade" id="informAnimalMoved" tabindex="-2" role="dialog" aria-labelledby="informAnimalMovedLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -408,9 +430,12 @@
                                 <div class="form-group datepicker">
                                     <div class="validation-error alert alert-danger hidden"></div>
                                     <label for="created_at" class="control-label">Дата вивезення</label>
-                                    <input type="text" id="date_move" name="date" class="form-control no-cursor readonly" required autocomplete="off" >
+                                    <input type="text" id="date_move" name="date"
+                                           class="form-control no-cursor readonly" required autocomplete="off">
                                 </div>
-                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax" style="width: 350px;">Повідомити</button>
+                                <button type="submit" class="ml-auto mt-6 btn confirm btn-primary submit-ajax"
+                                        style="width: 350px;">Повідомити
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -422,9 +447,9 @@
 
 @section('scripts-end')
     <script>
-            $(".readonly").on('keydown paste', function(e){
-                e.preventDefault();
-            });
+        $(".readonly").on('keydown paste', function (e) {
+            e.preventDefault();
+        });
 
         $('.lost_animal-btn').on('click', function () {
             var form = $('#lostAnimalSearch');
@@ -461,7 +486,7 @@
                 url: form.attr('action'),
                 method: 'post',
                 data: ajaxData,
-                success: function(data){
+                success: function (data) {
                     window.location = data;
                 },
                 error: function (errors) {
