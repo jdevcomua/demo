@@ -505,6 +505,12 @@ $width: 100px;
 
 .animal-show {
   padding: 0 2.8rem 7rem;
+  .cols-block {
+    .cols-block-content {
+      width: 100%;
+      padding: 0 0.5rem 3rem 0.5rem;
+    }
+  }
   .animal-images {
     width: 100%;
     overflow: hidden;
@@ -526,12 +532,16 @@ $width: 100px;
     }
   }
   .pet-info {
-    padding-top: 2rem;
+    padding-top: 0;
     display: flex;
     flex-flow: row wrap;
+    &.divider {
+      margin: 3rem 0;
+      border-top: 1px solid #ddd;
+    }
   }
   .pet-info-block {
-    width: 32%;
+    width: 50%;
     margin-top: 1.5rem;
     padding-right: 2rem;
     justify-content: flex-start;
@@ -569,7 +579,7 @@ $width: 100px;
     }
   }
   hr.divider {
-    margin: 3rem -2.8rem;
+    margin: 0 -2.8rem 3rem -2.8rem;
     border-top: 1px solid #ddd;
   }
   .files-container-title {

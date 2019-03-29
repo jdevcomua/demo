@@ -218,6 +218,14 @@ class Animal extends Model
         return $this->hasMany(IdentifyingDevice::class);
     }
 
+    public function getBadgeAttribute()
+    {
+        $badge = $this->identifyingDevices()
+            ->where('identifying_device_type_id', '=', IdentifyingDeviceType::TYPE_BADGE)
+            ->first();
+        return $badge;
+    }
+
     public function identifyingDevicesArray(): array
     {
         return $this->identifying_devices;
