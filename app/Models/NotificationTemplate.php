@@ -115,9 +115,10 @@ class NotificationTemplate extends Model
 
     public function fillTextPlaceholders($notifiable, $payload = null)
     {
-        if ($notifiable->email === null) {
-            $data = static::flattenPayload($payload);
+        $data = static::flattenPayload($payload);
+        $placeholders = [];
 
+        if (get_class($notifiable) === 'App\User') {
             $placeholders = [
                 '{user.name}' => $notifiable->name,
                 '{user.full_name}' => $notifiable->full_name,
@@ -130,10 +131,24 @@ class NotificationTemplate extends Model
                 '{animal.nickname}' => array_key_exists('nickname', $data) ? $data['nickname'] : '',
                 '{animal.badge_num}' => array_key_exists('badge', $data) ? $data['badge'] : '',
             ];
-
-            return str_replace(array_keys($placeholders), array_values($placeholders), $this->body);
         }
-        return $this->body;
+
+        if (get_class($notifiable) === 'App\Models\FoundAnimal') {
+            $placeholders = [
+                '{found_animal.species}' => $notifiable->species ? $notifiable->species->name : null,
+                '{found_animal.breed}' => $notifiable->breed ? $notifiable->breed->name : null,
+                '{found_animal.color}' => $notifiable->color ? $notifiable->color->name : null,
+                '{found_animal.badge}' => $notifiable->badge,
+                '{found_animal.found_address}' => $notifiable->found_address,
+                '{found_animal.contact_name}' => $notifiable->contact_name,
+                '{found_animal.contact_phone}' => $notifiable->contact_phone,
+                '{found_animal.contact_email}' => $notifiable->contact_email,
+                '{found_animal.additional_info}' => $notifiable->additional_info,
+            ];
+        }
+        return count($placeholders)
+            ? str_replace(array_keys($placeholders), array_values($placeholders), $this->body)
+            : $this->body;
     }
 
     public static function flattenPayload($payload)

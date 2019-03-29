@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Helpers\ProcessedCache;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Kyslik\ColumnSortable\Sortable;
 
 class FoundAnimal extends Model
 {
-    use Sortable, ProcessedCache;
+    use Notifiable, Sortable, ProcessedCache;
 
     protected $fillable = [
         'id', 'species_id', 'breed_id',
@@ -34,6 +35,11 @@ class FoundAnimal extends Model
     public function images()
     {
         return $this->hasMany(FoundAnimalsFile::class);    //Todo выбери один тип обозначения класса, или строкой или вызывай метод ::class
+    }
+
+    public function getEmailAttribute()
+    {
+        return $this->contact_email;
     }
 
     public function getContactInfoAttribute(): String

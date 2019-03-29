@@ -14,6 +14,19 @@
         <li><b>{animal.badge_num}</b> - Номер жетону тварини (опціонально)</li>
         @endif
     </ul>
+    <br>
+    Та наступні змінні для повідомлень про знайдену тварину:<br><br>
+    <ul>
+        <li><b>{found_animal.species}</b> - Вид тварини (опціонально)</li>
+        <li><b>{found_animal.breed}</b> - Порода тварини (опціонально)</li>
+        <li><b>{found_animal.color}</b> - Окрас тварини (опціонально)</li>
+        <li><b>{found_animal.badge}</b> - Номер жетону (опціонально)</li>
+        <li><b>{found_animal.found_address}</b> - Адреса та міце де знайдено тварину (опціонально)</li>
+        <li><b>{found_animal.additional_info}</b> - Додаткова інформація (опціонально)</li>
+        <li><b>{found_animal.contact_name}</b> - Ім'я</li>
+        <li><b>{found_animal.contact_phone}</b> - Телефон</li>
+        <li><b>{found_animal.contact_email}</b> - E-mail</li>
+    </ul>
     @if(strrpos(Route::current()->getName(), 'template') === false)
     <br>
     (опціонально) - змінна яка відображається лише в тому випадку коли подія містить цю інформацію.

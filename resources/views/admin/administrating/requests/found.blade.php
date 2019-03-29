@@ -104,28 +104,32 @@
                         orderable: false,
                         render: function ( data, type, row ) {
                             var approve_btn = "";
+                            var disapprove_btn = "";
                             var view_btn = "<a href=\"{{ route('admin.administrating.requests.found.show', '') }}/"
                                 + row.id + "\" data-toggle='tooltip' title=\"Переглянути\">" +
                                 "<i class=\"fa fa-eye pr10\" aria-hidden=\"true\"></i>" +
                                 "</a>";
                             if (row.approved) {
-                                approve_btn = view_btn + "<a href=\"{{ route('admin.administrating.requests.found.disapprove') }}/"
-                                    + row.id + "\" data-toggle='tooltip' title=\"Відмінити затвердження!\">" +
+                                disapprove_btn = "<a href=\"{{ route('admin.administrating.requests.found.disapprove') }}/"
+                                    + row.id + "\" data-toggle='tooltip' title=\"Відхилити!\">" +
                                     "<i class=\"fa fa-thumbs-down pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>";
+                                approve_btn = "<i class=\"fa fa-thumbs-up pr10\" aria-hidden=\"true\"></i>";
                             } else {
-                                approve_btn = view_btn + "<a href=\"{{ route('admin.administrating.requests.found.approve') }}/"
+                                disapprove_btn = "<i class=\"fa fa-thumbs-down pr10\" aria-hidden=\"true\"></i>";
+                                approve_btn = "<a href=\"{{ route('admin.administrating.requests.found.approve') }}/"
                                     + row.id + "\" data-toggle='tooltip' title=\"Затвердити!\">" +
                                     "<i class=\"fa fa-thumbs-up pr10\" aria-hidden=\"true\"></i>" +
                                     "</a>";
                             }
+
                             if (data) {
-                                return "<i class=\"fa fa-check pr10\" aria-hidden=\"true\"></i>" + approve_btn;
+                                return "<i class=\"fa fa-check pr10\" aria-hidden=\"true\"></i>" + view_btn + approve_btn + disapprove_btn;
                             } else  {
                                 return "<a href=\"{{ route('admin.administrating.requests.found.proceed') }}/"
                                     + row.id + "\" data-toggle='tooltip' title=\"Опрацьовано!\">" +
                                     "<i class=\"fa fa-check pr10\" aria-hidden=\"true\"></i>" +
-                                    "</a>" + approve_btn;
+                                    "</a>" + view_btn + approve_btn + disapprove_btn;
                             }
                         }
                     },

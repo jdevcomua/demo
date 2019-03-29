@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Requests;
 
+use App\Events\AnimalFoundApproved;
+use App\Events\AnimalFoundDeclined;
 use App\Helpers\DataTables;
 use App\Models\Breed;
 use App\Models\Color;
@@ -110,6 +112,10 @@ class LostRequestsController extends Controller
         $animalRequest->approved = 1;
         $animalRequest->save();
 
+        if ($animalRequest->contact_email !== null) {
+            event(new AnimalFoundApproved($animalRequest, [$animalRequest]));
+        }
+
         return redirect()
             ->back()
             ->with('success_animal_approve', 'Запит було оброблено успішно');
@@ -120,6 +126,10 @@ class LostRequestsController extends Controller
         $animalRequest = FoundAnimal::findOrFail($id);
         $animalRequest->approved = 0;
         $animalRequest->save();
+
+        if ($animalRequest->contact_email !== null) {
+            event(new AnimalFoundDeclined($animalRequest, [$animalRequest]));
+        }
 
         return redirect()
             ->back()

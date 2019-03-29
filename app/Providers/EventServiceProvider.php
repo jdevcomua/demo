@@ -22,6 +22,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\AnimalFormRequestSent'  =>  [CommonEventListener::class],
         'App\Events\AnimalFoundCreated'     =>  [CommonEventListener::class],
         'App\Events\BadgeScanned'           =>  [CommonEventListener::class],
+        'App\Events\AnimalFoundApproved'    =>  [CommonEventListener::class],
+        'App\Events\AnimalFoundDeclined'    =>  [CommonEventListener::class],
     ];
 
     /**
