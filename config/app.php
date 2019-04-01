@@ -170,6 +170,7 @@ return [
         App\Providers\BlockServiceProvider::class,
         \App\Providers\LoggerServiceProvider::class,
         \App\Providers\ViewComposerProvider::class,
+        Felixkiss\UniqueWithValidator\ServiceProvider::class,
 
     ],
 

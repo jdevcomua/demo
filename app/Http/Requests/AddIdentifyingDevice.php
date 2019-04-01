@@ -24,25 +24,12 @@ class AddIdentifyingDevice extends FormRequest
      */
     public function rules()
     {
-        $data = $this->all();
-
-        $rulesByTypes = [
-            Animal::IDENTIFYING_DEVICES_TYPE_CLIP => 'required',
-            Animal::IDENTIFYING_DEVICES_TYPE_CHIP => 'required|size:15',
-            Animal::IDENTIFYING_DEVICES_TYPE_BADGE => 'required|between:5,8',
-            Animal::IDENTIFYING_DEVICES_TYPE_BRAND => 'required',
-        ];
-
-
         $rules = [
-            'device_type' => 'required|in:' . implode(',', array_keys($rulesByTypes)),
+            'number' => 'required|string|max:255|unique_with:identifying_devices, device_type = identifying_device_type_id',
+            'device_type' => 'required|exists:identifying_device_types,id',
             'info' => 'nullable|string|max:255',
             'issued_by' => 'string|max:255'
         ];
-
-        if(isset($rulesByTypes[$data['device_type']])) {
-            $rules['number'] = $rulesByTypes[$data['device_type']];
-        }
 
         return $rules;
     }
@@ -52,8 +39,8 @@ class AddIdentifyingDevice extends FormRequest
         return [
             'device_type.required' => 'Тип пристрою є обов\'язковим полем!',
             'number.required' => 'Номер пристрою є обов\'язковим полем!',
-            'number.size' => 'Номер даного типу пристрою повинен складатися з :size символів!',
-            'number.between' => 'Номер даного типу пристрою повинен бути не менше :min символів та не більше :max символів!',
+            'number.max' => 'Номер пристрою повинен бути не більше :max символів!',
+            'number.unique_with' => 'Пристрій з таким номером уже існує',
             'info.string' => 'Додаткова інформація повинна бути строкою',
             'info.max' => 'Додаткова інформація не повинна містити більше ніж :max символів',
             'issued_by.string' => 'Ким видано повинно бути строкою',
