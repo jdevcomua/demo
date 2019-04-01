@@ -258,7 +258,7 @@
                     <small class="form-text text-muted">
                         Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf
                         <br>
-                        та не більше ніж 10Mb
+                        та не більше ніж 2Mb
                     </small>
                     <input type='file' id="manual-upload" multiple />
                     <div class="files-list">

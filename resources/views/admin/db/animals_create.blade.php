@@ -195,7 +195,7 @@
                                         <span class="file-count pl5"></span>
                                         <input type="file" id="documents" name="documents[]"
                                                multiple class="custom-file-input">
-                                        <span class="help-block mt5">Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 10Mb</span>
+                                        <span class="help-block mt5">Документи повинні бути одного з цих форматів: .jpg, .jpeg, .bmp, .png, .txt, .doc, .docx, .xls, .xlsx, .pdf та не більше ніж 2Mb</span>
                                     </div>
                                 </div>
                             </div>
