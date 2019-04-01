@@ -930,6 +930,9 @@ class DataBasesController extends Controller
         $sterilization->animal()->associate($animal);
         $sterilization->save();
 
+        $animal->sterilized = 1;
+        $animal->save();
+
         \RhaLogger::addChanges($sterilization, new Sterilization(), true, ($sterilization != null));
 
         $animalChronicleService->addAnimalChronicle($animal, 'sterilization-added', [
