@@ -1449,6 +1449,8 @@
             var inputs = form.find('[name]');
             var ajaxData = {};
 
+            clearErrorMessages(form);
+
             inputs.each(function () {
                 var name = $(this).attr('name');
                 ajaxData[name] = $(this).val();
@@ -1478,6 +1480,12 @@
                     form.find('[name="' + key + '"]').siblings('.validation-error').empty().append("<p>" + errors[key][0] + "</p>").removeClass('hidden').css('display', 'inline-block');
                 }
             }
+        }
+
+        function clearErrorMessages(form) {
+            form.find('.validation-error').each(function (index) {
+                $(this).empty().css('display', 'none');
+            });
         }
 
         $('.one-click').on('click', function(e) {
