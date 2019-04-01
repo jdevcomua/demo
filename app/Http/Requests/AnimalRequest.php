@@ -105,6 +105,7 @@ class AnimalRequest extends FormRequest
             'fur.required' => 'Тип шерсті є обов\'язковим полем',
             'tallness.min' => 'Зріст має бути більше :min см',
             'tallness.max' => 'Зріст має бути менше :max см',
+            'tallness.integer' => 'Зріст має бути числом',
             'birthday.required' => 'Дата народження є обов\'язковим полем',
             'birthday.before' => 'Дата народження не може бути у майбутньому!',
             'birthday.date' => 'Дата народження повинна бути корректною датою',
