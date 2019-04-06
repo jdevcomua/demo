@@ -50,9 +50,10 @@ class AnimalAddedEventListener
 
         \Mail::to(\Auth::user()->primary_email)
             ->queue($message);
-        $order = new AnimalAddedOrder($event->notifiable, $event->animal);
-        $orderService = new OrderService($order);
-        $orderService->sendData();
+
+        (new OrderService())->sendData(
+            new AnimalAddedOrder($event->notifiable, $event->animal)
+        );
     }
 
 

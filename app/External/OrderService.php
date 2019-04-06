@@ -2,27 +2,26 @@
 
 namespace App\External;
 
-use Ixudra\Curl\Facades\Curl;
-
 class OrderService
 {
-    protected $order;
     protected $endpoint;
 
-    public function __construct(OrderInterface $order)
+    public function __construct()
     {
-        $this->order = $order;
         $this->endpoint = config('services.kyivID.create_order_endpoint');
     }
 
-    public function sendData()
+    public function sendData(OrderInterface $order)
     {
         if (\Session::exists('kyiv_id_access_token')) {
-            Curl::to($this->endpoint)
-                ->withHeader('Authorization: ' . 'Bearer ' . \Session::get('kyiv_id_access_token'))
-                ->withHeader('Content-Type: ' . 'application/json')
-                ->withData($this->order->dataAsArray())->asJson()->post();
+            (new \GuzzleHttp\Client())->post($this->endpoint, [
+                'http_errors' => false,
+                'headers' => [
+                    'Authorization' => 'Bearer ' . \Session::get('kyiv_id_access_token'),
+                    'Content-Type' => 'application/json'
+                ],
+                'body' => json_encode($order->dataAsArray())
+            ]);
         }
     }
-
 }
