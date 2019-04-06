@@ -13,12 +13,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $species_id
  * @property bool $available
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Animal[] $animals
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FoundAnimal[] $foundAnimals
  * @property-read \App\Models\Species $species
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Breed whereAvailable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Breed whereFci($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Breed whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Breed whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Breed whereSpeciesId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Breed newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Breed newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Breed query()
  * @mixin \Eloquent
  */
 class Breed extends Model

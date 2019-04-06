@@ -11,14 +11,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $title
  * @property string|null $subject
  * @property string $body
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Block whereBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Block whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Block whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Block whereSubject($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Block whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Block whereUpdatedAt($value)
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Block newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Block newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Block query()
  * @mixin \Eloquent
  */
 class Block extends Model

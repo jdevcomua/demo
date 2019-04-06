@@ -4,6 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\AnimalOffenseFile
+ *
+ * @property int $id
+ * @property int $animal_offense_id
+ * @property string $name
+ * @property string $path
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\AnimalOffense $animalOffense
+ * @property-read mixed $file_extension
+ * @property-read mixed $file_name
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalOffenseFile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalOffenseFile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalOffenseFile query()
+ * @mixin \Eloquent
+ */
 class AnimalOffenseFile extends Model
 {
     protected $fillable = ['animal_offense_id', 'path', 'name'];

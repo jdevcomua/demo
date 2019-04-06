@@ -28,39 +28,43 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $badge
  * @property int|null $request_user_id
+ * @property int|null $archived_id
+ * @property string|null $archived_type
+ * @property string|null $archived_at
+ * @property string|null $chip
+ * @property string|null $clip
+ * @property int|null $tallness
+ * @property string|null $nickname_lat
+ * @property int|null $veterinary_passport_id
+ * @property string|null $testing
+ * @property int $half_breed
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalOffense[] $animalOffenses
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalVeterinaryMeasure[] $animalVeterinaryMeasure
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $archivable
  * @property-read \App\Models\Breed $breed
+ * @property-read \App\Models\ChangeAnimalOwner $changeOwner
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalChronicle[] $chronicles
  * @property-read \App\Models\Color $color
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalsFile[] $files
  * @property-read \App\Models\Fur $fur
+ * @property-read mixed $age
  * @property-read mixed $documents
+ * @property-read mixed $identifying_devices_count
  * @property-read mixed $images
  * @property-read mixed $verification
+ * @property-read mixed $veterinary_measures
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\IdentifyingDevice[] $identifyingDevices
  * @property-read \App\Models\LostAnimal $lost
  * @property-read \App\Models\Species $species
+ * @property-read \App\Models\Sterilization $sterilization
  * @property-read \App\User|null $user
  * @property-read \App\User|null $userThatRequest
+ * @property-read \App\Models\Vaccination $vaccination
+ * @property-read \App\Models\VeterinaryPassport|null $veterinaryPassport
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBadge($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBirthday($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereBreedId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereColorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereComment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereConfirmUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereFurId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNickname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereRequestUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereSpeciesId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereSterilized($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Animal whereVerified($value)
  * @mixin \Eloquent
  */
 class Animal extends Model

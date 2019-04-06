@@ -4,6 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\AnimalVeterinaryMeasureFile
+ *
+ * @property int $id
+ * @property int $animal_veterinary_measure_id
+ * @property string $name
+ * @property string $path
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\AnimalVeterinaryMeasure $animalVeterinaryMeasure
+ * @property-read mixed $file_extension
+ * @property-read mixed $file_name
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalVeterinaryMeasureFile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalVeterinaryMeasureFile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalVeterinaryMeasureFile query()
+ * @mixin \Eloquent
+ */
 class AnimalVeterinaryMeasureFile extends Model
 {
     protected $fillable = ['animal_veterinary_measure_id', 'path', 'name'];

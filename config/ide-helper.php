@@ -13,7 +13,7 @@ return array(
 
     'filename'  => '_ide_helper',
     'format'    => 'php',
-    
+
     'meta_filename' => '.phpstorm.meta.php',
 
     /*
@@ -36,7 +36,7 @@ return array(
     |
     */
 
-    'write_model_magic_where' => true,
+    'write_model_magic_where' => false,
 
     /*
     |--------------------------------------------------------------------------

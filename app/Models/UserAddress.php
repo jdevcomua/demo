@@ -21,25 +21,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $postcode
  * @property string|null $lat
  * @property string|null $lon
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $full_address
  * @property-read \App\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereApartment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereBuilding($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereCity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereCountry($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereCountryCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereDistrict($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereLat($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereLon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress wherePostcode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereStreet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserAddress query()
  * @mixin \Eloquent
  */
 class UserAddress extends Model

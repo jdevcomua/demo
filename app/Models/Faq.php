@@ -9,15 +9,14 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\Faq
  *
  * @property int $id
+ * @property int $order
  * @property string $question
  * @property string $answer
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Faq whereAnswer($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Faq whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Faq whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Faq whereQuestion($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Faq whereUpdatedAt($value)
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Faq newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Faq newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Faq query()
  * @mixin \Eloquent
  */
 class Faq extends Model

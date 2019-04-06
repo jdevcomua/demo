@@ -15,16 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Animal $animal
+ * @property-read mixed $name
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization whereAnimalId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization whereMadeBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Sterilization whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Sterilization extends Model

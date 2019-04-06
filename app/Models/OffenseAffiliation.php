@@ -4,6 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\OffenseAffiliation
+ *
+ * @property int $id
+ * @property string $name
+ * @property int $available
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalOffense[] $animalOffenses
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OffenseAffiliation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OffenseAffiliation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OffenseAffiliation query()
+ * @mixin \Eloquent
+ */
 class OffenseAffiliation extends Model
 {
     public $timestamps = false;

@@ -11,15 +11,12 @@ use Zizaco\Entrust\EntrustPermission;
  * @property string $name
  * @property string|null $display_name
  * @property string|null $description
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission whereDisplayName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Permission query()
  * @mixin \Eloquent
  */
 class Permission extends EntrustPermission
