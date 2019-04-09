@@ -21,12 +21,6 @@ use Kyslik\ColumnSortable\Sortable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LostAnimal newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LostAnimal query()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LostAnimal sortable($defaultParameters = null)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LostAnimal whereAnimalId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LostAnimal whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LostAnimal whereFound($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LostAnimal whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LostAnimal whereProcessed($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\LostAnimal whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class LostAnimal extends Model

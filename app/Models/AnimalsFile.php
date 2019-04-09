@@ -13,19 +13,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $num
  * @property string $name
  * @property string $path
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Animal $animal
  * @property-read mixed $file_extension
  * @property-read mixed $file_name
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile whereAnimalId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile whereNum($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsFile query()
  * @mixin \Eloquent
  */
 class AnimalsFile extends Model

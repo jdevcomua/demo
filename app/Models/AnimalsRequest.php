@@ -12,42 +12,29 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $user_id
  * @property int|null $breed_id
- * @property int|null $color_id
  * @property int|null $animal_id
+ * @property int|null $color_id
  * @property int|null $fur_id
+ * @property int $gender
  * @property int|null $species_id
- * @property string|null $birthday
+ * @property \Illuminate\Support\Carbon|null $birthday
  * @property string|null $street
  * @property string|null $building
  * @property string|null $apartment
  * @property string|null $nickname
  * @property int $processed
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Animal|null $animal
  * @property-read \App\Models\Breed|null $breed
  * @property-read \App\Models\Color|null $color
  * @property-read \App\Models\Fur|null $fur
  * @property-read \App\Models\Species|null $species
  * @property-read \App\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereApartment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereBirthday($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereBreedId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereBuilding($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereColorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereFurId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereNickname($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereProcessed($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereSpeciesId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereStreet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest query()
  * @mixin \Eloquent
- * @property int $gender
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereAnimalId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalsRequest whereGender($value)
  */
 class AnimalsRequest extends Model
 {

@@ -19,43 +19,37 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  * @property string $first_name
  * @property string $last_name
  * @property string|null $middle_name
- * @property \Carbon\Carbon $birthday
+ * @property \Illuminate\Support\Carbon|null $birthday
  * @property int $inn
  * @property string $passport
  * @property int $gender
  * @property bool $banned
  * @property string|null $remember_token
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $organization_id
+ * @property int $terms_accepted
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserAddress[] $addresses
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Animal[] $animals
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserEmail[] $emails
+ * @property-read mixed $additional_email
+ * @property-read mixed $additional_phone
+ * @property-read mixed $contact_info
+ * @property-read mixed $contact_phone
  * @property-read mixed $full_name
  * @property-read mixed $living_address
  * @property-read mixed $name
  * @property-read mixed $primary_email
  * @property-read mixed $registration_address
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \App\Models\Organization|null $organization
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\UserPhone[] $phones
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBanned($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBirthday($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereExtId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereInn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereMiddleName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassport($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User query()
  * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Log[] $history
- * @property-read mixed $additional_mail
- * @property-read mixed $additional_phone
- * @property-read mixed $additional_email
  */
 class User extends Authenticatable
 {

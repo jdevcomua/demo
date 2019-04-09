@@ -15,17 +15,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $body
  * @property int $active
  * @property string|null $events
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate whereActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate whereBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate whereEvents($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate whereSubject($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate whereUpdatedAt($value)
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\NotificationTemplate query()
  * @mixin \Eloquent
  */
 class NotificationTemplate extends Model

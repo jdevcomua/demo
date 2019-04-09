@@ -7,35 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\MailingConfig
  *
- * @property-read \App\Models\EmailTemplate $emailTemplate
- * @mixin \Eloquent
  * @property int $id
  * @property int|null $group_id
  * @property int|null $email_template_id
  * @property string $type
  * @property int|null $period_type
  * @property int|null $period
- * @property string|null $event_type
+ * @property string|null $dates
  * @property int $is_active
  * @property string $priority
  * @property \Illuminate\Support\Carbon|null $last_fired
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereEmailTemplateId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereEventType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereGroupId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereLastFired($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig wherePeriod($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig wherePeriodType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig wherePriority($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereUpdatedAt($value)
+ * @property-read \App\Models\EmailTemplate|null $emailTemplate
  * @property-read \App\Models\Group|null $group
- * @property string|null $dates
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig whereDates($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\MailingConfig query()
+ * @mixin \Eloquent
  */
 class MailingConfig extends Model
 {

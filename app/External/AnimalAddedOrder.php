@@ -2,9 +2,9 @@
 
 namespace App\External;
 
-
 use App\Models\Animal;
 use App\User;
+use Carbon\Carbon;
 
 class AnimalAddedOrder implements OrderInterface
 {
@@ -20,7 +20,6 @@ class AnimalAddedOrder implements OrderInterface
         $this->data = $this->data();
     }
 
-
     public function dataAsJson()
     {
         return json_encode($this->data, JSON_UNESCAPED_UNICODE);
@@ -35,44 +34,35 @@ class AnimalAddedOrder implements OrderInterface
     {
         $mergedData = array_merge($this->userData(), $this->animalData());
 
-        $resultData = [
-            'statusDate' => \Carbon\Carbon::now()->format('Y-m-d'),
+        return [
+            'statusDate' => Carbon::now()->format('Y-m-d'),
             'description' => [
                 'ua' => "Додано тваринку: " . $this->animalData()['nickname'],
             ],
             'details' => $mergedData
         ];
-        return $resultData;
     }
-
 
     private function userData(): array
     {
-        $userData = [
-                'user_id' => $this->user->ext_id
+        return [
+            'user_id' => $this->user->ext_id
         ];
-
-        return $userData;
     }
-
 
     private function animalData(): array
     {
-        $animalData = [
-                'species' => $this->animal->species->name,
-                'breed' => $this->animal->breed->name,
-                'nickname' => $this->animal->nickname,
-                'age' => $this->getAnimalAgeDataArray(),
-                'verified' => $this->animal->verified,
-                'verification_notification' => $this->animal->verified,
-                'identifying_devices' => $this->getAnimalIdentifyingDevicesDataArray(),
-                'animal_requests' => null
+        return [
+            'species' => $this->animal->species->name,
+            'breed' => $this->animal->breed->name,
+            'nickname' => $this->animal->nickname,
+            'age' => $this->getAnimalAgeDataArray(),
+            'verified' => $this->animal->verified,
+            'verification_notification' => $this->animal->verified,
+            'identifying_devices' => $this->getAnimalIdentifyingDevicesDataArray(),
+            'animal_requests' => null
         ];
-
-        return $animalData;
     }
-
-
 
     private function getAnimalIdentifyingDevicesDataArray(): ?array
     {
@@ -91,17 +81,14 @@ class AnimalAddedOrder implements OrderInterface
         return  count($identifying_devices) ? $identifying_devices : null;
     }
 
-
     private function getAnimalAgeDataArray(): array
     {
-        $ageDiffCarbon = $this->animal->birthday->diff(\Carbon\Carbon::now());
-        $age = [
-            'years' => intval($ageDiffCarbon->format('%y')),
-            'months' => intval($ageDiffCarbon->format('%m')),
-            'days' => intval($ageDiffCarbon->format('%d')),
+        $age = $this->animal->birthday->diff(new Carbon);
+
+        return [
+            'years' => $age->y,
+            'months' => $age->m,
+            'days' => $age->d,
         ];
-
-        return $age;
     }
-
 }

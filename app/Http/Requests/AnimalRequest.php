@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class AnimalRequest extends FormRequest
@@ -45,7 +46,13 @@ class AnimalRequest extends FormRequest
             'veterinary_number' => 'nullable|max:255',
             'veterinary_issued_by' => 'nullable|string|max:255',
             'device_type' => 'nullable|exists:identifying_device_types,id',
-            'device_number' => 'nullable|max:255|unique_with:identifying_devices, device_number = number, device_type = identifying_device_type_id',
+            'device_number' => [
+                'nullable',
+                'max:255',
+                Rule::unique('identifying_devices','number')->where(function ($query) {
+                    return $query->where('identifying_device_type_id', $this->get('device_type'));
+                })
+            ],
             'device_issued_by' => 'nullable|string|max:255',
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
@@ -68,9 +75,8 @@ class AnimalRequest extends FormRequest
 
         $this->makeRequiredIfOneIsset($data,$rules, 'veterinary_number', 'veterinary_issued_by');
         $this->makeRequiredIfOneIsset($data,$rules, 'device_type', 'device_number', 'device_issued_by');
-        $rules = array_merge($rules, $imagesRules);
 
-        return $rules;
+        return array_merge($rules, $imagesRules);
     }
 
     protected function makeRequiredIfOneIsset($data, &$rules, ...$inputNames)
@@ -122,7 +128,7 @@ class AnimalRequest extends FormRequest
             'device_type.required' => 'Тип засобу є обов\'язковим полем',
             'device_number.required' => 'Номер засобу є обов\'язковим полем',
             'device_number.max' => 'Номер засобу має бути менше :max символів',
-            'device_number.unique_with' => 'Засіб з таким номером уже існує',
+            'device_number.unique' => 'Засіб з таким номером уже існує',
             'device_issued_by.max' => 'Ким видано має бути менше :max символів',
             'device_issued_by.required' => 'Ким видано є обов\'язковим полем',
             'veterinary_number.required' => 'Номер ветеринарного паспорту є обов\'язковим полем',

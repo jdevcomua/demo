@@ -4,6 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\OrganizationsFile
+ *
+ * @property int $id
+ * @property int $organization_id
+ * @property string $name
+ * @property string $path
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $file_extension
+ * @property-read mixed $file_name
+ * @property-read \App\Models\Organization $organization
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrganizationsFile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrganizationsFile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\OrganizationsFile query()
+ * @mixin \Eloquent
+ */
 class OrganizationsFile extends Model
 {
     protected $fillable = ['path', 'name'];

@@ -13,10 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $available
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Animal[] $animals
  * @property-read \App\Models\Species $species
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fur whereAvailable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fur whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fur whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fur whereSpeciesId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fur newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fur newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Fur query()
  * @mixin \Eloquent
  */
 class Fur extends Model

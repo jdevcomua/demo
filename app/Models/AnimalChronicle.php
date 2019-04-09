@@ -5,6 +5,25 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\AnimalChronicle
+ *
+ * @property int $id
+ * @property int $animal_id
+ * @property int $animal_chronicle_type_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Animal $animal
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnimalChronicleFieldValue[] $fieldValues
+ * @property-read mixed $date
+ * @property-read mixed $text
+ * @property-write mixed $fields
+ * @property \App\Models\AnimalChronicleType $type
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalChronicle newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalChronicle newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\AnimalChronicle query()
+ * @mixin \Eloquent
+ */
 class AnimalChronicle extends Model
 {
     //todo чтоб не мучаться с геттерами\сеттерами есть вариант вызвать свойство $dates и перечислить все поля дат там

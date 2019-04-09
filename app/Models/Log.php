@@ -12,29 +12,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $action
  * @property int $status
  * @property int $finished
- * @property string|null $object
- * @property string|null $changes
- * @property string|null $payload
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @property-read mixed $action_name
- * @property-read mixed $status_name
- * @property-read \App\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereAction($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereChanges($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereFinished($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereObject($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log wherePayload($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereUserId($value)
- * @mixin \Eloquent
  * @property int|null $object_id
  * @property string|null $object_type
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereObjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log whereObjectType($value)
+ * @property string|null $changes
+ * @property string|null $payload
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $action_name
+ * @property-read mixed $status_name
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $object
+ * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Log query()
+ * @mixin \Eloquent
  */
 class Log extends Model
 {

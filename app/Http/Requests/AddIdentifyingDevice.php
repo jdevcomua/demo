@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Animal;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AddIdentifyingDevice extends FormRequest
 {
@@ -24,14 +24,19 @@ class AddIdentifyingDevice extends FormRequest
      */
     public function rules()
     {
-        $rules = [
-            'number' => 'required|string|max:255|unique_with:identifying_devices, device_type = identifying_device_type_id',
+        return [
+            'number' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('identifying_devices','number')->where(function ($query) {
+                    return $query->where('identifying_device_type_id', $this->get('device_type'));
+                })
+            ],
             'device_type' => 'required|exists:identifying_device_types,id',
             'info' => 'nullable|string|max:255',
             'issued_by' => 'string|max:255'
         ];
-
-        return $rules;
     }
 
     public function messages()
@@ -40,7 +45,7 @@ class AddIdentifyingDevice extends FormRequest
             'device_type.required' => 'Тип пристрою є обов\'язковим полем!',
             'number.required' => 'Номер пристрою є обов\'язковим полем!',
             'number.max' => 'Номер пристрою повинен бути не більше :max символів!',
-            'number.unique_with' => 'Пристрій з таким номером уже існує',
+            'number.unique' => 'Пристрій з таким номером уже існує',
             'info.string' => 'Додаткова інформація повинна бути строкою',
             'info.max' => 'Додаткова інформація не повинна містити більше ніж :max символів',
             'issued_by.string' => 'Ким видано повинно бути строкою',
