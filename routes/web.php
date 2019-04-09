@@ -40,8 +40,6 @@ Route::group(['middleware' => ['not.banned', 'not.phone.missing']], function () 
 
         Route::get('/profile', 'ProfileController@show')->name('profile');
         Route::post('/profile', 'ProfileController@update')->name('profile.update');
-        Route::post('/accept-agreement', 'SiteController@acceptAgreement')->name('accept-agreement');
-        Route::get('/decline-agreement', 'SiteController@declineAgreement')->name('decline-agreement');
     });
 
     Route::group([
@@ -78,7 +76,8 @@ Route::group(['middleware' => [
 
     Route::get('/profile/phone-missing', 'ProfileController@phoneMissing')->name('profile.phone-missing');
     Route::post('/profile/phone-missing/update', 'ProfileController@phoneMissingUpdate')->name('profile.phone-missing.update');
-
+    Route::post('/accept-agreement', 'SiteController@acceptAgreement')->name('accept-agreement');
+    Route::get('/decline-agreement', 'SiteController@declineAgreement')->name('decline-agreement');
 });
 
 Route::get('/login/as/admin', 'AuthController@loginAsAdmin');
