@@ -34,6 +34,12 @@ class AnimalPrintDataProvider extends CommonLogicPrintDataProvider implements Pr
             ->setHeaders(['№ з/п', 'Правопорушення', 'Опис', 'Зафіксував', 'Наявність укусу'])
             ->setColumns($this->offensesColumns());
 
+        $devicesTable = new Table();
+        $devicesTable
+            ->setTitle('Засоби ідентифікації')
+            ->setHeaders(['№ з/п', 'Тип', 'Номер', 'Дата', 'Ким видано'])
+            ->setColumns($this->devicesColumns());
+
         $historyTable = new Table();
         $historyTable
             ->setTitle('Історія')
@@ -44,7 +50,7 @@ class AnimalPrintDataProvider extends CommonLogicPrintDataProvider implements Pr
         $document = new Document;
         $document
             ->setTitle('Реєстраційна картка тварини')
-            ->setTables([$baseInfoTable, $veterinaryMeasuresTable, $offensesTable, $historyTable]);
+            ->setTables([$baseInfoTable, $veterinaryMeasuresTable, $offensesTable, $devicesTable, $historyTable]);
 
         return $document;
     }
@@ -62,6 +68,24 @@ class AnimalPrintDataProvider extends CommonLogicPrintDataProvider implements Pr
         }
         $this->resetRowNumber();
         return $historyColumns;
+    }
+
+    private function devicesColumns()
+    {
+        $devicesColumns = [];
+        if ($this->animal->identifyingDevices !== null) {
+            foreach ($this->animal->identifyingDevices as $device) {
+                $devicesColumns[] = [
+                    $this->rowNumber(),
+                    $device->type->name,
+                    $device->number,
+                    $this->localizedDate($device->created_at),
+                    $device->issued_by
+                ];
+            }
+        }
+        $this->resetRowNumber();
+        return $devicesColumns;
     }
 
     private function offensesColumns()
@@ -131,9 +155,6 @@ class AnimalPrintDataProvider extends CommonLogicPrintDataProvider implements Pr
     private function baseInfoColumns(): array
     {
         $ownerName = (isset($this->animal->user) && $this->animal->user->full_name !== null) ? $this->animal->user->full_name : '-';
-        $badge = $this->animal->badge ?? '-';
-        $clip = $this->animal->clip ?? '-';
-        $chip = $this->animal->chip ?? '-';
         $gender = $this->animal->gender ? 'Самка' : 'Самець';
         $verification = $this->animal->verified ? 'Верифіковано, дата: ' . $this->localizedDate($this->animal->verification->updated_at) : 'Не верифіковано';
 
@@ -146,9 +167,6 @@ class AnimalPrintDataProvider extends CommonLogicPrintDataProvider implements Pr
             [$this->rowNumber(), 'Дата реєстрації', $this->localizedDate($this->animal->created_at)],
             [$this->rowNumber(), 'ПІБ власника', $ownerName],
             [$this->rowNumber(), 'Порода', $this->animal->breed->name],
-            [$this->rowNumber(), 'Жетон', $badge],
-            [$this->rowNumber(), 'Кліпса', $clip],
-            [$this->rowNumber(), 'Чіп', $chip],
             [$this->rowNumber(), 'Стать', $gender],
             [$this->rowNumber(), 'Шерсть', $this->animal->fur->name],
             [$this->rowNumber(), 'Окрас', $this->animal->color->name],
