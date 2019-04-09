@@ -21,7 +21,7 @@
                         @if($lostAnimal->animal->badge)
                             <div class="animal-badge">
                                 <span class="animal-badge-icon"></span>
-                                <span class="animal-badge-number">{{$lostAnimal->animal->badge}}</span>
+                                <span class="animal-badge-number">{{$lostAnimal->animal->badge->number}}</span>
                             </div>
                         @endif
                     </div>
