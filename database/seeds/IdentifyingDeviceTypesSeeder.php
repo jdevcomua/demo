@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\IdentifyingDeviceType;
 use Illuminate\Database\Seeder;
 
 class IdentifyingDeviceTypesSeeder extends Seeder
@@ -11,11 +12,15 @@ class IdentifyingDeviceTypesSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('identifying_device_types')->insert([
-            ['name' => 'Чіп'],
-            ['name' => 'Кліпса'],
-            ['name' => 'Жетон'],
-            ['name' => 'Тавро']
-        ]);
+        $types = [
+            'Чіп',
+            'Кліпса',
+            'Жетон',
+            'Тавро'
+        ];
+
+        foreach ($types as $type) {
+            IdentifyingDeviceType::firstOrCreate(['name' => $type]);
+        }
     }
 }
