@@ -51,7 +51,10 @@ class CommonEventListener
      */
     private function sendEmail($notifiable, NotificationTemplate $notification, $payload)
     {
-        $notifiable->notify(new MailNotification($notification, $payload));
+        $email = $notifiable->email ?? $notifiable->primaryEmail ?? null;
+        if ($email !== null) {
+            $notifiable->notify(new MailNotification($notification, $payload));
+        }
     }
 
     /**

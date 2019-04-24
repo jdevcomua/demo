@@ -44,12 +44,15 @@ class AnimalAddedEventListener
 <p>Більш детальну інформацію про реєстрацію тварин можна переглянути на сайті КП \"КМЛВМ\" https://bit.ly/2ISR5jH. </p>
 <br><p>З повагою, команда Kyiv Smart City</p>
 ";
-        $message = (new CustomMail('Вітаємо!', $html))
-            ->onQueue('default')
-            ->delay(Carbon::now()->addSecond());
+        $email = \Auth::user()->primary_email;
+        if ($email !== null) {
+            $message = (new CustomMail('Вітаємо!', $html))
+                ->onQueue('default')
+                ->delay(Carbon::now()->addSecond());
 
-        \Mail::to(\Auth::user()->primary_email)
-            ->queue($message);
+            \Mail::to(\Auth::user()->primary_email)
+                ->queue($message);
+        }
 
         (new OrderService())->sendData(
             new AnimalAddedOrder($event->notifiable, $event->animal)
