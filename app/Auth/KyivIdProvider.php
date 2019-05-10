@@ -67,38 +67,9 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
     protected function getAuthUrl($state)
     {
         return $this->buildAuthUrlFromBase(
-            $this->getLoginUrl(), $state
-        );
-    }
-
-    public function attempt()
-    {
-        $state = null;
-
-        if ($this->usesState()) {
-            $this->request->session()->put('state', $state = $this->getState());
-        }
-
-        return new RedirectResponse($this->getAttemptUrl($state));
-    }
-
-    public function getAttemptUrl($state)
-    {
-        return $this->buildAuthUrlFromBase(
             $this->host . $this->authUrl, $state
         );
     }
-
-//    private function getLoginUrl()
-//    {
-//        return config('services.kyivID.host') .
-//            config('services.kyivID.force_login') .
-//            '?callback=' .
-//            url('/') . $this->attemptUrl  .
-//            '&provider=nbubankid' .
-//            '&provider=eds' .
-//            '&provider=pbbankid&';
-//    }
 
     public static function getLogoutUrl()
     {
@@ -126,9 +97,10 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
      */
     protected function getUserByToken($token)
     {
-        list($header, $payload, $signature) = explode (".", $token);
+        [,$payload,] = explode (".", $token);
         $id = json_decode(base64_decode($payload), true)['sub'];
-        $response = $this->getHttpClient()->post($this->hostApi . $this->dataUrl,[
+
+        $response = $this->getHttpClient()->post($this->hostApi . $this->dataUrl, [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $token,
@@ -148,9 +120,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
         ]);
 
         $responseBody = $response->getBody()->getContents();
-        $response = json_decode($responseBody, true);
 
-        return $response;
+        return json_decode($responseBody, true);
     }
 
     protected function getCodeFields($state = null)
@@ -158,20 +129,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
         $fields = [
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUrl,
-//            'callback' => $this->redirectUrl,
             'response_type' => 'code',
-            'scope' => '' .
-                'portal.user.profile.read'
-//                'phone ' .
-//                'openid ' .
-//                'profile ' .
-//                'profile.addresses ' .
-//                'profile.basic ' .
-//                'profile.emails ' .
-//                'profile.phones ' .
-//                'profile.itin ' .
-//                'profile.passport ' .
-//                'email'
+            'scope' => 'portal.user.profile.read',
         ];
 
         if ($this->usesState()) {
@@ -216,7 +175,7 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
      * Map the raw user array to a Socialite User instance.
      *
      * @param  array $user
-     * @return \App\User
+     * @return User
      */
     public function mapUserToObject(array $user)
     {
@@ -243,14 +202,15 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
             'gender' => null,
         ];
 
-        if (array_get($user, 'data.profile.gender.gender')) {
-            switch (array_get($user, 'data.profile.gender.gender')) {
-                case 'FEMALE':
-                    $data['gender'] = \App\User::GENDER_FEMALE;
-                    break;
-                default:
-                    $data['gender'] = \App\User::GENDER_MALE;
-            }
+        switch (array_get($user, 'data.profile.gender.gender')) {
+            case 'MALE':
+                $data['gender'] = \App\User::GENDER_MALE;
+                break;
+            case 'FEMALE':
+                $data['gender'] = \App\User::GENDER_FEMALE;
+                break;
+            default:
+                $data['gender'] = rand(0, 1) ? \App\User::GENDER_MALE : \App\User::GENDER_FEMALE;
         }
 
         $addresses = array_get($user, 'data.profile.addresses', []);
