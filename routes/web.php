@@ -13,7 +13,6 @@ Route::view('/banned', 'errors/banned')->name('banned');
 
 // Authentication Routes...
 Route::get('login', 'AuthController@login')->name('login');
-Route::get('auth/attempt', 'AuthController@loginAttempt');
 Route::get('auth/callback', 'AuthController@loginCallback');
 Route::post('logout', 'AuthController@logout')->name('logout');
 
