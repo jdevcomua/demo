@@ -41,8 +41,6 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 
     protected $hostApi;
 
-    private $forceLogin = false;
-
     public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl)
     {
         parent::__construct($request, $clientId, $clientSecret, $redirectUrl);
@@ -51,9 +49,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
         $this->hostApi = config('services.kyivID.host_api');
     }
 
-    public function login(bool $forceLogin = false)
+    public function redirect()
     {
-        $this->forceLogin = $forceLogin;
         $state = null;
 
         if ($this->usesState()) {
@@ -130,14 +127,11 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
             'redirect_uri' => $this->redirectUrl,
             'response_type' => 'code',
             'scope' => 'portal.user.profile.read',
+            'prompt' => 'login',
         ];
 
         if ($this->usesState()) {
             $fields['state'] = $state;
-        }
-
-        if ($this->forceLogin) {
-            $fields['prompt'] = 'login';
         }
 
         return array_merge($fields, $this->parameters);
