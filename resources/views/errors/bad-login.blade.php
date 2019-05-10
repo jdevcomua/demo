@@ -15,7 +15,7 @@
             Проте, ви завжди можете авторизуватися за допомогою Bank ID, або ж продовжити переглядати сайт без авторизації.
             <div class="row mt-5">
                 <div class="form-buttons col-md-6">
-                    <a href="{{ route('login') }}" class="btn btn-primary">Bank ID</a>
+                    <a href="{{ route('re-login') }}" class="btn btn-primary">Bank ID</a>
                 </div>
                 <div class="col-md-6 form-buttons text-md-right">
                     <a href="/" class="btn btn-dgrey">Вільне плавання</a>

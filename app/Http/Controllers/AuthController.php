@@ -18,7 +18,12 @@ class AuthController extends Controller
 
     public function login()
     {
-        return Socialite::driver('kyivID')->redirect();
+        return Socialite::driver('kyivID')->login();
+    }
+
+    public function reLogin()
+    {
+        return Socialite::driver('kyivID')->login(true);
     }
 
     public function loginCallback(Request $request)
