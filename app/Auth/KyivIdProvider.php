@@ -35,7 +35,7 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 
     protected $tokenUrl = '/token';
 
-    protected $dataUrl = '/profile/query/api/v1/query';
+    protected $dataUrl = '/api/v1/query';
 
     protected $scopes = [];
 
@@ -67,37 +67,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
     protected function getAuthUrl($state)
     {
         return $this->buildAuthUrlFromBase(
-            $this->getLoginUrl(), $state
-        );
-    }
-
-    public function attempt()
-    {
-        $state = null;
-
-        if ($this->usesState()) {
-            $this->request->session()->put('state', $state = $this->getState());
-        }
-
-        return new RedirectResponse($this->getAttemptUrl($state));
-    }
-
-    public function getAttemptUrl($state)
-    {
-        return $this->buildAuthUrlFromBase(
             $this->host . $this->authUrl, $state
         );
-    }
-
-    private function getLoginUrl()
-    {
-        return config('services.kyivID.host') .
-            config('services.kyivID.force_login') .
-            '?callback=' .
-            url('/') . $this->attemptUrl  .
-            '&provider=nbubankid' .
-            '&provider=eds' .
-            '&provider=pbbankid&';
     }
 
     public static function getLogoutUrl()
@@ -126,12 +97,13 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
      */
     protected function getUserByToken($token)
     {
-        list($header, $payload, $signature) = explode (".", $token);
+        [,$payload,] = explode (".", $token);
         $id = json_decode(base64_decode($payload), true)['sub'];
-        $response = $this->getHttpClient()->post($this->hostApi . $this->dataUrl,[
+
+        $response = $this->getHttpClient()->post($this->hostApi . $this->dataUrl, [
             'headers' => [
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer  ' . $token,
+                'Authorization' => 'Bearer ' . $token,
             ],
             'body' => '{ 
                     "query":"{ profile(id: ' . $id . ') { '.
@@ -143,14 +115,13 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
                             'birthday {date} '.
                             'addresses {id type zipCode country area district settlementName street house frame flat} ' .
                             'phones {phoneNumber confirmed type } '.
-                            'emails {email confirmed type} } }"
+                            'emails {email confirmed type} }}"
                 }'
         ]);
 
         $responseBody = $response->getBody()->getContents();
-        $response = json_decode($responseBody, true);
 
-        return $response;
+        return json_decode($responseBody, true);
     }
 
     protected function getCodeFields($state = null)
@@ -158,20 +129,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
         $fields = [
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUrl,
-//            'callback' => $this->redirectUrl,
             'response_type' => 'code',
-            'scope' => '' .
-                'address ' .
-                'phone ' .
-                'openid ' .
-                'profile ' .
-                'profile.addresses ' .
-                'profile.basic ' .
-                'profile.emails ' .
-                'profile.phones ' .
-                'profile.itin ' .
-                'profile.passport ' .
-                'email'
+            'scope' => 'portal.user.profile.read',
         ];
 
         if ($this->usesState()) {
@@ -184,9 +143,11 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
     protected function convertAddress(array $addr = null) :? Address {
         if (!$addr) return null;
 
+        $addrChanged = $this->convertToOldAddress($addr);
+
         $sourceKeys = ['flat', 'street', 'house', 'area', 'settlementName', 'district', 'country'];
         $sourceData = array_fill_keys($sourceKeys, null);
-        $sourceData = array_merge($sourceData, array_only($addr, $sourceKeys));
+        $sourceData = array_merge($sourceData, $addrChanged);
         $sourceData['country'] = $sourceData['country'] ? mb_convert_case($sourceData['country'], MB_CASE_LOWER) : null;
 
         $sourceData['settlementName'] = preg_replace(['/^[^a-zA-Zа-яА-ЯіїєІЇЄ0-9]+/u', '/[^a-zA-Zа-яА-ЯіїєІЇЄ0-9]+$/u'], ['', ''], $sourceData['settlementName']);
@@ -197,15 +158,30 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
         ));
     }
 
+    protected function convertToOldAddress($addr)
+    {
+        $addrChanged['flat'] = $addr['flat'];
+        $addrChanged['street'] = $addr['street'];
+        $addrChanged['house'] = $addr['house'];
+        $addrChanged['area'] = $addr['region'];
+        $addrChanged['settlementName'] = $addr['locality'];
+        $addrChanged['district'] = $addr['subregion'];
+        $addrChanged['country'] = $addr['country'];
+
+        return $addrChanged;
+    }
+
     /**
      * Map the raw user array to a Socialite User instance.
      *
      * @param  array $user
-     * @return \App\User
+     * @return User
      */
     public function mapUserToObject(array $user)
     {
         \RhaLogger::addPayload(['KiyvID response' => $user]);
+
+        $birthday = array_get($user, 'data.profile.birthday.date');
 
         $data = [
             'ext_id' => array_get($user, 'data.profile.id'),
@@ -214,9 +190,8 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
             'middle_name' => array_get($user, 'data.profile.name.middleName'),
             'emails' => array_get($user, 'data.profile.emails'),
             'phones' => array_get($user, 'data.profile.phones') ,
-            'birthday' => array_get($user, 'data.profile.birthday.date') ?
-                Carbon::createFromFormat('Y-m-d',
-                    array_get($user, 'data.profile.birthday.date'))->format('Y-m-d') : null,
+            'birthday' => $birthday ?
+                Carbon::parse($birthday)->format('Y-m-d') : null,
             'inn' => array_get($user, 'data.profile.itin.itin'),
             'passport' => trim(strtoupper(array_get($user, 'data.profile.passportInternal.series').
                 array_get($user, 'data.profile.passportInternal.number'))) ?: null,
@@ -227,14 +202,15 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
             'gender' => null,
         ];
 
-        if (array_get($user, 'data.profile.gender.gender')) {
-            switch (array_get($user, 'data.profile.gender.gender')) {
-                case 'FEMALE':
-                    $data['gender'] = \App\User::GENDER_FEMALE;
-                    break;
-                default:
-                    $data['gender'] = \App\User::GENDER_MALE;
-            }
+        switch (array_get($user, 'data.profile.gender.gender')) {
+            case 'MALE':
+                $data['gender'] = \App\User::GENDER_MALE;
+                break;
+            case 'FEMALE':
+                $data['gender'] = \App\User::GENDER_FEMALE;
+                break;
+            default:
+                $data['gender'] = rand(0, 1) ? \App\User::GENDER_MALE : \App\User::GENDER_FEMALE;
         }
 
         $addresses = array_get($user, 'data.profile.addresses', []);
@@ -246,6 +222,10 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
             $data['address_registration'] = $this->convertAddress($addressRegistration);
             if ($data['address_living'] && !$data['address_registration']) {
                 $data['address_registration'] = $data['address_living'];
+            }
+
+            if ($data['address_registration'] && !$data['address_living']) {
+                $data['address_living'] = $data['address_registration'];
             }
         }
 

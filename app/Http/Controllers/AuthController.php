@@ -15,15 +15,10 @@ class AuthController extends Controller
 {
 
     use AuthenticatesUsers;
-    
+
     public function login()
     {
         return Socialite::driver('kyivID')->redirect();
-    }
-
-    public function loginAttempt()
-    {
-        return Socialite::driver('kyivID')->attempt();
     }
 
     public function loginCallback(Request $request)
@@ -64,5 +59,4 @@ class AuthController extends Controller
         Auth::login(\App\User::find(1));
         return redirect('/', 302);
     }
-
 }
