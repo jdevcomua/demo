@@ -29,8 +29,6 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 
     protected $user;
 
-    protected $attemptUrl;
-
     protected $authUrl = '/authorize';
 
     protected $tokenUrl = '/token';
@@ -49,9 +47,7 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
 
         $this->host = config('services.kyivID.host');
         $this->hostApi = config('services.kyivID.host_api');
-        $this->attemptUrl = config('services.kyivID.attempt');
     }
-
 
     public function redirect()
     {
@@ -131,6 +127,7 @@ class KyivIdProvider extends AbstractProvider implements ProviderInterface//, Ha
             'redirect_uri' => $this->redirectUrl,
             'response_type' => 'code',
             'scope' => 'portal.user.profile.read',
+            'prompt' => 'login',
         ];
 
         if ($this->usesState()) {
