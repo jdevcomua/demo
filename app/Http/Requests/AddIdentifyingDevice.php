@@ -59,4 +59,10 @@ class AddIdentifyingDevice extends FormRequest
         $validated['identifying_device_type_id'] = $validated['device_type'];
         return $validated;
     }
+
+    public function setErrorBag($value)
+    {
+        $this->errorBag = $value;
+        return $this;
+    }
 }

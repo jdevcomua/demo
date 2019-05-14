@@ -482,12 +482,21 @@ class DataBasesController extends Controller
 
         $deviceType = $data['device_type'];
         $deviceNumber = $data['device_number'];
+        $validatedDevice = [];
 
-        switch ($deviceType) {
-            case Animal::IDENTIFYING_DEVICES_TYPE_BADGE: $deviceNumberRule = 'nullable|between:5,8'; break;
-            case Animal::IDENTIFYING_DEVICES_TYPE_CLIP: $deviceNumberRule = 'nullable'; break;
-            case Animal::IDENTIFYING_DEVICES_TYPE_CHIP: $deviceNumberRule = 'nullable|size:15'; break;
-            case Animal::IDENTIFYING_DEVICES_TYPE_BRAND: $deviceNumberRule = 'nullable'; break;
+        if ($deviceType && $deviceNumber) {
+            $deviceRequest = new AddIdentifyingDevice([
+                'number' => $deviceNumber,
+                'device_type' => $deviceType,
+                'issued_by' => \Auth::user()->full_name
+            ]);
+
+            $deviceRequest->setContainer(app())
+                ->setRedirector(app(\Illuminate\Routing\Redirector::class))
+                ->setErrorBag('animal')
+                ->validateResolved();
+
+            $validatedDevice = $deviceRequest->validated();
         }
 
         $rules = [
@@ -512,12 +521,7 @@ class DataBasesController extends Controller
             'tallness' => 'nullable|integer|min:10|max:100',
             'documents' => 'nullable|array',
             'documents.*' => 'nullable|file|mimes:jpg,jpeg,bmp,png,txt,doc,docx,xls,xlsx,pdf|max:2048',
-            'device_type' => 'nullable'
         ];
-
-        if (isset($deviceNumberRule)) {
-            $rules['device_number'] = $deviceNumberRule;
-        }
 
         $messages = [
             'nickname.required' => 'Кличка є обов\'язковим полем',
@@ -542,8 +546,6 @@ class DataBasesController extends Controller
             'documents.*.mimes' => 'Файли повинні бути в форматі зображення або текстового документу!',
             'tallness.min' => 'Зріст має бути більше :min см',
             'tallness.max' => 'Зріст має бути менше :max см',
-            'device_number.size' => 'Номер пристрою повинен складатися з :size символів!',
-            'device_number.between' => 'Номер пристрою повинен бути не менше :min символів та не більше :max символів!'
         ];
 
         $validator = Validator::make($data, $rules, $messages);
@@ -581,12 +583,8 @@ class DataBasesController extends Controller
         }
 
 
-        if ($deviceType !== null && $deviceNumber !== null) {
-            $animal->identifyingDevices()->create([
-                'number' => $deviceNumber,
-                'issued_by' => \Auth::user()->full_name,
-                'identifying_device_type_id' => $deviceType
-            ]);
+        if (count($validatedDevice)) {
+            $animal->identifyingDevices()->create($validatedDevice);
 
             $chronicleField = AnimalChronicle::getChronicleFieldByType($deviceType);
 
