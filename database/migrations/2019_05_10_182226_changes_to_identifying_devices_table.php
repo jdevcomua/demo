@@ -13,8 +13,10 @@ class ChangesToIdentifyingDevicesTable extends Migration
      */
     public function up()
     {
+        $this->removeDevicesWithAnimalIdNull();
+
         Schema::table('identifying_devices', function (Blueprint $table) {
-            $table->dropForeign('identifying_devices_animal_id_foreign');
+            $table->dropForeign(['animal_id']);
         });
 
         Schema::table('identifying_devices', function (Blueprint $table) {
@@ -46,5 +48,10 @@ class ChangesToIdentifyingDevicesTable extends Migration
 
             $table->unsignedInteger('animal_id')->nullable(true)->change();
         });
+    }
+
+    private function removeDevicesWithAnimalIdNull()
+    {
+        \App\Models\IdentifyingDevice::whereNull('animal_id')->delete();
     }
 }
